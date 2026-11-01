@@ -34,6 +34,7 @@ import {
   createClaudeSessionJournalTranslator
 } from './journal/claude-structured-session-journal-control'
 import { isRootClaudeFrame } from '../claude-turn-opening'
+import { rewriteClaudeRenameNoteFrames } from '../claude-rename-note'
 
 export async function acquireClaudeSession({
   input,
@@ -72,7 +73,7 @@ export async function acquireClaudeSession({
   const contextActivity = translator?.contextActivity ?? 0
   const recordTurnEnd = claudeTurnResumePointWriter(sessionId, sessions, deps)
   const observedOptions: sessionState.ClaudeSession['reportedOptions'] = {}
-  const onMessage = (message: Record<string, unknown>): void => {
+  const handleMessage = (message: Record<string, unknown>): void => {
     const init = readClaudeInit(message)
     if (readClaudeFrameString(message, 'session_id') !== expectedProviderSessionId) {
       // Foreign init frames refuse startup; ordinary foreign frames are ignored.
@@ -167,6 +168,10 @@ export async function acquireClaudeSession({
       }
     }
   }
+  const onMessage = (message: Record<string, unknown>): void =>
+    rewriteClaudeRenameNoteFrames(attempt.connection, message, expectedProviderSessionId).forEach(
+      handleMessage
+    )
   const emit = (event: Parameters<typeof callbacks.emit>[2]): void =>
     callbacks.deliver(attempt, sessionId, () => callbacks.emit(liveSession, input.events, event))
   const { canUseTool, onUserDialog } = buildClaudePermissionCallbacks({ sessionId, prompts, emit })
