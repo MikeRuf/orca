@@ -138,8 +138,9 @@ secrets or state the worker also uses; a panel alone needs none of it.
    minimized, else `themeApplied` is false with a `themeReason`), `ORCA plugin logs <plugin-key> --json` shows the same lines,
    `ORCA plugin restart <plugin-key>` reruns a worker's startup code, and
    `ORCA plugin dev reload <dir>` catches a missed save or re-checks changed commands and shortcuts.
-   For a worker, fire a test event with `ORCA plugin dev emit . <event> --data '{...}'` instead
-   of reproducing the trigger; its handler errors arrive as `log` lines in the watch.
+   To test an event handler, fire it with `ORCA plugin dev emit . <event> --data '{...}'`
+   instead of reproducing the trigger: it reaches the worker and the plugin's open panels that
+   subscribed, and handler errors arrive as `log` lines in the watch.
 5. To show the user, `ORCA plugin open <plugin-key> [--panel <id>]` opens the panel in Orca's right
    sidebar, and `--editor <file>` opens a file in its custom editor. Neither raises the window.
 6. Stop the watch with Ctrl-C (it unloads the folder it loaded) or run `ORCA plugin dev unload <dir>`.
@@ -199,6 +200,40 @@ test('adds a task', async () => {
   `panel.post(event, payload)` is a worker post (`plugin.on`); `panel.emit` is an Orca event.
 - Mount the module, never call its default export: without `mount` there is no runtime. A
   control with `value` but no `onChange` is read-only, so `type`/`toggle` throw on it.
+
+### Workers
+
+Unit-test a worker with `mountWorker` from `orca/testing`: it calls the module's `activate(orca)`
+with Orca's worker `orca` backed by `mockHost`, and loads `.ts` mains as Orca does.
+
+```ts
+import { assert, mountWorker, test } from 'orca/testing'
+import * as main from './worker'
+
+test('answers the panel and notifies on blocked agents', async () => {
+  const worker = await mountWorker(main)
+  assert.deepEqual(await worker.request('todos.list'), [])
+  await worker.emit('agent.status.changed', {
+    workspaceId: null,
+    paneKey: 'tab-1:pane-1',
+    state: 'blocked',
+    receivedAt: 1
+  })
+  assert.equal(worker.host.callsOf('notifications.show').length, 1)
+  assert.deepEqual(worker.posts, [])
+  await worker.deactivate()
+})
+```
+
+- `emit` delivers only events `contributes.events` lists, checks the payload against Orca's schema
+  and waits for every handler. `request(name, input, { panel })` is a panel's `plugin.request`
+  answered by `orca.panels.handle`; `posts` records `orca.panels.post`; `command(id, args)` runs a
+  registered command; `logs` and `refusals` record `orca.log` and refused host calls.
+- Seed storage, settings and secrets with `mockHost({ storage, settings, secrets })` passed as
+  `{ host }`; a panel mounted on the same host sees the same data.
+- Against the running plugin, `ORCA plugin dev emit <dir> <event> --data '<json>'` fires the event
+  at the dev worker and the plugin's open panels that subscribed, under the real rules; read the
+  handlers' errors in the `dev watch` log.
 
 ## Ship
 
