@@ -66,7 +66,8 @@ export async function installOnJournal(
     adapter,
     logger: deps.logger
   })
-  const nameProvider = (record: AgentSessionRecord): void => void providerNaming.push(record)
+  const nameProvider = (record: AgentSessionRecord, changed: boolean): void =>
+    void providerNaming.push(record, false, !changed)
   host = new StructuredAgentSessionHost({
     store,
     adapter,

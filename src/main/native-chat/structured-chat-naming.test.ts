@@ -25,7 +25,7 @@ import {
 import {
   type AgentSessionUserNameWrite,
   compareAndSetAgentSessionRecordName,
-  setAgentSessionRecordUserName
+  setAgentSessionRecordUserNameThrough
 } from '../runtime/agent-session/records/agent-session-record-conversation-name'
 import {
   createStructuredChatNamingHandler,
@@ -76,15 +76,8 @@ function rig(provider: 'claude' | 'codex') {
       compareAndSetAgentSessionRecordName(mutate, name, expected, contextId)
   )
   const setUserConversationName = vi.fn(
-    async (_id: string, name: string, write: AgentSessionUserNameWrite) => {
-      let applied = false
-      const next = await mutate((current) => {
-        const result = setAgentSessionRecordUserName(current, name, write, Date.now())
-        applied = result.applied
-        return result.record
-      })
-      return { record: next, applied }
-    }
+    (_id: string, name: string, write: AgentSessionUserNameWrite) =>
+      setAgentSessionRecordUserNameThrough(mutate, name, write)
   )
   const deps: StructuredChatNamingDeps = {
     getStore: () => ({
@@ -504,6 +497,16 @@ describe.each(['claude', 'codex'] as const)('structured %s chat naming', (provid
       name: 'Newer rename',
       applied: false
     })
+  })
+
+  it('reports a re-save of the same user name as applied but unchanged', async () => {
+    const state = rig(provider)
+    const id = state.summary.sessionId
+    const onApplied = vi.fn()
+    await state.handle.setUserName(id, 'Kept name', 'rename', onApplied)
+    // A title box saves its unchanged text on losing focus; Claude must not hear of a rename.
+    await state.handle.setUserName(id, 'Kept name', 'rename', onApplied)
+    expect(onApplied.mock.calls.map(([, changed]) => changed)).toEqual([true, false])
   })
 
   it('coalesces concurrent edges before the first journal read completes', async () => {

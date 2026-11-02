@@ -1,5 +1,5 @@
 import type { AgentSessionAcquisition } from '../../native-chat/agent-session-wire/structured-agent-session-adapter'
-import { openClaudeStreamJsonConnection } from '../claude-stream-json-connection'
+import { openClaudeWithRenameNotes } from './claude-rename-notes'
 import { claudeLaunchPermissions } from './claude-structured-inbound-control'
 import { resolveClaudeReplayTurn } from '../claude-replay-turn-resolution'
 import { claudeStartedUnechoedSend } from '../claude-command-lifecycle'
@@ -197,7 +197,7 @@ export async function acquireClaudeSession({
     naming?.launch(launch)
     attempt.account = launch.account
     observedLeafUuid = launch.resumeLeafUuid
-    const open = deps.openConnection ?? openClaudeStreamJsonConnection
+    const open = openClaudeWithRenameNotes(deps.openConnection, launch)
     const connection = await withAgentSessionCreatePhase('spawn', input.recordPhase, () =>
       open(
         {
