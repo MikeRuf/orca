@@ -105,7 +105,7 @@ async function getOptionalSetupHostId(
   return await getRequiredHostId(flags, client)
 }
 
-function getOptionalRepoKind(flags: Map<string, string | boolean>): RepoKind | undefined {
+export function getOptionalRepoKind(flags: Map<string, string | boolean>): RepoKind | undefined {
   const kind = getOptionalStringFlag(flags, 'kind')
   if (kind === undefined) {
     return undefined

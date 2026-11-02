@@ -1,8 +1,13 @@
 import type { RuntimeRepoList, RuntimeRepoSearchRefs } from '../../shared/runtime-types'
 import type { CommandHandler } from '../dispatch'
 import { formatRepoList, formatRepoRefs, formatRepoShow, printResult } from '../format'
-import { getOptionalPositiveIntegerFlag, getRequiredStringFlag } from '../flags'
+import {
+  getOptionalPositiveIntegerFlag,
+  getOptionalStringFlag,
+  getRequiredStringFlag
+} from '../flags'
 import { resolveRepoPathArgument } from '../repo-path-arguments'
+import { getOptionalRepoKind } from './project'
 import { RuntimeClientError } from '../runtime/types'
 
 export const REPO_HANDLERS: Record<string, CommandHandler> = {
@@ -12,8 +17,14 @@ export const REPO_HANDLERS: Record<string, CommandHandler> = {
   },
   'repo add': async ({ flags, client, cwd, json }) => {
     const repoPath = getRequiredStringFlag(flags, 'path')
+    const kind = getOptionalRepoKind(flags)
+    const displayName = getOptionalStringFlag(flags, 'display-name')
+    // Why: repo.add already takes kind and displayName; without them a plain
+    // folder (not a Git checkout) cannot be added from the CLI at all.
     const result = await client.call<{ repo: Record<string, unknown> }>('repo.add', {
-      path: resolveRepoPathArgument(repoPath, cwd, client.isRemote, 'Remote repo add')
+      path: resolveRepoPathArgument(repoPath, cwd, client.isRemote, 'Remote repo add'),
+      ...(kind ? { kind } : {}),
+      ...(displayName ? { displayName } : {})
     })
     printResult(result, json, formatRepoShow)
   },

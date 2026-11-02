@@ -11,8 +11,8 @@ export const REPO_COMMAND_SPECS: CommandSpec[] = [
   {
     path: ['repo', 'add'],
     summary: 'Add a project to Orca by filesystem path',
-    usage: 'orca repo add --path <path> [--json]',
-    allowedFlags: [...GLOBAL_FLAGS, 'path']
+    usage: 'orca repo add --path <path> [--kind git|folder] [--display-name <name>] [--json]',
+    allowedFlags: [...GLOBAL_FLAGS, 'path', 'kind', 'display-name']
   },
   {
     path: ['repo', 'show'],
