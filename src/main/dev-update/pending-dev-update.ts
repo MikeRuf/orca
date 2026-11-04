@@ -1,4 +1,4 @@
-import { spawn } from 'node:child_process'
+import { spawnSync } from 'node:child_process'
 import { existsSync, readFileSync, unwatchFile, watchFile } from 'node:fs'
 import path from 'node:path'
 import { BrowserWindow } from 'electron'
@@ -90,22 +90,26 @@ export function launchPendingDevUpdateInstall(): boolean {
     'v1.0',
     'powershell.exe'
   )
+  const helper = `"${powershell}" -NoProfile -ExecutionPolicy Bypass -EncodedCommand ${Buffer.from(
+    script,
+    'utf16le'
+  ).toString('base64')}`
+  // Orca runs inside a Windows job that kills its children when it exits, "detached" ones
+  // included (seen 2026-11-04: Orca quit, the helper died before its first log line). WMI creates
+  // the helper from its own service, outside that job; ShowWindow 0 keeps its console hidden.
+  const create = [
+    '$si = New-CimInstance -ClassName Win32_ProcessStartup -ClientOnly -Property @{ ShowWindow = [uint16]0 }',
+    `$r = Invoke-CimMethod -ClassName Win32_Process -MethodName Create -Arguments @{ CommandLine = ${quotePowerShell(helper)}; ProcessStartupInformation = $si }`,
+    'exit [int]$r.ReturnValue'
+  ].join('; ')
   try {
-    const child = spawn(
+    const result = spawnSync(
       powershell,
-      [
-        '-NoProfile',
-        '-ExecutionPolicy',
-        'Bypass',
-        '-WindowStyle',
-        'Hidden',
-        '-EncodedCommand',
-        Buffer.from(script, 'utf16le').toString('base64')
-      ],
-      { detached: true, stdio: 'ignore', windowsHide: true }
+      ['-NoProfile', '-NonInteractive', '-ExecutionPolicy', 'Bypass', '-Command', create],
+      { windowsHide: true, timeout: 30_000 }
     )
-    child.unref()
-    return true
+    // Quit only once the helper exists: WMI answers 0 for a created process.
+    return result.status === 0
   } catch {
     return false
   }
