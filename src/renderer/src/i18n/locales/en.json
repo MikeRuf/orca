@@ -6807,7 +6807,8 @@
           "projectGroupRefreshSuccess_one": "Added {{count}} project to {{group}}",
           "projectGroupRefreshSuccess_other": "Added {{count}} projects to {{group}}",
           "projectGroupRefreshing": "Refreshing {{group}}…",
-          "refreshProjectGroup": "Refresh projects"
+          "refreshProjectGroup": "Refresh projects",
+          "customizeAppearance": "Customize Appearance…"
         },
         "WorktreeMetaDialog": {
           "3db0a2a593": "Cancel",
@@ -7537,6 +7538,10 @@
           "needsInput": "Needs input",
           "running": "Running",
           "idle": "Idle"
+        },
+        "ProjectAppearanceDialog": {
+          "title": "Appearance of {{value0}}",
+          "description": "Icon, color, background and font in the sidebar. Changes apply as you make them."
         }
       },
       "shared": {

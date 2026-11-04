@@ -52,7 +52,7 @@ import {
 } from './header-event-guards'
 import type { WorktreeSidebarHeaderDrag } from '../drag/use-header-drag'
 import { getWorktreeOptionId } from './option-dom'
-import { getProjectSidebarSurfaceProps } from '../../project-sidebar-surface-style'
+import { getProjectHeaderRowProps } from '../../project-header-row-props'
 
 export type SectionHeaderRowContext = {
   groupBy: WorktreeGroupBy
@@ -181,7 +181,7 @@ export function renderWorktreeSectionHeaderRow(args: {
         projectGroupId: folderBackedProjectGroup.id
       })
     : null
-  const headerSurface = getProjectSidebarSurfaceProps(isRepoHeader ? row.repo : undefined, 'header')
+  const headerSurface = getProjectHeaderRowProps(isRepoHeader ? row.repo : undefined)
   const collapseKey = row.collapseKey ?? row.key
   const isHeaderCollapsed = ctx.collapsedGroups.has(collapseKey)
   // Why: repo/project/status/pinned share compact section chrome; flat "All" stays a simple label.

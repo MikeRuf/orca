@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { RotateCcw } from 'lucide-react'
 import type { Repo } from '../../../../../../shared/repo-types'
 import {
@@ -6,6 +6,7 @@ import {
   MIN_SIDEBAR_FONT_SIZE,
   SIDEBAR_BASE_FONT_SIZE,
   sanitizeRepoSidebarStyle,
+  type RepoSidebarStyle,
   type RepoSidebarSurface,
   type RepoSidebarSurfaceStyle
 } from '../../../../../../shared/repo-sidebar-style'
@@ -28,6 +29,8 @@ const FONT_SUGGESTIONS = [
   'Courier New'
 ]
 const FONT_LIST_ID = 'repository-sidebar-style-fonts'
+// Color drags fire per pointer move; batch saves so the sidebar follows without queueing a save per pixel.
+const SAVE_BATCH_MS = 150
 
 type RepositorySidebarStyleSectionProps = {
   repo: Repo
@@ -38,7 +41,32 @@ export function RepositorySidebarStyleSection({
   repo,
   updateRepo
 }: RepositorySidebarStyleSectionProps): React.JSX.Element {
-  const style = sanitizeRepoSidebarStyle(repo.sidebarStyle) ?? {}
+  const saved = sanitizeRepoSidebarStyle(repo.sidebarStyle) ?? null
+  // Edits show here at once; `pending` holds them until the saved repo catches up.
+  const [pending, setPending] = useState<{ style: RepoSidebarStyle | null } | null>(null)
+  const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const latestRef = useRef<{ repoId: string; style: RepoSidebarStyle | null } | null>(null)
+  const updateRepoRef = useRef(updateRepo)
+  updateRepoRef.current = updateRepo
+  const style = (pending ? pending.style : saved) ?? {}
+
+  useEffect(() => {
+    if (pending && !timerRef.current && JSON.stringify(pending.style) === JSON.stringify(saved)) {
+      setPending(null)
+    }
+  }, [pending, saved])
+
+  useEffect(
+    () => () => {
+      // Closing the dialog mid-batch must still save the last edit.
+      if (timerRef.current && latestRef.current) {
+        clearTimeout(timerRef.current)
+        const { repoId, style: last } = latestRef.current
+        updateRepoRef.current(repoId, { sidebarStyle: last })
+      }
+    },
+    []
+  )
 
   const setSurface = (surface: RepoSidebarSurface, patch: Partial<RepoSidebarSurfaceStyle>) => {
     const nextSurface: RepoSidebarSurfaceStyle = { ...style[surface], ...patch }
@@ -47,9 +75,16 @@ export function RepositorySidebarStyleSection({
         delete nextSurface[key]
       }
     }
-    updateRepo(repo.id, {
-      sidebarStyle: sanitizeRepoSidebarStyle({ ...style, [surface]: nextSurface }) ?? null
-    })
+    const next = sanitizeRepoSidebarStyle({ ...style, [surface]: nextSurface }) ?? null
+    setPending({ style: next })
+    latestRef.current = { repoId: repo.id, style: next }
+    if (timerRef.current) {
+      clearTimeout(timerRef.current)
+    }
+    timerRef.current = setTimeout(() => {
+      timerRef.current = null
+      updateRepoRef.current(repo.id, { sidebarStyle: next })
+    }, SAVE_BATCH_MS)
   }
 
   return (
@@ -191,18 +226,9 @@ function FontFamilyRow({
   value: string | undefined
   onCommit: (value: string | undefined) => void
 }): React.JSX.Element {
+  // The typed text stays as typed while focused; each change applies live.
   const [draft, setDraft] = useState<string | null>(null)
   const label = translate('auto.components.settings.RepositorySidebarStyleSection.font', 'Font')
-  const commit = () => {
-    if (draft === null) {
-      return
-    }
-    setDraft(null)
-    const next = draft.trim() || undefined
-    if (next !== value) {
-      onCommit(next)
-    }
-  }
   return (
     <>
       <span className="text-sm text-muted-foreground">{label}</span>
@@ -215,13 +241,11 @@ function FontFamilyRow({
             'auto.components.settings.RepositorySidebarStyleSection.fontPlaceholder',
             'Default'
           )}
-          onChange={(event) => setDraft(event.target.value)}
-          onBlur={commit}
-          onKeyDown={(event) => {
-            if (event.key === 'Enter') {
-              commit()
-            }
+          onChange={(event) => {
+            setDraft(event.target.value)
+            onCommit(event.target.value.trim() || undefined)
           }}
+          onBlur={() => setDraft(null)}
           className="h-7 max-w-56 text-sm"
           style={value ? { fontFamily: value } : undefined}
         />
@@ -242,17 +266,6 @@ function FontSizeRow({
 }): React.JSX.Element {
   const [draft, setDraft] = useState<string | null>(null)
   const label = translate('auto.components.settings.RepositorySidebarStyleSection.size', 'Size')
-  const commit = () => {
-    if (draft === null) {
-      return
-    }
-    setDraft(null)
-    const parsed = Number.parseInt(draft, 10)
-    const next = Number.isFinite(parsed) ? parsed : undefined
-    if (next !== value) {
-      onCommit(next)
-    }
-  }
   return (
     <>
       <span className="text-sm text-muted-foreground">{label}</span>
@@ -265,13 +278,17 @@ function FontSizeRow({
           aria-label={label}
           value={draft ?? (value !== undefined ? String(value) : '')}
           placeholder={String(SIDEBAR_BASE_FONT_SIZE)}
-          onChange={(event) => setDraft(event.target.value)}
-          onBlur={commit}
-          onKeyDown={(event) => {
-            if (event.key === 'Enter') {
-              commit()
+          onChange={(event) => {
+            setDraft(event.target.value)
+            const parsed = Number.parseInt(event.target.value, 10)
+            // Skip partial entries like "1" on the way to "16"; the sanitizer would clamp them to 9.
+            if (event.target.value === '') {
+              onCommit(undefined)
+            } else if (parsed >= MIN_SIDEBAR_FONT_SIZE && parsed <= MAX_SIDEBAR_FONT_SIZE) {
+              onCommit(parsed)
             }
           }}
+          onBlur={() => setDraft(null)}
           className="h-7 w-20 text-sm"
         />
         <span className="text-xs text-muted-foreground">px</span>

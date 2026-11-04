@@ -200,7 +200,6 @@ export function RepositoryIconPicker({
       </div>
 
       <RepositoryIconColorSection badgeColor={repo.badgeColor} onBadgeColorChange={setBadgeColor} />
-      <RepositorySidebarStyleSection repo={repo} updateRepo={updateRepo} />
 
       <RepositoryIconTabs
         initialTab={initialTab}
@@ -210,6 +209,7 @@ export function RepositoryIconPicker({
         onSetIcon={setIcon}
         onUseGitHubAvatar={() => void handleUseGitHubAvatar()}
       />
+      <RepositorySidebarStyleSection repo={repo} updateRepo={updateRepo} />
     </div>
   )
 }
