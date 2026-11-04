@@ -1,3 +1,4 @@
+import type { RepoSidebarStyle } from './repo-sidebar-style'
 import type { RepoIcon } from './repo-icon'
 import type { GhAccountBinding } from './github/account-binding'
 import type { GitHubRepositoryIdentity } from './github/pull-request-types'
@@ -44,6 +45,8 @@ export type Repo = {
   displayName: string
   badgeColor: string
   repoIcon?: RepoIcon | null
+  /** Per-project sidebar backgrounds and fonts for the header row and the rows under it. */
+  sidebarStyle?: RepoSidebarStyle | null
   /** Fork parent; same-name forks use its avatar, renamed forks keep their own. Absent means non-fork or unresolved. */
   upstream?: GitHubRepositoryIdentity | null
   addedAt: number

@@ -18,6 +18,7 @@ import {
 import { useMountedRef } from '@/hooks/useMountedRef'
 import { RepositoryIconColorSection } from './RepositoryIconColorSection'
 import { RepositoryIconTabs } from './RepositoryIconTabs'
+import { RepositorySidebarStyleSection } from './RepositorySidebarStyleSection'
 import {
   buildRepositoryGitHubAvatarUpdate,
   resolveRepositoryGitHubAvatar,
@@ -199,6 +200,7 @@ export function RepositoryIconPicker({
       </div>
 
       <RepositoryIconColorSection badgeColor={repo.badgeColor} onBadgeColorChange={setBadgeColor} />
+      <RepositorySidebarStyleSection repo={repo} updateRepo={updateRepo} />
 
       <RepositoryIconTabs
         initialTab={initialTab}

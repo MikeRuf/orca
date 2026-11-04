@@ -758,6 +758,17 @@ body[data-modal-overlay-open]
   }
 }
 
+/* Per-project sidebar fonts: rows set font and color per element, so the project choice must win over them. Icons keep their own color. */
+[data-project-sidebar-font],
+[data-project-sidebar-font] * {
+  font-family: var(--project-sidebar-font) !important;
+}
+
+[data-project-sidebar-text],
+[data-project-sidebar-text] *:not(svg, svg *) {
+  color: var(--project-sidebar-text) !important;
+}
+
 /* Reserve scrollbar space only while overflowing; fitting Windows lists must omit gutters and arrow buttons. */
 .worktree-sidebar-scrollbar {
   padding-right: 4px;

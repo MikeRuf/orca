@@ -52,6 +52,7 @@ import {
 } from './header-event-guards'
 import type { WorktreeSidebarHeaderDrag } from '../drag/use-header-drag'
 import { getWorktreeOptionId } from './option-dom'
+import { getProjectSidebarSurfaceProps } from '../../project-sidebar-surface-style'
 
 export type SectionHeaderRowContext = {
   groupBy: WorktreeGroupBy
@@ -180,6 +181,7 @@ export function renderWorktreeSectionHeaderRow(args: {
         projectGroupId: folderBackedProjectGroup.id
       })
     : null
+  const headerSurface = getProjectSidebarSurfaceProps(isRepoHeader ? row.repo : undefined, 'header')
   const collapseKey = row.collapseKey ?? row.key
   const isHeaderCollapsed = ctx.collapsedGroups.has(collapseKey)
   // Why: repo/project/status/pinned share compact section chrome; flat "All" stays a simple label.
@@ -256,7 +258,9 @@ export function renderWorktreeSectionHeaderRow(args: {
               'rounded-md bg-worktree-sidebar-accent ring-1 ring-worktree-sidebar-ring/40',
             row.repo && 'overflow-hidden'
           )}
+          {...headerSurface}
           style={{
+            ...headerSurface.style,
             // Why: non-project headers like "All" are flat-list labels; don't reserve project hierarchy indent.
             paddingLeft:
               isRepoHeader || isProjectGroupHeader

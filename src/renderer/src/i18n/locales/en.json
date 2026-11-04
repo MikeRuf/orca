@@ -13739,6 +13739,19 @@
         },
         "SettingsSearchableSelect": {
           "noMatches": "No matches."
+        },
+        "RepositorySidebarStyleSection": {
+          "headerTitle": "Project header row",
+          "rowsTitle": "Workspace rows under it",
+          "reset": "Reset",
+          "background": "Background",
+          "textColor": "Text color",
+          "defaultColor": "Default",
+          "font": "Font",
+          "fontPlaceholder": "Default",
+          "size": "Size",
+          "clear": "Use default {{value0}}",
+          "title": "Sidebar appearance"
         }
       },
       "right": {
