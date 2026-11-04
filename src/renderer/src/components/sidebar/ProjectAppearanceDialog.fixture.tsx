@@ -15,7 +15,12 @@ export const open = defineFixture({
   store: { repos: [repo] },
   render: () => (
     <div style={{ height: 900 }}>
-      <ProjectAppearanceDialog repo={repo} open onOpenChange={() => {}} />
+      <ProjectAppearanceDialog
+        repo={repo}
+        open
+        onOpenChange={() => {}}
+        anchor={{ sidebarRight: 280 }}
+      />
     </div>
   )
 })

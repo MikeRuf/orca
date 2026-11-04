@@ -29,7 +29,10 @@ import {
 import { cn } from '@/lib/utils'
 import { translate } from '@/i18n/i18n'
 import { getRepositoryIconSectionId } from '@/components/settings/repository/repository-settings-targets'
-import { ProjectAppearanceDialog } from '../../ProjectAppearanceDialog'
+import {
+  ProjectAppearanceDialog,
+  type ProjectAppearanceDialogAnchor
+} from '../../ProjectAppearanceDialog'
 import { subscribeProjectActionsMenu } from '../../project-actions-menu-requests'
 import { WslMoveProjectMenuItem } from '@/components/wsl-move/WslMoveProjectMenuItem'
 import type { ProjectGroup } from '../../../../../../shared/project-group-types'
@@ -98,7 +101,9 @@ export const RepoHeaderProjectActionsMenu = React.memo(function RepoHeaderProjec
   // Memoized: subscribe so a language change still repaints its labels.
   useTranslation()
   const [menuOpen, setMenuOpen] = React.useState(false)
-  const [appearanceOpen, setAppearanceOpen] = React.useState(false)
+  const [appearanceAnchor, setAppearanceAnchor] =
+    React.useState<ProjectAppearanceDialogAnchor | null>(null)
+  const triggerRef = React.useRef<HTMLButtonElement>(null)
   // A right-click on the header opens this same menu.
   React.useEffect(
     () => subscribeProjectActionsMenu(repo, () => setMenuOpen(true)),
@@ -111,6 +116,7 @@ export const RepoHeaderProjectActionsMenu = React.memo(function RepoHeaderProjec
           <TooltipTrigger asChild>
             <DropdownMenuTrigger asChild>
               <Button
+                ref={triggerRef}
                 type="button"
                 variant="ghost"
                 size="icon-xs"
@@ -157,7 +163,17 @@ export const RepoHeaderProjectActionsMenu = React.memo(function RepoHeaderProjec
             <Shapes className="size-3.5" />
             {translate('auto.components.sidebar.WorktreeList.e82d3589a1', 'Change Project Icon')}
           </DropdownMenuItem>
-          <DropdownMenuItem onSelect={() => setAppearanceOpen(true)}>
+          <DropdownMenuItem
+            onSelect={() =>
+              setAppearanceAnchor({
+                // The header row spans the sidebar, so its right edge is the sidebar's.
+                sidebarRight:
+                  triggerRef.current
+                    ?.closest('[data-worktree-virtual-row]')
+                    ?.getBoundingClientRect().right ?? 0
+              })
+            }
+          >
             <Palette className="size-3.5" />
             {translate(
               'auto.components.sidebar.WorktreeList.customizeAppearance',
@@ -208,8 +224,13 @@ export const RepoHeaderProjectActionsMenu = React.memo(function RepoHeaderProjec
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
-      {appearanceOpen ? (
-        <ProjectAppearanceDialog repo={repo} open onOpenChange={setAppearanceOpen} />
+      {appearanceAnchor ? (
+        <ProjectAppearanceDialog
+          repo={repo}
+          open
+          onOpenChange={(open) => !open && setAppearanceAnchor(null)}
+          anchor={appearanceAnchor}
+        />
       ) : null}
     </>
   )
