@@ -10,6 +10,7 @@ export type ProjectSidebarSurfaceProps = {
   style?: React.CSSProperties
   'data-project-sidebar-font'?: ''
   'data-project-sidebar-text'?: ''
+  'data-project-sidebar-bg'?: ''
 }
 
 const NO_SURFACE_PROPS: ProjectSidebarSurfaceProps = {}
@@ -27,6 +28,8 @@ export function getProjectSidebarSurfaceProps(
   const css: React.CSSProperties & Record<`--${string}`, string> = {}
   if (style.background) {
     css.backgroundColor = style.background
+    // Overlays inside the row (the header's action backdrop) paint with the row's own color.
+    css['--project-sidebar-bg'] = style.background
   }
   if (style.fontFamily) {
     css['--project-sidebar-font'] = style.fontFamily
@@ -41,6 +44,7 @@ export function getProjectSidebarSurfaceProps(
   return {
     style: css,
     ...(style.fontFamily ? { 'data-project-sidebar-font': '' as const } : {}),
-    ...(style.textColor ? { 'data-project-sidebar-text': '' as const } : {})
+    ...(style.textColor ? { 'data-project-sidebar-text': '' as const } : {}),
+    ...(style.background ? { 'data-project-sidebar-bg': '' as const } : {})
   }
 }
