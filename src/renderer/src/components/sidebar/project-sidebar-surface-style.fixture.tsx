@@ -1,7 +1,9 @@
 import { getDefaultSettings } from '../../../../shared/constants'
 import type { Repo } from '../../../../shared/repo-types'
 import { defineFixture } from '../../component-fixtures/component-fixture'
+import { Ellipsis } from 'lucide-react'
 import { RepoIconGlyph } from '../repo/repo-icon'
+import { Button } from '../ui/button'
 import { makeRepo, makeWorktree } from '../worktree-jump/worktree-jump-palette-test-fixtures'
 import WorktreeCard from './workspace-card/surface/WorktreeCard'
 import { getProjectSidebarSurfaceProps } from './project-sidebar-surface-style'
@@ -39,6 +41,16 @@ export const styledProject = defineFixture({
             iconClassName="size-3.5"
           />
           <span className="truncate text-[13px] font-semibold leading-4">{repo.displayName}</span>
+          {/* Stands in for the header's action button with its menu open. */}
+          <Button
+            type="button"
+            variant="ghost"
+            size="icon-xs"
+            className="ml-auto bg-accent"
+            data-state="open"
+          >
+            <Ellipsis className="size-3.5" />
+          </Button>
         </div>
         {[main, feature].map((worktree) => (
           <div key={worktree.id} {...rows}>

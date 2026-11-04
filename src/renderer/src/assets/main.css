@@ -769,6 +769,12 @@ body[data-modal-overlay-open]
   color: var(--project-sidebar-text) !important;
 }
 
+/* A hovered or open button keeps Orca's light accent surface, so its text and icon must take the accent foreground, or a light project text color vanishes on it. */
+[data-project-sidebar-text] button:is(:hover, [data-state='open']),
+[data-project-sidebar-text] button:is(:hover, [data-state='open']) *:not(svg, svg *) {
+  color: var(--accent-foreground) !important;
+}
+
 /* Reserve scrollbar space only while overflowing; fitting Windows lists must omit gutters and arrow buttons. */
 .worktree-sidebar-scrollbar {
   padding-right: 4px;
