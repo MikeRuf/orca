@@ -41,6 +41,7 @@ import { SpaceWindowStatePublisher } from './components/workspace-space/SpaceWin
 import { PlainSshTerminalPanels } from './components/plain-ssh-terminal/PlainSshTerminalPanels'
 import { PluginShotReplayMount } from './components/plugins/view/PluginShotReplayMount'
 import { installActiveWorktreeRemovalSuccessor } from './lib/active-worktree-removal-successor'
+import { PendingDevUpdateNotice } from './components/dev-update/PendingDevUpdateNotice'
 
 function App(): React.JSX.Element {
   const layout = useAppChromeLayout()
@@ -121,6 +122,7 @@ function App(): React.JSX.Element {
           document.body
         )}
         <PlainSshTerminalPanels />
+        <PendingDevUpdateNotice />
         <PluginShotReplayMount />
       </TooltipProvider>
       <SkillFreshnessNudge />

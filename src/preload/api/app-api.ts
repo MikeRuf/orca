@@ -3,6 +3,7 @@ import type { WindowMaterial } from '../../shared/window-material'
 import type { AppIdentity } from '../../shared/app-identity'
 import type { E2EConfig } from '../../shared/e2e-config'
 import type { ExecutionHostId } from '../../shared/execution-host'
+import type { PendingDevUpdate } from '../../shared/pending-dev-update'
 import type {
   WriteTerminalRenderDesyncEvidenceArgs,
   WriteTerminalRenderDesyncEvidenceResult
@@ -33,6 +34,11 @@ export type AppApi = {
   /** Uses app.exit(0), bypassing normal quit handling. */
   relaunch: () => Promise<void>
   /** Uses normal quit handling so daemon terminals survive for reattachment. */
+  /** A locally built fork installer newer than this app (Windows only); null otherwise. */
+  getPendingDevUpdate: () => Promise<PendingDevUpdate | null>
+  /** Saves state, starts the installer helper and quits; the helper reopens Orca. */
+  installPendingDevUpdate: () => Promise<void>
+  onPendingDevUpdateChanged: (callback: (pending: PendingDevUpdate | null) => void) => () => void
   restart: () => Promise<void>
   /** Main classifies teardown before Electron emits process-gone events. */
   reload: () => Promise<void>

@@ -1159,7 +1159,8 @@
       "body": "Orca is still running in the system tray"
     },
     "activityWaiting": "Orca - activity waiting",
-    "activityWaitingSuffix": "activity waiting"
+    "activityWaitingSuffix": "activity waiting",
+    "installDevUpdate": "Install Pending Development Update ({{commit}})"
   },
   "worktreeJumpPalette": {
     "goToWebsite": "Go to {{value0}}",
@@ -19235,6 +19236,13 @@
           "detail": "From its shortcut, the palette and menus. If the plugin fails, Orca’s own runs.",
           "switch": "Use {{value0}} instead of Orca’s {{value1}}"
         }
+      },
+      "devUpdate": {
+        "noticeTitle": "Development update ready",
+        "noticeBody": "Your build {{value0}} is ready. Orca restarts to install it; background sessions keep running.",
+        "install": "Install",
+        "installFailed": "Could not start the update: {{value0}}",
+        "menuLabel": "Install Pending Development Update ({{value0}})"
       }
     },
     "i18n": {
