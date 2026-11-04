@@ -5178,6 +5178,18 @@
             },
             "mainWorktree": "main worktree",
             "detached": "detached"
+          },
+          "BuildInfoStatusSegment": {
+            "devRelease": "*** dev release: {{value0}} ***",
+            "version": "Version",
+            "built": "Built",
+            "commit": "Commit",
+            "devRef": "Dev release",
+            "noInfo": "This server does not report its build.",
+            "ariaLabel": "Build information for this app and connected servers",
+            "label": "Orca {{value0}}",
+            "thisApp": "This app",
+            "noServers": "No servers connected."
           }
         }
       },
