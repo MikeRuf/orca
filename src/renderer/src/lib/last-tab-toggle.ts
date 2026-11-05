@@ -4,6 +4,8 @@ import { getShortcutPlatform } from '@/lib/shortcut-platform'
 import { activateWorkspaceTabPaletteResult } from '@/lib/workspace-tab-palette-activation'
 import type { WorkspaceTabContentType } from '@/lib/workspace-tab-palette-search'
 import { focusTerminalTabSurface } from '@/lib/focus-terminal-tab-surface'
+import { describeTab } from '@/lib/tab-shortcut-resolution'
+import { recordRecentTab } from '@/lib/tab-shortcuts-store'
 
 type TabLocation = {
   key: string
@@ -46,12 +48,14 @@ export function createLastTabTracker() {
   let current: TabLocation | null = null
   let previous: TabLocation | null = null
   return {
-    observe(location: TabLocation | null): void {
+    /** True when the shown tab changed. */
+    observe(location: TabLocation | null): boolean {
       if (!location || location.key === current?.key) {
-        return
+        return false
       }
       previous = current
       current = location
+      return true
     },
     previous: (): TabLocation | null => previous
   }
@@ -64,9 +68,16 @@ export function createLastTabTracker() {
 export function installLastTabToggle(): () => void {
   const tracker = createLastTabTracker()
   tracker.observe(readCurrentTabLocation(useAppStore.getState()))
-  const unsubscribe = useAppStore.subscribe((state) =>
-    tracker.observe(readCurrentTabLocation(state))
-  )
+  const unsubscribe = useAppStore.subscribe((state) => {
+    const location = readCurrentTabLocation(state)
+    if (location && tracker.observe(location)) {
+      // The same tab history feeds the sidebar's Recent tabs list.
+      const shown = describeTab(state, location.worktreeId, location.tabId)
+      if (shown) {
+        recordRecentTab(shown)
+      }
+    }
+  })
   const onKeyDown = (event: KeyboardEvent): void => {
     if (event.repeat) {
       return

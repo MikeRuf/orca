@@ -19340,6 +19340,16 @@
           "detail": "From its shortcut, the palette and menus. If the plugin fails, Orca’s own runs.",
           "switch": "Use {{value0}} instead of Orca’s {{value1}}"
         }
+      },
+      "tabShortcuts": {
+        "removeFavorite": "Remove from Favorites",
+        "addFavorite": "Add to Favorites",
+        "favorites": "Favorite tabs",
+        "noFavorites": "Right-click a tab and choose Add to Favorites.",
+        "recents": "Recent tabs",
+        "noRecents": "Tabs you visit appear here.",
+        "untitled": "Untitled tab",
+        "closed": "That tab is closed."
       }
     },
     "i18n": {
