@@ -1,10 +1,8 @@
 import { useAppStore } from '@/store'
 import { keybindingMatchesAction } from '../../../shared/keybindings'
 import { getShortcutPlatform } from '@/lib/shortcut-platform'
-import { activateWorkspaceTabPaletteResult } from '@/lib/workspace-tab-palette-activation'
 import type { WorkspaceTabContentType } from '@/lib/workspace-tab-palette-search'
-import { focusTerminalTabSurface } from '@/lib/focus-terminal-tab-surface'
-import { describeTab } from '@/lib/tab-shortcut-resolution'
+import { describeTab, openTabShortcut } from '@/lib/tab-shortcut-resolution'
 import { recordRecentTab } from '@/lib/tab-shortcuts-store'
 
 type TabLocation = {
@@ -93,10 +91,7 @@ export function installLastTabToggle(): () => void {
     // Claim the key before a terminal or editor sees it.
     event.preventDefault()
     event.stopPropagation()
-    const outcome = activateWorkspaceTabPaletteResult(target)
-    if (outcome.status === 'activated' && target.contentType === 'terminal') {
-      focusTerminalTabSurface(target.entityId)
-    }
+    openTabShortcut(target)
   }
   // Capture phase: runs before the terminal and editor key handlers.
   window.addEventListener('keydown', onKeyDown, true)

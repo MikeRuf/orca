@@ -19349,7 +19349,8 @@
         "recents": "Recent tabs",
         "noRecents": "Tabs you visit appear here.",
         "untitled": "Untitled tab",
-        "closed": "That tab is closed."
+        "closed": "That tab is closed.",
+        "openFailed": "Could not open that tab."
       }
     },
     "i18n": {

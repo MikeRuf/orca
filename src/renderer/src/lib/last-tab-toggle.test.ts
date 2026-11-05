@@ -31,3 +31,21 @@ describe('createLastTabTracker', () => {
     expect(tracker.previous()).toBeNull()
   })
 })
+
+describe('the Alt+Q binding', () => {
+  it('matches the key event Windows sends for Alt+Q', async () => {
+    const { keybindingMatchesAction } = await import('../../../shared/keybindings')
+    const altQ = {
+      key: 'q',
+      code: 'KeyQ',
+      altKey: true,
+      ctrlKey: false,
+      metaKey: false,
+      shiftKey: false
+    }
+    expect(keybindingMatchesAction('tab.toggleLast', altQ as never, 'win32', {})).toBe(true)
+    expect(
+      keybindingMatchesAction('tab.toggleLast', { ...altQ, altKey: false } as never, 'win32', {})
+    ).toBe(false)
+  })
+})
