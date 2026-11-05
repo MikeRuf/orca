@@ -7,3 +7,5 @@ export type PendingDevUpdate = {
 }
 
 export const PENDING_DEV_UPDATE_CHANGED_CHANNEL = 'devUpdate:changed'
+/** Main asks the window to run the install flow (from the tray menu). */
+export const PENDING_DEV_UPDATE_INSTALL_REQUESTED_CHANNEL = 'devUpdate:installRequested'

@@ -19,6 +19,7 @@ export function createWebAppApi(): Partial<PreloadApi> {
       installPendingDevUpdate: () =>
         Promise.reject(new Error('Development updates install only in the Windows desktop app.')),
       onPendingDevUpdateChanged: () => () => undefined,
+      onPendingDevUpdateInstallRequested: () => () => undefined,
       getIdentity: () =>
         Promise.resolve({
           name: 'Orca',

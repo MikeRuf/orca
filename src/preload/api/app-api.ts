@@ -39,6 +39,8 @@ export type AppApi = {
   /** Saves state, starts the installer helper and quits; the helper reopens Orca. */
   installPendingDevUpdate: () => Promise<void>
   onPendingDevUpdateChanged: (callback: (pending: PendingDevUpdate | null) => void) => () => void
+  /** The tray's install item: the window runs the install flow that waits for busy chats. */
+  onPendingDevUpdateInstallRequested: (callback: () => void) => () => void
   restart: () => Promise<void>
   /** Main classifies teardown before Electron emits process-gone events. */
   reload: () => Promise<void>

@@ -2,6 +2,7 @@ import { ipcRenderer } from 'electron'
 import type { AppIdentity } from '../../shared/app-identity'
 import {
   PENDING_DEV_UPDATE_CHANGED_CHANNEL,
+  PENDING_DEV_UPDATE_INSTALL_REQUESTED_CHANNEL,
   type PendingDevUpdate
 } from '../../shared/pending-dev-update'
 import type { FloatingTerminalCwdRequest } from '../../shared/ui-chrome-types'
@@ -60,6 +61,11 @@ export const appApi = {
       callback(pending ?? null)
     ipcRenderer.on(PENDING_DEV_UPDATE_CHANGED_CHANNEL, listener)
     return () => ipcRenderer.removeListener(PENDING_DEV_UPDATE_CHANGED_CHANNEL, listener)
+  },
+  onPendingDevUpdateInstallRequested: (callback: () => void): (() => void) => {
+    const listener = (): void => callback()
+    ipcRenderer.on(PENDING_DEV_UPDATE_INSTALL_REQUESTED_CHANNEL, listener)
+    return () => ipcRenderer.removeListener(PENDING_DEV_UPDATE_INSTALL_REQUESTED_CHANNEL, listener)
   },
   restart: (): Promise<void> =>
     prepareAndInvokeAppRestart(

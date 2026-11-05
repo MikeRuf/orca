@@ -35,11 +35,8 @@ import { useSetupGuideProgress } from '../setup-guide/use-setup-guide-progress'
 import { lazyWithRetry } from '@/lib/lazy-with-retry'
 import type * as SidebarFeedbackDialogModule from './sidebar-feedback/SidebarFeedbackDialog'
 import { translate } from '@/i18n/i18n'
-import {
-  installPendingDevUpdate,
-  pendingDevUpdateLabel,
-  usePendingDevUpdate
-} from '../dev-update/use-pending-dev-update'
+import { pendingDevUpdateLabel, usePendingDevUpdate } from '../dev-update/use-pending-dev-update'
+import { startPendingDevUpdateInstall } from '../dev-update/dev-update-install-flow'
 import { getUpdateCheckClickOptions, getUpdateCheckHint } from '@/lib/update-check-click-options'
 import { openAppHttpLink } from '@/lib/app-http-link-open'
 
@@ -329,7 +326,7 @@ export function SidebarSettingsHelpMenu(): React.JSX.Element {
             </DropdownMenuItem>
             <DropdownMenuSeparator />
             {pendingDevUpdate ? (
-              <DropdownMenuItem onSelect={installPendingDevUpdate}>
+              <DropdownMenuItem onSelect={startPendingDevUpdateInstall}>
                 <Download className="size-3.5" />
                 {pendingDevUpdateLabel(pendingDevUpdate)}
               </DropdownMenuItem>
