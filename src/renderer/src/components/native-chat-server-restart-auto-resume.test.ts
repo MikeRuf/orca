@@ -31,13 +31,15 @@ describe('answerServerRestart', () => {
     expect(offer.continueNativeChatRestartOffer).not.toHaveBeenCalled()
   })
 
-  it("resumes this app's chats and asks only about the rest", async () => {
+  it('resumes every interrupted chat, wherever it was started', async () => {
     setAutoResume(true)
-    const offer = offerOf(['mine', 'phone'], ['mine'])
+    const offer = offerOf(['mine', 'cli'], ['mine'])
     const ask = vi.fn()
     answerServerRestart(offer, ask)
-    await vi.waitFor(() => expect(ask).toHaveBeenCalledOnce())
-    expect(offer.continueNativeChatRestartOffer).toHaveBeenCalledWith(['mine'], 'launch')
+    await vi.waitFor(() => expect(offer.continueNativeChatRestartOffer).toHaveBeenCalled())
+    expect(offer.continueNativeChatRestartOffer).toHaveBeenCalledWith(['mine', 'cli'], 'launch')
+    await Promise.resolve()
+    expect(ask).not.toHaveBeenCalled()
   })
 
   it('stays silent when every interrupted chat was started here', async () => {
