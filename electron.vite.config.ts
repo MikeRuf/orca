@@ -277,6 +277,7 @@ export const electronViteConfig: UserConfig = {
     cacheDir: resolve('.cache/vite/renderer'),
     define: {
       ORCA_BUILD_COMMIT: ORCA_BUILD_COMMIT_LITERAL,
+      ORCA_DEV_RELEASE_REF: ORCA_DEV_RELEASE_REF_LITERAL,
       ...DARK_BUILD_DEFINES
     },
     resolve: {

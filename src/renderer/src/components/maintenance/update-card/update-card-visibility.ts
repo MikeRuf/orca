@@ -1,5 +1,6 @@
 import { translate } from '@/i18n/i18n'
 import type { UpdateStatus } from '../../../../../shared/update-status-types'
+import { DEV_RELEASE_REF } from '@/lib/dev-release-build'
 
 export function isUpdateCardVisible({
   status,
@@ -7,7 +8,8 @@ export function isUpdateCardVisible({
   cachedVersion,
   updateUserInitiatedCycle,
   autoDismissed = false,
-  collapsed = false
+  collapsed = false,
+  devRelease = DEV_RELEASE_REF !== null
 }: {
   status: UpdateStatus
   dismissedVersion: string | null
@@ -15,8 +17,15 @@ export function isUpdateCardVisible({
   updateUserInitiatedCycle: boolean
   autoDismissed?: boolean
   collapsed?: boolean
+  /** A fork build: official releases are offered only when the user checks for updates. */
+  devRelease?: boolean
 }): boolean {
   const isUserInitiated = 'userInitiated' in status && Boolean(status.userInitiated)
+
+  // A dev release updates through its own build script; an unasked official offer would replace it.
+  if (devRelease && !isUserInitiated && !updateUserInitiatedCycle) {
+    return false
+  }
 
   if (status.state === 'checking' && !isUserInitiated) {
     return false

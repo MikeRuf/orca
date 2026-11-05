@@ -177,6 +177,22 @@ export function BuildInfoStatusSegment(): React.JSX.Element | null {
         {servers.map((row) => (
           <BuildDetails key={row.name} row={row} />
         ))}
+        {local.devRef ? (
+          <button
+            type="button"
+            className="w-full rounded-md border border-border px-2 py-1 text-left text-xs hover:bg-accent hover:text-accent-foreground"
+            onClick={() => {
+              setOpen(false)
+              // A check the user starts shows the official offer even on a dev release.
+              void window.api.updater.check({})
+            }}
+          >
+            {translate(
+              'auto.components.status.bar.BuildInfoStatusSegment.switchToOfficial',
+              'Switch to the official release…'
+            )}
+          </button>
+        ) : null}
         {environments.length === 0 ? (
           <div className="text-xs text-muted-foreground">
             {translate(
