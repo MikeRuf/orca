@@ -42,6 +42,7 @@ import { PlainSshTerminalPanels } from './components/plain-ssh-terminal/PlainSsh
 import { PluginShotReplayMount } from './components/plugins/view/PluginShotReplayMount'
 import { AddToChatPointMenuHost } from './components/native-chat/AddToChatMenu'
 import { installActiveWorktreeRemovalSuccessor } from './lib/active-worktree-removal-successor'
+import { LastTabToggleMount } from './components/LastTabToggleMount'
 
 function App(): React.JSX.Element {
   const layout = useAppChromeLayout()
@@ -123,6 +124,7 @@ function App(): React.JSX.Element {
           document.body
         )}
         <PlainSshTerminalPanels />
+        <LastTabToggleMount />
         <PluginShotReplayMount />
       </TooltipProvider>
       <SkillFreshnessNudge />
