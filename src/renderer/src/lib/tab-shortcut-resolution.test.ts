@@ -12,13 +12,15 @@ const store = {
 }
 
 vi.mock('@/store', () => ({ useAppStore: { getState: () => store } }))
-vi.mock('@/lib/workspace-tab-palette-activation', () => ({
+vi.mock('@/lib/workspace/search/tabs/workspace-tab-palette-activation', () => ({
   activateWorkspaceTabPaletteResult: palette
 }))
 vi.mock('@/lib/agent-session/structured-agent-session-tab-activation', () => ({
   activateStructuredAgentSessionTab: chat
 }))
-vi.mock('@/lib/worktree-activation', () => ({ activateAndRevealWorkspace: reveal }))
+vi.mock('@/lib/workspace/activation/worktree-activation', () => ({
+  activateAndRevealWorkspace: reveal
+}))
 vi.mock('@/lib/focus-terminal-tab-surface', () => ({ focusTerminalTabSurface: vi.fn() }))
 vi.mock('sonner', () => ({ toast: { info: vi.fn(), error: vi.fn() } }))
 

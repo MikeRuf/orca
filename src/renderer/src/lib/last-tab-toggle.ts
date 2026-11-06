@@ -1,7 +1,7 @@
 import { useAppStore } from '@/store'
 import { keybindingMatchesAction } from '../../../shared/keybindings'
 import { getShortcutPlatform } from '@/lib/shortcut-platform'
-import type { WorkspaceTabContentType } from '@/lib/workspace-tab-palette-search'
+import type { WorkspaceTabContentType } from '@/lib/workspace/search/tabs/workspace-tab-search-types'
 import { describeTab, openTabShortcut } from '@/lib/tab-shortcut-resolution'
 import { recordRecentTab } from '@/lib/tab-shortcuts-store'
 

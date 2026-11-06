@@ -1,10 +1,10 @@
 import { toast } from 'sonner'
 import { useAppStore } from '@/store'
 import { translate } from '@/i18n/i18n'
-import { activateWorkspaceTabPaletteResult } from '@/lib/workspace-tab-palette-activation'
-import type { WorkspaceTabContentType } from '@/lib/workspace-tab-palette-search'
+import { activateWorkspaceTabPaletteResult } from '@/lib/workspace/search/tabs/workspace-tab-palette-activation'
+import type { WorkspaceTabContentType } from '@/lib/workspace/search/tabs/workspace-tab-search-types'
 import { focusTerminalTabSurface } from '@/lib/focus-terminal-tab-surface'
-import { activateAndRevealWorkspace } from '@/lib/worktree-activation'
+import { activateAndRevealWorkspace } from '@/lib/workspace/activation/worktree-activation'
 import { activateStructuredAgentSessionTab } from '@/lib/agent-session/structured-agent-session-tab-activation'
 import type { TabShortcut } from './tab-shortcuts-store'
 
