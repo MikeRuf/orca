@@ -102,6 +102,7 @@ export function createStructuredSessionMocks() {
       unavailableHint?: string
       afterStop?: 'queue' | 'send'
       steerHead?: () => boolean
+      steerAll?: () => boolean
       onStop?: () => void
       notices?: readonly NativeChatComposerNotice[]
     }>(),
@@ -225,6 +226,7 @@ export function createStructuredSessionMocks() {
               pending: () => null,
               queuePending: null,
               steerHead: mocks.queuedSteerHead,
+              steerAll: mocks.queuedSteerHead,
               isWorking: mocks.isWorking
             },
             threadGoal: mocks.threadGoal,

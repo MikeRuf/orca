@@ -19,7 +19,8 @@ import { NATIVE_CHAT_ROOT_SELECTOR } from '@/components/native-chat/paste/native
 import { focusNativeChatPromptCard } from './use-native-chat-prompt-card-focus'
 import {
   headSteerableQueuedMessageCard,
-  queuedMessageCardNeedsAttention
+  queuedMessageCardNeedsAttention,
+  steerableQueuedMessageCards
 } from '../../../../shared/agent-session/view/structured-agent-session-queued-cards'
 import type { QueuedEditAttachTarget } from './NativeChatQueuedMessageComposer'
 
@@ -56,6 +57,7 @@ export function NativeChatQueuedMessageList({
   }
   const newest = cards.at(-1)
   const steerableHead = controller.queueCapable ? headSteerableQueuedMessageCard(cards) : null
+  const chordCards = controller.queueCapable ? steerableQueuedMessageCards(cards) : []
   const attentionCard = !expanded ? cards.find(queuedMessageCardNeedsAttention) : undefined
   const attentionCaption = attentionCard
     ? queuedMessageCardCaption(attentionCard, agentName, statedFailures)
@@ -141,6 +143,9 @@ export function NativeChatQueuedMessageList({
                     agentName={agentName}
                     statedFailures={statedFailures}
                     showsSteerShortcut={card === steerableHead}
+                    sendsOnChord={
+                      chordCards.includes(card) && card.messageId !== controller.editor?.messageId
+                    }
                     agentWorking={controller.isWorking}
                     steerHeld={steerHeld}
                     pending={controller.pending(card.messageId)}

@@ -16,18 +16,18 @@ type Props = {
   alternateSend: NativeChatFollowUpBehavior | undefined
   hasDraft: boolean
   chordSteersHead: boolean
-  steerHead: (() => boolean) | undefined
+  steerAll: (() => boolean) | undefined
   send: () => void
   pickerOpen: boolean
 }
 
 function Composer(props: Props): React.JSX.Element {
   const root = useRef<HTMLDivElement>(null)
-  const { alternateSend, hasDraft, chordSteersHead, steerHead, send, pickerOpen } = props
+  const { alternateSend, hasDraft, chordSteersHead, steerAll, send, pickerOpen } = props
   const { preview, runPreview } = useNativeChatSteerChordPreview(
     root,
     { alternateSend, hasDraft, chordSteersHead },
-    steerHead,
+    steerAll,
     send,
     pickerOpen
   )
@@ -57,7 +57,7 @@ describe('useNativeChatSteerChordPreview', () => {
       alternateSend: 'steer',
       hasDraft: false,
       chordSteersHead: true,
-      steerHead: vi.fn(() => true),
+      steerAll: vi.fn(() => true),
       send: vi.fn(),
       pickerOpen: false,
       ...overrides
@@ -96,11 +96,11 @@ describe('useNativeChatSteerChordPreview', () => {
     expect(preview()).toBe('')
   })
 
-  it('previews sending the head card after a Stop, when no turn runs to steer into', () => {
+  it('previews sending the queued cards after a Stop, when no turn runs to steer into', () => {
     const { props, button, hold, preview } = setup({ alternateSend: undefined })
     hold()
     expect(preview()).toBe('steer-queued')
     fireEvent.click(button)
-    expect(props.steerHead).toHaveBeenCalledTimes(1)
+    expect(props.steerAll).toHaveBeenCalledTimes(1)
   })
 })
