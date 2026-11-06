@@ -13,7 +13,9 @@ import {
   type AgentJournalDispatchRejection
 } from '../../../shared/agent-session/failures/agent-session-failure-words'
 import { TUI_AGENT_DISPLAY_NAMES } from '../../../shared/agent-launch/catalog/tui-agent-display-names'
+import { AGENT_SESSION_ATTACHMENT_MAX_BYTES } from '../../../shared/agent-session/agent-session-attachments'
 import { claudeRecord } from './journal/claude-structured-item-translation'
+import { oversizeImageShrinker, type ShrunkImage } from './oversize-image-shrinker'
 
 export class ClaudeDispatchContentError extends Error {
   readonly failure: SubmissionRejectionFact
@@ -53,6 +55,8 @@ export function claudeDispatchContentRejection(error: unknown): AgentJournalDisp
 
 const BYTES_PER_MB = 1024 * 1024
 const MAX_IMAGE_BYTES = 5 * BYTES_PER_MB
+// Why: 3.75 MB raw is 5 MB as base64, the tightest provider limit (Bedrock).
+const SHRUNK_IMAGE_TARGET_BYTES = (MAX_IMAGE_BYTES * 3) / 4
 const MAX_IMAGE_COUNT = 20
 const MAX_TOTAL_IMAGE_BYTES = 20 * BYTES_PER_MB
 const MAX_REPLAY_CONTENT_KEY_BYTES = 256
@@ -62,20 +66,26 @@ type ImageBudget = {
   localBytes: number
 }
 
-export async function readClaudeImage(path: string, openImpl: typeof open = open): Promise<Buffer> {
+function imageTooLarge(limit: number): Error {
+  return attachmentError(`Claude image must be no larger than ${limit} bytes`, {
+    reason: 'tooLarge',
+    limit
+  })
+}
+
+export async function readClaudeImage(
+  path: string,
+  openImpl: typeof open = open,
+  maxBytes: number = MAX_IMAGE_BYTES
+): Promise<Buffer> {
   const file = await openImpl(path, 'r')
   try {
-    const tooLarge = (): Error =>
-      attachmentError(`Claude image must be no larger than ${MAX_IMAGE_BYTES} bytes`, {
-        reason: 'tooLarge',
-        limit: MAX_IMAGE_BYTES
-      })
     const info = await file.stat()
     if (!info.isFile()) {
       throw attachmentError('Claude image must be a file', { reason: 'notAFile' })
     }
-    if (info.size > MAX_IMAGE_BYTES) {
-      throw tooLarge()
+    if (info.size > maxBytes) {
+      throw imageTooLarge(maxBytes)
     }
     const buffer = Buffer.allocUnsafe(info.size + 1)
     let bytesRead = 0
@@ -88,8 +98,8 @@ export async function readClaudeImage(path: string, openImpl: typeof open = open
     }
     // A file can grow after EOF; verify the open descriptor still matches the bytes read.
     const finalInfo = await file.stat()
-    if (bytesRead > MAX_IMAGE_BYTES) {
-      throw tooLarge()
+    if (bytesRead > maxBytes) {
+      throw imageTooLarge(maxBytes)
     }
     if (finalInfo.size !== bytesRead) {
       throw new Error('Claude image changed while it was read')
@@ -101,6 +111,25 @@ export async function readClaudeImage(path: string, openImpl: typeof open = open
   } finally {
     await file.close()
   }
+}
+
+export type SendableImage = { bytes: Buffer; shrunkMediaType?: ShrunkImage['mediaType'] }
+
+/** Images within the cap go out byte for byte; larger ones are shrunk when this host can. */
+export async function readSendableImage(path: string): Promise<SendableImage> {
+  const shrink = oversizeImageShrinker()
+  if (!shrink) {
+    return { bytes: await readClaudeImage(path) }
+  }
+  const bytes = await readClaudeImage(path, open, AGENT_SESSION_ATTACHMENT_MAX_BYTES)
+  if (bytes.byteLength <= MAX_IMAGE_BYTES) {
+    return { bytes }
+  }
+  const shrunk = shrink(bytes, SHRUNK_IMAGE_TARGET_BYTES)
+  if (!shrunk) {
+    throw imageTooLarge(MAX_IMAGE_BYTES)
+  }
+  return { bytes: shrunk.bytes, shrunkMediaType: shrunk.mediaType }
 }
 
 const IMAGE_MIME_BY_EXTENSION: Record<string, string> = {
@@ -128,7 +157,7 @@ async function imageContent(
   if (!block.path) {
     throw attachmentError('image reference has neither a path nor a URL', { reason: 'noSource' })
   }
-  const data = await readClaudeImage(block.path)
+  const { bytes: data, shrunkMediaType } = await readSendableImage(block.path)
   budget.localBytes += data.byteLength
   if (budget.localBytes > MAX_TOTAL_IMAGE_BYTES) {
     throw attachmentError(`Claude images must total no more than ${MAX_TOTAL_IMAGE_BYTES} bytes`, {
@@ -146,7 +175,7 @@ async function imageContent(
     type: 'image',
     source: {
       type: 'base64',
-      media_type: mediaType,
+      media_type: shrunkMediaType ?? mediaType,
       data: data.toString('base64')
     }
   }

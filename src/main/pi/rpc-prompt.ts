@@ -9,7 +9,8 @@ import {
 } from '../../shared/agent-session/failures/agent-session-failure'
 import {
   ClaudeDispatchContentError,
-  readClaudeImage
+  readSendableImage,
+  type SendableImage
 } from '../claude/structured/claude-structured-dispatch-content'
 
 const MAX_IMAGE_BYTES = 5 * 1024 * 1024
@@ -32,7 +33,7 @@ export type PiRpcPrompt = Record<string, unknown> & {
 }
 
 type ImageReads = {
-  readLocal(path: string): Promise<Buffer>
+  readLocal(path: string): Promise<SendableImage>
 }
 
 export class PiRpcPromptError extends Error {
@@ -94,9 +95,9 @@ async function readImage(
   if (!mimeType) {
     throw attachmentError('Pi image file type is unsupported', { reason: 'unsupportedType' })
   }
-  let bytes: Buffer
+  let image: SendableImage
   try {
-    bytes = await reads.readLocal(block.path)
+    image = await reads.readLocal(block.path)
   } catch (error) {
     if (error instanceof ClaudeDispatchContentError) {
       throw new PiRpcPromptError('Pi image could not be read', error.failure)
@@ -106,6 +107,7 @@ async function readImage(
       agentSessionFailureFact('attachmentUnreadable')
     )
   }
+  const { bytes, shrunkMediaType } = image
   if (bytes.byteLength === 0) {
     throw attachmentError('Pi image is empty', { reason: 'empty' })
   }
@@ -114,6 +116,9 @@ async function readImage(
       reason: 'tooLarge',
       limit: MAX_IMAGE_BYTES
     })
+  }
+  if (shrunkMediaType) {
+    return { bytes, mimeType: shrunkMediaType }
   }
   if (imageMime(bytes) !== mimeType) {
     throw attachmentError('Pi image file did not contain a supported image', {
@@ -126,7 +131,7 @@ async function readImage(
 export async function preparePiRpcPrompt(
   body: AgentJournalMessageItem,
   streamingBehavior?: PiRpcPrompt['streamingBehavior'],
-  reads: ImageReads = { readLocal: readClaudeImage }
+  reads: ImageReads = { readLocal: readSendableImage }
 ): Promise<PiRpcPrompt> {
   if (body.role !== 'user') {
     throw new Error('Pi prompt must be a user message')
