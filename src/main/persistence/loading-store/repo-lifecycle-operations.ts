@@ -176,6 +176,7 @@ export class RepoLifecycleOperations {
         | 'displayName'
         | 'badgeColor'
         | 'repoIcon'
+        | 'sidebarStyle'
         | 'upstream'
         | 'gitRemoteIdentity'
         | 'defaultJiraProject'

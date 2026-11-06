@@ -4,6 +4,7 @@ import { editorFormatterSchema } from '../../../shared/editor-formatter'
 import type { GitRemoteIdentity } from '../../../shared/git/remotes/git-remote-identity'
 import { normalizeRepoBadgeColor } from '../../../shared/repo-badge-color'
 import { sanitizeRepoIcon } from '../../../shared/repo-icon'
+import { sanitizeRepoSidebarStyle } from '../../../shared/repo-sidebar-style'
 import { normalizeGhAccountBinding } from '../../../shared/github/account-binding'
 import { normalizeJiraProjectReference } from '../../../shared/jira/jira-project-reference'
 import type { GhAccountBinding } from '../../../shared/github/account-binding'
@@ -72,6 +73,7 @@ export function sanitizeRepoUpdatesForPersistence<
       | 'badgeColor'
       | 'editorFormatter'
       | 'repoIcon'
+      | 'sidebarStyle'
       | 'upstream'
       | 'gitRemoteIdentity'
       | 'worktreeBasePath'
@@ -95,6 +97,14 @@ export function sanitizeRepoUpdatesForPersistence<
       delete sanitized.defaultJiraProject
     } else {
       sanitized.defaultJiraProject = reference
+    }
+  }
+  if ('sidebarStyle' in sanitized) {
+    const sidebarStyle = sanitizeRepoSidebarStyle(sanitized.sidebarStyle)
+    if (sidebarStyle === undefined) {
+      delete sanitized.sidebarStyle
+    } else {
+      sanitized.sidebarStyle = sidebarStyle
     }
   }
   if ('badgeColor' in sanitized) {
