@@ -3,7 +3,7 @@ import type { AgentSessionHistoryResult } from '../../../../shared/agent-session
 import { structuredAgentSessionMessageSendMutation } from '../../../../shared/agent-session/requests/structured-agent-session-send-mutation'
 import { createStructuredAgentSessionOperationId } from '../../../../shared/agent-session/lifecycle/structured-agent-session-mutation'
 import { callRuntimeRpc } from '@/runtime/runtime-rpc-client'
-import { createBrowserUuid } from '@/lib/browser-uuid'
+import { createNonSecureContextUuid as createBrowserUuid } from '../../../../shared/non-secure-context-uuid'
 import { translate } from '@/i18n/i18n'
 import { installPendingDevUpdate } from './use-pending-dev-update'
 
