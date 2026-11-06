@@ -10,6 +10,7 @@ const preparation = (id: string) => ({
 })
 
 function router(projectLaunch: ReturnType<typeof preparation> | null) {
+  // oxlint-disable-next-line typescript/consistent-type-assertions -- SAFETY: a test double with only the methods under test
   return {
     prepareAccountLaunch: vi.fn(async () => projectLaunch),
     prepareLaunch: vi.fn(async () => preparation('selected'))

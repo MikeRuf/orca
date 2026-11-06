@@ -100,80 +100,87 @@ function AccountRow({
   const working = account.chats.filter((chat) => chat.working).length
   const { limits } = account
   return (
-    <Collapsible open={open} onOpenChange={setOpen} className="px-3 py-2.5">
-      <div className="flex items-center gap-1">
-        <CollapsibleTrigger
-          aria-label={translate(
-            'components.claude-accounts.toggleDetails',
-            'Toggle account details'
-          )}
-          className="flex size-5 shrink-0 items-center justify-center rounded-sm text-muted-foreground outline-none hover:bg-accent focus-visible:ring-2 focus-visible:ring-ring"
-        >
-          <ChevronRight className={cn('size-3.5', open && 'rotate-90')} />
-        </CollapsibleTrigger>
-        <button
-          type="button"
-          disabled={account.isDefault || account.signedOut}
-          aria-pressed={account.isDefault}
-          aria-label={translate(
-            'components.claude-accounts.setDefault',
-            'Use {{name}} for projects with no account',
-            { name: account.name }
-          )}
-          className="flex size-5 shrink-0 items-center justify-center rounded-sm text-foreground outline-none enabled:hover:bg-accent focus-visible:ring-2 focus-visible:ring-ring"
-          onClick={() => onSetDefault(account.id)}
-        >
-          {account.isDefault ? <Check className="size-3.5" /> : null}
-        </button>
-        <span className="min-w-0 truncate text-sm font-medium text-foreground">{account.name}</span>
-        {account.email ? (
-          <span className="min-w-0 flex-1 truncate text-xs text-muted-foreground">
-            {account.email}
-          </span>
-        ) : (
-          <span className="flex-1" />
-        )}
-        {account.signedOut ? (
-          <Button
+    <div className="px-3 py-2.5">
+      <Collapsible open={open} onOpenChange={setOpen}>
+        <div className="flex items-center gap-1">
+          <CollapsibleTrigger asChild>
+            <Button
+              variant="ghost"
+              size="icon-xs"
+              aria-label={translate(
+                'components.claude-accounts.toggleDetails',
+                'Toggle account details'
+              )}
+            >
+              <ChevronRight className={cn('size-3.5', open && 'rotate-90')} />
+            </Button>
+          </CollapsibleTrigger>
+          <button
             type="button"
-            variant="outline"
-            size="xs"
-            className="shrink-0"
-            onClick={() => onSignIn(account.id)}
+            disabled={account.isDefault || account.signedOut}
+            aria-pressed={account.isDefault}
+            aria-label={translate(
+              'components.claude-accounts.setDefault',
+              'Use {{name}} for projects with no account',
+              { name: account.name }
+            )}
+            className="flex size-5 shrink-0 items-center justify-center rounded-sm text-foreground outline-none enabled:hover:bg-accent focus-visible:ring-2 focus-visible:ring-ring"
+            onClick={() => onSetDefault(account.id)}
           >
-            {translate('components.claude-accounts.signIn', 'Sign in')}
-          </Button>
-        ) : account.chats.length > 0 ? (
-          <span className="flex shrink-0 items-center gap-1 text-xs text-muted-foreground">
-            {working > 0 ? <span className="size-1.5 rounded-full bg-status-success" /> : null}
-            {account.chats.length === 1
-              ? translate('components.claude-accounts.oneChat', '1 chat')
-              : translate('components.claude-accounts.chatCount', '{{count}} chats', {
-                  count: account.chats.length
-                })}
+            {account.isDefault ? <Check className="size-3.5" /> : null}
+          </button>
+          <span className="min-w-0 truncate text-sm font-medium text-foreground">
+            {account.name}
           </span>
-        ) : null}
-      </div>
-      {!account.signedOut && (limits?.session || limits?.weekly) ? (
-        <div className="mt-2 grid grid-cols-2 gap-3 pl-6">
-          {limits.session ? (
-            <ClaudeAccountUsageMeter
-              label={translate('components.claude-accounts.fiveHour', '5-hour')}
-              window={limits.session}
-            />
-          ) : null}
-          {limits.weekly ? (
-            <ClaudeAccountUsageMeter
-              label={translate('components.claude-accounts.week', 'Week')}
-              window={limits.weekly}
-            />
+          {account.email ? (
+            <span className="min-w-0 flex-1 truncate text-xs text-muted-foreground">
+              {account.email}
+            </span>
+          ) : (
+            <span className="flex-1" />
+          )}
+          {account.signedOut ? (
+            <Button
+              type="button"
+              variant="outline"
+              size="xs"
+              className="shrink-0"
+              onClick={() => onSignIn(account.id)}
+            >
+              {translate('components.claude-accounts.signIn', 'Sign in')}
+            </Button>
+          ) : account.chats.length > 0 ? (
+            <span className="flex shrink-0 items-center gap-1 text-xs text-muted-foreground">
+              {working > 0 ? <span className="size-1.5 rounded-full bg-status-success" /> : null}
+              {account.chats.length === 1
+                ? translate('components.claude-accounts.oneChat', '1 chat')
+                : translate('components.claude-accounts.chatCount', '{{count}} chats', {
+                    count: account.chats.length
+                  })}
+            </span>
           ) : null}
         </div>
-      ) : null}
-      <CollapsibleContent>
-        <AccountRowDetails account={account} onOpenChat={onOpenChat} />
-      </CollapsibleContent>
-    </Collapsible>
+        {!account.signedOut && (limits?.session || limits?.weekly) ? (
+          <div className="mt-2 grid grid-cols-2 gap-3 pl-6">
+            {limits.session ? (
+              <ClaudeAccountUsageMeter
+                label={translate('components.claude-accounts.fiveHour', '5-hour')}
+                window={limits.session}
+              />
+            ) : null}
+            {limits.weekly ? (
+              <ClaudeAccountUsageMeter
+                label={translate('components.claude-accounts.week', 'Week')}
+                window={limits.weekly}
+              />
+            ) : null}
+          </div>
+        ) : null}
+        <CollapsibleContent>
+          <AccountRowDetails account={account} onOpenChat={onOpenChat} />
+        </CollapsibleContent>
+      </Collapsible>
+    </div>
   )
 }
 
@@ -226,7 +233,7 @@ export function ClaudeAccountsPanel({
           {isRefreshing ? <Loader2 className="animate-spin" /> : <RefreshCw />}
         </Button>
       </div>
-      <div className="max-h-[60vh] divide-y divide-border overflow-y-auto">
+      <div className="max-h-[60vh] divide-y divide-border overflow-y-auto scrollbar-sleek">
         {accounts.map((account) => (
           <AccountRow
             key={account.id}

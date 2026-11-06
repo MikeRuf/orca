@@ -55,7 +55,7 @@ function accountName(
   const repeated = accounts.some(
     (other) => other.id !== account.id && other.email?.split('@')[0] === short
   )
-  return repeated ? (account.email as string) : short
+  return repeated ? (account.email ?? short) : short
 }
 
 function chatRow(

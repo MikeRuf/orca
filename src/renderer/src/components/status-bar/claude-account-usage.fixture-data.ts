@@ -3,6 +3,14 @@ import type { ClaudeAccountUsage } from './claude-account-usage-view'
 
 const HOUR_MS = 3_600_000
 
+const fixtureChat = (
+  id: string,
+  title: string,
+  working: boolean,
+  sessionPercent: number,
+  weeklyPercent: number
+): ClaudeAccountUsage['chats'][number] => ({ id, title, working, sessionPercent, weeklyPercent })
+
 export function fixtureLimits(session: number, weekly: number): ProviderRateLimits {
   return {
     provider: 'claude',
@@ -34,15 +42,9 @@ export const workAccount: ClaudeAccountUsage = {
   isFetching: false,
   projects: ['orca', 'h2yo', 'common'],
   chats: [
-    {
-      id: 'c1',
-      title: 'Per-project accounts',
-      working: true,
-      sessionPercent: 14,
-      weeklyPercent: 4
-    },
-    { id: 'c2', title: 'Director handoff', working: true, sessionPercent: 11, weeklyPercent: 3 },
-    { id: 'c3', title: 'Fix image limit', working: false, sessionPercent: 6, weeklyPercent: 2 }
+    fixtureChat('c1', 'Per-project accounts', true, 14, 4),
+    fixtureChat('c2', 'Director handoff', true, 11, 3),
+    fixtureChat('c3', 'Fix image limit', false, 6, 2)
   ],
   otherUse: { sessionPercent: 11, weeklyPercent: 9 }
 }
@@ -56,9 +58,7 @@ export const personalAccount: ClaudeAccountUsage = {
   limits: fixtureLimits(86, 97),
   isFetching: false,
   projects: ['travel'],
-  chats: [
-    { id: 'c4', title: 'Itinerary import', working: false, sessionPercent: 60, weeklyPercent: 21 }
-  ],
+  chats: [fixtureChat('c4', 'Itinerary import', false, 60, 21)],
   otherUse: { sessionPercent: 26, weeklyPercent: 76 }
 }
 

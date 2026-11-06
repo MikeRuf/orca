@@ -4,6 +4,7 @@ import type { ProviderRateLimits } from '../../../../shared/rate-limit-types'
 import { buildClaudeAccountUsage, resolveClaudeChatAccountId } from './claude-account-usage-model'
 
 const limits = (session: number, weekly: number) =>
+  // oxlint-disable-next-line typescript/consistent-type-assertions -- SAFETY: the model reads only the two windows
   ({
     session: { usedPercent: session, windowMinutes: 300, resetsAt: null, resetDescription: null },
     weekly: { usedPercent: weekly, windowMinutes: 10080, resetsAt: null, resetDescription: null }

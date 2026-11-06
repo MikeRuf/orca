@@ -202,7 +202,9 @@ export function StatusBarSurface({
                   sideOffset={8}
                   // Reserve footer height so the popover and drill-in submenus stay above the status bar.
                   collisionPadding={{ top: 8, bottom: 32, left: 8, right: 8 }}
-                  className="w-fit p-0"
+                  className="w-[360px] p-0"
+                  // The roster sets its own width: 480 px with the accounts panel, 360 px without.
+                  style={{ width: 'fit-content' }}
                   onPointerDownOutside={usageMenuFocusHandoff.onPointerDownOutside}
                   onCloseAutoFocus={usageMenuFocusHandoff.onCloseAutoFocus}
                 >
