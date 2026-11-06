@@ -5,6 +5,7 @@ import {
   PENDING_DEV_UPDATE_INSTALL_REQUESTED_CHANNEL,
   type PendingDevUpdate
 } from '../../shared/pending-dev-update'
+import type { MacosUpgradeSupport } from '../../shared/macos-upgrade-support'
 import type { FloatingTerminalCwdRequest } from '../../shared/ui-chrome-types'
 import type { MacCapturedDigitRowChord } from '../../shared/macos-symbolic-hotkeys'
 import type { MarkdownDocument } from '../../shared/filesystem-entry-types'
@@ -31,6 +32,8 @@ export const appApi = {
   getIdentity: (): Promise<AppIdentity> => ipcRenderer.invoke('app:getIdentity'),
   getWindowsAdministratorStatus: (): Promise<boolean | null> =>
     ipcRenderer.invoke('app:getWindowsAdministratorStatus'),
+  getMacosUpgradeSupport: (minimumMacosVersion: string): Promise<MacosUpgradeSupport> =>
+    ipcRenderer.invoke('app:getMacosUpgradeSupport', minimumMacosVersion),
   restartAsAdministrator: (): Promise<void> =>
     prepareAndInvokeAppRestart(
       window,
