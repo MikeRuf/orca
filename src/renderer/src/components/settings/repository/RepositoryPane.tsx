@@ -26,6 +26,7 @@ import { RepositoryHostSetupsSection } from './execution/RepositoryHostSetupsSec
 import { RepoSettingsDraftInput } from './RepositorySettingsDraftInput'
 import { RepositoryForkSyncSection } from './execution/RepositoryForkSyncSection'
 import { RepositoryGitHubAccountSection } from './RepositoryGitHubAccountSection'
+import { RepositoryClaudeAccountSection } from './RepositoryClaudeAccountSection'
 import { translate } from '@/i18n/i18n'
 import { RepositoryWindowsRuntimeSection } from './execution/RepositoryWindowsRuntimeSection'
 import { matchesRepositoryIdentitySearch } from './identity/repository-identity-search'
@@ -347,6 +348,12 @@ export function RepositoryPane({
             />
 
             <RepositoryGitHubAccountSection
+              repo={repo}
+              updateRepo={updateSelectedRepo}
+              forceVisible={forceFullPaneForRepoMatch}
+            />
+
+            <RepositoryClaudeAccountSection
               repo={repo}
               updateRepo={updateSelectedRepo}
               forceVisible={forceFullPaneForRepoMatch}

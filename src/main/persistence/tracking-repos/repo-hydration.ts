@@ -8,6 +8,7 @@ import { normalizeJiraProjectReference } from '../../../shared/jira/jira-project
 import { normalizeRepoSourceControlAiOverrides } from '../../../shared/source-control/ai/settings/source-control-ai-repo-settings'
 import { normalizeOrcadRetainedMarker } from '../../../shared/orcad-retained-marker'
 import {
+  sanitizeClaudeAccountId,
   sanitizeForkSyncMode,
   sanitizeGitRemoteIdentity,
   sanitizeRepoProjectHostSetupMethod,
@@ -34,6 +35,7 @@ export function hydrateRepo(repo: Repo, gitUsernameCache: ReadonlyMap<string, st
     sourceControlAi: rawSourceControlAi,
     projectHostSetupMethod: rawProjectHostSetupMethod,
     forkSyncMode: rawForkSyncMode,
+    claudeAccountId: rawClaudeAccountId,
     ghAccount: rawGhAccount,
     defaultJiraProject: rawDefaultJiraProject,
     customWorktreeVisibilitySources: rawCustomWorktreeVisibilitySources,
@@ -47,6 +49,7 @@ export function hydrateRepo(repo: Repo, gitUsernameCache: ReadonlyMap<string, st
   const sourceControlAi = normalizeRepoSourceControlAiOverrides(rawSourceControlAi)
   const projectHostSetupMethod = sanitizeRepoProjectHostSetupMethod(rawProjectHostSetupMethod)
   const forkSyncMode = sanitizeForkSyncMode(rawForkSyncMode)
+  const claudeAccountId = sanitizeClaudeAccountId(rawClaudeAccountId)
   const ghAccount = normalizeGhAccountBinding(rawGhAccount)
   const defaultJiraProject = normalizeJiraProjectReference(rawDefaultJiraProject)
   const customWorktreeVisibilitySources = normalizeCustomWorktreeVisibilitySources(
@@ -72,6 +75,7 @@ export function hydrateRepo(repo: Repo, gitUsernameCache: ReadonlyMap<string, st
     ...(sourceControlAi !== undefined ? { sourceControlAi } : {}),
     ...(projectHostSetupMethod !== undefined ? { projectHostSetupMethod } : {}),
     ...(forkSyncMode !== undefined ? { forkSyncMode } : {}),
+    ...(claudeAccountId ? { claudeAccountId } : {}),
     ...(ghAccount ? { ghAccount } : {}),
     ...(defaultJiraProject !== undefined ? { defaultJiraProject } : {}),
     ...(customWorktreeVisibilitySources !== undefined ? { customWorktreeVisibilitySources } : {}),
