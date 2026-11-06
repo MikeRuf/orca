@@ -2,7 +2,11 @@ import type * as React from 'react'
 import { afterEach, beforeAll, describe, expect, it, vi } from 'vitest'
 import { flushAsyncTicks } from './pty-connection-test-async'
 import { createManager, createPane } from './pty-connection-test-pane-fixtures'
-import { buildPaneConnectionDeps } from './pty-connection-test-deps'
+import {
+  buildPaneConnectionDeps,
+  type PtyConnectionAgentTitleMocks,
+  bindPaneAgentTitleMocks
+} from './pty-connection-test-deps'
 import {
   installTerminalTestGlobals,
   restoreTerminalTestGlobals
@@ -49,15 +53,17 @@ vi.mock('@/lib/agent-status', async (importOriginal) => {
 })
 vi.mock('./cache-timer-seeding', () => ({ shouldSeedCacheTimerOnInitialTitle: () => false }))
 vi.mock('sonner', () => ({ toast: { info: vi.fn(), message: vi.fn(), error: vi.fn() } }))
-vi.mock('@/lib/codex-stale-pane-sweep', () => ({ notifyCodexPaneBoundForStaleSweep: vi.fn() }))
+vi.mock('@/lib/agent-session/accounts/codex/codex-stale-pane-sweep', () => ({
+  notifyCodexPaneBoundForStaleSweep: vi.fn()
+}))
 vi.mock('react', async (importOriginal) => {
   const actual = await importOriginal<typeof React>()
   return { ...actual, useCallback: <T>(fn: T): T => fn }
 })
 // Row 8: what precedes the launch (setup policy and hooks trust) is decided, not asked.
-vi.mock('@/lib/launch-work-item-direct-preflight', async (importOriginal) => ({
+vi.mock('@/lib/workspace/creation/setup/workspace-setup-preparation', async (importOriginal) => ({
   ...(await importOriginal<Record<string, unknown>>()),
-  resolveDirectSetupDecision: async () => ({ kind: 'decided', decision: 'inherit' })
+  inspectRequiredWorkspaceSetup: async () => ({ kind: 'decided', decision: 'inherit' })
 }))
 vi.mock('@/lib/ensure-hooks-confirmed', () => ({ ensureHooksConfirmed: async () => 'run' }))
 vi.mock('@/lib/windows-terminal-capabilities', async (importOriginal) => ({
@@ -72,10 +78,10 @@ vi.mock('@/lib/windows-terminal-capabilities', async (importOriginal) => ({
 }))
 
 const load = perClientLoader(async () => ({
-  launch: await import('@/lib/launch-agent-in-new-tab'),
+  launch: await import('@/lib/agent-session/launch/new-tab/launch-agent-in-new-tab'),
   quick: await import('@/lib/run-quick-command-in-new-tab'),
   vault: await import('@/lib/launch-ai-vault-session'),
-  resume: await import('@/lib/ai-vault-resume-command'),
+  resume: await import('@/lib/agent-session/resume/history/ai-vault-resume-command'),
   pane: await import('./pty-connection'),
   paneOptions: await import('./terminal-pane-manager-options'),
   defaults: await import('@/lib/pane-manager/pane-terminal-options'),
@@ -88,7 +94,9 @@ async function openTab(c: WindowLaunchCase) {
   const modules = await load(c.client)
   await installTerminalTestGlobals()
   Object.assign(window.api.platform, { get: () => ({ platform: c.client, osRelease: '10' }) })
-  const store = modules.createStore()
+  const store = modules.createStore(
+    (await vi.importMock<PtyConnectionAgentTitleMocks>('@/lib/agent-status')).isClaudeAgent
+  )
   holder.store = store
   store.setState(
     launchWorkspaceState(c.workspace, { ...getDefaultSettings('/home/alice'), ...c.settings })
@@ -187,6 +195,10 @@ async function paneSpawnRequest(c: WindowLaunchCase): Promise<unknown> {
     ...managerOptions.terminalOptions?.(pane.id)
   }
   pane.terminal.options.vtExtensions = { kittyKeyboard: vtExtensions?.kittyKeyboard === true }
+  const agentTitleMocks = await vi.importMock<PtyConnectionAgentTitleMocks>('@/lib/agent-status')
+
+  bindPaneAgentTitleMocks(paneArgs[2], agentTitleMocks)
+
   modules.pane.connectPanePty(...paneArgs)
   await flushAsyncTicks(20)
   const [request] = spawn.mock.calls[0] ?? []

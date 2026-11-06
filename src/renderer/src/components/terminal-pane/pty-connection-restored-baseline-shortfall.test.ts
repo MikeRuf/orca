@@ -8,7 +8,11 @@ import {
   type ConnectCallbacks,
   type MockTransport
 } from './pty-connection-test-pane-fixtures'
-import { buildPaneConnectionDeps } from './pty-connection-test-deps'
+import {
+  buildPaneConnectionDeps,
+  type PtyConnectionAgentTitleMocks,
+  bindPaneAgentTitleMocks
+} from './pty-connection-test-deps'
 import { createInitialStoreState } from './pty-connection-test-store-fixtures'
 import type { StoreState } from './pty-connection-test-store-state'
 import {
@@ -71,7 +75,7 @@ vi.mock('./cache-timer-seeding', () => ({
 
 vi.mock('sonner', () => ({ toast: { info: toastInfo } }))
 
-vi.mock('@/lib/codex-stale-pane-sweep', () => ({
+vi.mock('@/lib/agent-session/accounts/codex/codex-stale-pane-sweep', () => ({
   notifyCodexPaneBoundForStaleSweep
 }))
 
@@ -83,7 +87,7 @@ vi.mock('react', async (importOriginal) => {
   }
 })
 
-vi.mock('./pty-transport', () => ({
+vi.mock('./pty-transport/ipc/pty-transport', () => ({
   createIpcPtyTransport: vi.fn((options: Record<string, unknown>) => {
     createdTransportOptions.push(options)
     const nextTransport = transportFactoryQueue.shift()
@@ -94,7 +98,7 @@ vi.mock('./pty-transport', () => ({
   })
 }))
 
-vi.mock('./remote-runtime-pty-transport', () => ({
+vi.mock('./pty-transport/remote-runtime/remote-runtime-pty-transport', () => ({
   createRemoteRuntimePtyTransport: vi.fn(
     (_environmentId: string, options: Record<string, unknown>) => {
       createdTransportOptions.push(options)
@@ -107,7 +111,7 @@ vi.mock('./remote-runtime-pty-transport', () => ({
   )
 }))
 
-vi.mock('./pty-dispatcher', async (importOriginal) => {
+vi.mock('./pty-transport/delivery/pty-dispatcher', async (importOriginal) => {
   const actual = await importOriginal<Record<string, unknown>>()
   return { ...actual, getEagerPtyBufferHandle: vi.fn(() => undefined) }
 })
@@ -154,6 +158,7 @@ describe('restored snapshot baseline shortfall (STA-5179)', () => {
       terminalMainSideEffectAuthority: true
     } as StoreState['settings']
     const { connectPanePty } = await import('./pty-connection')
+    const agentTitleMocks = await vi.importMock<PtyConnectionAgentTitleMocks>('@/lib/agent-status')
     const transport = createMockTransport('pty-id')
     const capturedDataCallback: {
       current: ((data: string, meta?: { seq?: number; rawLength?: number }) => void) | null
@@ -167,9 +172,12 @@ describe('restored snapshot baseline shortfall (STA-5179)', () => {
     connectPanePty(
       pane as never,
       createManager(1) as never,
-      createDeps({
-        isVisibleRef: { current: true }
-      }) as never
+      bindPaneAgentTitleMocks(
+        createDeps({
+          isVisibleRef: { current: true }
+        }) as never,
+        agentTitleMocks
+      )
     )
     await flushAsyncTicks(6)
     const transportOptions = createdTransportOptions.at(-1) as {
@@ -185,7 +193,8 @@ describe('restored snapshot baseline shortfall (STA-5179)', () => {
       rows: 30,
       ...snapshot
     })
-    const { _dispatchPtyModelRestoreNeededForTest } = await import('./pty-model-restore-channel')
+    const { _dispatchPtyModelRestoreNeededForTest } =
+      await import('./pty-transport/delivery/pty-model-restore-channel')
     _dispatchPtyModelRestoreNeededForTest({
       id: 'pty-id',
       reason: 'pending-cap',

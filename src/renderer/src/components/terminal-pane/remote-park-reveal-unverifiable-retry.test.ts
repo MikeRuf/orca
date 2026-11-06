@@ -1,6 +1,7 @@
 import type * as React from 'react'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
-import { TERMINAL_PAIRED_PARKING_RUNTIME_CAPABILITY } from '../../../../shared/protocol-version'
+import '../../../../shared/protocol-version'
+import { TERMINAL_PAIRED_PARKING_RUNTIME_CAPABILITY } from '../../../../shared/terminal/runtime-policy/terminal-runtime-capabilities'
 import { createDeferred, flushAsyncTicks } from './pty-connection-test-async'
 import {
   LEAF_1,
@@ -10,7 +11,11 @@ import {
   createManager,
   type MockTransport
 } from './pty-connection-test-pane-fixtures'
-import { buildPaneConnectionDeps } from './pty-connection-test-deps'
+import {
+  buildPaneConnectionDeps,
+  type PtyConnectionAgentTitleMocks,
+  bindPaneAgentTitleMocks
+} from './pty-connection-test-deps'
 import { connectMockPanePty } from './pty-connection-test-connect-mock-pane'
 import { createInitialStoreState } from './pty-connection-test-store-fixtures'
 import type { StoreState } from './pty-connection-test-store-state'
@@ -85,7 +90,7 @@ vi.mock('sonner', () => ({
   }
 }))
 
-vi.mock('@/lib/codex-stale-pane-sweep', () => ({
+vi.mock('@/lib/agent-session/accounts/codex/codex-stale-pane-sweep', () => ({
   notifyCodexPaneBoundForStaleSweep
 }))
 
@@ -105,13 +110,15 @@ function nextQueuedTransport(): MockTransport {
   return nextTransport
 }
 
-vi.mock('./pty-transport', () => ({ createIpcPtyTransport: vi.fn(() => nextQueuedTransport()) }))
+vi.mock('./pty-transport/ipc/pty-transport', () => ({
+  createIpcPtyTransport: vi.fn(() => nextQueuedTransport())
+}))
 
-vi.mock('./remote-runtime-pty-transport', () => ({
+vi.mock('./pty-transport/remote-runtime/remote-runtime-pty-transport', () => ({
   createRemoteRuntimePtyTransport: vi.fn(() => nextQueuedTransport())
 }))
 
-vi.mock('./pty-dispatcher', async (importOriginal) => {
+vi.mock('./pty-transport/delivery/pty-dispatcher', async (importOriginal) => {
   const actual = await importOriginal<Record<string, unknown>>()
   return {
     ...actual,
@@ -161,15 +168,20 @@ async function revealParkedRemotePane(
   }
   const pane = createPane(1)
   const { writes } = captureCallbackTerminalWrites(pane)
+  const agentTitleMocks = await vi.importMock<PtyConnectionAgentTitleMocks>('@/lib/agent-status')
+
   // Why the active pane: an inactive split defers its restore to the frame scheduler.
   const binding = await connectMockPanePty(
     pane,
     createManager(1, 1),
-    createDeps({
-      mountFollowsTerminalPark: true,
-      restoredLeafId: LEAF_1,
-      restoredPtyIdByLeafId: { [LEAF_1]: REMOTE_PTY_ID }
-    })
+    bindPaneAgentTitleMocks(
+      createDeps({
+        mountFollowsTerminalPark: true,
+        restoredLeafId: LEAF_1,
+        restoredPtyIdByLeafId: { [LEAF_1]: REMOTE_PTY_ID }
+      }),
+      agentTitleMocks
+    )
   )
   await flushAsyncTicks(30)
   expect(transport.connect).toHaveBeenCalledWith(

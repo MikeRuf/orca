@@ -9,7 +9,11 @@ import {
   type ConnectCallbacks,
   type MockTransport
 } from './pty-connection-test-pane-fixtures'
-import { buildPaneConnectionDeps } from './pty-connection-test-deps'
+import {
+  buildPaneConnectionDeps,
+  type PtyConnectionAgentTitleMocks,
+  bindPaneAgentTitleMocks
+} from './pty-connection-test-deps'
 import { createInitialStoreState } from './pty-connection-test-store-fixtures'
 import type { StoreState } from './pty-connection-test-store-state'
 import {
@@ -59,7 +63,7 @@ vi.mock('react', async (importOriginal) => {
   }
 })
 
-vi.mock('./pty-transport', () => ({
+vi.mock('./pty-transport/ipc/pty-transport', () => ({
   createIpcPtyTransport: vi.fn(() => {
     const nextTransport = transportFactoryQueue.shift()
     if (!nextTransport) {
@@ -69,7 +73,7 @@ vi.mock('./pty-transport', () => ({
   })
 }))
 
-vi.mock('./remote-runtime-pty-transport', () => ({
+vi.mock('./pty-transport/remote-runtime/remote-runtime-pty-transport', () => ({
   createRemoteRuntimePtyTransport: vi.fn(() => {
     const nextTransport = transportFactoryQueue.shift()
     if (!nextTransport) {
@@ -79,7 +83,7 @@ vi.mock('./remote-runtime-pty-transport', () => ({
   })
 }))
 
-vi.mock('./pty-dispatcher', async (importOriginal) => {
+vi.mock('./pty-transport/delivery/pty-dispatcher', async (importOriginal) => {
   const actual = await importOriginal<Record<string, unknown>>()
   return {
     ...actual,
@@ -103,6 +107,7 @@ async function connectVisibleRemotePane(): Promise<{
   pauseCalls: () => boolean[]
 }> {
   const { connectPanePty } = await import('./pty-connection')
+  const agentTitleMocks = await vi.importMock<PtyConnectionAgentTitleMocks>('@/lib/agent-status')
   const transport = createMockTransport(REMOTE_PTY_ID)
   transport.setOutputPaused = vi.fn(() => true)
   transport.serializeBuffer = vi.fn()
@@ -116,8 +121,8 @@ async function connectVisibleRemotePane(): Promise<{
   const binding = connectPanePty(
     createPane(1) as never,
     createManager(1) as never,
-    deps as never
-  ) as Binding
+    bindPaneAgentTitleMocks(deps as never, agentTitleMocks)
+  )
   await flushAsyncTicks(6)
   expect(captured.callbacks).not.toBeNull()
   return {

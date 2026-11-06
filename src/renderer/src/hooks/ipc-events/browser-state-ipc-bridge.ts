@@ -1,7 +1,7 @@
 import { rememberLiveBrowserUrl } from '@/components/browser-pane/describe-page/live-browser-url-registry'
-import { runtimeEnvironmentIdOrLocalUnlessTwin } from '@/lib/worktree-runtime-owner'
-import { findVisibleBrowserLinkTarget } from '@/lib/visible-browser-link-target'
-import { openUrlInTabBesideBrowserPage } from '@/lib/browser-page-tab-opening'
+import { runtimeEnvironmentIdOrLocalUnlessTwin } from '@/lib/workspace/ownership/worktree-runtime-owner'
+import { findVisibleBrowserLinkTarget } from '@/lib/browser/navigation/visible-browser-link-target'
+import { openUrlInTabBesideBrowserPage } from '@/lib/browser/palette/browser-page-tab-opening'
 import { redactKagiSessionToken } from '../../../../shared/browser-url'
 import { LOCAL_EXECUTION_HOST_ID } from '../../../../shared/execution-host'
 import { useAppStore } from '../../store'
@@ -12,6 +12,7 @@ import {
 } from '@/components/browser-pane/host-guest/browser-automation-visibility'
 import { acquireBrowserAutomationBootstrapLease } from './browser-automation-bootstrap-lease'
 import { markBrowserPageOpenedByPage } from '@/components/browser-pane/host-guest/browser-page-window-close'
+import { setBrowserPageAgentViewportSize } from '@/components/browser-pane/host-guest/browser-page-viewport'
 import {
   beginAgentInputFocusGuard,
   clearAgentInputFocusGuards,
@@ -134,6 +135,13 @@ export function registerBrowserStateIpcBridge(
       unsubscribeCapturePaintHold()
       capturePaintHolds.releaseAll()
     })
+  }
+  const unsubscribeAgentViewport = window.api.browser.onAgentViewportApplied?.(
+    ({ browserPageId, width, height }) =>
+      setBrowserPageAgentViewportSize(browserPageId, { width, height })
+  )
+  if (unsubscribeAgentViewport) {
+    unsubs.push(unsubscribeAgentViewport)
   }
   const unsubscribeAgentInputFocusGuard = window.api.browser.onAgentInputFocusGuard?.(
     ({ browserPageId, token, active }) => {

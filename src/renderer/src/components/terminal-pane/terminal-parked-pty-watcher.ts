@@ -1,17 +1,17 @@
-import { isTerminalLeafId } from '../../../../shared/stable-pane-id'
-import { isProvenProcessExit } from '../../../../shared/terminal-exit-cause'
+import { isTerminalLeafId } from '../../../../shared/workspace-layout/stable-pane-id'
+import { isProvenProcessExit } from '../../../../shared/terminal/pty/lifecycle/terminal-exit-cause'
 import { isRemoteRuntimePtyId } from '../../../../shared/remote-runtime/remote-runtime-pty-id'
 import { useAppStore } from '@/store'
 import { closeTerminalTab } from '../terminal/terminal-tab-actions'
 import { startParkedTerminalByteWatcher } from './parked-terminal-byte-watcher'
-import { subscribeToPtyExit } from './pty-dispatcher'
-import { isPtyExitReplacedByRestart } from './pty-exit-delivery'
+import { subscribeToPtyExit } from './pty-transport/delivery/pty-dispatcher'
+import { isPtyExitReplacedByRestart } from './pty-transport/delivery/pty-exit-delivery'
 import {
   consumePreHandlerPtyState,
   discardPreHandlerPtyState,
   hasPreHandlerPtyExit
-} from './pty-pre-handler-buffer'
-import { consumeCommittedPtyShutdownExit } from './pty-shutdown-exit-deferral'
+} from './pty-transport/delivery/pty-pre-handler-buffer'
+import { consumeCommittedPtyShutdownExit } from './pty-transport/shutdown/pty-shutdown-exit-deferral'
 import { detachTerminalLayoutLeaf } from './terminal-layout-leaf-detach'
 import {
   isParkRestorableTerminalPty,

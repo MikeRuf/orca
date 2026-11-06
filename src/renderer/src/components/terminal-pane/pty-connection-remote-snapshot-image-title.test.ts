@@ -9,13 +9,17 @@ import {
   createManager
 } from './pty-connection-test-pane-fixtures'
 import type { ConnectCallbacks, MockTransport } from './pty-connection-test-pane-fixtures'
-import { buildPaneConnectionDeps } from './pty-connection-test-deps'
+import {
+  buildPaneConnectionDeps,
+  type PtyConnectionAgentTitleMocks,
+  bindPaneAgentTitleMocks
+} from './pty-connection-test-deps'
 import {
   createInitialStoreState,
   buildActiveRuntimeEnvironmentState
 } from './pty-connection-test-store-fixtures'
 import type { StoreState } from './pty-connection-test-store-state'
-import type { PtyReplayDataMeta } from './pty-transport-types'
+import type { PtyReplayDataMeta } from './pty-transport/pty-transport-types'
 import { mockPanePtyArgs } from './pty-connection-test-connect-mock-pane'
 import {
   installTerminalTestGlobals,
@@ -81,7 +85,7 @@ vi.mock('sonner', () => ({
   toast: { info: toastInfo }
 }))
 
-vi.mock('@/lib/codex-stale-pane-sweep', () => ({
+vi.mock('@/lib/agent-session/accounts/codex/codex-stale-pane-sweep', () => ({
   notifyCodexPaneBoundForStaleSweep
 }))
 
@@ -93,7 +97,7 @@ vi.mock('react', async (importOriginal) => {
   }
 })
 
-vi.mock('./pty-transport', () => ({
+vi.mock('./pty-transport/ipc/pty-transport', () => ({
   createIpcPtyTransport: vi.fn((options: Record<string, unknown>) => {
     createdTransportOptions.push(options)
     const nextTransport = transportFactoryQueue.shift()
@@ -104,7 +108,7 @@ vi.mock('./pty-transport', () => ({
   })
 }))
 
-vi.mock('./remote-runtime-pty-transport', () => ({
+vi.mock('./pty-transport/remote-runtime/remote-runtime-pty-transport', () => ({
   createRemoteRuntimePtyTransport: vi.fn(
     (_environmentId: string, options: Record<string, unknown>) => {
       createdTransportOptions.push(options)
@@ -117,7 +121,7 @@ vi.mock('./remote-runtime-pty-transport', () => ({
   )
 }))
 
-vi.mock('./pty-dispatcher', async (importOriginal) => {
+vi.mock('./pty-transport/delivery/pty-dispatcher', async (importOriginal) => {
   const actual = await importOriginal<Record<string, unknown>>()
   return {
     ...actual,
@@ -143,6 +147,7 @@ async function connectRemotePane(): Promise<{
   dispose: () => void
 }> {
   const { connectPanePty } = await import('./pty-connection')
+  const agentTitleMocks = await vi.importMock<PtyConnectionAgentTitleMocks>('@/lib/agent-status')
   mockStoreState = buildActiveRuntimeEnvironmentState(mockStoreState, 'env-1')
   const transport = createMockTransport('remote:env-1@@terminal-1')
   const captured: { current: ConnectCallbacks['onReplayData'] | null } = { current: null }
@@ -172,7 +177,9 @@ async function connectRemotePane(): Promise<{
   })
 
   const manager = createManager(1)
-  const disposable = connectPanePty(...mockPanePtyArgs(pane, manager, createDeps()))
+  const disposable = connectPanePty(
+    ...mockPanePtyArgs(pane, manager, bindPaneAgentTitleMocks(createDeps(), agentTitleMocks))
+  )
   await flushAsyncTicks(6)
   transport.resize.mockClear()
 

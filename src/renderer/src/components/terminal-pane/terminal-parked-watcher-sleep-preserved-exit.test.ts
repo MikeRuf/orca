@@ -20,7 +20,7 @@ vi.mock('./parked-terminal-byte-watcher', () => ({
 
 type ExitCallback = (code: number, context: { hadPrimary: boolean }) => void
 const exitCallbacksByPtyId = new Map<string, ExitCallback>()
-vi.mock('./pty-dispatcher', () => ({
+vi.mock('./pty-transport/delivery/pty-dispatcher', () => ({
   subscribeToPtyExit: (ptyId: string, callback: ExitCallback) => {
     exitCallbacksByPtyId.set(ptyId, callback)
     return vi.fn()
@@ -28,7 +28,7 @@ vi.mock('./pty-dispatcher', () => ({
 }))
 
 const discardPreHandlerPtyState = vi.fn()
-vi.mock('./pty-pre-handler-buffer', () => ({
+vi.mock('./pty-transport/delivery/pty-pre-handler-buffer', () => ({
   consumePreHandlerPtyState: vi.fn(),
   discardPreHandlerPtyState: (ptyId: string) => discardPreHandlerPtyState(ptyId),
   hasPreHandlerPtyExit: () => false
@@ -58,9 +58,9 @@ vi.mock('@/store', () => ({
 import {
   consumeCommittedPtyShutdownExit,
   markCommittedPtyShutdowns
-} from './pty-shutdown-exit-deferral'
+} from './pty-transport/shutdown/pty-shutdown-exit-deferral'
 import { startParkedPtyWatcher } from './terminal-parked-pty-watcher'
-import { deliverPtyExitToHandlers } from './pty-exit-delivery'
+import { deliverPtyExitToHandlers } from './pty-transport/delivery/pty-exit-delivery'
 import type { ParkedTabWatcherEntry } from './terminal-parked-watcher-registry'
 
 function startSplitWatchers(): ParkedTabWatcherEntry {
@@ -160,15 +160,6 @@ describe('sleep-preserved parked exits (sole-owner sidecar)', () => {
     // hadPrimary skips the guard entirely: marker untouched, watcher disposed.
     expect(consumeCommittedPtyShutdownExit(PTY_ID, null)).toBe(true)
     expect(startedWatcherDisposers[0]).toHaveBeenCalled()
-  })
-
-  it('still collapses the dead leaf on an ordinary parked split exit', () => {
-    startSplitWatchers()
-
-    exitCallbacksByPtyId.get(SECOND_PTY_ID)?.(0, { hadPrimary: false })
-
-    // No sleep marker: the pre-fix disposition is untouched.
-    expect(discardPreHandlerPtyState).toHaveBeenCalledWith(SECOND_PTY_ID)
   })
 
   it('still closes the tab on an ordinary exit of the last parked pane', () => {

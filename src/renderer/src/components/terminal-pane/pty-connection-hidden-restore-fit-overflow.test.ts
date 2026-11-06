@@ -14,7 +14,11 @@ import {
   type ConnectCallbacks,
   type MockTransport
 } from './pty-connection-test-pane-fixtures'
-import { buildPaneConnectionDeps } from './pty-connection-test-deps'
+import {
+  buildPaneConnectionDeps,
+  type PtyConnectionAgentTitleMocks,
+  bindPaneAgentTitleMocks
+} from './pty-connection-test-deps'
 import { createInitialStoreState } from './pty-connection-test-store-fixtures'
 import type { StoreState } from './pty-connection-test-store-state'
 import {
@@ -83,7 +87,7 @@ vi.mock('sonner', () => ({
   }
 }))
 
-vi.mock('@/lib/codex-stale-pane-sweep', () => ({
+vi.mock('@/lib/agent-session/accounts/codex/codex-stale-pane-sweep', () => ({
   notifyCodexPaneBoundForStaleSweep
 }))
 
@@ -96,7 +100,7 @@ vi.mock('react', async (importOriginal) => {
   }
 })
 
-vi.mock('./pty-transport', () => ({
+vi.mock('./pty-transport/ipc/pty-transport', () => ({
   createIpcPtyTransport: vi.fn((options: Record<string, unknown>) => {
     createdTransportOptions.push(options)
     const nextTransport = transportFactoryQueue.shift()
@@ -107,7 +111,7 @@ vi.mock('./pty-transport', () => ({
   })
 }))
 
-vi.mock('./remote-runtime-pty-transport', () => ({
+vi.mock('./pty-transport/remote-runtime/remote-runtime-pty-transport', () => ({
   createRemoteRuntimePtyTransport: vi.fn(
     (_environmentId: string, options: Record<string, unknown>) => {
       createdTransportOptions.push(options)
@@ -121,7 +125,7 @@ vi.mock('./remote-runtime-pty-transport', () => ({
 }))
 
 // Stub eager-buffer lookup to exercise live adoption without the IPC dispatcher.
-vi.mock('./pty-dispatcher', async (importOriginal) => {
+vi.mock('./pty-transport/delivery/pty-dispatcher', async (importOriginal) => {
   const actual = await importOriginal<Record<string, unknown>>()
   return {
     ...actual,
@@ -168,6 +172,8 @@ describe('connectPanePty', () => {
     'recovers $name live output when the deadline interrupts an answered snapshot',
     async ({ name, pending, repaint, covered }) => {
       const { connectPanePty } = await import('./pty-connection')
+      const agentTitleMocks =
+        await vi.importMock<PtyConnectionAgentTitleMocks>('@/lib/agent-status')
       const transport = createMockTransport('pty-id')
       let onData: ConnectCallbacks['onData']
       transport.connect.mockImplementation(
@@ -209,7 +215,11 @@ describe('connectPanePty', () => {
       const pane = createPane(1)
       const isVisibleRef = { current: false }
       const deps = createDeps({ isVisibleRef, startup: { command: 'codex' } })
-      const disposable = connectPanePty(pane as never, createManager(1) as never, deps as never)
+      const disposable = connectPanePty(
+        pane as never,
+        createManager(1) as never,
+        bindPaneAgentTitleMocks(deps as never, agentTitleMocks)
+      )
       await flushAsyncTicks(6)
       safeFitAndThen.mockClear()
       safeFitAndThen.mockReturnValueOnce({
@@ -218,7 +228,8 @@ describe('connectPanePty', () => {
       })
       vi.useFakeTimers()
       onData?.(hidden, { seq: hidden.length, rawLength: hidden.length })
-      const { _dispatchPtyModelRestoreNeededForTest } = await import('./pty-model-restore-channel')
+      const { _dispatchPtyModelRestoreNeededForTest } =
+        await import('./pty-transport/delivery/pty-model-restore-channel')
       if (name === 'unhide gap') {
         _dispatchPtyModelRestoreNeededForTest({
           id: 'pty-id',

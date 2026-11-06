@@ -4,7 +4,7 @@ import {
   ABORT_TRUNCATED_CONTROL_STRING,
   buildSnapshotReplayPrologue,
   RESET_AFTER_BYTE_GAP
-} from '../../../../shared/terminal-mode-reset-profiles'
+} from '../../../../shared/terminal/protocol/input-modes/terminal-mode-reset-profiles'
 import {
   flushAsyncTicks,
   renderHeadlessTerminalState,
@@ -20,7 +20,11 @@ import {
   type ConnectCallbacks,
   type MockTransport
 } from './pty-connection-test-pane-fixtures'
-import { buildPaneConnectionDeps } from './pty-connection-test-deps'
+import {
+  buildPaneConnectionDeps,
+  type PtyConnectionAgentTitleMocks as AgentTitleMocks,
+  bindPaneAgentTitleMocks
+} from './pty-connection-test-deps'
 import { createInitialStoreState } from './pty-connection-test-store-fixtures'
 import type { StoreState } from './pty-connection-test-store-state'
 import {
@@ -96,7 +100,7 @@ vi.mock('sonner', () => ({
   }
 }))
 
-vi.mock('@/lib/codex-stale-pane-sweep', () => ({
+vi.mock('@/lib/agent-session/accounts/codex/codex-stale-pane-sweep', () => ({
   notifyCodexPaneBoundForStaleSweep
 }))
 
@@ -109,7 +113,7 @@ vi.mock('react', async (importOriginal) => {
   }
 })
 
-vi.mock('./pty-transport', () => ({
+vi.mock('./pty-transport/ipc/pty-transport', () => ({
   createIpcPtyTransport: vi.fn((options: Record<string, unknown>) => {
     createdTransportOptions.push(options)
     const nextTransport = transportFactoryQueue.shift()
@@ -120,7 +124,7 @@ vi.mock('./pty-transport', () => ({
   })
 }))
 
-vi.mock('./remote-runtime-pty-transport', () => ({
+vi.mock('./pty-transport/remote-runtime/remote-runtime-pty-transport', () => ({
   createRemoteRuntimePtyTransport: vi.fn(
     (_environmentId: string, options: Record<string, unknown>) => {
       createdTransportOptions.push(options)
@@ -134,7 +138,7 @@ vi.mock('./remote-runtime-pty-transport', () => ({
 }))
 
 // Stub eager-buffer lookup to exercise live adoption without the IPC dispatcher.
-vi.mock('./pty-dispatcher', async (importOriginal) => {
+vi.mock('./pty-transport/delivery/pty-dispatcher', async (importOriginal) => {
   const actual = await importOriginal<Record<string, unknown>>()
   return {
     ...actual,
@@ -163,6 +167,7 @@ describe('connectPanePty', () => {
 
   it('restores overflowed hidden remote runtime output from its serialized snapshot', async () => {
     const { connectPanePty } = await import('./pty-connection')
+    const agentTitleMocks = await vi.importMock<AgentTitleMocks>('@/lib/agent-status')
     const transport = createMockTransport('remote:env-1@@terminal-1')
     const capturedDataCallback: {
       current: ((data: string, meta?: { seq?: number; rawLength?: number }) => void) | null
@@ -189,7 +194,11 @@ describe('connectPanePty', () => {
     const pane = createPane(1)
     const manager = createManager(1)
     const deps = createDeps({ isVisibleRef: { current: false } })
-    const disposable = connectPanePty(pane as never, manager as never, deps as never)
+    const disposable = connectPanePty(
+      pane as never,
+      manager as never,
+      bindPaneAgentTitleMocks(deps as never, agentTitleMocks)
+    )
     await flushAsyncTicks(6)
 
     capturedDataCallback.current?.(hidden, { seq: hidden.length, rawLength: hidden.length })
@@ -218,6 +227,7 @@ describe('connectPanePty', () => {
 
   it('preserves the painted normal buffer when a successful hidden restore has no image', async () => {
     const { connectPanePty } = await import('./pty-connection')
+    const agentTitleMocks2 = await vi.importMock<AgentTitleMocks>('@/lib/agent-status')
     const transport = createMockTransport('remote:env-1@@terminal-1')
     const capturedDataCallback: {
       current: ((data: string, meta?: { seq?: number; rawLength?: number }) => void) | null
@@ -243,7 +253,11 @@ describe('connectPanePty', () => {
     transportFactoryQueue.push(transport)
     const pane = createPane(1)
     const deps = createDeps({ isVisibleRef: { current: false } })
-    const disposable = connectPanePty(pane as never, createManager(1) as never, deps as never)
+    const disposable = connectPanePty(
+      pane as never,
+      createManager(1) as never,
+      bindPaneAgentTitleMocks(deps as never, agentTitleMocks2)
+    )
     await flushAsyncTicks(6)
     const writeStart = pane.terminal.write.mock.calls.length
 
@@ -281,6 +295,7 @@ describe('connectPanePty', () => {
     let disposable: { dispose: () => void } | null = null
     try {
       const { connectPanePty } = await import('./pty-connection')
+      const agentTitleMocks3 = await vi.importMock<AgentTitleMocks>('@/lib/agent-status')
       const transport = createMockTransport('pty-id')
       const capturedDataCallback: {
         current: ((data: string, meta?: { seq?: number; rawLength?: number }) => void) | null
@@ -306,7 +321,11 @@ describe('connectPanePty', () => {
       const manager = createManager(2)
       manager.getActivePane.mockReturnValue({ id: 2 })
       const deps = createDeps({ isVisibleRef: { current: false } })
-      disposable = connectPanePty(pane as never, manager as never, deps as never)
+      disposable = connectPanePty(
+        pane as never,
+        manager as never,
+        bindPaneAgentTitleMocks(deps as never, agentTitleMocks3)
+      )
       await flushAsyncTicks(6)
 
       // Why: overflowing the background queue latches the model restore now — the per-chunk skip grammar is gone.
@@ -345,6 +364,7 @@ describe('connectPanePty', () => {
     let disposable: { dispose: () => void } | null = null
     try {
       const { connectPanePty } = await import('./pty-connection')
+      const agentTitleMocks4 = await vi.importMock<AgentTitleMocks>('@/lib/agent-status')
       const transport = createMockTransport('pty-id')
       const capturedDataCallback: {
         current: ((data: string, meta?: { seq?: number; rawLength?: number }) => void) | null
@@ -370,7 +390,11 @@ describe('connectPanePty', () => {
       const manager = createManager(2)
       manager.getActivePane.mockReturnValue({ id: 2 })
       const deps = createDeps({ isVisibleRef: { current: false } })
-      disposable = connectPanePty(pane as never, manager as never, deps as never)
+      disposable = connectPanePty(
+        pane as never,
+        manager as never,
+        bindPaneAgentTitleMocks(deps as never, agentTitleMocks4)
+      )
       await flushAsyncTicks(6)
 
       // Why: overflow latches the model restore (no skip grammar remains).
@@ -400,6 +424,7 @@ describe('connectPanePty', () => {
 
   it('retries null remote snapshots for overflowed hidden runtime output', async () => {
     const { connectPanePty } = await import('./pty-connection')
+    const agentTitleMocks5 = await vi.importMock<AgentTitleMocks>('@/lib/agent-status')
     const transport = createMockTransport('remote:env-1@@terminal-1')
     const capturedDataCallback: {
       current: ((data: string, meta?: { seq?: number; rawLength?: number }) => void) | null
@@ -420,7 +445,11 @@ describe('connectPanePty', () => {
     const pane = createPane(1)
     const manager = createManager(1)
     const deps = createDeps({ isVisibleRef: { current: false } })
-    const disposable = connectPanePty(pane as never, manager as never, deps as never)
+    const disposable = connectPanePty(
+      pane as never,
+      manager as never,
+      bindPaneAgentTitleMocks(deps as never, agentTitleMocks5)
+    )
     await flushAsyncTicks(6)
 
     // Why: overflow latches the model restore (no skip grammar remains).
@@ -459,6 +488,7 @@ describe('connectPanePty', () => {
   // Use a real alt-screen pane so a stubbed normal-buffer check cannot pass without emitting the missing ?1049l reset.
   it('emits the alt-screen unstick when the pane is on alt and the model is not', async () => {
     const { connectPanePty } = await import('./pty-connection')
+    const agentTitleMocks6 = await vi.importMock<AgentTitleMocks>('@/lib/agent-status')
     const transport = createMockTransport('pty-id')
     const capturedDataCallback: {
       current: ((data: string, meta?: { seq?: number; rawLength?: number }) => void) | null
@@ -484,7 +514,11 @@ describe('connectPanePty', () => {
     // The gap ate the TUI's own `?1049l`, so the renderer is still on alt.
     pane.terminal.buffer.active.type = 'alternate'
     const deps = createDeps({ isVisibleRef: { current: false } })
-    const disposable = connectPanePty(pane as never, createManager(1) as never, deps as never)
+    const disposable = connectPanePty(
+      pane as never,
+      createManager(1) as never,
+      bindPaneAgentTitleMocks(deps as never, agentTitleMocks6)
+    )
     await flushAsyncTicks(6)
 
     capturedDataCallback.current?.(hidden, { seq: hidden.length, rawLength: hidden.length })
@@ -506,6 +540,7 @@ describe('connectPanePty', () => {
   // Why: pins the switch-off hidden fallback chain — 2MB lossy cap drops the backlog, latches restore, and reveal repaints from the model snapshot.
   it('restores hidden backlog overflow from the main terminal snapshot on foreground output', async () => {
     const { connectPanePty } = await import('./pty-connection')
+    const agentTitleMocks7 = await vi.importMock<AgentTitleMocks>('@/lib/agent-status')
     const transport = createMockTransport('pty-id')
     const capturedDataCallback: {
       current: ((data: string, meta?: { seq?: number; rawLength?: number }) => void) | null
@@ -532,7 +567,11 @@ describe('connectPanePty', () => {
     const deps = createDeps({
       isVisibleRef: { current: false }
     })
-    const disposable = connectPanePty(pane as never, manager as never, deps as never)
+    const disposable = connectPanePty(
+      pane as never,
+      manager as never,
+      bindPaneAgentTitleMocks(deps as never, agentTitleMocks7)
+    )
     await flushAsyncTicks(6)
 
     capturedDataCallback.current?.(hidden, { seq: hidden.length, rawLength: hidden.length })
@@ -555,6 +594,7 @@ describe('connectPanePty', () => {
 
   it('rebuilds normal and alternate buffers from an authoritative alternate snapshot', async () => {
     const { connectPanePty } = await import('./pty-connection')
+    const agentTitleMocks8 = await vi.importMock<AgentTitleMocks>('@/lib/agent-status')
     const transport = createMockTransport('pty-id')
     const capturedDataCallback: {
       current: ((data: string, meta?: { seq?: number; rawLength?: number }) => void) | null
@@ -583,7 +623,11 @@ describe('connectPanePty', () => {
     const deps = createDeps({
       isVisibleRef: { current: false }
     })
-    const disposable = connectPanePty(pane as never, manager as never, deps as never)
+    const disposable = connectPanePty(
+      pane as never,
+      manager as never,
+      bindPaneAgentTitleMocks(deps as never, agentTitleMocks8)
+    )
     await flushAsyncTicks(6)
 
     capturedDataCallback.current?.(hidden, { seq: hidden.length, rawLength: hidden.length })
@@ -625,6 +669,7 @@ describe('connectPanePty', () => {
 
   it('keeps a hidden-output alt frame at the capture grid below the fit floor', async () => {
     const { connectPanePty } = await import('./pty-connection')
+    const agentTitleMocks9 = await vi.importMock<AgentTitleMocks>('@/lib/agent-status')
     const transport = createMockTransport('pty-id')
     let onData: ConnectCallbacks['onData']
     transport.connect.mockImplementation(async ({ callbacks }: { callbacks: ConnectCallbacks }) => {
@@ -656,10 +701,15 @@ describe('connectPanePty', () => {
     })
     pane.container.getBoundingClientRect = vi.fn(() => createRect(4, 3))
     const deps = createDeps({ isVisibleRef: { current: false } })
-    const binding = connectPanePty(pane as never, createManager(1) as never, deps as never)
+    const binding = connectPanePty(
+      pane as never,
+      createManager(1) as never,
+      bindPaneAgentTitleMocks(deps as never, agentTitleMocks9)
+    )
     await flushAsyncTicks(6)
     onData?.(hidden, { seq: hidden.length, rawLength: hidden.length })
-    const { _dispatchPtyModelRestoreNeededForTest } = await import('./pty-model-restore-channel')
+    const { _dispatchPtyModelRestoreNeededForTest } =
+      await import('./pty-transport/delivery/pty-model-restore-channel')
     _dispatchPtyModelRestoreNeededForTest({
       id: 'pty-id',
       reason: 'hidden-drop',
@@ -681,6 +731,7 @@ describe('connectPanePty', () => {
 
   it('drains foreground output after a renderer-sourced hidden-backlog snapshot without seq', async () => {
     const { connectPanePty } = await import('./pty-connection')
+    const agentTitleMocks10 = await vi.importMock<AgentTitleMocks>('@/lib/agent-status')
     const transport = createMockTransport('pty-id')
     const capturedDataCallback: {
       current: ((data: string, meta?: { seq?: number; rawLength?: number }) => void) | null
@@ -707,7 +758,11 @@ describe('connectPanePty', () => {
     const deps = createDeps({
       isVisibleRef: { current: false }
     })
-    const disposable = connectPanePty(pane as never, manager as never, deps as never)
+    const disposable = connectPanePty(
+      pane as never,
+      manager as never,
+      bindPaneAgentTitleMocks(deps as never, agentTitleMocks10)
+    )
     await flushAsyncTicks(6)
 
     capturedDataCallback.current?.(hidden, { seq: hidden.length, rawLength: hidden.length })
@@ -728,6 +783,7 @@ describe('connectPanePty', () => {
 
   it('slices abandoned pending chunks against a replay that already painted', async () => {
     const { connectPanePty } = await import('./pty-connection')
+    const agentTitleMocks11 = await vi.importMock<AgentTitleMocks>('@/lib/agent-status')
     const transport = createMockTransport('pty-id')
     const capturedDataCallback: {
       current: ((data: string, meta?: { seq?: number; rawLength?: number }) => void) | null
@@ -758,7 +814,11 @@ describe('connectPanePty', () => {
       isVisibleRef: { current: false },
       startup: { command: 'codex' }
     })
-    const disposable = connectPanePty(pane as never, manager as never, deps as never)
+    const disposable = connectPanePty(
+      pane as never,
+      manager as never,
+      bindPaneAgentTitleMocks(deps as never, agentTitleMocks11)
+    )
     await flushAsyncTicks(6)
     expect(capturedDataCallback.current).not.toBeNull()
 

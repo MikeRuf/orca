@@ -1,34 +1,34 @@
-import { terminalLaunchOpened } from '@/lib/launch-agent-in-new-tab-host-agents'
-import { toast } from 'sonner'
-import type { TuiAgent } from '../../../../../shared/tui-agent'
+import { terminalLaunchOpened } from './new-tab/launch-agent-in-new-tab-host-agents'
+import type { TuiAgent } from '../../../../../shared/agent-launch/catalog/tui-agent'
 import type { ExecutionHostId } from '../../../../../shared/execution-host'
 import { parseExecutionHostId } from '../../../../../shared/execution-host'
-import { translate } from '@/i18n/i18n'
 import { useAppStore } from '@/store/index'
-import { selectExecutionHostDisplayLabel } from '@/lib/execution-host-display-label'
 import {
   adoptAgentSessionLaunchVerdict,
   type AgentSessionLaunchPlan
-} from '@/lib/agent-session-launch-plan'
+} from './routing/agent-session-launch-plan'
 import {
   admitStructuredLaunchOnHost,
   type StructuredLaunchAdmission
 } from '@/lib/agent-session/launch/structured-agent-session-host-admission'
-import { holdEmptyWorkspaceDefaultSurfaceForLaunch } from '@/lib/empty-workspace-default-surface-claims'
+import { holdEmptyWorkspaceDefaultSurfaceForLaunch } from '@/lib/workspace/activation/initial-surface/empty-workspace-default-surface-claims'
+import {
+  notifyExplicitChatFailure,
+  notifyHostDeclined,
+  notifyHostUnreachable
+} from '@/lib/agent-session/launch/structured-agent-session-launch-admission-notices'
 import { StructuredAgentSessionCreateRefusalError } from '@/lib/agent-session/launch/structured-agent-session-launch-errors'
-import { structuredAgentLabel } from '@/lib/agent-session/launch/structured-agent-session-launch-label'
 import type {
   StructuredAgentLaunchHooks,
   StructuredAgentLaunchSettlement
-} from '@/lib/structured-agent-launch-settlement'
+} from './continuation/structured-agent-launch-settlement'
 import type { StructuredPromptDeliveryResult } from '@/lib/agent-session/launch/structured-agent-session-launch-prompt'
-import type { LaunchAgentInNewTabArgs } from '@/lib/launch-agent-in-new-tab-args'
+import type { LaunchAgentInNewTabArgs } from './new-tab/launch-agent-in-new-tab-args'
 import type { RuntimeClientTarget } from '../../../../../shared/runtime-client-target'
 import { toRuntimeWorktreeSelector } from '@/runtime/runtime-worktree-selector'
 import { readStructuredChatHostPermissionVerdict } from '@/runtime/structured-chat-host-permission'
 import { notifyHostPermissionRefused } from '@/lib/agent-session/launch/structured-agent-session-launch-permission-notice'
 import { readAgentInventoryForTarget } from '@/lib/agent-detection-target-inventory'
-import { structuredChatUnavailableText } from '@/lib/agent-session/launch/structured-agent-session-launch-failure'
 import type { WebRuntimeTerminalCreateOutcome } from '@/runtime/web-runtime-session-types'
 
 export type AgentTerminalLaunchCompletion = {
@@ -67,57 +67,6 @@ const NOT_DELIVERED_NOTIFIED: StructuredPromptDeliveryResult = {
   failureNotified: true
 }
 
-function notifyExplicitChatFailure(agent: TuiAgent, reason?: string): void {
-  toast.error(
-    translate(
-      'auto.components.tab.bar.QuickLaunchButton.chatUnavailableAfterSelection',
-      "Couldn't start a {{value0}} chat.",
-      { value0: structuredAgentLabel(agent) }
-    ),
-    { description: structuredChatUnavailableText(reason) }
-  )
-}
-
-export function notifyHostDeclined(agent: TuiAgent, explain = true): void {
-  const agentLabel = structuredAgentLabel(agent)
-  toast.info(
-    translate(
-      'components.native-chat.structuredSessionHostDeclined',
-      'Opened {{value0}} in a terminal',
-      { value0: agentLabel }
-    ),
-    explain
-      ? {
-          description: translate(
-            'components.native-chat.structuredSessionHostDeclinedDescription',
-            "This workspace can't run a {{value0}} chat.",
-            { value0: agentLabel }
-          )
-        }
-      : undefined
-  )
-}
-
-function notifyHostUnreachable(agent: TuiAgent, executionHostId: ExecutionHostId): void {
-  const hostLabel = selectExecutionHostDisplayLabel(useAppStore.getState(), executionHostId)
-  toast.error(
-    translate(
-      'components.native-chat.structuredSessionHostUnreachable',
-      'Could not reach {{value0}}',
-      {
-        value0: hostLabel
-      }
-    ),
-    {
-      description: translate(
-        'components.native-chat.structuredSessionHostUnreachableDescription',
-        'Orca did not open a {{value0}} chat. Check the connection to the server and try again.',
-        { value0: structuredAgentLabel(agent) }
-      )
-    }
-  )
-}
-
 /** What the caller's own terminal launch would have carried beyond the plan's agent and prompt. */
 export type DeclinedStructuredLaunchTerminalOptions = Pick<
   LaunchAgentInNewTabArgs,
@@ -137,7 +86,7 @@ export async function openDeclinedStructuredLaunchTerminal(args: {
   terminal?: DeclinedStructuredLaunchTerminalOptions
 }): Promise<StructuredLaunchTerminal> {
   // Loaded late: the new-tab launcher begins these launches.
-  const { launchAgentInNewTabWithOutcome } = await import('@/lib/launch-agent-in-new-tab')
+  const { launchAgentInNewTabWithOutcome } = await import('./new-tab/launch-agent-in-new-tab')
   const result = launchAgentInNewTabWithOutcome({
     ...args.terminal,
     agent: args.plan.agent,
@@ -205,6 +154,8 @@ export function beginHostAdmittedStructuredLaunch(args: {
   ) => Promise<StructuredLaunchTerminal> | StructuredLaunchTerminal
   /** `onHostDeclined` opens the caller's own surface (a shell), never the agent's CLI. */
   declinedOpensCallerSurface?: true
+  /** The caller already asked the host whether another terminal runs the resumed conversation. */
+  resumeWritersChecked?: true
 }): HostAdmittedStructuredLaunch {
   const { plan } = args
   const paired = args.target.kind === 'environment'
@@ -212,7 +163,7 @@ export function beginHostAdmittedStructuredLaunch(args: {
   let admitted: AdmittedLaunch | null = null
   const isCancelled = (): boolean => cancelled || args.hooks.signal?.aborted === true
   let resolveDelivery: (result: StructuredPromptDeliveryResult) => void = () => undefined
-  const deliversPrompt = Boolean(plan.prompt?.trim())
+  const deliversPrompt = Boolean(plan.prompt?.trim() || plan.promptAttachments?.length)
   const promptDeliveryResult = deliversPrompt
     ? new Promise<StructuredPromptDeliveryResult>((resolve) => {
         resolveDelivery = resolve
@@ -240,11 +191,23 @@ export function beginHostAdmittedStructuredLaunch(args: {
       const asked = await admitStructuredLaunchOnHost(
         args.target,
         toRuntimeWorktreeSelector(args.worktreeId),
-        plan.agent
+        plan.agent,
+        plan.resumeFrom && !args.resumeWritersChecked
+          ? { providerSessionId: plan.resumeFrom.providerSessionId }
+          : undefined
       )
       if (isCancelled()) {
         resolveDelivery(NOT_DELIVERED)
         return { kind: 'cancelled', sessionId: null }
+      }
+      if (asked.kind === 'refused') {
+        const { code } = asked.refusal
+        // Nothing opened, so the caller's report of this failure is its one notice.
+        return failBeforeSurface(
+          new StructuredAgentSessionCreateRefusalError(code, code, asked.refusal),
+          undefined,
+          false
+        )
       }
       // Unresolvable servers keep terminal fallback; local unable-to-answer can safely defer reporting to chat create.
       const admission: StructuredLaunchAdmission =
@@ -269,7 +232,7 @@ export function beginHostAdmittedStructuredLaunch(args: {
           args.executionHostId,
           args.declinedOpensCallerSurface
         )
-        if (plan.resumeFrom || plan.requestedSurface === 'chat' || noCli) {
+        if (plan.resumeFrom || plan.forkFrom || plan.requestedSurface === 'chat' || noCli) {
           return failBeforeSurface(
             new StructuredAgentSessionCreateRefusalError('structured_agent_session_unsupported'),
             admission.reason,

@@ -7,7 +7,11 @@ import {
   type ConnectCallbacks,
   type MockTransport
 } from './pty-connection-test-pane-fixtures'
-import { buildPaneConnectionDeps } from './pty-connection-test-deps'
+import {
+  buildPaneConnectionDeps,
+  type PtyConnectionAgentTitleMocks,
+  bindPaneAgentTitleMocks
+} from './pty-connection-test-deps'
 import { createInitialStoreState } from './pty-connection-test-store-fixtures'
 import type { StoreState } from './pty-connection-test-store-state'
 import {
@@ -25,14 +29,14 @@ import {
   type PtyStreamPayload,
   type PtyExitPayload
 } from './pty-transport-test-harness'
-import { makePaneKey } from '../../../../shared/stable-pane-id'
+import { makePaneKey } from '../../../../shared/workspace-layout/stable-pane-id'
 import type { ConnectPanePtySession } from './pty-connection/connect-pane-pty-session'
-import type { PtyPreconnectInputEntry } from './pty-preconnect-input-buffer'
-import type { PtyTransport } from './pty-transport-types'
+import type { PtyPreconnectInputEntry } from './pty-transport/input/pty-preconnect-input-buffer'
+import type { PtyTransport } from './pty-transport/pty-transport-types'
 import type { PtyPaneStartup } from './pty-connection-types'
-import type * as PtyTransportModule from './pty-transport'
-import type * as PtyPreHandlerBufferModule from './pty-pre-handler-buffer'
-import type * as PtyDispatcherModule from './pty-dispatcher'
+import type * as PtyTransportModule from './pty-transport/ipc/pty-transport'
+import type * as PtyPreHandlerBufferModule from './pty-transport/delivery/pty-pre-handler-buffer'
+import type * as PtyDispatcherModule from './pty-transport/delivery/pty-dispatcher'
 
 const MARKER = 'too many consoles in use, max consoles is 128'
 let state: StoreState
@@ -73,7 +77,9 @@ async function startPane({
     startup,
     cwdPromise
   })
-  await connectMockPanePty(pane, manager, deps)
+  const agentTitleMocks = await vi.importMock<PtyConnectionAgentTitleMocks>('@/lib/agent-status')
+
+  await connectMockPanePty(pane, manager, bindPaneAgentTitleMocks(deps, agentTitleMocks))
   await flushAsyncTicks()
   const onPtySpawn = options[0]?.onPtySpawn
   const onPtyExit = options[0]?.onPtyExit
@@ -111,7 +117,7 @@ async function heldLaunch({
   transportDispatcher.ensurePtyDispatcher()
   transportDispatcher.reattachPtyDispatcherPushListeners()
   const handoffs = await import('./deferred-split-pane-handoff')
-  const transportModule = await import('./pty-transport')
+  const transportModule = await import('./pty-transport/ipc/pty-transport')
   const transports: PtyTransport[] = []
   vi.mocked(transportModule.createIpcPtyTransport).mockImplementation((opts) => {
     const transport = realTransport.createIpcPtyTransport(opts)
@@ -184,7 +190,6 @@ async function heldLaunch({
           containerRef: { current: null },
           getTabWideAgentHintLeafId: () => null,
           expandedStyleSnapshotRef: { current: new Map() },
-          paneFontSizesRef: { current: new Map() },
           paneCwdRef: { current: new Map() },
           panePtyBindingsRef: { current: new Map() },
           setTabPaneExpanded: vi.fn(),
@@ -227,11 +232,19 @@ async function heldLaunch({
       })
     }
     const { connectPanePty } = await import('./pty-connection')
-    const binding = connectPanePty(typedPane, typedManager, {
-      ...deps,
-      ...handoffs.deferredSplitPaneConnectionInput(handle, seeds),
-      cwdPromise: cwd.promise
-    })
+    const agentTitleMocks2 = await vi.importMock<PtyConnectionAgentTitleMocks>('@/lib/agent-status')
+    const binding = connectPanePty(
+      typedPane,
+      typedManager,
+      bindPaneAgentTitleMocks(
+        {
+          ...deps,
+          ...handoffs.deferredSplitPaneConnectionInput(handle, seeds),
+          cwdPromise: cwd.promise
+        },
+        agentTitleMocks2
+      )
+    )
     await flushAsyncTicks()
     const transport = transports.at(-1)
     const session = captured.session
@@ -285,14 +298,16 @@ async function heldLaunch({
 describe('Git Bash console-capacity pane retention', () => {
   beforeAll(async () => {
     // Keep the suite-loaded transport and its buffer/dispatcher on the same module graph.
-    realTransport = await vi.importActual<typeof PtyTransportModule>('./pty-transport')
-    transportBuffers = await import('./pty-pre-handler-buffer')
-    transportDispatcher = await import('./pty-dispatcher')
+    realTransport = await vi.importActual<typeof PtyTransportModule>(
+      './pty-transport/ipc/pty-transport'
+    )
+    transportBuffers = await import('./pty-transport/delivery/pty-pre-handler-buffer')
+    transportDispatcher = await import('./pty-transport/delivery/pty-dispatcher')
   })
   beforeEach(async () => {
     vi.resetModules()
     vi.clearAllMocks()
-    vi.mocked((await import('./pty-transport')).createIpcPtyTransport).mockReset()
+    vi.mocked((await import('./pty-transport/ipc/pty-transport')).createIpcPtyTransport).mockReset()
     queue = []
     options = []
     subscribers = []
@@ -464,7 +479,8 @@ describe('Git Bash console-capacity pane retention', () => {
     async (kind) => {
       const launch = await heldLaunch()
       let view = await launch.mount()
-      const { PTY_PRECONNECT_INPUT_MAX_CODE_UNITS } = await import('./pty-preconnect-input-buffer')
+      const { PTY_PRECONNECT_INPUT_MAX_CODE_UNITS } =
+        await import('./pty-transport/input/pty-preconnect-input-buffer')
       const data =
         kind === 'passive' ? '\u001b[I' : 'x'.repeat(PTY_PRECONNECT_INPUT_MAX_CODE_UNITS + 1)
       if (kind === 'oversize-driving') {
@@ -502,7 +518,8 @@ describe('Git Bash console-capacity pane retention', () => {
           })
         ).toBe(true)
       } else if (kind === 'accepted-paste') {
-        const { writeTerminalPastePtyInput } = await import('./terminal-pty-paste-writer')
+        const { writeTerminalPastePtyInput } =
+          await import('./input/paste/terminal-pty-paste-writer')
         const abort = new AbortController()
         accepted = writeTerminalPastePtyInput(view.transport, 'paste', 'driving', abort.signal)
         expect(accepted).toBeInstanceOf(Promise)

@@ -1,5 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
-import type { TerminalSideEffectFact } from '../../../../shared/terminal-side-effect-facts'
+import type { TerminalSideEffectFact } from '../../../../shared/terminal/output/terminal-side-effect-facts'
 import type { ParkedTerminalByteWatcherOptions } from './parked-terminal-byte-watcher'
 import type * as ParkedTerminalCommandStatus from './parked-terminal-command-status'
 
@@ -528,7 +528,7 @@ describe('startParkedTerminalByteWatcher', () => {
 
   // Why: retained gauges would inflate every later high-water profile.
   it('dispose drops the processor from the pty side-effect census', async () => {
-    await import('./pty-side-effect-pending-census')
+    await import('./pty-transport/output/pty-side-effect-pending-census')
     const { collectRendererMemoryProfileCounts } = await import('@/lib/renderer-memory-profile')
     expect(collectRendererMemoryProfileCounts()['ptySideEffects.processors']).toBe(0)
 
@@ -601,9 +601,10 @@ describe('startParkedTerminalByteWatcher', () => {
 
     // Derive one fact batch per chunk through main’s stripping/title pipeline for parity with byte mode.
     async function emitViaMainTrackerFacts(chunks: string[]): Promise<void> {
-      const { createAgentStatusOscProcessor } = await import('../../../../shared/agent-status-osc')
+      const { createAgentStatusOscProcessor } =
+        await import('../../../../shared/agent-status/transport/agent-status-osc')
       const { createTerminalTitleTracker } =
-        await import('../../../../shared/terminal-output-side-effects')
+        await import('../../../../shared/terminal/output/terminal-output-side-effects')
       const handler = await import('./terminal-side-effect-facts-handler')
       const processStatusChunk = createAgentStatusOscProcessor()
       let pending: TerminalSideEffectFact[] = []

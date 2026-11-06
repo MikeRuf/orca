@@ -11,7 +11,11 @@ import {
   createManager,
   type MockTransport
 } from './pty-connection-test-pane-fixtures'
-import { buildPaneConnectionDeps } from './pty-connection-test-deps'
+import {
+  buildPaneConnectionDeps,
+  type PtyConnectionAgentTitleMocks,
+  bindPaneAgentTitleMocks
+} from './pty-connection-test-deps'
 import { createInitialStoreState } from './pty-connection-test-store-fixtures'
 import type { StoreState } from './pty-connection-test-store-state'
 import {
@@ -70,7 +74,9 @@ vi.mock('./cache-timer-seeding', () => ({ shouldSeedCacheTimerOnInitialTitle }))
 
 vi.mock('sonner', () => ({ toast: { info: toastInfo } }))
 
-vi.mock('@/lib/codex-stale-pane-sweep', () => ({ notifyCodexPaneBoundForStaleSweep }))
+vi.mock('@/lib/agent-session/accounts/codex/codex-stale-pane-sweep', () => ({
+  notifyCodexPaneBoundForStaleSweep
+}))
 
 vi.mock('react', async (importOriginal) => {
   const actual = await importOriginal<typeof React>()
@@ -80,7 +86,7 @@ vi.mock('react', async (importOriginal) => {
   }
 })
 
-vi.mock('./pty-transport', () => ({
+vi.mock('./pty-transport/ipc/pty-transport', () => ({
   createIpcPtyTransport: vi.fn((options: Record<string, unknown>) => {
     createdTransportOptions.push(options)
     const nextTransport = transportFactoryQueue.shift()
@@ -91,7 +97,7 @@ vi.mock('./pty-transport', () => ({
   })
 }))
 
-vi.mock('./remote-runtime-pty-transport', () => ({
+vi.mock('./pty-transport/remote-runtime/remote-runtime-pty-transport', () => ({
   createRemoteRuntimePtyTransport: vi.fn(
     (_environmentId: string, options: Record<string, unknown>) => {
       createdTransportOptions.push(options)
@@ -104,7 +110,7 @@ vi.mock('./remote-runtime-pty-transport', () => ({
   )
 }))
 
-vi.mock('./pty-dispatcher', async (importOriginal) => {
+vi.mock('./pty-transport/delivery/pty-dispatcher', async (importOriginal) => {
   const actual = await importOriginal<Record<string, unknown>>()
   return { ...actual, getEagerPtyBufferHandle: vi.fn(() => undefined) }
 })
@@ -136,8 +142,10 @@ describe('connectPanePty queued startup consume', () => {
 
   it('parks an unknown owner until hydration, then retains the acquired backend on refresh', async () => {
     const { connectPanePty } = await import('./pty-connection')
-    const { createIpcPtyTransport } = await import('./pty-transport')
-    const { createRemoteRuntimePtyTransport } = await import('./remote-runtime-pty-transport')
+    const agentTitleMocks = await vi.importMock<PtyConnectionAgentTitleMocks>('@/lib/agent-status')
+    const { createIpcPtyTransport } = await import('./pty-transport/ipc/pty-transport')
+    const { createRemoteRuntimePtyTransport } =
+      await import('./pty-transport/remote-runtime/remote-runtime-pty-transport')
     const { createTerminalPaneManagerOptions } = await import('./terminal-pane-manager-options')
     const { clearTerminalTabsParkedOnUnresolvedHost, getTabIdsAwaitingHostHydrationRemount } =
       await import('@/lib/parked-terminal-host-hydration')
@@ -151,6 +159,8 @@ describe('connectPanePty queued startup consume', () => {
     const deps = buildPaneConnectionDeps(() => mockStoreState, { worktreeId: worktree.id })
     const pane = createPane(1)
     const args = mockPanePtyArgs(pane, createManager(1), deps)
+    bindPaneAgentTitleMocks(args[2], agentTitleMocks)
+
     const parked = connectPanePty(...args)
     expect(parked.getOwnerContext().executionHostId).toBe('runtime:unresolved-owner')
     expect(createIpcPtyTransport).not.toHaveBeenCalled()
@@ -172,6 +182,8 @@ describe('connectPanePty queued startup consume', () => {
     ])
     parked.dispose()
     transportFactoryQueue.push(createMockTransport())
+    bindPaneAgentTitleMocks(args[2], agentTitleMocks)
+
     const binding = connectPanePty(...args)
     const captured = binding.getOwnerContext()
     expect(captured.executionHostId).toBe('runtime:server')
@@ -193,6 +205,7 @@ describe('connectPanePty queued startup consume', () => {
 
   it('spends the queued startup only after the pty is bound to the tab', async () => {
     const { connectPanePty } = await import('./pty-connection')
+    const agentTitleMocks2 = await vi.importMock<PtyConnectionAgentTitleMocks>('@/lib/agent-status')
     const transport = createMockTransport()
     spawnOnConnect(transport, 'fresh-pty')
     transportFactoryQueue.push(transport)
@@ -208,7 +221,11 @@ describe('connectPanePty queued startup consume', () => {
       })
     })
 
-    connectPanePty(createPane(1) as never, createManager(1) as never, deps as never)
+    connectPanePty(
+      createPane(1) as never,
+      createManager(1) as never,
+      bindPaneAgentTitleMocks(deps as never, agentTitleMocks2)
+    )
     await flushAsyncTicks(20)
 
     expect(callOrder).toContain('onQueuedStartupSpawned')
@@ -220,6 +237,7 @@ describe('connectPanePty queued startup consume', () => {
 
   it('leaves the queued startup unspent when the spawn never reaches onPtySpawn', async () => {
     const { connectPanePty } = await import('./pty-connection')
+    const agentTitleMocks3 = await vi.importMock<PtyConnectionAgentTitleMocks>('@/lib/agent-status')
     const transport = createMockTransport()
     // A retired/reattached spawn resolves without ever announcing a fresh pty.
     transport.connect.mockImplementation(async () => undefined)
@@ -231,7 +249,11 @@ describe('connectPanePty queued startup consume', () => {
       onQueuedStartupSpawned
     })
 
-    connectPanePty(createPane(1) as never, createManager(1) as never, deps as never)
+    connectPanePty(
+      createPane(1) as never,
+      createManager(1) as never,
+      bindPaneAgentTitleMocks(deps as never, agentTitleMocks3)
+    )
     await flushAsyncTicks(20)
 
     // The next mount must still find the command queued, or it is lost for good.
@@ -240,6 +262,7 @@ describe('connectPanePty queued startup consume', () => {
 
   it('keeps a throwing consume from escaping into the spawn', async () => {
     const { connectPanePty } = await import('./pty-connection')
+    const agentTitleMocks4 = await vi.importMock<PtyConnectionAgentTitleMocks>('@/lib/agent-status')
     const transport = createMockTransport()
     // onPtySpawn runs inside connect; callback throws would reject spawn and strand the pane, so cleanup must not throw.
     let escapedIntoSpawn = false
@@ -266,7 +289,11 @@ describe('connectPanePty queued startup consume', () => {
       })
     })
 
-    connectPanePty(createPane(1) as never, createManager(1) as never, deps as never)
+    connectPanePty(
+      createPane(1) as never,
+      createManager(1) as never,
+      bindPaneAgentTitleMocks(deps as never, agentTitleMocks4)
+    )
     await flushAsyncTicks(20)
 
     expect(escapedIntoSpawn).toBe(false)
@@ -282,6 +309,8 @@ describe('connectPanePty queued startup consume', () => {
     'retains the connect owner through focus changes ($rowless, $remote)',
     async ({ rowless, remote }) => {
       const { connectPanePty } = await import('./pty-connection')
+      const agentTitleMocks5 =
+        await vi.importMock<PtyConnectionAgentTitleMocks>('@/lib/agent-status')
       const { createTerminalPaneManagerOptions } = await import('./terminal-pane-manager-options')
       vi.stubGlobal('navigator', { userAgent: 'Windows' })
       const worktreeId = rowless ? 'ephemeral-setup-terminal:install' : 'repo1::/tmp/wt-1'
@@ -314,6 +343,8 @@ describe('connectPanePty queued startup consume', () => {
       const deps = buildPaneConnectionDeps(() => mockStoreState, { worktreeId })
       const pane = createPane(1)
       const args = mockPanePtyArgs(pane, createManager(1), deps)
+      bindPaneAgentTitleMocks(args[2], agentTitleMocks5)
+
       const binding = connectPanePty(...args)
       const captured = binding.getOwnerContext()
       expect(captured.route).toEqual({ runtimeEnvironmentId: remote ? 'server' : null })

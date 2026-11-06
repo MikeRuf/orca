@@ -1,7 +1,7 @@
 import type * as React from 'react'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { connectPanePty } from './pty-connection'
-import { makePaneKey } from '../../../../shared/stable-pane-id'
+import { makePaneKey } from '../../../../shared/workspace-layout/stable-pane-id'
 import { flushAsyncTicks } from './pty-connection-test-async'
 import {
   createManager,
@@ -10,7 +10,11 @@ import {
   leafIdForPane,
   type MockTransport
 } from './pty-connection-test-pane-fixtures'
-import { buildPaneConnectionDeps } from './pty-connection-test-deps'
+import {
+  buildPaneConnectionDeps,
+  type PtyConnectionAgentTitleMocks,
+  bindPaneAgentTitleMocks
+} from './pty-connection-test-deps'
 import {
   installTerminalTestGlobals,
   restoreTerminalTestGlobals
@@ -19,6 +23,7 @@ import { createInitialStoreState } from './pty-connection-test-store-fixtures'
 import type { StoreState } from './pty-connection-test-store-state'
 import type * as TerminalWorktreeRouteModule from '@/lib/terminal-worktree-route'
 import { appendTypedDraftText } from './pty-connection/agent-pre-ready-typed-draft'
+const agentTitleMocks = await vi.importMock<PtyConnectionAgentTitleMocks>('@/lib/agent-status')
 
 const {
   notifyCodexPaneBoundForStaleSweep,
@@ -82,7 +87,7 @@ vi.mock('@/lib/terminal-worktree-route', async (importOriginal) => {
   }
 })
 
-vi.mock('./remote-runtime-pty-transport', () => ({
+vi.mock('./pty-transport/remote-runtime/remote-runtime-pty-transport', () => ({
   createRemoteRuntimePtyTransport: vi.fn(
     (_environmentId: string, options: Record<string, unknown>) => {
       createdTransportOptions.push(options)
@@ -97,7 +102,7 @@ vi.mock('./remote-runtime-pty-transport', () => ({
 
 vi.mock('@/lib/agent-draft-paste-content', () => ({ sendAgentDraftPasteContent }))
 
-vi.mock('@/lib/launch-agent-paste-timeout-notice', () => ({
+vi.mock('@/lib/agent-session/launch/prompt/launch-agent-paste-timeout-notice', () => ({
   createPasteReadinessTimeoutNotice: () => ({ onTimeout: onPasteTimeout, wasNotified: () => false })
 }))
 
@@ -122,7 +127,9 @@ vi.mock('./cache-timer-seeding', () => ({ shouldSeedCacheTimerOnInitialTitle }))
 
 vi.mock('sonner', () => ({ toast: { info: toastInfo } }))
 
-vi.mock('@/lib/codex-stale-pane-sweep', () => ({ notifyCodexPaneBoundForStaleSweep }))
+vi.mock('@/lib/agent-session/accounts/codex/codex-stale-pane-sweep', () => ({
+  notifyCodexPaneBoundForStaleSweep
+}))
 
 vi.mock('react', async (importOriginal) => {
   const actual = await importOriginal<typeof React>()
@@ -132,7 +139,7 @@ vi.mock('react', async (importOriginal) => {
   }
 })
 
-vi.mock('./pty-transport', () => ({
+vi.mock('./pty-transport/ipc/pty-transport', () => ({
   createIpcPtyTransport: vi.fn((options: Record<string, unknown>) => {
     createdTransportOptions.push(options)
     const nextTransport = transportFactoryQueue.shift()
@@ -182,6 +189,8 @@ function connectAgentPane(overrides: Record<string, unknown> = {}): ConnectedAge
       ...overrides
     })
   ]
+  bindPaneAgentTitleMocks(connectArgs[2], agentTitleMocks)
+
   // oxlint-disable-next-line typescript/consistent-type-assertions -- SAFETY: the shared pane fixtures implement the members connectPanePty touches.
   const binding = connectPanePty(...(connectArgs as unknown as Parameters<typeof connectPanePty>))
   return {

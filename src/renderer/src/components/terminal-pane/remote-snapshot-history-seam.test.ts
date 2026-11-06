@@ -19,7 +19,7 @@ import {
   encodeTerminalStreamFrame,
   encodeTerminalStreamJson,
   encodeTerminalStreamText
-} from '../../../../shared/terminal-stream-protocol'
+} from '../../../../shared/terminal/stream/terminal-stream-protocol'
 import { writeHeadlessTerminal } from './pty-connection-test-async'
 import { buildFoldedImageReplayWrites } from './terminal-snapshot-replay-paint'
 import { stubRuntimeEnvironmentBridge } from '../../runtime/runtime-environment-bridge-fixture'
@@ -81,7 +81,8 @@ describe('pushed remote snapshots never splice stale history above the image', (
   })
 
   async function attach() {
-    const { createRemoteRuntimePtyTransport } = await import('./remote-runtime-pty-transport')
+    const { createRemoteRuntimePtyTransport } =
+      await import('./pty-transport/remote-runtime/remote-runtime-pty-transport')
     const transport = createRemoteRuntimePtyTransport('env-1', {
       worktreeId: 'wt-1',
       tabId: 'tab-1',

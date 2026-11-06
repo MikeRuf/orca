@@ -3,12 +3,15 @@ import {
   captureTerminalLaunchContext
 } from './terminal-launch-result-policy'
 import type { ColdRestoreAgentResumeStartup } from './fresh-spawn-types'
-import type { TerminalAttachmentLaunchResult } from '../../../../../shared/terminal-attachment-launch-result'
+import type { TerminalAttachmentLaunchResult } from '../../../../../shared/terminal/pty/lifecycle/terminal-attachment-launch-result'
 import { isPaneOwnerRefusal } from './pane-owner-recovery'
 import type { SpawnDeferralReason } from '../../../../../shared/host-spawn-admission'
 import { createTerminalStartupTiming } from '../terminal-startup-timing'
-import type { PtyReplayDataMeta, PtyTransportRecoveryState } from '../pty-transport-types'
-import type { PtyDataMeta } from '../pty-dispatcher'
+import type {
+  PtyReplayDataMeta,
+  PtyTransportRecoveryState
+} from '../pty-transport/pty-transport-types'
+import type { PtyDataMeta } from '../pty-transport/delivery/pty-dispatcher'
 import type { PtyPaneStartup } from '../pty-connection-types'
 
 import type { ConnectPanePtySession } from './connect-pane-pty-session'

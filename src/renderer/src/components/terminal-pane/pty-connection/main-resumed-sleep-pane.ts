@@ -5,8 +5,8 @@ import { hasWorktreeTeardownStarted } from '@/store/slices/worktree-delete-state
 import { readTerminalSpawnDeferral } from '../../../../../shared/host-spawn-admission'
 import { releaseDeferredCwdFence } from './fresh-spawn-start'
 import { findTerminalTabForPane } from './terminal-tab-id'
-import { isHostMirroredSleepingRecord } from '@/lib/host-mirrored-pane-liveness'
-import { parsePaneKey } from '../../../../../shared/stable-pane-id'
+import { isHostMirroredSleepingRecord } from '@/lib/agent-session/resume/host-mirrored-pane-liveness'
+import { parsePaneKey } from '../../../../../shared/workspace-layout/stable-pane-id'
 import {
   isWorkspaceSleepRecord,
   WORKTREE_TERMINALS_SLEEPING_ERROR

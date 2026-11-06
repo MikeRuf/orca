@@ -10,7 +10,11 @@ import {
   createManager,
   type MockTransport
 } from './pty-connection-test-pane-fixtures'
-import { buildPaneConnectionDeps } from './pty-connection-test-deps'
+import {
+  buildPaneConnectionDeps,
+  type PtyConnectionAgentTitleMocks,
+  bindPaneAgentTitleMocks
+} from './pty-connection-test-deps'
 import { createInitialStoreState } from './pty-connection-test-store-fixtures'
 import type { StoreState } from './pty-connection-test-store-state'
 import {
@@ -82,7 +86,7 @@ vi.mock('./cache-timer-seeding', () => ({
 
 vi.mock('sonner', () => ({ toast: { info: toastInfo } }))
 
-vi.mock('@/lib/codex-stale-pane-sweep', () => ({
+vi.mock('@/lib/agent-session/accounts/codex/codex-stale-pane-sweep', () => ({
   notifyCodexPaneBoundForStaleSweep
 }))
 
@@ -94,7 +98,7 @@ vi.mock('react', async (importOriginal) => {
   }
 })
 
-vi.mock('./pty-transport', () => ({
+vi.mock('./pty-transport/ipc/pty-transport', () => ({
   createIpcPtyTransport: vi.fn((options: Record<string, unknown>) => {
     createdTransportOptions.push(options)
     const nextTransport = transportFactoryQueue.shift()
@@ -105,7 +109,7 @@ vi.mock('./pty-transport', () => ({
   })
 }))
 
-vi.mock('./remote-runtime-pty-transport', () => ({
+vi.mock('./pty-transport/remote-runtime/remote-runtime-pty-transport', () => ({
   createRemoteRuntimePtyTransport: vi.fn(
     (_environmentId: string, options: Record<string, unknown>) => {
       createdTransportOptions.push(options)
@@ -118,7 +122,7 @@ vi.mock('./remote-runtime-pty-transport', () => ({
   )
 }))
 
-vi.mock('./pty-dispatcher', async (importOriginal) => {
+vi.mock('./pty-transport/delivery/pty-dispatcher', async (importOriginal) => {
   const actual = await importOriginal<Record<string, unknown>>()
   return { ...actual, getEagerPtyBufferHandle: vi.fn(() => undefined) }
 })
@@ -146,7 +150,10 @@ describe('fresh spawn leaves a local pane unbound', () => {
     'mounts and remounts the tab owner while an unrelated workspace is active (%s)',
     async (reverse) => {
       const { connectPanePty } = await import('./pty-connection')
-      const { createRemoteRuntimePtyTransport } = await import('./remote-runtime-pty-transport')
+      const agentTitleMocks =
+        await vi.importMock<PtyConnectionAgentTitleMocks>('@/lib/agent-status')
+      const { createRemoteRuntimePtyTransport } =
+        await import('./pty-transport/remote-runtime/remote-runtime-pty-transport')
       const local = makeWorktree({ id: 'wt-1', repoId: 'repo1', path: '/local', hostId: 'local' })
       const remote = { ...local, path: '/remote', hostId: 'runtime:server' as const }
       mockStoreState.activeWorktreeId = 'unrelated'
@@ -191,7 +198,13 @@ describe('fresh spawn leaves a local pane unbound', () => {
         const pane = createPane(1)
         const transport = createMockTransport('remote:server@@pty-1')
         transportFactoryQueue.push(transport)
-        const binding = connectPanePty(...mockPanePtyArgs(pane, createManager(1), createDeps()))
+        const binding = connectPanePty(
+          ...mockPanePtyArgs(
+            pane,
+            createManager(1),
+            bindPaneAgentTitleMocks(createDeps(), agentTitleMocks)
+          )
+        )
         await flushAsyncTicks(40)
         expect(createRemoteRuntimePtyTransport).toHaveBeenLastCalledWith(
           'server',
@@ -211,6 +224,8 @@ describe('fresh spawn leaves a local pane unbound', () => {
     'continues a recorded live folder owner despite ambiguous inventory (%s)',
     async (host) => {
       const { connectPanePty } = await import('./pty-connection')
+      const agentTitleMocks2 =
+        await vi.importMock<PtyConnectionAgentTitleMocks>('@/lib/agent-status')
       const worktreeId = 'folder:ambiguous'
       Object.assign(mockStoreState, {
         folderWorkspaces: [{ id: 'ambiguous', projectGroupId: 'mixed', folderPath: '/work' }],
@@ -237,7 +252,11 @@ describe('fresh spawn leaves a local pane unbound', () => {
         transportFactoryQueue.push(transport)
         const pane = createPane(1)
         const binding = connectPanePty(
-          ...mockPanePtyArgs(pane, createManager(1), createDeps({ worktreeId }))
+          ...mockPanePtyArgs(
+            pane,
+            createManager(1),
+            bindPaneAgentTitleMocks(createDeps({ worktreeId }), agentTitleMocks2)
+          )
         )
         await flushAsyncTicks(40)
         if (host === 'local') {

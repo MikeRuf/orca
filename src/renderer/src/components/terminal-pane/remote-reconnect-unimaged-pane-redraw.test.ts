@@ -8,7 +8,11 @@ import {
   type ConnectCallbacks,
   type MockTransport
 } from './pty-connection-test-pane-fixtures'
-import { buildPaneConnectionDeps } from './pty-connection-test-deps'
+import {
+  buildPaneConnectionDeps,
+  type PtyConnectionAgentTitleMocks,
+  bindPaneAgentTitleMocks
+} from './pty-connection-test-deps'
 import { createInitialStoreState } from './pty-connection-test-store-fixtures'
 import type { StoreState } from './pty-connection-test-store-state'
 import {
@@ -33,7 +37,9 @@ vi.mock('@/lib/agent-status', async (importOriginal) => {
 })
 vi.mock('./cache-timer-seeding', () => ({ shouldSeedCacheTimerOnInitialTitle: vi.fn(() => false) }))
 vi.mock('sonner', () => ({ toast: { info: vi.fn() } }))
-vi.mock('@/lib/codex-stale-pane-sweep', () => ({ notifyCodexPaneBoundForStaleSweep: vi.fn() }))
+vi.mock('@/lib/agent-session/accounts/codex/codex-stale-pane-sweep', () => ({
+  notifyCodexPaneBoundForStaleSweep: vi.fn()
+}))
 vi.mock('react', async (importOriginal) => {
   const actual = await importOriginal<typeof React>()
   return { ...actual, useCallback: <T extends (...args: unknown[]) => unknown>(fn: T): T => fn }
@@ -45,11 +51,13 @@ const nextQueuedTransport = (): MockTransport => {
   }
   return next
 }
-vi.mock('./pty-transport', () => ({ createIpcPtyTransport: vi.fn(() => nextQueuedTransport()) }))
-vi.mock('./remote-runtime-pty-transport', () => ({
+vi.mock('./pty-transport/ipc/pty-transport', () => ({
+  createIpcPtyTransport: vi.fn(() => nextQueuedTransport())
+}))
+vi.mock('./pty-transport/remote-runtime/remote-runtime-pty-transport', () => ({
   createRemoteRuntimePtyTransport: vi.fn(() => nextQueuedTransport())
 }))
-vi.mock('./pty-dispatcher', async (importOriginal) => ({
+vi.mock('./pty-transport/delivery/pty-dispatcher', async (importOriginal) => ({
   ...(await importOriginal<Record<string, unknown>>()),
   getEagerPtyBufferHandle: vi.fn(() => undefined)
 }))
@@ -82,6 +90,7 @@ async function connectVisibleRemotePane(
   opts: { visible?: boolean } = {}
 ): Promise<ReconnectedPane> {
   const { connectPanePty } = await import('./pty-connection')
+  const agentTitleMocks = await vi.importMock<PtyConnectionAgentTitleMocks>('@/lib/agent-status')
   const transport = createMockTransport(REMOTE_PTY_ID)
   transport.serializeBuffer = vi.fn()
   transport.serializeBufferOutcome = vi.fn(
@@ -99,7 +108,9 @@ async function connectVisibleRemotePane(
   const deps = buildPaneConnectionDeps(() => mockStoreState, {
     isVisibleRef: { current: opts.visible ?? true }
   })
-  const disposable = connectPanePty(...mockPanePtyArgs(pane, createManager(1), deps))
+  const disposable = connectPanePty(
+    ...mockPanePtyArgs(pane, createManager(1), bindPaneAgentTitleMocks(deps, agentTitleMocks))
+  )
   await flushAsyncTicks(6)
   expect(onStreamRecovered).not.toBeNull()
   transport.resize.mockClear()
