@@ -206,7 +206,9 @@ function FontSizeRow({
           onBlur={() => setDraft(null)}
           className="h-7 w-20 text-sm"
         />
-        <span className="text-xs text-muted-foreground">px</span>
+        <span className="text-xs text-muted-foreground">
+          {translate('settings.appearance.chat.pixels', 'px')}
+        </span>
         {value !== undefined ? (
           <ClearButton label={label} onClear={() => onCommit(undefined)} />
         ) : null}
