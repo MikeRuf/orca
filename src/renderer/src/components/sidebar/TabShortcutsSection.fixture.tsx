@@ -32,7 +32,8 @@ export const lists = defineFixture({
             tabId: 'tab-open',
             title: 'travel_agent',
             project: 'travel',
-            workspace: 'main'
+            workspace: 'main',
+            style: { background: '#1e3a8a', textColor: '#ffffff', fontSize: 15 }
           },
           {
             worktreeId: 'gone',

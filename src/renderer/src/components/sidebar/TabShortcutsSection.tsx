@@ -1,3 +1,4 @@
+import { useRef, useState } from 'react'
 import { ChevronRight, Star } from 'lucide-react'
 import { useAppStore } from '@/store'
 import { translate } from '@/i18n/i18n'
@@ -18,6 +19,9 @@ import {
   type TabShortcut
 } from '@/lib/tab-shortcuts-store'
 import { describeTab, openTabShortcut } from '@/lib/tab-shortcut-resolution'
+import { FavoriteTabAppearanceDialog } from './FavoriteTabAppearanceDialog'
+import { getSidebarSurfaceProps } from './project-sidebar-surface-style'
+import type { SidebarAppearanceDialogAnchor } from './SidebarAppearanceDialog'
 
 const NAME_SEPARATOR = '\u0000'
 
@@ -42,46 +46,81 @@ function ShortcutRow({
     : null
   const shown = live ?? shortcut
   const isFavorite = favorite || isFavoriteTab(shortcut)
+  const rowRef = useRef<HTMLButtonElement>(null)
+  const [appearanceAnchor, setAppearanceAnchor] = useState<SidebarAppearanceDialogAnchor | null>(
+    null
+  )
+  // Recents share rows with favorites but stay plain: the style marks the Favorites list.
+  const surface = getSidebarSurfaceProps(favorite ? shortcut.style : undefined)
   return (
-    <ContextMenu>
-      <ContextMenuTrigger asChild>
-        <button
-          type="button"
-          onClick={() => openTabShortcut(shortcut)}
-          title={[shown.title, shown.project, shown.workspace].filter(Boolean).join(' · ')}
-          className={cn(
-            'flex w-full min-w-0 items-baseline gap-1.5 rounded-md px-2 py-1 text-left text-[12px] text-worktree-sidebar-foreground/80 hover:bg-worktree-sidebar-foreground/8',
-            !live && 'opacity-50'
+    <>
+      <ContextMenu>
+        <ContextMenuTrigger asChild>
+          <button
+            ref={rowRef}
+            type="button"
+            {...surface}
+            onClick={() => openTabShortcut(shortcut)}
+            title={[shown.title, shown.project, shown.workspace].filter(Boolean).join(' · ')}
+            className={cn(
+              'flex w-full min-w-0 items-baseline gap-1.5 rounded-md px-2 py-1 text-left text-[12px] text-worktree-sidebar-foreground/80 hover:bg-worktree-sidebar-foreground/8',
+              !live && 'opacity-50'
+            )}
+          >
+            {/* One line: the tab name always, then project and workspace as far as they fit. */}
+            <span className="shrink-0 truncate font-medium text-worktree-sidebar-foreground max-w-full">
+              {shown.title}
+            </span>
+            {shown.project ? (
+              <span className="min-w-0 shrink truncate text-worktree-sidebar-foreground/50">
+                {shown.project}
+              </span>
+            ) : null}
+            {shown.workspace ? (
+              <span className="min-w-0 shrink-[2] truncate text-worktree-sidebar-foreground/40">
+                {shown.workspace}
+              </span>
+            ) : null}
+          </button>
+        </ContextMenuTrigger>
+        <ContextMenuContent>
+          {favorite ? (
+            <ContextMenuItem
+              onSelect={() =>
+                setAppearanceAnchor({
+                  // The section spans the sidebar, so its right edge is the sidebar's.
+                  sidebarRight:
+                    rowRef.current?.closest('[data-tab-shortcuts]')?.getBoundingClientRect()
+                      .right ?? 0
+                })
+              }
+            >
+              {translate(
+                'auto.components.sidebar.WorktreeList.customizeAppearance',
+                'Customize Appearance…'
+              )}
+            </ContextMenuItem>
+          ) : null}
+          {isFavorite ? (
+            <ContextMenuItem onSelect={() => removeFavoriteTab(shortcut)}>
+              {translate('auto.components.tabShortcuts.removeFavorite', 'Remove from Favorites')}
+            </ContextMenuItem>
+          ) : (
+            <ContextMenuItem onSelect={() => addFavoriteTab(live ?? shortcut)}>
+              {translate('auto.components.tabShortcuts.addFavorite', 'Add to Favorites')}
+            </ContextMenuItem>
           )}
-        >
-          {/* One line: the tab name always, then project and workspace as far as they fit. */}
-          <span className="shrink-0 truncate font-medium text-worktree-sidebar-foreground max-w-full">
-            {shown.title}
-          </span>
-          {shown.project ? (
-            <span className="min-w-0 shrink truncate text-worktree-sidebar-foreground/50">
-              {shown.project}
-            </span>
-          ) : null}
-          {shown.workspace ? (
-            <span className="min-w-0 shrink-[2] truncate text-worktree-sidebar-foreground/40">
-              {shown.workspace}
-            </span>
-          ) : null}
-        </button>
-      </ContextMenuTrigger>
-      <ContextMenuContent>
-        {isFavorite ? (
-          <ContextMenuItem onSelect={() => removeFavoriteTab(shortcut)}>
-            {translate('auto.components.tabShortcuts.removeFavorite', 'Remove from Favorites')}
-          </ContextMenuItem>
-        ) : (
-          <ContextMenuItem onSelect={() => addFavoriteTab(live ?? shortcut)}>
-            {translate('auto.components.tabShortcuts.addFavorite', 'Add to Favorites')}
-          </ContextMenuItem>
-        )}
-      </ContextMenuContent>
-    </ContextMenu>
+        </ContextMenuContent>
+      </ContextMenu>
+      {appearanceAnchor ? (
+        <FavoriteTabAppearanceDialog
+          shortcut={shortcut}
+          name={shown.title}
+          onClose={() => setAppearanceAnchor(null)}
+          anchor={appearanceAnchor}
+        />
+      ) : null}
+    </>
   )
 }
 
@@ -136,7 +175,7 @@ function ShortcutSection({
 export function TabShortcutsSection(): React.JSX.Element {
   const { favorites, recents, favoritesOpen, recentsOpen } = useTabShortcuts()
   return (
-    <div className="flex flex-col gap-0.5 px-2 pb-1">
+    <div data-tab-shortcuts="" className="flex flex-col gap-0.5 px-2 pb-1">
       <ShortcutSection
         title={translate('auto.components.tabShortcuts.favorites', 'Favorite tabs')}
         open={favoritesOpen}

@@ -19386,6 +19386,8 @@
         "addFavorite": "Add to Favorites",
         "favorites": "Favorite tabs",
         "noFavorites": "Right-click a tab and choose Add to Favorites.",
+        "appearanceDescription": "Background and font of this favorite in the sidebar. Changes apply as you make them.",
+        "appearanceRow": "Favorite row",
         "recents": "Recent tabs",
         "noRecents": "Tabs you visit appear here.",
         "untitled": "Untitled tab",
