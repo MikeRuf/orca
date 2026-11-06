@@ -19,6 +19,7 @@ import {
   type TabShortcut
 } from '@/lib/tab-shortcuts-store'
 import { describeTab, openTabShortcut } from '@/lib/tab-shortcut-resolution'
+import { readCurrentTabLocation } from '@/lib/last-tab-toggle'
 import { FavoriteTabAppearanceDialog } from './FavoriteTabAppearanceDialog'
 import { getSidebarSurfaceProps } from './project-sidebar-surface-style'
 import type { SidebarAppearanceDialogAnchor } from './SidebarAppearanceDialog'
@@ -45,6 +46,10 @@ function ShortcutRow({
     ? { ...shortcut, title: liveTitle, project: liveProject, workspace: liveWorkspace }
     : null
   const shown = live ?? shortcut
+  const isCurrentFavorite = useAppStore((state) => {
+    const current = favorite ? readCurrentTabLocation(state) : null
+    return current?.worktreeId === shortcut.worktreeId && current.tabId === shortcut.tabId
+  })
   const isFavorite = favorite || isFavoriteTab(shortcut)
   const rowRef = useRef<HTMLButtonElement>(null)
   const [appearanceAnchor, setAppearanceAnchor] = useState<SidebarAppearanceDialogAnchor | null>(
@@ -60,6 +65,8 @@ function ShortcutRow({
             ref={rowRef}
             type="button"
             {...surface}
+            data-favorite-tab-active={isCurrentFavorite ? '' : undefined}
+            aria-current={isCurrentFavorite ? 'true' : undefined}
             onClick={() => openTabShortcut(shortcut)}
             title={[shown.title, shown.project, shown.workspace].filter(Boolean).join(' · ')}
             className={cn(

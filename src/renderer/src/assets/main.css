@@ -1547,11 +1547,13 @@ html.native-shell .app-layout {
 
 /* The faint border and wash alone made the open workspace hard to find (Mike, 2026-11-05):
    a thick red ring, inset so the row keeps its size and an overflow-clipped list cannot cut it. */
-[data-worktree-card-surface][data-worktree-card-active='primary'] {
+[data-worktree-card-surface][data-worktree-card-active='primary'],
+[data-favorite-tab-active] {
   box-shadow: inset 0 0 0 3px #b91c1c;
 }
 
-.dark [data-worktree-card-surface][data-worktree-card-active='primary'] {
+.dark [data-worktree-card-surface][data-worktree-card-active='primary'],
+.dark [data-favorite-tab-active] {
   box-shadow: inset 0 0 0 3px #ef4444;
 }
 
