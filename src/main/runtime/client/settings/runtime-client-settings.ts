@@ -18,6 +18,7 @@ import { applyNativeChatSessionOptionSettingsMutation } from '../../../../shared
 import type { NativeChatSessionOptionSettingsMutation } from '../../../../shared/native-chat/input/native-chat-session-options'
 import { getHostDisplayLabelOverrides } from '../../../../shared/host-setting-overrides'
 import { nativeChatQueueFollowUps } from '../../../../shared/native-chat/input/native-chat-follow-up-behavior'
+import { nativeChatIdleStopMinutes } from '../../../../shared/native-chat/native-chat-idle-stop'
 import type { TerminalQuickCommand } from '../../../../shared/terminal/quick-commands/terminal-quick-command-types'
 import { recordManagedHookInstallFailure } from '../../../agent-hooks/install-telemetry'
 import { applyAgentStatusHooksEnabled } from '../../../agent-hooks/managed-agent-hook-controls'
@@ -109,6 +110,7 @@ export class RuntimeClientSettingsController {
         : { agentSkillSharingEnabled: isAgentSkillSharingEnabled(settings) }),
       nativeChatAutoContinueAfterUsageLimit:
         settings.nativeChatAutoContinueAfterUsageLimit === true,
+      nativeChatIdleStopMinutes: nativeChatIdleStopMinutes(settings),
       machineName: settings.machineName ?? '',
       // A paired browser dictates through this host, which refuses unless these allow it.
       voice: {
