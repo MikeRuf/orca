@@ -200,6 +200,11 @@ export const HANDLER_GROUPS: readonly HandlerGroup[] = [
     load: async () => (await import('./handlers/agent-launch.js')).AGENT_LAUNCH_HANDLERS
   },
   {
+    name: 'agent-session-commands',
+    keys: ['agent notify-busy', 'agent close'],
+    load: async () => (await import('./handlers/agent-sessions.js')).AGENT_SESSION_HANDLERS
+  },
+  {
     name: 'chat',
     keys: ['chat rename'],
     load: async () => (await import('./handlers/chat.js')).CHAT_HANDLERS
