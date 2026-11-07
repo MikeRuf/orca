@@ -50,6 +50,7 @@ export type RepositoryApi = {
         | 'displayName'
         | 'badgeColor'
         | 'repoIcon'
+        | 'sidebarStyle'
         | 'upstream'
         | 'hookSettings'
         | 'editorFormatter'

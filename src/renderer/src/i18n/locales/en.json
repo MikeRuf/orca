@@ -6837,6 +6837,7 @@
           "projectGroupRefreshSuccess_other": "Added {{count}} projects to {{group}}",
           "projectGroupRefreshing": "Refreshing {{group}}…",
           "refreshProjectGroup": "Refresh projects",
+          "customizeAppearance": "Customize Appearance…",
           "hostServerReplaced": "Different server: forget it, then connect"
         },
         "WorktreeMetaDialog": {
@@ -7567,6 +7568,10 @@
           "needsInput": "Needs input",
           "running": "Running",
           "idle": "Idle"
+        },
+        "ProjectAppearanceDialog": {
+          "title": "Appearance of {{value0}}",
+          "description": "Icon, color, background and font in the sidebar. Changes apply as you make them."
         }
       },
       "shared": {
@@ -13799,6 +13804,19 @@
         },
         "SettingsSearchableSelect": {
           "noMatches": "No matches."
+        },
+        "RepositorySidebarStyleSection": {
+          "headerTitle": "Project header row",
+          "rowsTitle": "Workspace rows under it",
+          "reset": "Reset",
+          "background": "Background",
+          "textColor": "Text color",
+          "defaultColor": "Default",
+          "font": "Font",
+          "fontPlaceholder": "Default",
+          "size": "Size",
+          "clear": "Use default {{value0}}",
+          "title": "Sidebar appearance"
         }
       },
       "right": {

@@ -37,6 +37,7 @@ import {
 } from './item-row'
 import { renderWorktreeSectionHeaderRow, type SectionHeaderRowContext } from './SectionHeader'
 import type { WorktreeRowDragState } from '../drag/row-state'
+import { getProjectSidebarSurfaceProps } from '../../project-sidebar-surface-style'
 
 export type WorktreeVirtualRowContext = {
   renderRows: RenderRow[]
@@ -248,6 +249,11 @@ export function renderWorktreeVirtualRow(
       ? getWorkspaceStatus(row.worktree, ctx.workspaceStatuses)
       : null
   const itemKey = getWorktreeHostIdentity(row.worktree)
+  // Only under a project header; other groupings mix projects in one list.
+  const rowSurface = getProjectSidebarSurfaceProps(
+    ctx.groupBy === 'repo' ? row.repo : undefined,
+    'rows'
+  )
   const itemPreviewOffset = ctx.worktreeDragState.previewOffsetsByWorktreeId.get(itemKey) ?? 0
 
   return (
@@ -280,7 +286,11 @@ export function renderWorktreeVirtualRow(
           : undefined
       }
     >
-      {renderWorktreeItemRow(ctx.item, row, false)}
+      {rowSurface.style ? (
+        <div {...rowSurface}>{renderWorktreeItemRow(ctx.item, row, false)}</div>
+      ) : (
+        renderWorktreeItemRow(ctx.item, row, false)
+      )}
     </div>
   )
 }
