@@ -18,13 +18,16 @@ import {
   useTabShortcuts,
   type TabShortcut
 } from '@/lib/tab-shortcuts-store'
-import { describeTab, openTabShortcut } from '@/lib/tab-shortcut-resolution'
+import { openTabShortcut } from '@/lib/tab-shortcut-resolution'
 import { readCurrentTabLocation } from '@/lib/last-tab-toggle'
 import { FavoriteTabAppearanceDialog } from './FavoriteTabAppearanceDialog'
 import { getSidebarSurfaceProps } from './project-sidebar-surface-style'
+import {
+  TAB_SHORTCUT_ROW_CLASS,
+  TabShortcutRowLabel,
+  useLiveTabShortcut
+} from './TabShortcutRowLabel'
 import type { SidebarAppearanceDialogAnchor } from './SidebarAppearanceDialog'
-
-const NAME_SEPARATOR = '\u0000'
 
 function ShortcutRow({
   shortcut,
@@ -33,18 +36,7 @@ function ShortcutRow({
   shortcut: TabShortcut
   favorite: boolean
 }): React.JSX.Element {
-  // Live names win; the snapshot covers a tab that is closed or not loaded yet.
-  // A string selection: a fresh object per read would make the store hook re-render forever.
-  const liveKey = useAppStore((state) => {
-    const tab = describeTab(state, shortcut.worktreeId, shortcut.tabId)
-    return tab ? [tab.title, tab.project, tab.workspace].join(NAME_SEPARATOR) : ''
-  })
-  const [liveTitle = '', liveProject = '', liveWorkspace = ''] = liveKey
-    ? liveKey.split(NAME_SEPARATOR)
-    : []
-  const live: TabShortcut | null = liveKey
-    ? { ...shortcut, title: liveTitle, project: liveProject, workspace: liveWorkspace }
-    : null
+  const live = useLiveTabShortcut(shortcut)
   const shown = live ?? shortcut
   const isCurrentFavorite = useAppStore((state) => {
     const current = favorite ? readCurrentTabLocation(state) : null
@@ -70,24 +62,12 @@ function ShortcutRow({
             onClick={() => openTabShortcut(shortcut)}
             title={[shown.title, shown.project, shown.workspace].filter(Boolean).join(' · ')}
             className={cn(
-              'flex w-full min-w-0 items-baseline gap-1.5 rounded-md px-2 py-1 text-left text-[12px] text-worktree-sidebar-foreground/80 hover:bg-worktree-sidebar-foreground/8',
+              TAB_SHORTCUT_ROW_CLASS,
+              'hover:bg-worktree-sidebar-foreground/8',
               !live && 'opacity-50'
             )}
           >
-            {/* One line: the tab name always, then project and workspace as far as they fit. */}
-            <span className="shrink-0 truncate font-medium text-worktree-sidebar-foreground max-w-full">
-              {shown.title}
-            </span>
-            {shown.project ? (
-              <span className="min-w-0 shrink truncate text-worktree-sidebar-foreground/50">
-                {shown.project}
-              </span>
-            ) : null}
-            {shown.workspace ? (
-              <span className="min-w-0 shrink-[2] truncate text-worktree-sidebar-foreground/40">
-                {shown.workspace}
-              </span>
-            ) : null}
+            <TabShortcutRowLabel shown={shown} />
           </button>
         </ContextMenuTrigger>
         <ContextMenuContent>
