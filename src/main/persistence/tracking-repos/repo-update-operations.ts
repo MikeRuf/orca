@@ -105,6 +105,7 @@ export class RepoUpdatePersistenceOperations {
         | 'defaultJiraProject'
         | 'forkSyncMode'
         | 'claudeAccountId'
+        | 'agentWorkspaceTrust'
         | 'externalWorktreeVisibilityPromptDismissedAt'
         | 'externalWorktreeInboxBaselinePaths'
         | 'importedExternalWorktreePaths'

@@ -78,6 +78,7 @@ export function createRepoUpdateSchema<T extends Readonly<Record<string, z.ZodTy
         .regex(/^[a-zA-Z0-9_-]{1,512}$/)
         .nullable()
         .optional(),
+      agentWorkspaceTrust: z.enum(['pre-trust', 'agent-asks']).optional(),
       externalWorktreeVisibility: z.enum(['hide', 'show']).nullable().optional(),
       externalWorktreeVisibilityPromptDismissedAt: z.number().finite().optional(),
       externalWorktreeInboxBaselinePaths: z.array(z.string()).optional(),

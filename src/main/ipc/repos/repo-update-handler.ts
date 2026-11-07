@@ -49,6 +49,7 @@ export function registerRepoUpdateHandler(mainWindow: BrowserWindow, store: Stor
             | 'issueSourcePreference'
             | 'forkSyncMode'
             | 'claudeAccountId'
+            | 'agentWorkspaceTrust'
             | 'externalWorktreeVisibilityPromptDismissedAt'
             | 'externalWorktreeInboxBaselinePaths'
             | 'importedExternalWorktreePaths'

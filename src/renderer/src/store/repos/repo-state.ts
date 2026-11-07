@@ -51,6 +51,7 @@ export type RepoUpdate = Partial<
     | 'defaultJiraProject'
     | 'forkSyncMode'
     | 'claudeAccountId'
+    | 'agentWorkspaceTrust'
     | 'externalWorktreeVisibilityPromptDismissedAt'
     | 'externalWorktreeInboxBaselinePaths'
     | 'importedExternalWorktreePaths'
