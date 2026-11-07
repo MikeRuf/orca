@@ -186,6 +186,7 @@ function AccountRow({
 
 /** Every Claude account with its limits, projects, and chats; opened from the status bar meters. */
 export function ClaudeAccountsPanel({
+  hostLabel,
   accounts,
   viewedAccountId,
   updatedAgoMinutes,
@@ -197,6 +198,8 @@ export function ClaudeAccountsPanel({
   onAddAccount,
   onManageAccounts
 }: {
+  /** Each host keeps its own accounts, so an empty list must say whose it is. */
+  hostLabel: string
   accounts: ClaudeAccountUsage[]
   /** The account of the chat on screen starts expanded. */
   viewedAccountId: string | null
@@ -212,10 +215,12 @@ export function ClaudeAccountsPanel({
   return (
     <div className="w-[26rem] max-w-[calc(100vw-1rem)]">
       <div className="flex items-center gap-2 border-b border-border px-3 py-2">
-        <span className="text-sm font-medium text-foreground">
-          {translate('components.claude-accounts.title', 'Claude accounts')}
+        <span className="min-w-0 truncate text-sm font-medium text-foreground">
+          {translate('components.claude-accounts.titleOnHost', 'Claude accounts on {{host}}', {
+            host: hostLabel
+          })}
         </span>
-        <span className="min-w-0 flex-1 truncate text-right text-xs text-muted-foreground">
+        <span className="ml-auto shrink-0 text-right text-xs text-muted-foreground">
           {updatedAgoMinutes === null
             ? null
             : translate('components.claude-accounts.updatedAgo', 'Updated {{minutes}} min ago', {

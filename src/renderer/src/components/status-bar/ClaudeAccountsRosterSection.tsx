@@ -18,7 +18,11 @@ import { getClaudeAccountErrorDescription } from '../settings/accounts/accounts-
 import { buildClaudeAccountUsage, resolveClaudeChatAccountId } from './claude-account-usage-model'
 import { ClaudeAccountsPanel } from './ClaudeAccountsPanel'
 import { isOwnerNotSetUpPlaceholder } from './owner-usage-rate-limits'
-import { repoRuntimeTarget, useClaudeAccountsOverview } from './use-claude-accounts-overview'
+import {
+  repoRuntimeTarget,
+  useClaudeAccountsHostLabel,
+  useClaudeAccountsOverview
+} from './use-claude-accounts-overview'
 
 const HOST_TARGET = { runtime: 'host', wslDistro: null } as const
 
@@ -47,6 +51,7 @@ export function ClaudeAccountsRosterSection({
   )
   const activeWorktreeId = useAppStore((state) => state.activeWorktreeId)
   const { overview, isRefreshing, refresh } = useClaudeAccountsOverview(target)
+  const hostLabel = useClaudeAccountsHostLabel(target)
   const now = useResetCountdownClock([overview?.updatedAt])
   const accounts = useMemo(
     () => (overview ? buildClaudeAccountUsage(overview, repos) : []),
@@ -105,6 +110,7 @@ export function ClaudeAccountsRosterSection({
   return (
     <div className="w-[480px]">
       <ClaudeAccountsPanel
+        hostLabel={hostLabel}
         accounts={accounts}
         viewedAccountId={
           activeWorktreeId

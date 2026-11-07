@@ -1,11 +1,18 @@
 import { useCallback, useMemo, useSyncExternalStore } from 'react'
 import type { ClaudeAccountsOverview } from '../../../../shared/claude-accounts-overview'
-import { getRepoExecutionHostId, parseExecutionHostId } from '../../../../shared/execution-host'
+import {
+  getRepoExecutionHostId,
+  LOCAL_EXECUTION_HOST_ID,
+  parseExecutionHostId,
+  toRuntimeExecutionHostId
+} from '../../../../shared/execution-host'
 import type { Repo } from '../../../../shared/repo-types'
 import type { RuntimeClientTarget } from '../../../../shared/runtime-client-target'
+import { selectExecutionHostDisplayLabel } from '@/lib/execution-host-display-label'
 import { callRuntimeRpc } from '@/runtime/runtime-rpc-client'
 import { runtimeTargetForOwnerEnvironment } from '@/runtime/runtime-client-target'
 import { getProviderAccountsOwnerKey } from '@/runtime/runtime-provider-accounts-client'
+import { useAppStore } from '@/store'
 
 const POLL_MS = 60_000
 
@@ -53,6 +60,15 @@ async function loadOverview(
 export function repoRuntimeTarget(repo: Repo): RuntimeClientTarget {
   const host = parseExecutionHostId(getRepoExecutionHostId(repo))
   return runtimeTargetForOwnerEnvironment(host?.kind === 'runtime' ? host.environmentId : null)
+}
+
+/** The name of the host whose accounts these are, as the sidebar shows it. */
+export function useClaudeAccountsHostLabel(target: RuntimeClientTarget): string {
+  const hostId =
+    target.kind === 'environment'
+      ? toRuntimeExecutionHostId(target.environmentId)
+      : LOCAL_EXECUTION_HOST_ID
+  return useAppStore((state) => selectExecutionHostDisplayLabel(state, hostId))
 }
 
 export function useClaudeAccountsOverview(target: RuntimeClientTarget): OverviewState & {

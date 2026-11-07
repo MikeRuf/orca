@@ -4,6 +4,7 @@ import type { Repo } from '../../../../../shared/repo-types'
 import { translate } from '@/i18n/i18n'
 import {
   repoRuntimeTarget,
+  useClaudeAccountsHostLabel,
   useClaudeAccountsOverview
 } from '../../status-bar/use-claude-accounts-overview'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../../ui/select'
@@ -27,6 +28,7 @@ export function RepositoryClaudeAccountSection({
   const selectLabelId = useId()
   const target = useMemo(() => repoRuntimeTarget(repo), [repo])
   const { overview } = useClaudeAccountsOverview(target)
+  const hostLabel = useClaudeAccountsHostLabel(target)
   const accounts = (overview?.accounts ?? []).filter(({ id }) => id !== CLAUDE_SYSTEM_ACCOUNT_ID)
   const assigned = repo.claudeAccountId ?? null
   const title = translate('components.claude-accounts.projectTitle', 'Claude Account')
@@ -52,7 +54,9 @@ export function RepositoryClaudeAccountSection({
       </div>
       <div className="space-y-1.5">
         <span id={selectLabelId} className="text-xs text-muted-foreground">
-          {translate('components.claude-accounts.projectSelectLabel', 'Account')}
+          {translate('components.claude-accounts.projectSelectLabelOnHost', 'Account on {{host}}', {
+            host: hostLabel
+          })}
         </span>
         <Select
           value={assigned ?? DEFAULT_VALUE}

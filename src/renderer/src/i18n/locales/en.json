@@ -21384,7 +21384,6 @@
       "projectTitle": "Claude Account",
       "projectDescription": "Run this project’s Claude chats on a specific account.",
       "projectLongDescription": "New chats start on this account, and resumed chats move to it. If it is signed out, chats use the default account.",
-      "projectSelectLabel": "Account",
       "useDefault": "Use default account",
       "removedAccount": "Removed account",
       "signedOutOption": "{{email}} (signed out)",
@@ -21397,14 +21396,15 @@
       "signIn": "Sign in",
       "oneChat": "1 chat",
       "chatCount": "{{count}} chats",
-      "title": "Claude accounts",
       "updatedAgo": "Updated {{minutes}} min ago",
       "refresh": "Refresh usage",
       "addAccount": "Add account",
       "manageAccounts": "Manage accounts",
       "setDefaultFailed": "Could not change the default.",
       "systemDefault": "System default",
-      "untitledChat": "Untitled chat"
+      "untitledChat": "Untitled chat",
+      "projectSelectLabelOnHost": "Account on {{host}}",
+      "titleOnHost": "Claude accounts on {{host}}"
     }
   },
   "dashboardPopout": {
