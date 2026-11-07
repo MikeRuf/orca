@@ -12,8 +12,8 @@ import {
   registerEagerPtyBuffer,
   subscribeToPtyExit,
   type EagerPtyHandle
-} from '@/components/terminal-pane/pty-dispatcher'
-import { subscribeToPtyData } from '@/components/terminal-pane/pty-data-sidecar-subscriptions'
+} from '@/components/terminal-pane/pty-transport/delivery/pty-dispatcher'
+import { subscribeToPtyData } from '@/components/terminal-pane/pty-transport/delivery/pty-data-sidecar-subscriptions'
 import { callRuntimeRpc } from '@/runtime/runtime-rpc-client'
 import { retireProvider } from '@/lib/agent-session/launch/background/retire-unowned-background-terminal'
 import {
@@ -24,7 +24,7 @@ import {
 import type { TerminalLaunchResult } from '../../../../../../shared/agent-session/lifecycle/agent-session-resume'
 import { subscribeToRuntimeTerminalData } from '@/runtime/runtime-terminal-stream'
 import { toRemoteRuntimePtyId } from '../../../../../../shared/remote-runtime/remote-runtime-pty-id'
-import { isMainTerminalSideEffectAuthorityForPty } from '@/components/terminal-pane/terminal-side-effect-facts-handler'
+import { isMainTerminalSideEffectAuthorityForPty } from '@/components/terminal-pane/pty-transport/output/terminal-side-effect-facts-handler'
 import { runBestEffortAgentBackgroundCleanups } from '@/lib/agent-session/launch/background/agent-background-session-cleanup'
 import type { bindAutomationTerminal } from '@/lib/automation-terminal-ownership'
 import {

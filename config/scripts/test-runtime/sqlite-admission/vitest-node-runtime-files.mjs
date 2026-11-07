@@ -25,7 +25,7 @@ const NODE_RUNTIME_INCLUDE = [
   'src/main/host/electron-http-client.test.ts',
   'src/main/browser/extensions/native-messaging/browser-extension-native-host-process-backpressure.test.ts',
   'src/main/daemon/providers/lifecycle/testing/daemon-init-provider-installation.test.ts',
-  'src/renderer/src/components/terminal-pane/pty-input-write-queue.test.ts',
+  'src/renderer/src/components/terminal-pane/pty-transport/input/pty-input-write-queue.test.ts',
   'src/renderer/src/lib/react-commit-cascade-observer.test.ts',
   'src/renderer/src/lib/react-commit-cascade-telemetry.test.ts',
   // Asserts payloads are collected; Bun's GC scans the stack conservatively and may keep one alive.
@@ -152,7 +152,7 @@ const NODE_RUNTIME_INCLUDE = [
   'src/shared/ephemeral-vm-recipe-output-capture.test.ts',
   'src/main/gitlab/gitlab-known-host-retirement.test.ts',
   'src/main/window/main-window-updater-deferred-setup.test.ts',
-  'src/renderer/src/components/terminal-pane/terminal-pane-host-state-memo.test.ts',
+  'src/renderer/src/components/terminal-pane/host-state/terminal-pane-host-state-memo.test.ts',
   'src/renderer/src/components/automations/use-automation-runs-dashboard-payload.test.tsx',
   'src/main/native-chat/agent-session-journal/**/*.test.ts',
   'src/main/native-chat/agent-session-wire/host/testing/structured-agent-session-terminal-writer-acquire.test.ts',

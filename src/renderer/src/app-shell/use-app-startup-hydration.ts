@@ -2,7 +2,7 @@ import { restoreStructuredLaunchSurfaces } from '@/lib/agent-session/launch/stru
 import { useEffect, useRef } from 'react'
 import { restoreLocalStructuredChatsAtStartup } from '@/runtime/local-structured-chats'
 import { syncZoomCSSVar } from '@/lib/ui-zoom'
-import { installCodexDetachedPaneRestartExecutor } from '@/components/terminal-pane/codex-detached-pane-restart-scheduler'
+import { installCodexDetachedPaneRestartExecutor } from '@/components/terminal-pane/account-restart/detached/codex-detached-pane-restart-scheduler'
 import { useAppStore } from '../store'
 import { reconcileHydratedWorkspaceTabModels } from './reconcile-hydrated-workspace-tab-models'
 import { useStartupActions } from './use-app-startup-actions'
@@ -23,7 +23,7 @@ import {
 import { recoverFromDegradedStartup } from '../startup/startup-degraded-recovery'
 import { restoreSshConnectionsForStartup } from '../startup/startup-ssh-connection-restore'
 import { collectActiveWorkspaceSshTargetIds } from '../startup/active-workspace-ssh-targets'
-import { publishTerminalViewAttributesAtAppStart } from '../components/terminal-pane/terminal-appearance'
+import { publishTerminalViewAttributesAtAppStart } from '../components/terminal-pane/appearance/terminal-appearance'
 import { getSystemPrefersDark } from '../lib/terminal-theme'
 import {
   collectTerminalProviderSnapshotPtyIds,
