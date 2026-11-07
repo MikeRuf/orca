@@ -72,6 +72,7 @@ function controller(
     remove: vi.fn(async () => {}),
     edit: vi.fn(async () => {}),
     steerHead: vi.fn(() => false),
+    steerAll: vi.fn(() => false),
     isWorking
   }
 }
