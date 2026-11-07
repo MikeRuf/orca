@@ -4,6 +4,7 @@ import type { Store } from '../../persistence/loading-store/store'
 import type { Repo } from '../../../shared/repo-types'
 import type { RepoHostTarget } from '../../../shared/repo-host-identity'
 import { isFolderRepo } from '../../../shared/repo-kind'
+import { sanitizeClaudeAccountId } from '../../persistence/tracking-repos/repo-sanitization'
 import type { ExecutionHostId } from '../../../shared/execution-host'
 import { getRepoExecutionHostId, normalizeExecutionHostId } from '../../../shared/execution-host'
 import { normalizeRepoBadgeColor } from '../../../shared/repo-badge-color'
@@ -49,6 +50,7 @@ export function registerRepoUpdateHandler(mainWindow: BrowserWindow, store: Stor
             | 'symlinkPaths'
             | 'issueSourcePreference'
             | 'forkSyncMode'
+            | 'claudeAccountId'
             | 'agentWorkspaceTrust'
             | 'externalWorktreeVisibilityPromptDismissedAt'
             | 'externalWorktreeInboxBaselinePaths'
@@ -91,6 +93,9 @@ export function registerRepoUpdateHandler(mainWindow: BrowserWindow, store: Stor
         updates.forkSyncMode !== 'off'
       ) {
         delete updates.forkSyncMode
+      }
+      if ('claudeAccountId' in updates) {
+        updates.claudeAccountId = sanitizeClaudeAccountId(updates.claudeAccountId)
       }
       // Null clears the binding; malformed values must not become account selections.
       if ('ghAccount' in updates) {

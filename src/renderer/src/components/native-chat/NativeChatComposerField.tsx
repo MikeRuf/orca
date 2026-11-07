@@ -12,7 +12,7 @@ import type { NativeChatMentionFiles } from './use-native-chat-mention-files'
 import { NativeChatComposerActions } from './NativeChatComposerActions'
 import { NativeChatComposerNotices } from './NativeChatComposerNotices'
 import type { NativeChatComposerNotice } from './native-chat-composer-notice'
-import type { NativeChatContextUsageSummary } from '../../../../shared/native-chat/native-chat-context-usage-summary'
+import type { NativeChatComposerUsage } from './use-native-chat-composer-usage'
 import {
   nativeChatComposerPlaceholder,
   type NativeChatAfterStopSend
@@ -93,7 +93,7 @@ export type NativeChatComposerFieldProps = {
   onStop?: () => void
   sessionOptionsSurface: SessionOptionsSurface | null
   sessionOptionsSnapshot: SessionOptionDescriptor[]
-  contextUsage?: NativeChatContextUsageSummary | null
+  composerUsage?: NativeChatComposerUsage
   sessionOptionsPickerRequest?: NativeChatOptionPickerRequest | null
   goalMode?: NativeChatComposerGoalMode
   agent?: string
@@ -169,7 +169,7 @@ export function NativeChatComposerField({
   onStop,
   sessionOptionsSurface,
   sessionOptionsSnapshot,
-  contextUsage,
+  composerUsage,
   sessionOptionsPickerRequest,
   goalMode,
   agent,
@@ -418,7 +418,7 @@ export function NativeChatComposerField({
                 onStop={onStop ? stop : undefined}
                 sessionOptionsSurface={sessionOptionsSurface}
                 sessionOptionsSnapshot={sessionOptionsSnapshot}
-                contextUsage={contextUsage}
+                {...composerUsage}
                 sessionOptionsPickerRequest={sessionOptionsPickerRequest}
                 focusComposer={focusComposer}
                 onExitGoalMode={goalMode?.active ? exitGoalMode : undefined}

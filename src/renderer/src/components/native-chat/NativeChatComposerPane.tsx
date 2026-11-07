@@ -3,7 +3,7 @@ import { useNativeChatComposerNotice } from './use-native-chat-composer-notice'
 import { useNativeChatMobileHoldNotice } from './use-native-chat-mobile-hold-notice'
 import { forwardRef, useCallback, useState, useRef } from 'react'
 import { useNativeChatComposerInterrupt } from './use-native-chat-composer-interrupt'
-import { useNativeChatContextUsageSummary } from './use-native-chat-context-usage-summary'
+import { useNativeChatComposerUsage } from './use-native-chat-composer-usage'
 import { useNativeChatMentionFiles } from './use-native-chat-mention-files'
 import { useNativeChatDraft } from './use-native-chat-draft'
 import { useNativeChatDraftEvents } from './use-native-chat-draft-events'
@@ -218,7 +218,7 @@ export const NativeChatComposerPane = forwardRef<ComposerHandle, C.NativeChatCom
       paneKey,
       structuredTransport
     })
-    const contextUsageSummary = useNativeChatContextUsageSummary(structuredTransport)
+    const composerUsage = useNativeChatComposerUsage(agent, structuredTransport)
 
     const sendStructured = useNativeChatStructuredComposerSend({
       agent,
@@ -402,7 +402,7 @@ export const NativeChatComposerPane = forwardRef<ComposerHandle, C.NativeChatCom
           onStop={interrupt}
           sessionOptionsSurface={sessionOptions.surface}
           sessionOptionsSnapshot={sessionOptions.snapshot}
-          contextUsage={contextUsageSummary}
+          composerUsage={composerUsage}
           sessionOptionsPickerRequest={structuredTransport?.optionPickerRequest ?? null}
           agent={agent}
           launchPrompt={launchPrompt}
