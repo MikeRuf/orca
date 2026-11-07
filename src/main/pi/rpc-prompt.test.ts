@@ -13,7 +13,7 @@ function message(blocks: AgentJournalMessageItem['blocks']): AgentJournalMessage
 
 describe('Pi RPC prompt preparation', () => {
   it('encodes host-read image bytes and sends steer/followUp as prompt behavior', async () => {
-    const readLocal = vi.fn(async () => PNG)
+    const readLocal = vi.fn(async () => ({ bytes: PNG }))
     const body = message([
       { type: 'text', text: 'Look at this' },
       { type: 'image-ref', path: '/workspace/screenshot.png' },
@@ -33,7 +33,7 @@ describe('Pi RPC prompt preparation', () => {
   })
 
   it('rejects URL refs with a typed unsupported attachment failure', async () => {
-    const readLocal = vi.fn(async () => PNG)
+    const readLocal = vi.fn(async () => ({ bytes: PNG }))
     const rejected = await preparePiRpcPrompt(
       message([{ type: 'image-ref', url: 'https://example.test/image.png' }]),
       undefined,
@@ -47,7 +47,7 @@ describe('Pi RPC prompt preparation', () => {
   })
 
   it('checks local image MIME against bytes and rejects empty prompts', async () => {
-    const readLocal = vi.fn(async () => PNG)
+    const readLocal = vi.fn(async () => ({ bytes: PNG }))
     await expect(
       preparePiRpcPrompt(message([{ type: 'image-ref', path: '/a.jpg' }]), undefined, { readLocal })
     ).rejects.toThrow()
