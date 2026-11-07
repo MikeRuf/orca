@@ -19493,11 +19493,14 @@
         "addFavorite": "Add to Favorites",
         "favorites": "Favorite tabs",
         "noFavorites": "Right-click a tab and choose Add to Favorites.",
+        "appearanceDescription": "Background and font of this favorite in the sidebar. Changes apply as you make them.",
+        "appearanceRow": "Favorite row",
         "recents": "Recent tabs",
         "noRecents": "Tabs you visit appear here.",
         "untitled": "Untitled tab",
         "closed": "That tab is closed.",
-        "openFailed": "Could not open that tab."
+        "openFailed": "Could not open that tab.",
+        "waitingOnYou": "Waiting on your answer"
       }
     },
     "i18n": {
@@ -23421,7 +23424,8 @@
       "tabNewBrowserSplitRight": "New browser tab in right split",
       "viewPlugins": "Open Plugins",
       "tabToggleLast": "Back to the last tab (any workspace)",
-      "sidebarProjectsToggleCollapse": "Collapse / Expand All Projects"
+      "sidebarProjectsToggleCollapse": "Collapse / Expand All Projects",
+      "tabCycleFavorites": "Cycle through favorite tabs"
     },
     "group": {
       "global": "Global",

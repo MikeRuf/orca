@@ -91,6 +91,8 @@ const STATIC_TITLE_COPY = {
     translate('keybindings.title.tabPreviousRecent', 'Previous recent tab'),
   'tab.toggleLast': () =>
     translate('keybindings.title.tabToggleLast', 'Back to the last tab (any workspace)'),
+  'tab.cycleFavorites': () =>
+    translate('keybindings.title.tabCycleFavorites', 'Cycle through favorite tabs'),
   'tab.nextTerminal': () => translate('keybindings.title.tabNextTerminal', 'Next terminal tab'),
   'tab.previousTerminal': () =>
     translate('keybindings.title.tabPreviousTerminal', 'Previous terminal tab'),
