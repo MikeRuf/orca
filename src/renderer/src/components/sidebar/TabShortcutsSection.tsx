@@ -21,6 +21,7 @@ import {
 import { openTabShortcut } from '@/lib/tab-shortcut-resolution'
 import { readCurrentTabLocation } from '@/lib/last-tab-toggle'
 import { FavoriteTabAppearanceDialog } from './FavoriteTabAppearanceDialog'
+import { FavoriteTabWaitingMark } from './FavoriteTabWaitingMark'
 import { getSidebarSurfaceProps } from './project-sidebar-surface-style'
 import {
   TAB_SHORTCUT_ROW_CLASS,
@@ -68,6 +69,7 @@ function ShortcutRow({
             )}
           >
             <TabShortcutRowLabel shown={shown} />
+            {favorite ? <FavoriteTabWaitingMark favorite={shortcut} /> : null}
           </button>
         </ContextMenuTrigger>
         <ContextMenuContent>

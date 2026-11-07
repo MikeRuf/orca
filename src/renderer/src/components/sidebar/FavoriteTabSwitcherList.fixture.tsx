@@ -40,7 +40,19 @@ const store = {
   repos: [repo],
   worktreesByRepo: { [repo.id]: [worktree] },
   // oxlint-disable-next-line typescript/consistent-type-assertions -- SAFETY: the rows read only id, label and contentType
-  unifiedTabsByWorktree: { [worktree.id]: tabs } as never
+  unifiedTabsByWorktree: { [worktree.id]: tabs } as never,
+  // oxlint-disable-next-line typescript/consistent-type-assertions -- SAFETY: the mark reads only id and title
+  tabsByWorktree: {
+    [worktree.id]: tabs.map((tab) => ({ id: tab.entityId, title: tab.label, ptyId: null }))
+  } as never,
+  // Terminal titles carry no question, so the hook row alone marks these two.
+  // oxlint-disable-next-line typescript/consistent-type-assertions -- SAFETY: the mark reads only state and freshness
+  agentStatusByPaneKey: Object.fromEntries(
+    ['term-1', 'term-3'].map((tabId) => {
+      const paneKey = `${tabId}:11111111-1111-4111-a111-111111111111`
+      return [paneKey, { paneKey, state: 'blocked', updatedAt: Date.now() }]
+    })
+  ) as never
 }
 
 export const cycling = defineFixture({

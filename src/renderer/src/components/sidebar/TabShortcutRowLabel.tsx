@@ -24,7 +24,7 @@ export function useLiveTabShortcut(shortcut: TabShortcut): TabShortcut | null {
 /** One line: the tab name always, then project and workspace as far as they fit. */
 export function TabShortcutRowLabel({ shown }: { shown: TabShortcut }): React.JSX.Element {
   return (
-    <>
+    <span className="flex min-w-0 flex-1 items-baseline gap-1.5 overflow-hidden">
       <span className="shrink-0 truncate font-medium text-worktree-sidebar-foreground max-w-full">
         {shown.title}
       </span>
@@ -38,6 +38,6 @@ export function TabShortcutRowLabel({ shown }: { shown: TabShortcut }): React.JS
           {shown.workspace}
         </span>
       ) : null}
-    </>
+    </span>
   )
 }

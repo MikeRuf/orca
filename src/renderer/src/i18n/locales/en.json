@@ -19392,7 +19392,8 @@
         "noRecents": "Tabs you visit appear here.",
         "untitled": "Untitled tab",
         "closed": "That tab is closed.",
-        "openFailed": "Could not open that tab."
+        "openFailed": "Could not open that tab.",
+        "waitingOnYou": "Waiting on your answer"
       }
     },
     "i18n": {
