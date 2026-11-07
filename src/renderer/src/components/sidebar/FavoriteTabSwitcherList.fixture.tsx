@@ -39,6 +39,7 @@ const store = {
   settings: getDefaultSettings('/home/fixture'),
   repos: [repo],
   worktreesByRepo: { [repo.id]: [worktree] },
+  // oxlint-disable-next-line typescript/consistent-type-assertions -- SAFETY: the rows read only id, label and contentType
   unifiedTabsByWorktree: { [worktree.id]: tabs } as never
 }
 
