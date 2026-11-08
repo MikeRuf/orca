@@ -19911,7 +19911,10 @@
         "many_other": "已建立 {{count}} 個 PR"
       },
       "splitRight": "向右分割",
-      "splitDown": "向下分割"
+      "splitDown": "向下分割",
+      "chatLinks": {
+        "notOpen": "該聊天未在任何工作區中開啟"
+      }
     },
     "tab": {
       "bar": {

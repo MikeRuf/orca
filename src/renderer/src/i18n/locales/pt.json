@@ -21201,7 +21201,10 @@
         "many_many": "Criadas {{count}} pull requests"
       },
       "splitRight": "Dividir à direita",
-      "splitDown": "Dividir para baixo"
+      "splitDown": "Dividir para baixo",
+      "chatLinks": {
+        "notOpen": "Esse chat não está aberto em nenhum espaço de trabalho"
+      }
     },
     "tab": {
       "bar": {

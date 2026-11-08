@@ -20024,7 +20024,10 @@
         "many_many": "{{count}} solicitudes de extracción creadas"
       },
       "splitRight": "Dividir a la derecha",
-      "splitDown": "Dividir hacia abajo"
+      "splitDown": "Dividir hacia abajo",
+      "chatLinks": {
+        "notOpen": "Ese chat no está abierto en ningún espacio de trabajo"
+      }
     },
     "tab": {
       "bar": {

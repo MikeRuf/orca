@@ -20202,7 +20202,10 @@
         "many_other": "{{count}} pull request oluşturuldu"
       },
       "splitRight": "Sağa Böl",
-      "splitDown": "Aşağı Böl"
+      "splitDown": "Aşağı Böl",
+      "chatLinks": {
+        "notOpen": "Bu sohbet hiçbir çalışma alanında açık değil"
+      }
     },
     "tab": {
       "bar": {

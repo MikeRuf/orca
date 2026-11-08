@@ -19514,7 +19514,10 @@
         "many_other": "{{count}} 件のプルリクエストを開きました"
       },
       "splitRight": "右に分割",
-      "splitDown": "下に分割"
+      "splitDown": "下に分割",
+      "chatLinks": {
+        "notOpen": "そのチャットはどのワークスペースでも開かれていません"
+      }
     },
     "tab": {
       "bar": {

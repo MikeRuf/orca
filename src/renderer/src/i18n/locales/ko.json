@@ -19514,7 +19514,10 @@
         "many_other": "풀 리퀘스트 {{count}}개 열림"
       },
       "splitRight": "오른쪽으로 분할",
-      "splitDown": "아래로 분할"
+      "splitDown": "아래로 분할",
+      "chatLinks": {
+        "notOpen": "해당 채팅은 어떤 워크스페이스에서도 열려 있지 않습니다"
+      }
     },
     "tab": {
       "bar": {

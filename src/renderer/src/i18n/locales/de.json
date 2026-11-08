@@ -20220,7 +20220,10 @@
         "many_other": "{{count}} Pull Requests erstellt"
       },
       "splitRight": "Rechts teilen",
-      "splitDown": "Unten teilen"
+      "splitDown": "Unten teilen",
+      "chatLinks": {
+        "notOpen": "Dieser Chat ist in keinem Workspace geöffnet"
+      }
     },
     "tab": {
       "bar": {
