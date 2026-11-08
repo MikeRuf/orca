@@ -19518,6 +19518,7 @@
         "pasteUnavailable": "Einfügen nicht möglich — dieser Chat nimmt derzeit keine Eingaben an.",
         "model": "Modell",
         "effort": "Denkaufwand",
+        "contextWindow": "Kontextfenster",
         "fastMode": "Schnellmodus",
         "speed": "Geschwindigkeit",
         "thinking": "Nachdenken",
@@ -19540,6 +19541,7 @@
           "xhigh": "Sehr hoch",
           "max": "Maximal",
           "ultra": "Ultra",
+          "contextWindowDefault": "Standard",
           "standard": "Standard"
         },
         "pendingAttachmentLimit": "Zu viele Anhänge warten. Die Nachricht fertigstellen, bevor weitere Dateien angehängt werden.",

@@ -27,6 +27,7 @@ import { withUnlistedEffort } from './structured-agent-session-unlisted-effort'
 import { listedModelDescribing } from './structured-agent-session-listed-model'
 import { structuredAgentSessionPermissionDescriptor } from './structured-agent-session-permission-option'
 import { structuredAgentSessionInteractionDescriptor } from './agent-session-interaction-mode'
+import { structuredAgentSessionContextWindowDescriptor } from './agent-session-context-window'
 import type { StructuredAgentSessionOptionState } from './structured-agent-session-options'
 
 /** Unpickable placeholder cannot become a launch selection before a real model answer. */
@@ -249,7 +250,13 @@ export function structuredAgentSessionOptionSnapshot(
         : option
   )
   const interaction = structuredAgentSessionInteractionDescriptor(state)
-  return [...options, ...(permission ? [permission] : []), ...(interaction ? [interaction] : [])]
+  const contextWindow = structuredAgentSessionContextWindowDescriptor(state)
+  return [
+    ...options,
+    ...(permission ? [permission] : []),
+    ...(interaction ? [interaction] : []),
+    ...(contextWindow ? [contextWindow] : [])
+  ]
 }
 
 /** Presentation only until a launch or fence can carry picks. */
@@ -275,7 +282,7 @@ export function canSetStructuredAgentSessionOption(
   if (!interactionReady || pending || (id === 'fastMode' && state.fastModeRestricted)) {
     return false
   }
-  if (id === 'permissionMode' || id === 'interactionMode') {
+  if (id === 'permissionMode' || id === 'interactionMode' || id === 'contextWindow') {
     const descriptor = snapshot.find((entry) => entry.id === id)
     return (
       descriptor?.settable === true &&

@@ -19257,6 +19257,7 @@
         "pasteUnavailable": "無法貼上 — 此聊天目前不接受輸入。",
         "model": "模型",
         "effort": "推理強度",
+        "contextWindow": "上下文視窗",
         "fastMode": "快速模式",
         "speed": "速度",
         "thinking": "思考",
@@ -19279,6 +19280,7 @@
           "xhigh": "極高",
           "max": "最大",
           "ultra": "極致",
+          "contextWindowDefault": "預設",
           "standard": "標準"
         },
         "pendingAttachmentLimit": "等待附加的檔案過多。請先完成訊息，再附加更多檔案。",

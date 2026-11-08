@@ -11,7 +11,7 @@ import type {
 
 export type AgentSessionAcceptedInputSources = Partial<
   Record<
-    'model' | 'effort' | 'fastMode' | 'serviceTier' | 'interactionMode',
+    'model' | 'effort' | 'fastMode' | 'serviceTier' | 'interactionMode' | 'contextWindow',
     'saved' | 'seeded' | 'policy'
   >
 >
@@ -63,6 +63,8 @@ export type AgentSessionOptionsResult = {
     serviceTier?: string
     /** Present only on hosts offering native Build/Plan; display alone is not accepted intent. */
     interactionMode?: 'default' | 'plan'
+    /** Present only on hosts that launch with a per-chat context window; `default` leaves it to settings. */
+    contextWindow?: string
     /** The permission mode a start runs now; absent from a host or agent with no picker. */
     permissionMode?: string
     /** Current startup report or accepted fresh-turn policy: null means reported but not a named Orca mode. */

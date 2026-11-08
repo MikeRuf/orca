@@ -11,6 +11,8 @@ export const NATIVE_CHAT_SESSION_OPTION_COPY = {
   model: 'Model',
   effort: 'Effort',
   fastMode: 'Fast mode',
+  contextWindow: 'Context window',
+  contextWindowDefault: 'Default',
   speed: 'Speed',
   thinking: 'Thinking',
   standard: 'Standard',
@@ -96,6 +98,8 @@ export function nativeChatSessionOptionLabel(
       return say('effort')
     case 'fastMode':
       return say('fastMode')
+    case 'contextWindow':
+      return say('contextWindow')
     case 'serviceTier':
       return say('speed')
     case 'thinking':
@@ -113,6 +117,9 @@ export function nativeChatSessionChoiceLabel(
   // `default` is only Standard inside a speed choice; other selects may use the value.
   if (optionId === 'serviceTier' && choice.value === 'default') {
     return say('standard')
+  }
+  if (optionId === 'contextWindow' && choice.value === 'default') {
+    return say('contextWindowDefault')
   }
   const id = levelId(LEVEL_IDS, choice.value)
   return id ? say(id) : choice.label
@@ -191,7 +198,11 @@ export function nativeChatOptionValuesLabel(
 ): string {
   const labels: string[] = []
   for (const descriptor of descriptors) {
-    if (descriptor.valueSource === 'unknown' || isDefaultServiceTier(descriptor)) {
+    if (
+      descriptor.valueSource === 'unknown' ||
+      isDefaultServiceTier(descriptor) ||
+      (descriptor.id === 'contextWindow' && descriptor.kind.currentValue === 'default')
+    ) {
       continue
     }
     const choice = selectedNativeChatChoice(descriptor)

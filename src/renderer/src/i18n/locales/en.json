@@ -20066,6 +20066,7 @@
         "pasteUnavailable": "Can't paste — this chat isn't accepting input right now.",
         "model": "Model",
         "effort": "Effort",
+        "contextWindow": "Context window",
         "fastMode": "Fast mode",
         "speed": "Speed",
         "thinking": "Thinking",
@@ -20089,6 +20090,7 @@
           "xhigh": "Extra high",
           "max": "Max",
           "ultra": "Ultra",
+          "contextWindowDefault": "Default",
           "standard": "Standard"
         },
         "pendingAttachmentLimit": "Too many attachments are waiting. Finish composing before attaching more.",

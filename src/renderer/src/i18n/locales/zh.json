@@ -18718,6 +18718,7 @@
         "pasteUnavailable": "无法粘贴 — 此聊天当前不接受输入。",
         "model": "模型",
         "effort": "推理强度",
+        "contextWindow": "上下文窗口",
         "fastMode": "快速模式",
         "speed": "速度",
         "thinking": "思考",
@@ -18740,6 +18741,7 @@
           "xhigh": "极高",
           "max": "最大",
           "ultra": "极致",
+          "contextWindowDefault": "默认",
           "standard": "标准"
         },
         "noCommandsOrSkills": "没有匹配的命令或技能",

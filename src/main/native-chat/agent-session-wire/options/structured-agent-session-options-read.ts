@@ -178,6 +178,9 @@ export async function readStructuredAgentSessionOptions(
             saved.interactionMode === 'plan' ? ('plan' as const) : ('default' as const)
         }
       : {}),
+    ...(context.deps.agents.definition(agent)?.restingOptions.acceptsKey('contextWindow')
+      ? { contextWindow: saved.contextWindow ?? 'default' }
+      : {}),
     serviceTier:
       saved.serviceTier !== undefined
         ? selected.current.serviceTier
@@ -192,7 +195,14 @@ export async function readStructuredAgentSessionOptions(
     (key) => saved[key] === undefined && defaultedBy(key)
   )
   const acceptedInputSources: AgentSessionAcceptedInputSources = {}
-  for (const key of ['model', 'effort', 'fastMode', 'serviceTier', 'interactionMode'] as const) {
+  for (const key of [
+    'model',
+    'effort',
+    'fastMode',
+    'serviceTier',
+    'interactionMode',
+    'contextWindow'
+  ] as const) {
     if (current[key] !== undefined && saved[key] !== undefined) {
       acceptedInputSources[key] = 'saved'
     }

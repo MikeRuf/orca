@@ -19432,6 +19432,7 @@
         "pasteUnavailable": "Impossible de coller — ce chat n'accepte pas de saisie pour le moment.",
         "model": "Modèle",
         "effort": "Effort",
+        "contextWindow": "Fenêtre de contexte",
         "fastMode": "Mode rapide",
         "speed": "Vitesse",
         "thinking": "Réflexion",
@@ -19454,6 +19455,7 @@
           "xhigh": "Extra élevé",
           "max": "Max",
           "ultra": "Ultra",
+          "contextWindowDefault": "Par défaut",
           "standard": "Standard"
         },
         "imageSaving": "Enregistrement de l'image collée…",

@@ -18776,6 +18776,7 @@
         "pasteUnavailable": "붙여넣을 수 없습니다 — 이 채팅은 지금 입력을 받을 수 없습니다.",
         "model": "모델",
         "effort": "추론 수준",
+        "contextWindow": "컨텍스트 창",
         "fastMode": "빠른 모드",
         "speed": "속도",
         "thinking": "사고",
@@ -18798,6 +18799,7 @@
           "xhigh": "매우 높음",
           "max": "최대",
           "ultra": "울트라",
+          "contextWindowDefault": "기본값",
           "standard": "표준"
         },
         "noCommandsOrSkills": "일치하는 명령어 또는 스킬이 없습니다",

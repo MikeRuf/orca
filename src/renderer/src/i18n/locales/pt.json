@@ -20238,6 +20238,7 @@
         "worktreeNotReady": "Worktree não está pronta — tente novamente em um momento.",
         "model": "Modelo",
         "effort": "Esforço",
+        "contextWindow": "Janela de contexto",
         "fastMode": "Modo rápido",
         "thinking": "Pensando",
         "sessionOptions": "Opções da sessão",
@@ -20257,6 +20258,7 @@
           "xhigh": "Extra alto",
           "max": "Máximo",
           "ultra": "Ultra",
+          "contextWindowDefault": "Padrão",
           "standard": "Padrão"
         },
         "pendingAttachmentLimit": "Há muitos anexos aguardando. Termine de compor antes de anexar mais.",

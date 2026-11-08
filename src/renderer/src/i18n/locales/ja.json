@@ -18776,6 +18776,7 @@
         "pasteUnavailable": "貼り付けできません — このチャットは現在入力を受け付けていません。",
         "model": "モデル",
         "effort": "推論レベル",
+        "contextWindow": "コンテキストウィンドウ",
         "fastMode": "高速モード",
         "speed": "速度",
         "thinking": "思考",
@@ -18798,6 +18799,7 @@
           "xhigh": "最高",
           "max": "最大",
           "ultra": "ウルトラ",
+          "contextWindowDefault": "デフォルト",
           "standard": "標準"
         },
         "noCommandsOrSkills": "一致するコマンドやスキルがありません",

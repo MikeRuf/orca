@@ -19199,6 +19199,7 @@
         "pasteUnavailable": "No se puede pegar — este chat no acepta entradas en este momento.",
         "model": "Modelo",
         "effort": "Esfuerzo",
+        "contextWindow": "Ventana de contexto",
         "fastMode": "Modo rápido",
         "speed": "Velocidad",
         "thinking": "Razonamiento",
@@ -19221,6 +19222,7 @@
           "xhigh": "Muy alto",
           "max": "Máximo",
           "ultra": "Supremo",
+          "contextWindowDefault": "Predeterminado",
           "standard": "Estándar"
         },
         "noCommandsOrSkills": "No hay comandos o habilidades coincidentes",

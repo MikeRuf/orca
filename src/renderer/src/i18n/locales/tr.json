@@ -19503,6 +19503,7 @@
         "pasteUnavailable": "Yapıştırılamıyor — bu sohbet şu anda girdi kabul etmiyor.",
         "model": "Model",
         "effort": "Çaba",
+        "contextWindow": "Bağlam penceresi",
         "fastMode": "Hızlı mod",
         "speed": "Hız",
         "thinking": "Düşünüyor",
@@ -19525,6 +19526,7 @@
           "xhigh": "Ekstra yüksek",
           "max": "Maks",
           "ultra": "Ultra",
+          "contextWindowDefault": "Varsayılan",
           "standard": "Standart"
         },
         "pendingAttachmentLimit": "Bekleyen ek sayısı çok fazla. Daha fazla eklemeden önce yazmayı bitirin.",
