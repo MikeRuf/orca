@@ -1,15 +1,18 @@
 import { useEffect, useMemo, useRef } from 'react'
 import { findActivityTerminalPortal } from './activity/activity-terminal-portal'
-import { shouldAutoCreateInitialTerminal } from './terminal/initial-terminal'
+import { shouldSeedDefaultSurface } from '@/lib/workspace/activation/initial-surface/automatic-default-surface'
 import { findPendingWorktreeCreationId } from '@/lib/workspace/creation/pending-worktree-creation'
 import {
   canWatcherCoverParkedTerminalTab,
+  syncParkedTerminalTabWatchersForWorkspaces,
+  type ParkedTerminalTabWatcherSyncEntry
+} from './terminal-pane/parking/output-watchers/terminal-parked-tab-watchers'
+import {
   disposeAllParkedTerminalWatchers,
   pruneParkedTerminalWatchers,
-  syncParkedTerminalTabWatchersForWorkspaces,
-  terminalWatcherLiveWorkspaceIds,
-  type ParkedTerminalTabWatcherSyncEntry
-} from './terminal-pane/terminal-parked-tab-watchers'
+  terminalWatcherLiveWorkspaceIds
+} from './terminal-pane/parking/output-watchers/terminal-parked-watcher-registry'
+
 import { useAppStore } from '@/store'
 import { isTerminalWorkspaceEmptiedOnPurpose } from '../../../shared/workspace-layout/closed-terminal-tab-tombstones'
 import { gateWorktreeAgentActivation } from '@/lib/workspace/activation/worktree-agent-activation-gate'
@@ -249,11 +252,11 @@ export function useTerminalWatcherEffects(controller: TerminalWatcherController)
       // Why: the activation gate reconciles durable/live agent state first; only an actually empty, never-visited workspace receives a default shell.
       const { renderableTabCount } = reconcileWorktreeTabModel(activeWorktreeId)
       // Only recorded closes preserve emptiness; reread at decision time because rows can change while waiting.
-      const activeWorktreeHasTerminalState = isTerminalWorkspaceEmptiedOnPurpose(
+      const emptiedOnPurpose = isTerminalWorkspaceEmptiedOnPurpose(
         useAppStore.getState(),
         activeWorktreeId
       )
-      if (shouldAutoCreateInitialTerminal(renderableTabCount, activeWorktreeHasTerminalState)) {
+      if (shouldSeedDefaultSurface(activeWorktreeId, renderableTabCount, emptiedOnPurpose)) {
         if (
           ORCA_LAYOUT_OWNER_IS_MAIN &&
           createInitialTerminalThroughLayoutOwner(useAppStore.getState, activeWorktreeId, () =>
