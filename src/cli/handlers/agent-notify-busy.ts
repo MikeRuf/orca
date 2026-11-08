@@ -59,7 +59,8 @@ export const AGENT_NOTIFY_BUSY_HANDLERS: Record<string, CommandHandler> = {
     for (const worktree of ps.result.worktrees) {
       for (const agent of worktree.agents ?? []) {
         // Only the agent's own turn counts: a background task alone never ends on its own.
-        if (agent.mainAgent?.state !== 'working') {
+        // A named --session is reached in any state, so an idle chat can be resumed after a restart.
+        if (!onlySession && agent.mainAgent?.state !== 'working') {
           continue
         }
         const name = agent.conversationName || agent.agentType || 'agent'
