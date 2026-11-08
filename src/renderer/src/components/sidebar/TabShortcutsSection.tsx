@@ -15,12 +15,14 @@ import {
   isFavoriteTab,
   removeFavoriteTab,
   setTabShortcutSectionOpen,
+  tabShortcutKey,
   useTabShortcuts,
   type TabShortcut
 } from '@/lib/tab-shortcuts-store'
 import { openTabShortcut } from '@/lib/tab-shortcut-resolution'
 import { readCurrentTabLocation } from '@/lib/last-tab-toggle'
 import { FavoriteTabAppearanceDialog } from './FavoriteTabAppearanceDialog'
+import { FavoriteTabsSortableList } from './FavoriteTabsSortableList'
 import { FavoriteTabWaitingMark } from './FavoriteTabWaitingMark'
 import { getSidebarSurfaceProps } from './project-sidebar-surface-style'
 import {
@@ -145,13 +147,14 @@ function ShortcutSection({
         <div className="flex flex-col gap-px pb-1">
           {rows.length === 0 ? (
             <div className="px-2 py-1 text-[11px] text-worktree-sidebar-foreground/40">{empty}</div>
+          ) : favorite ? (
+            <FavoriteTabsSortableList
+              rows={rows}
+              renderRow={(row) => <ShortcutRow shortcut={row} favorite />}
+            />
           ) : (
             rows.map((row) => (
-              <ShortcutRow
-                key={`${row.worktreeId}:${row.tabId}`}
-                shortcut={row}
-                favorite={favorite}
-              />
+              <ShortcutRow key={tabShortcutKey(row)} shortcut={row} favorite={false} />
             ))
           )}
         </div>
