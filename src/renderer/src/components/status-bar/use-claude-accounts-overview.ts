@@ -9,9 +9,9 @@ import {
 import type { Repo } from '../../../../shared/repo-types'
 import type { RuntimeClientTarget } from '../../../../shared/runtime-client-target'
 import { selectExecutionHostDisplayLabel } from '@/lib/execution-host-display-label'
-import { callRuntimeRpc } from '@/runtime/runtime-rpc-client'
-import { runtimeTargetForOwnerEnvironment } from '@/runtime/runtime-client-target'
-import { getProviderAccountsOwnerKey } from '@/runtime/runtime-provider-accounts-client'
+import { callRuntimeRpc } from '@/runtime/rpc/calls/runtime-rpc-call'
+import { runtimeTargetForOwnerEnvironment } from '@/runtime/rpc/targets/runtime-client-target'
+import { getProviderAccountsOwnerKey } from '@/runtime/provider-accounts/observations/runtime-provider-accounts-client'
 import { useAppStore } from '@/store'
 
 const POLL_MS = 60_000

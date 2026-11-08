@@ -12,7 +12,7 @@ import {
   fetchProviderAccountsSnapshot,
   getProviderAccountsOwnerKey,
   selectClaudeProviderAccount
-} from '@/runtime/runtime-provider-accounts-client'
+} from '@/runtime/provider-accounts/observations/runtime-provider-accounts-client'
 import { useAppStore } from '../../store'
 import { getClaudeAccountErrorDescription } from '../settings/accounts/accounts-pane-action-errors'
 import { buildClaudeAccountUsage, resolveClaudeChatAccountId } from './claude-account-usage-model'
