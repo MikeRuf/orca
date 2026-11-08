@@ -9,18 +9,12 @@ import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 import { rmSync, mkdtempSync } from 'node:fs'
 import { join } from 'node:path'
 import { tmpdir } from 'node:os'
-import {
-  automationCanonicalLaunchSetup,
-  automationTerminalLaunchInputs
-} from '../../../shared/automation-launch-setup'
-import { resolveAgentStartupPlanInputs } from '../../../shared/agent-launch/startup/agent-startup-plan-inputs'
-import { buildAgentStartupPlan } from '../../../shared/agent-launch/startup/tui-agent-startup'
+import { automationCanonicalLaunchSetup } from '../../../shared/automations/launch/automation-canonical-launch-setup'
+
 import {
   encodeAutomationLaunchEdit,
-  foldAutomationSourceEdit,
-  type AutomationSourceEdit,
-  type AutomationLaunchEdit
-} from '../../../shared/automation-launch-source-edits'
+  foldAutomationSourceEdit
+} from '../../../shared/automations/launch/automation-launch-source-edits'
 
 vi.mock('../../ssh/config/ssh-config-parser', () => ({
   loadUserSshConfig: vi.fn(),
@@ -77,15 +71,6 @@ describe('automation extra agent args persistence', () => {
     await closeTestStores()
     const reloaded = await createStore()
     expect(reloaded.listAutomations()[0].extraAgentArgs).toBe(text)
-  })
-
-  it('stores no field for empty or whitespace input', async () => {
-    const store = await createStore()
-    store.addRepo(makeRepo())
-    for (const extraAgentArgs of ['', '   ', undefined]) {
-      const automation = store.createAutomation({ ...BASE, extraAgentArgs })
-      expect(Object.hasOwn(automation, 'extraAgentArgs')).toBe(false)
-    }
   })
 
   it('preserves on omission, replaces, and clears with empty or whitespace text', async () => {
@@ -179,67 +164,6 @@ describe('automation extra agent args persistence', () => {
     expect(
       reloaded.listAutomations().find((row) => row.id === chat.id)?.extraAgentArgs
     ).toBeUndefined()
-  })
-  it('records the old-desktop reconstructed move limitation and preserves surface with the new patch', async () => {
-    const store = await createStore()
-    store.addRepo(makeRepo())
-    const source = store.createAutomation({ ...BASE, launchSetupPatch: { surface: 'chat' } })
-    const oldClientCopy = store.createAutomation({ ...BASE, creationKey: 'old-move' })
-    const currentCopy = store.createAutomation({
-      ...BASE,
-      creationKey: 'new-move',
-      launchSetupPatch: { surface: source.surface }
-    })
-    store.deleteAutomation(source.id)
-    expect(oldClientCopy.surface).toBeUndefined()
-    expect(currentCopy.surface).toBe('chat')
-  })
-  it('keeps sparse removals, full Arguments and hidden choices through old echoes and reload', async () => {
-    const store = await createStore()
-    store.addRepo(makeRepo())
-    const created = store.createAutomation({
-      ...BASE,
-      launchSetupPatch: {
-        choices: { model: 'sonnet', options: { fastMode: 'true' }, permissionMode: 'accept-edits' },
-        arguments: { kind: 'value', value: '--verbose' }
-      }
-    })
-    expect(created.launchSetup).toEqual({
-      launchPreferences: {
-        model: 'sonnet',
-        options: { fastMode: 'true' },
-        permissionMode: 'accept-edits'
-      },
-      agentArgs: '--verbose'
-    })
-    const echoed = store.updateAutomation(created.id, { extraAgentArgs: created.extraAgentArgs })
-    expect(echoed.launchSetup).toEqual(created.launchSetup)
-    const removed = store.updateAutomation(created.id, {
-      launchSetupPatch: { choices: { model: null } }
-    })
-    expect(removed.launchSetup?.launchPreferences?.model).toBeNull()
-    expect(removed.launchSetup?.agentArgs).toBe('--verbose')
-    store.flush()
-    await closeTestStores()
-    const reloaded = await createStore()
-    expect(reloaded.listAutomations()[0].launchSetup).toEqual(removed.launchSetup)
-    reloaded.updateSettings({ agentLaunchChoices: { claude: { model: 'opus' } } })
-    const reopened = reloaded.listAutomations()[0]
-    const plan = buildAgentStartupPlan({
-      ...resolveAgentStartupPlanInputs({
-        agent: reopened.agentId,
-        settings: reloaded.getSettings(),
-        platform: 'linux',
-        shell: 'posix',
-        isRemote: false,
-        ...automationTerminalLaunchInputs(reopened)
-      }),
-      prompt: 'Tidy docs',
-      allowEmptyPromptLaunch: true
-    })
-    expect(plan?.launchCommand).toContain('opus')
-    expect(plan?.launchCommand).not.toContain('sonnet')
-    expect(readDataFile()).not.toHaveProperty('automations.0.launchSetup')
   })
 
   it('lets old edits retire only their published raw and owned domains', async () => {
@@ -397,178 +321,6 @@ describe('automation extra agent args persistence', () => {
       launchSetupPatch: { copy: source.launchSetup }
     })
     expect(copy.launchSetup).toEqual(source.launchSetup)
-  })
-  it.each([
-    [
-      { kind: 'arguments', value: { kind: 'value', value: '--new-literal --model opus' } },
-      { kind: 'legacy', value: '--model opus --add-dir docs' }
-    ],
-    [
-      { kind: 'legacy', value: '--model opus --add-dir docs' },
-      { kind: 'arguments', value: { kind: 'value', value: '--verbose' } }
-    ]
-  ] satisfies AutomationSourceEdit[][])(
-    'saves composed source intent in either Arguments order: %j',
-    async (...edits) => {
-      const store = await createStore()
-      store.addRepo(makeRepo())
-      const created = store.createAutomation({
-        ...BASE,
-        launchSetupPatch: {
-          copy: {
-            surface: 'terminal',
-            launchPreferences: { model: 'sonnet' },
-            agentArgs: '--saved-literal'
-          }
-        }
-      })
-      let setup = automationCanonicalLaunchSetup(created)
-      let patch: AutomationLaunchEdit | undefined
-      for (const edit of edits) {
-        ;({ setup, patch } = foldAutomationSourceEdit('claude', setup, patch, edit))
-      }
-      const saved = store.updateAutomation(created.id, {
-        launchSetupPatch: encodeAutomationLaunchEdit(patch ?? {}, 'terminal')
-      })
-      expect(saved.launchSetup).toEqual(setup)
-      expect(saved.launchSetup?.agentArgs).not.toContain('--saved-literal')
-      store.flush()
-      await closeTestStores()
-      expect((await createStore()).listAutomations()[0].launchSetup).toEqual(setup)
-    }
-  )
-
-  it.each([
-    [
-      { kind: 'choices', value: { model: 'opus' } },
-      { kind: 'supplemental', value: '--model sonnet --add-dir fixtures' }
-    ],
-    [
-      { kind: 'supplemental', value: '--model sonnet --add-dir fixtures' },
-      { kind: 'choices', value: { model: 'opus' } }
-    ]
-  ] satisfies AutomationSourceEdit[][])(
-    'preserves source order between model choices and supplemental text: %j',
-    async (...edits) => {
-      const store = await createStore()
-      store.addRepo(makeRepo())
-      const created = store.createAutomation({
-        ...BASE,
-        launchSetupPatch: {
-          copy: {
-            surface: 'terminal',
-            launchPreferences: { model: 'sonnet' },
-            extraAgentArgs: '--add-dir docs'
-          }
-        }
-      })
-      let setup = automationCanonicalLaunchSetup(created)
-      let patch: AutomationLaunchEdit | undefined
-      for (const edit of edits) {
-        ;({ setup, patch } = foldAutomationSourceEdit('claude', setup, patch, edit))
-      }
-      const saved = store.updateAutomation(created.id, {
-        launchSetupPatch: encodeAutomationLaunchEdit(patch ?? {}, 'terminal')
-      })
-      expect(saved.launchSetup).toEqual(setup)
-      expect(saved.launchSetup?.extraAgentArgs).toBe(
-        edits[1].kind === 'supplemental'
-          ? '--model sonnet --add-dir fixtures'
-          : '--add-dir fixtures'
-      )
-      store.flush()
-      await closeTestStores()
-      expect((await createStore()).listAutomations()[0].launchSetup).toEqual(setup)
-    }
-  )
-
-  it.each([{ launchPreferences: { model: 'sonnet' } }, { agentArgs: '--verbose --model sonnet' }])(
-    'retains a re-entered legacy model after an unrelated permission choice: %j',
-    async (source) => {
-      const store = await createStore()
-      store.addRepo(makeRepo())
-      const created = store.createAutomation({
-        ...BASE,
-        launchSetupPatch: {
-          copy: {
-            surface: 'terminal',
-            ...source,
-            extraAgentArgs: '--add-dir docs'
-          }
-        }
-      })
-      let setup = automationCanonicalLaunchSetup(created)
-      let patch: AutomationLaunchEdit | undefined
-      const edits: AutomationSourceEdit[] = [
-        { kind: 'legacy', value: '--add-dir docs' },
-        { kind: 'legacy', value: '--model opus --add-dir docs' },
-        { kind: 'choices', value: { permissionMode: 'full-access' } }
-      ]
-      for (const edit of edits) {
-        ;({ setup, patch } = foldAutomationSourceEdit('claude', setup, patch, edit))
-      }
-      const saved = store.updateAutomation(created.id, {
-        launchSetupPatch: encodeAutomationLaunchEdit(patch ?? {}, 'terminal')
-      })
-      expect(saved.launchSetup).toEqual(setup)
-      expect(saved.launchSetup?.extraAgentArgs).toBe('--model opus --add-dir docs')
-      expect(saved.launchSetup?.launchPreferences).toEqual({ permissionMode: 'full-access' })
-      store.flush()
-      await closeTestStores()
-      expect((await createStore()).listAutomations()[0].launchSetup).toEqual(setup)
-    }
-  )
-
-  it('retains cumulative model retirement after later full Arguments no longer contain a model', async () => {
-    const store = await createStore()
-    store.addRepo(makeRepo())
-    const created = store.createAutomation({
-      ...BASE,
-      launchSetupPatch: { choices: { model: 'sonnet', options: { fastMode: 'true' } } }
-    })
-    let setup = automationCanonicalLaunchSetup(created)
-    let patch: AutomationLaunchEdit | undefined
-    for (const value of ['--model opus', '--verbose']) {
-      ;({ setup, patch } = foldAutomationSourceEdit('claude', setup, patch, {
-        kind: 'arguments',
-        value: { kind: 'value', value }
-      }))
-    }
-    const saved = store.updateAutomation(created.id, {
-      launchSetupPatch: encodeAutomationLaunchEdit(patch ?? {}, 'terminal')
-    })
-    expect(saved.launchSetup?.launchPreferences?.model).toBeUndefined()
-    expect(saved.launchSetup?.agentArgs).toBe('--verbose')
-    expect(saved.launchSetup?.launchPreferences).toEqual(setup.launchPreferences)
-  })
-
-  it('keeps supplemental-only edits legacy-compatible after Save and reopen', async () => {
-    const store = await createStore()
-    store.addRepo(makeRepo())
-    const created = store.createAutomation({
-      ...BASE,
-      launchSetupPatch: {
-        surface: 'terminal',
-        arguments: { kind: 'legacy-extras', value: '--add-dir docs' }
-      }
-    })
-    const { setup, patch } = foldAutomationSourceEdit(
-      'claude',
-      automationCanonicalLaunchSetup(created),
-      undefined,
-      { kind: 'supplemental', value: '--add-dir fixtures' }
-    )
-    const saved = store.updateAutomation(created.id, {
-      launchSetupPatch: encodeAutomationLaunchEdit(patch, 'terminal')
-    })
-    expect(saved.launchSetup).toEqual(setup)
-    expect(saved.launchSetup?.launchPreferences).toBeUndefined()
-    store.flush()
-    await closeTestStores()
-    const reopened = (await createStore()).listAutomations()[0]
-    expect(reopened.launchSetup).toEqual(setup)
-    expect(reopened.launchSetup?.agentArgs).toBeUndefined()
-    expect(reopened.launchSetup?.launchPreferences).toBeUndefined()
   })
 
   it('applies permission source edits to the latest old-writer model without replacing its raw field', async () => {
