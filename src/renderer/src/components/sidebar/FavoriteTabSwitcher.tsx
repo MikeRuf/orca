@@ -24,7 +24,7 @@ function findCurrentFavoriteIndex(favorites: TabShortcut[]): number {
   )
 }
 
-/** Hold the tab.cycleFavorites chord's modifiers and tap its key to step; releasing opens the row. */
+/** Hold the tab.cycleFavorites (or Backward) chord's modifiers and tap its key to step; releasing opens the row. */
 export default function FavoriteTabSwitcher(): React.JSX.Element | null {
   const [switcher, setSwitcher] = useState<SwitcherState | null>(null)
   const switcherRef = useRef<SwitcherState | null>(null)
@@ -34,25 +34,32 @@ export default function FavoriteTabSwitcher(): React.JSX.Element | null {
     setSwitcher(next)
   }, [])
 
-  const advance = useCallback((): void => {
-    const current = switcherRef.current
-    const favorites = current?.favorites ?? readTabShortcuts().favorites
-    const fromIndex = current?.selectedIndex ?? findCurrentFavoriteIndex(favorites)
-    const selectedIndex = getNextRecentTabSwitcherIndex(favorites.length, fromIndex, 1)
-    setSwitcherState({ favorites, selectedIndex })
-  }, [setSwitcherState])
+  const advance = useCallback(
+    (direction: 1 | -1): void => {
+      const current = switcherRef.current
+      const favorites = current?.favorites ?? readTabShortcuts().favorites
+      const fromIndex = current?.selectedIndex ?? findCurrentFavoriteIndex(favorites)
+      const selectedIndex = getNextRecentTabSwitcherIndex(favorites.length, fromIndex, direction)
+      setSwitcherState({ favorites, selectedIndex })
+    },
+    [setSwitcherState]
+  )
 
   const cancel = useCallback((): void => setSwitcherState(null), [setSwitcherState])
 
   useEffect(() => {
     const onKeyDown = (event: KeyboardEvent): void => {
       const { keybindings } = useAppStore.getState()
-      if (
-        keybindingMatchesAction('tab.cycleFavorites', event, getShortcutPlatform(), keybindings)
-      ) {
+      const platform = getShortcutPlatform()
+      const direction = keybindingMatchesAction('tab.cycleFavorites', event, platform, keybindings)
+        ? 1
+        : keybindingMatchesAction('tab.cycleFavoritesBackward', event, platform, keybindings)
+          ? -1
+          : null
+      if (direction !== null) {
         consumeKeyboardEvent(event)
         if (!event.repeat) {
-          advance()
+          advance(direction)
         }
         return
       }

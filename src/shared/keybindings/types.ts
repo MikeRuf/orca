@@ -80,6 +80,7 @@ export type KeybindingActionId =
   | 'tab.previousRecent'
   | 'tab.toggleLast'
   | 'tab.cycleFavorites'
+  | 'tab.cycleFavoritesBackward'
   | 'tab.nextTerminal'
   | 'tab.previousTerminal'
   | 'tab.selectByIndex'

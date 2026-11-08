@@ -23508,7 +23508,8 @@
       "viewPlugins": "Open Plugins",
       "tabToggleLast": "Back to the last tab (any workspace)",
       "sidebarProjectsToggleCollapse": "Collapse / Expand All Projects",
-      "tabCycleFavorites": "Cycle through favorite tabs"
+      "tabCycleFavorites": "Cycle through favorite tabs",
+      "tabCycleFavoritesBackward": "Cycle through favorite tabs backward"
     },
     "group": {
       "global": "Global",
