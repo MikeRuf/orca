@@ -50,15 +50,62 @@ export function readPendingDevUpdate(): PendingDevUpdate | null {
       commit,
       installer,
       version: typeof raw.version === 'string' ? raw.version : '',
-      builtAt: typeof raw.builtAt === 'string' ? raw.builtAt : ''
+      builtAt: typeof raw.builtAt === 'string' ? raw.builtAt : '',
+      staged: stagedAppFor(raw.staged, commit)
     }
   } catch {
     return null
   }
 }
 
+// The build writes the stamp last, so a half-copied or older staging is never swapped in.
+const STAGED_STAMP = '.orca-staged-commit'
+
+function stagedAppFor(value: unknown, commit: string): string | undefined {
+  if (typeof value !== 'string' || !value) {
+    return undefined
+  }
+  // A rename only stays atomic within one folder, so staging must sit beside the install.
+  if (
+    path.dirname(value).toLowerCase() !== path.dirname(path.dirname(process.execPath)).toLowerCase()
+  ) {
+    return undefined
+  }
+  try {
+    const stamp = readFileSync(path.join(value, STAGED_STAMP), 'utf8').trim().toLowerCase()
+    return stamp === commit && existsSync(path.join(value, path.basename(process.execPath)))
+      ? value
+      : undefined
+  } catch {
+    return undefined
+  }
+}
+
 function quotePowerShell(value: string): string {
   return `'${value.replace(/'/g, "''")}'`
+}
+
+/**
+ * Swaps the staged app in by renaming folders, which takes seconds where the installer takes a
+ * minute; any failure puts the old folder back and leaves $swapped false for the installer.
+ */
+function stagedSwapScript(installDir: string, staged: string, commit: string): string[] {
+  const dir = quotePowerShell(installDir)
+  return [
+    `$swapped = $false`,
+    `$old = ${quotePowerShell(`${installDir}.old`)}`,
+    `try {`,
+    `  if (Test-Path -LiteralPath $old) { Remove-Item -LiteralPath $old -Recurse -Force -ErrorAction Stop }`,
+    `  Copy-Item -LiteralPath (Join-Path ${dir} 'Uninstall Orca.exe') -Destination ${quotePowerShell(staged)} -ErrorAction SilentlyContinue`,
+    // Defender or the indexer can hold a file for a moment after Orca exits.
+    `  $moved = $false`,
+    `  for ($i = 0; $i -lt 5 -and -not $moved; $i++) { try { [IO.Directory]::Move(${dir}, $old); $moved = $true } catch { Start-Sleep -Seconds 1 } }`,
+    `  if (-not $moved) { throw "install folder is in use" }`,
+    `  try { [IO.Directory]::Move(${quotePowerShell(staged)}, ${dir}) } catch { [IO.Directory]::Move($old, ${dir}); throw }`,
+    `  $swapped = $true`,
+    `  "$(Get-Date -Format s) swapped in staged ${commit}" | Out-File $log -Append`,
+    `} catch { "$(Get-Date -Format s) staged swap failed ($_); running the installer" | Out-File $log -Append }`
+  ]
 }
 
 /**
@@ -79,9 +126,13 @@ export function launchPendingDevUpdateInstall(): boolean {
     `if (Get-Process -Id ${process.pid} -ErrorAction SilentlyContinue) { "Orca did not quit; nothing installed" | Out-File $log -Append; exit 1 }`,
     // The crash reporter outlives the app and locks the install folder.
     `Get-CimInstance Win32_Process | Where-Object { $_.Name -eq 'Orca.exe' -and $_.CommandLine -match '--type=crashpad-handler' -and $_.ExecutablePath -like (${quotePowerShell(installDir)} + '\\*') } | ForEach-Object { Stop-Process -Id $_.ProcessId -ErrorAction SilentlyContinue }`,
-    `$p = Start-Process -FilePath ${quotePowerShell(pending.installer)} -ArgumentList '/S' -PassThru -Wait`,
-    `"$(Get-Date -Format s) installer exit $($p.ExitCode) for ${pending.commit}" | Out-File $log -Append`,
-    `Start-Process -FilePath ${quotePowerShell(process.execPath)}`
+    ...(pending.staged ? stagedSwapScript(installDir, pending.staged, pending.commit) : []),
+    `if (-not $swapped) {`,
+    `  $p = Start-Process -FilePath ${quotePowerShell(pending.installer)} -ArgumentList '/S' -PassThru -Wait`,
+    `  "$(Get-Date -Format s) installer exit $($p.ExitCode) for ${pending.commit}" | Out-File $log -Append`,
+    `}`,
+    `Start-Process -FilePath ${quotePowerShell(process.execPath)}`,
+    `if ($swapped) { Remove-Item -LiteralPath $old -Recurse -Force -ErrorAction SilentlyContinue }`
   ].join('\n')
   const powershell = path.join(
     process.env.SystemRoot ?? 'C:\\Windows',

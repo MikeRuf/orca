@@ -4,6 +4,8 @@ export type PendingDevUpdate = {
   version: string
   installer: string
   builtAt: string
+  /** The unpacked app copied beside the install while Orca ran; after quit it is only swapped in. */
+  staged?: string
 }
 
 export const PENDING_DEV_UPDATE_CHANGED_CHANNEL = 'devUpdate:changed'
