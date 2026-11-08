@@ -20227,7 +20227,10 @@
         "stopped": "Beenden gesendet",
         "stopRefused": "Konnte nicht beendet werden",
         "loadFailed": "Die Prozessliste konnte nicht gelesen werden.",
-        "unsupported": "Prozesslisten gibt es, wenn der Chat auf einem Linux-Host läuft."
+        "unsupported": "Prozesslisten gibt es, wenn der Chat auf einem Linux-Host läuft.",
+        "resize": "Zum Ändern der Größe ziehen",
+        "stopButton": "Beenden",
+        "agentNote": "Agent-Prozesse betreiben den Chat selbst und haben daher keine Beenden-Schaltfläche. Das Schließen des Chats beendet sie."
       }
     },
     "tab": {

@@ -19462,7 +19462,10 @@
         "stopped": "已发送停止",
         "stopRefused": "无法停止",
         "loadFailed": "无法读取进程列表。",
-        "unsupported": "聊天在 Linux 主机上运行时可查看进程列表。"
+        "unsupported": "聊天在 Linux 主机上运行时可查看进程列表。",
+        "resize": "拖动以调整大小",
+        "stopButton": "停止",
+        "agentNote": "代理进程负责运行聊天本身，因此没有停止按钮。关闭聊天即可结束它们。"
       }
     },
     "tab": {

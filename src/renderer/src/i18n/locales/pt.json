@@ -21207,7 +21207,10 @@
         "stopped": "Parada enviada",
         "stopRefused": "Não foi possível parar",
         "loadFailed": "Não foi possível ler a lista de processos.",
-        "unsupported": "A lista de processos está disponível quando o chat roda em um host Linux."
+        "unsupported": "A lista de processos está disponível quando o chat roda em um host Linux.",
+        "resize": "Arraste para redimensionar",
+        "stopButton": "Parar",
+        "agentNote": "Os processos do agente executam o próprio chat, por isso não têm botão Parar. Fechar o chat os encerra."
       }
     },
     "tab": {

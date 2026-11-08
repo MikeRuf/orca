@@ -20031,7 +20031,10 @@
         "stopped": "Detención enviada",
         "stopRefused": "No se pudo detener",
         "loadFailed": "No se pudo leer la lista de procesos.",
-        "unsupported": "Las listas de procesos están disponibles cuando el chat se ejecuta en un host Linux."
+        "unsupported": "Las listas de procesos están disponibles cuando el chat se ejecuta en un host Linux.",
+        "resize": "Arrastra para cambiar el tamaño",
+        "stopButton": "Detener",
+        "agentNote": "Los procesos del agente ejecutan el propio chat, por eso no tienen botón Detener. Cerrar el chat los termina."
       }
     },
     "tab": {
