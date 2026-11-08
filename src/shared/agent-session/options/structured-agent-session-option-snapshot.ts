@@ -27,7 +27,10 @@ import { withUnlistedEffort } from './structured-agent-session-unlisted-effort'
 import { listedModelDescribing } from './structured-agent-session-listed-model'
 import { structuredAgentSessionPermissionDescriptor } from './structured-agent-session-permission-option'
 import { structuredAgentSessionInteractionDescriptor } from './agent-session-interaction-mode'
-import { structuredAgentSessionContextWindowDescriptor } from './agent-session-context-window'
+import {
+  isAgentSessionContextWindow,
+  structuredAgentSessionContextWindowDescriptor
+} from './agent-session-context-window'
 import type { StructuredAgentSessionOptionState } from './structured-agent-session-options'
 
 /** Unpickable placeholder cannot become a launch selection before a real model answer. */
@@ -289,7 +292,11 @@ export function canSetStructuredAgentSessionOption(
       descriptor.kind.type === 'select' &&
       (value === 'own'
         ? state.permissionOwnSupported === true
-        : descriptor.kind.choices.some((choice) => choice.value === value))
+        : descriptor.kind.choices.some((choice) => choice.value === value) ||
+          // A typed size is valid without being listed; only the current one joins the choices.
+          (id === 'contextWindow' &&
+            descriptor.kind.custom !== undefined &&
+            isAgentSessionContextWindow(value)))
     )
   }
   return (
