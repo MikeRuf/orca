@@ -56,9 +56,9 @@ export function registerRepoUpdateHandler(mainWindow: BrowserWindow, store: Stor
             | 'customWorktreeVisibilitySources'
             | 'worktreeVisibilitySourcePreferences'
             | 'projectGroupId'
-            | 'projectGroupOrder'
           >
         > & {
+          projectGroupOrder?: number | null
           externalWorktreeVisibility?: Repo['externalWorktreeVisibility'] | null
           agentWorktreeVisibility?: Repo['agentWorktreeVisibility'] | null
           sourceControlAi?: Repo['sourceControlAi'] | null

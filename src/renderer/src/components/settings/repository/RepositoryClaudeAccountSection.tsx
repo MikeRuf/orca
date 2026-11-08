@@ -1,7 +1,7 @@
 import { useId, useMemo } from 'react'
 import { CLAUDE_SYSTEM_ACCOUNT_ID } from '../../../../../shared/claude-accounts-overview'
 import type { Repo } from '../../../../../shared/repo-types'
-import { translate } from '@/i18n/i18n'
+import { useTranslate } from '@/i18n/use-translate'
 import {
   repoRuntimeTarget,
   useClaudeAccountsHostLabel,
@@ -25,17 +25,18 @@ export function RepositoryClaudeAccountSection({
   updateRepo,
   forceVisible
 }: RepositoryClaudeAccountSectionProps): React.JSX.Element {
+  const t = useTranslate()
   const selectLabelId = useId()
   const target = useMemo(() => repoRuntimeTarget(repo), [repo])
   const { overview } = useClaudeAccountsOverview(target)
   const hostLabel = useClaudeAccountsHostLabel(target)
   const accounts = (overview?.accounts ?? []).filter(({ id }) => id !== CLAUDE_SYSTEM_ACCOUNT_ID)
   const assigned = repo.claudeAccountId ?? null
-  const title = translate('components.claude-accounts.projectTitle', 'Claude Account')
+  const title = t('components.claude-accounts.projectTitle', 'Claude Account')
   return (
     <SearchableSetting
       title={title}
-      description={translate(
+      description={t(
         'components.claude-accounts.projectDescription',
         'Run this project’s Claude chats on a specific account.'
       )}
@@ -46,7 +47,7 @@ export function RepositoryClaudeAccountSection({
       <div className="min-w-0 space-y-1">
         <div className="text-sm font-semibold">{title}</div>
         <p className="text-xs text-muted-foreground">
-          {translate(
+          {t(
             'components.claude-accounts.projectLongDescription',
             'New chats start on this account, and resumed chats move to it. If it is signed out, chats use the default account.'
           )}
@@ -54,7 +55,7 @@ export function RepositoryClaudeAccountSection({
       </div>
       <div className="space-y-1.5">
         <span id={selectLabelId} className="text-xs text-muted-foreground">
-          {translate('components.claude-accounts.projectSelectLabelOnHost', 'Account on {{host}}', {
+          {t('components.claude-accounts.projectSelectLabelOnHost', 'Account on {{host}}', {
             host: hostLabel
           })}
         </span>
@@ -73,23 +74,19 @@ export function RepositoryClaudeAccountSection({
           </SelectTrigger>
           <SelectContent>
             <SelectItem value={DEFAULT_VALUE}>
-              {translate('components.claude-accounts.useDefault', 'Use default account')}
+              {t('components.claude-accounts.useDefault', 'Use default account')}
             </SelectItem>
             {assigned && overview && !accounts.some(({ id }) => id === assigned) ? (
               <SelectItem value={assigned} disabled>
-                {translate('components.claude-accounts.removedAccount', 'Removed account')}
+                {t('components.claude-accounts.removedAccount', 'Removed account')}
               </SelectItem>
             ) : null}
             {accounts.map((account) => (
               <SelectItem key={account.id} value={account.id}>
                 {account.signedOut
-                  ? translate(
-                      'components.claude-accounts.signedOutOption',
-                      '{{email}} (signed out)',
-                      {
-                        email: account.email ?? account.id
-                      }
-                    )
+                  ? t('components.claude-accounts.signedOutOption', '{{email}} (signed out)', {
+                      email: account.email ?? account.id
+                    })
                   : (account.email ?? account.id)}
               </SelectItem>
             ))}
