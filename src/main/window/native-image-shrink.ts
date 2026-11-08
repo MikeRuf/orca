@@ -1,6 +1,6 @@
 import { nativeImage, type NativeImage } from 'electron'
 import type { ShrunkImage } from '../claude/structured/oversize-image-shrinker'
-import { readRasterImageDimensions } from '../../shared/raster-image-dimensions'
+import { readRasterImageDimensions } from '../../shared/file-preview/raster-image-dimensions'
 import { applyExifOrientation, readJpegExifOrientation } from './jpeg-exif-orientation'
 
 // Why: the API downscales past this edge anyway, so a larger send only costs bytes.
