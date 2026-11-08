@@ -3,6 +3,7 @@ import { Star } from 'lucide-react'
 import { translate } from '@/i18n/i18n'
 import { cn } from '@/lib/utils'
 import type { TabShortcut } from '@/lib/tab-shortcuts-store'
+import { FavoriteTabIcon } from './FavoriteTabIcon'
 import { FavoriteTabWaitingMark } from './FavoriteTabWaitingMark'
 import { getSidebarSurfaceProps } from './project-sidebar-surface-style'
 import {
@@ -34,6 +35,7 @@ function FavoriteTabSwitcherRow({
       data-favorite-tab-active={selected ? '' : undefined}
       className={cn(TAB_SHORTCUT_ROW_CLASS, !live && 'opacity-50')}
     >
+      <FavoriteTabIcon shown={live ?? favorite} />
       <TabShortcutRowLabel shown={live ?? favorite} />
       <FavoriteTabWaitingMark favorite={favorite} />
     </div>

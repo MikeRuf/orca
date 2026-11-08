@@ -22,6 +22,7 @@ import {
 import { openTabShortcut } from '@/lib/tab-shortcut-resolution'
 import { readCurrentTabLocation } from '@/lib/last-tab-toggle'
 import { FavoriteTabAppearanceDialog } from './FavoriteTabAppearanceDialog'
+import { FavoriteTabIcon } from './FavoriteTabIcon'
 import { FavoriteTabsSortableList } from './FavoriteTabsSortableList'
 import { FavoriteTabWaitingMark } from './FavoriteTabWaitingMark'
 import { getSidebarSurfaceProps } from './project-sidebar-surface-style'
@@ -70,6 +71,7 @@ function ShortcutRow({
               !live && 'opacity-50'
             )}
           >
+            {favorite ? <FavoriteTabIcon shown={shown} /> : null}
             <TabShortcutRowLabel shown={shown} />
             {favorite ? <FavoriteTabWaitingMark favorite={shortcut} /> : null}
           </button>
