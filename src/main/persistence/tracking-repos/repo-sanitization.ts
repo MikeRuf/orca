@@ -8,6 +8,7 @@ import { sanitizeRepoSidebarStyle } from '../../../shared/repo-sidebar-style'
 import { normalizeGhAccountBinding } from '../../../shared/github/account-binding'
 import { normalizeJiraProjectReference } from '../../../shared/jira/jira-project-reference'
 import type { GhAccountBinding } from '../../../shared/github/account-binding'
+import { sanitizeAgentWorkspaceTrustDecision } from '../../../shared/agent-launch/permissions/agent-workspace-trust-decision'
 import {
   normalizeCustomWorktreeVisibilitySources,
   normalizeWorktreeVisibilitySourcePreferences
@@ -79,6 +80,7 @@ export function sanitizeRepoUpdatesForPersistence<
       | 'worktreeBasePath'
       | 'projectHostSetupMethod'
       | 'forkSyncMode'
+      | 'agentWorkspaceTrust'
       | 'defaultJiraProject'
       | 'customWorktreeVisibilitySources'
       | 'worktreeVisibilitySourcePreferences'
@@ -161,6 +163,14 @@ export function sanitizeRepoUpdatesForPersistence<
       delete sanitized.forkSyncMode
     } else {
       sanitized.forkSyncMode = forkSyncMode
+    }
+  }
+  if ('agentWorkspaceTrust' in sanitized) {
+    const agentWorkspaceTrust = sanitizeAgentWorkspaceTrustDecision(sanitized.agentWorkspaceTrust)
+    if (agentWorkspaceTrust === undefined) {
+      delete sanitized.agentWorkspaceTrust
+    } else {
+      sanitized.agentWorkspaceTrust = agentWorkspaceTrust
     }
   }
   // Null explicitly clears ghAccount; only malformed shapes are discarded.

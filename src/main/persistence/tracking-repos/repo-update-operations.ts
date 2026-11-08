@@ -105,16 +105,17 @@ export class RepoUpdatePersistenceOperations {
         | 'issueSourcePreference'
         | 'defaultJiraProject'
         | 'forkSyncMode'
+        | 'agentWorkspaceTrust'
         | 'externalWorktreeVisibilityPromptDismissedAt'
         | 'externalWorktreeInboxBaselinePaths'
         | 'importedExternalWorktreePaths'
         | 'customWorktreeVisibilitySources'
         | 'worktreeVisibilitySourcePreferences'
         | 'projectGroupId'
-        | 'projectGroupOrder'
         | 'projectHostSetupMethod'
       >
     > & {
+      projectGroupOrder?: number | null
       externalWorktreeVisibility?: Repo['externalWorktreeVisibility'] | null
       agentWorktreeVisibility?: Repo['agentWorktreeVisibility'] | null
       sourceControlAi?: Repo['sourceControlAi'] | null
@@ -168,7 +169,10 @@ export class RepoUpdatePersistenceOperations {
         sanitizedUpdates.projectGroupId = null
       }
     }
-    if (
+    if (sanitizedUpdates.projectGroupOrder === null) {
+      delete repo.projectGroupOrder
+      delete sanitizedUpdates.projectGroupOrder
+    } else if (
       'projectGroupOrder' in sanitizedUpdates &&
       (typeof sanitizedUpdates.projectGroupOrder !== 'number' ||
         !Number.isFinite(sanitizedUpdates.projectGroupOrder))
