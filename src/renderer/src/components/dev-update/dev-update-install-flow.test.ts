@@ -4,7 +4,7 @@ const calls: { method: string; params: unknown }[] = []
 let psAnswers: unknown[] = []
 const install = vi.fn()
 
-vi.mock('@/runtime/runtime-rpc-client', () => ({
+vi.mock('@/runtime/rpc/calls/runtime-rpc-call', () => ({
   callRuntimeRpc: vi.fn(async (_target: unknown, method: string, params: unknown) => {
     calls.push({ method, params })
     if (method === 'worktree.ps') {
