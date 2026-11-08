@@ -21198,7 +21198,17 @@
         "many_many": "Criadas {{count}} pull requests"
       },
       "splitRight": "Dividir à direita",
-      "splitDown": "Dividir para baixo"
+      "splitDown": "Dividir para baixo",
+      "processes": {
+        "label": "Processos iniciados por este chat",
+        "title": "Processos",
+        "agent": "agente",
+        "stop": "Parar {{name}}",
+        "stopped": "Parada enviada",
+        "stopRefused": "Não foi possível parar",
+        "loadFailed": "Não foi possível ler a lista de processos.",
+        "unsupported": "A lista de processos está disponível quando o chat roda em um host Linux."
+      }
     },
     "tab": {
       "bar": {

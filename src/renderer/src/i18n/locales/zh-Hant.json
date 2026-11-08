@@ -19909,7 +19909,17 @@
         "many_other": "已建立 {{count}} 個 PR"
       },
       "splitRight": "向右分割",
-      "splitDown": "向下分割"
+      "splitDown": "向下分割",
+      "processes": {
+        "label": "此聊天啟動的程序",
+        "title": "程序",
+        "agent": "代理",
+        "stop": "停止 {{name}}",
+        "stopped": "已送出停止",
+        "stopRefused": "無法停止",
+        "loadFailed": "無法讀取程序清單。",
+        "unsupported": "聊天在 Linux 主機上執行時可查看程序清單。"
+      }
     },
     "tab": {
       "bar": {

@@ -60,6 +60,8 @@ export type NativeChatComposerActionsProps = {
   /** Absent until the session has reported or the transcript can estimate. */
   contextUsage?: NativeChatContextUsageSummary | null
   accountUsage?: React.ReactNode
+  /** Lists the processes the chat's agent started; absent where the host cannot. */
+  processMonitor?: React.ReactNode
   /** The chat's agent, whose permission modes the picker describes. */
   agent?: string
   /** A launch prompt: Attach and dictation are its only controls; launching is the panel's. */
@@ -94,6 +96,7 @@ export const NativeChatComposerActions = memo(function NativeChatComposerActions
   onExitGoalMode,
   contextUsage,
   accountUsage,
+  processMonitor,
   focusComposer,
   agent,
   launchPrompt = false
@@ -316,6 +319,7 @@ export const NativeChatComposerActions = memo(function NativeChatComposerActions
           }
         ]
       : []),
+    ...(processMonitor ? [{ id: 'processes', priority: 1, content: processMonitor }] : []),
     { id: 'dictation', priority: 2, content: dictation },
     ...(draftNotSaved
       ? [{ id: 'draft', priority: 1, content: <NativeChatComposerDraftNotSavedIcon shown /> }]

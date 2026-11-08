@@ -20022,7 +20022,17 @@
         "many_many": "{{count}} solicitudes de extracción creadas"
       },
       "splitRight": "Dividir a la derecha",
-      "splitDown": "Dividir hacia abajo"
+      "splitDown": "Dividir hacia abajo",
+      "processes": {
+        "label": "Procesos iniciados por este chat",
+        "title": "Procesos",
+        "agent": "agente",
+        "stop": "Detener {{name}}",
+        "stopped": "Detención enviada",
+        "stopRefused": "No se pudo detener",
+        "loadFailed": "No se pudo leer la lista de procesos.",
+        "unsupported": "Las listas de procesos están disponibles cuando el chat se ejecuta en un host Linux."
+      }
     },
     "tab": {
       "bar": {

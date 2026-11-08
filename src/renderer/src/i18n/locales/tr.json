@@ -20200,7 +20200,17 @@
         "many_other": "{{count}} pull request oluşturuldu"
       },
       "splitRight": "Sağa Böl",
-      "splitDown": "Aşağı Böl"
+      "splitDown": "Aşağı Böl",
+      "processes": {
+        "label": "Bu sohbetin başlattığı süreçler",
+        "title": "Süreçler",
+        "agent": "ajan",
+        "stop": "{{name}} durdur",
+        "stopped": "Durdurma gönderildi",
+        "stopRefused": "Durdurulamadı",
+        "loadFailed": "Süreç listesi okunamadı.",
+        "unsupported": "Süreç listesi, sohbet bir Linux ana makinesinde çalıştığında kullanılabilir."
+      }
     },
     "tab": {
       "bar": {
