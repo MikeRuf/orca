@@ -22,6 +22,7 @@ import {
 } from '../../../../../../../shared/native-chat/input/native-chat-session-option-labels'
 import { sayNativeChatSessionOptionTranslated as say } from './native-chat-session-option-labels-text'
 import { NativeChatSessionOptionWriteGroup } from './NativeChatSessionOptionWriteGroup'
+import { NativeChatCustomOptionValue } from './NativeChatCustomOptionValue'
 
 type NativeChatSessionOptionRowsProps = {
   /** The current model's options, in display order. */
@@ -214,6 +215,9 @@ function OptionRow(props: {
           <LevelSegment key={choice.value} optionId={descriptor.id} choice={choice} />
         ))}
       </ToggleGroup>
+      {descriptor.kind.custom ? (
+        <NativeChatCustomOptionValue range={descriptor.kind.custom} disabled={off} onSet={onSet} />
+      ) : null}
     </div>
   )
 }
