@@ -21,7 +21,9 @@ vi.mock('@/lib/agent-session/structured-agent-session-tab-activation', () => ({
 vi.mock('@/lib/workspace/activation/worktree-activation', () => ({
   activateAndRevealWorkspace: reveal
 }))
-vi.mock('@/lib/focus-terminal-tab-surface', () => ({ focusTerminalTabSurface: vi.fn() }))
+vi.mock('@/components/terminal-pane/input/focus/focus-terminal-tab-surface', () => ({
+  focusTerminalTabSurface: vi.fn()
+}))
 vi.mock('sonner', () => ({ toast: { info: vi.fn(), error: vi.fn() } }))
 
 const { activateTabAnywhere } = await import('./tab-shortcut-resolution')
