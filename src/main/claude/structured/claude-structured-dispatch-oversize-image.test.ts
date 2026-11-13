@@ -2,9 +2,8 @@ import { mkdtemp, rm, writeFile } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { afterEach, describe, expect, it } from 'vitest'
-import { claudeDispatchMessageContent } from './claude-structured-dispatch-content'
+import { readSendableImage } from './claude-structured-dispatch-content'
 import { installOversizeImageShrinker } from './oversize-image-shrinker'
-import { userMessage } from './claude-structured-dispatch-test-support'
 
 async function withImage(bytes: number, run: (path: string) => Promise<void>): Promise<void> {
   const directory = await mkdtemp(join(tmpdir(), 'orca-oversize-image-'))
@@ -17,47 +16,37 @@ async function withImage(bytes: number, run: (path: string) => Promise<void>): P
   }
 }
 
-describe('oversize image dispatch', () => {
+describe('readSendableImage', () => {
   afterEach(() => installOversizeImageShrinker(null))
 
-  it('sends the shrunk bytes with their own media type', async () => {
+  it('sends a 6 MB image untouched to a receiver that shrinks images itself', async () => {
+    installOversizeImageShrinker(() => {
+      throw new Error('must not shrink')
+    })
+    await withImage(6 * 1024 * 1024, async (path) => {
+      const image = await readSendableImage(path)
+      expect(image.bytes.byteLength).toBe(6 * 1024 * 1024)
+      expect(image.shrunkMediaType).toBeUndefined()
+    })
+  })
+
+  it("shrinks an image over the receiver's cap to that cap", async () => {
     let target = 0
     installOversizeImageShrinker((_bytes, maxBytes) => {
       target = maxBytes
       return { bytes: Buffer.from('small'), mediaType: 'image/jpeg' }
     })
-    await withImage(6 * 1024 * 1024, async (path) => {
-      const content = await claudeDispatchMessageContent(userMessage([{ type: 'image-ref', path }]))
-      expect(content[0]).toEqual({
-        type: 'image',
-        source: { type: 'base64', media_type: 'image/jpeg', data: 'c21hbGw=' }
-      })
+    await withImage(5000, async (path) => {
+      const image = await readSendableImage(path, 4000)
+      expect(image).toEqual({ bytes: Buffer.from('small'), shrunkMediaType: 'image/jpeg' })
     })
-    expect(target).toBe(3932160)
+    expect(target).toBe(4000)
   })
 
-  it('leaves an image within the cap untouched', async () => {
-    installOversizeImageShrinker(() => {
-      throw new Error('must not shrink')
-    })
-    await withImage(4, async (path) => {
-      const content = await claudeDispatchMessageContent(userMessage([{ type: 'image-ref', path }]))
-      expect(content[0]).toEqual({
-        type: 'image',
-        source: { type: 'base64', media_type: 'image/png', data: 'AAAAAA==' }
-      })
-    })
-  })
-
-  it('sends the original for Claude to shrink when the shrinker cannot help', async () => {
+  it("refuses an image over the receiver's cap when it cannot be shrunk", async () => {
     installOversizeImageShrinker(() => null)
-    await withImage(6 * 1024 * 1024, async (path) => {
-      const content = await claudeDispatchMessageContent(userMessage([{ type: 'image-ref', path }]))
-      expect(content[0]).toMatchObject({
-        type: 'image',
-        source: { type: 'base64', media_type: 'image/png' }
-      })
-      expect((content[0] as { source: { data: string } }).source.data).toHaveLength(8 * 1024 * 1024)
+    await withImage(5000, async (path) => {
+      await expect(readSendableImage(path, 4000)).rejects.toThrow('no larger than 4000 bytes')
     })
   })
 })

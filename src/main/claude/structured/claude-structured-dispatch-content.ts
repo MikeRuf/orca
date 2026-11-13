@@ -58,10 +58,6 @@ export function claudeDispatchContentRejection(error: unknown): AgentJournalDisp
   return claudeDispatchRejection(agentSessionFailureFact('attachmentUnreadable'))
 }
 
-// Images up to the API's 5 MB go out byte for byte; larger ones are shrunk to save host memory.
-const SHRINK_ABOVE_BYTES = 5 * 1024 * 1024
-// Why: 3.75 MB raw is 5 MB as base64, the tightest provider limit (Bedrock).
-const SHRUNK_IMAGE_TARGET_BYTES = (SHRINK_ABOVE_BYTES * 3) / 4
 const MAX_REPLAY_CONTENT_KEY_BYTES = 256
 
 type ImageBudget = {
@@ -119,8 +115,8 @@ export async function readClaudeImage(
 export type SendableImage = { bytes: Buffer; shrunkMediaType?: ShrunkImage['mediaType'] }
 
 /**
- * Oversize images are shrunk when this host can. A receiver that shrinks images itself gets the
- * original when shrinking fails; one with a lower `receiverMaxBytes` gets a refusal at that cap.
+ * Only images over the receiver's cap are shrunk (older Pi); Claude and newer Pi shrink images
+ * themselves, so a second lossy pass here would only cost quality.
  */
 export async function readSendableImage(
   path: string,
@@ -131,17 +127,14 @@ export async function readSendableImage(
     return { bytes: await readClaudeImage(path, receiverMaxBytes) }
   }
   const bytes = await readClaudeImage(path, AGENT_SESSION_ATTACHMENT_MAX_BYTES)
-  if (bytes.byteLength <= Math.min(receiverMaxBytes, SHRINK_ABOVE_BYTES)) {
+  if (bytes.byteLength <= receiverMaxBytes) {
     return { bytes }
   }
-  const shrunk = shrink(bytes, Math.min(receiverMaxBytes, SHRUNK_IMAGE_TARGET_BYTES))
-  if (shrunk) {
-    return { bytes: shrunk.bytes, shrunkMediaType: shrunk.mediaType }
-  }
-  if (bytes.byteLength > receiverMaxBytes) {
+  const shrunk = shrink(bytes, receiverMaxBytes)
+  if (!shrunk) {
     throw imageTooLarge(receiverMaxBytes)
   }
-  return { bytes }
+  return { bytes: shrunk.bytes, shrunkMediaType: shrunk.mediaType }
 }
 
 async function imageContent(
