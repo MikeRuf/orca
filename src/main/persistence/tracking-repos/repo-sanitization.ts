@@ -5,9 +5,12 @@ import type { GitRemoteIdentity } from '../../../shared/git/remotes/git-remote-i
 import { normalizeRepoBadgeColor } from '../../../shared/repo-badge-color'
 import { sanitizeRepoIcon } from '../../../shared/repo-icon'
 import { sanitizeRepoSidebarStyle } from '../../../shared/repo-sidebar-style'
-import { normalizeGhAccountBinding } from '../../../shared/github/account-binding'
+import {
+  normalizeGhAccountBinding,
+  type GhAccountBinding
+} from '../../../shared/github/accounts/account-binding'
 import { normalizeJiraProjectReference } from '../../../shared/jira/jira-project-reference'
-import type { GhAccountBinding } from '../../../shared/github/account-binding'
+
 import { sanitizeAgentWorkspaceTrustDecision } from '../../../shared/agent-launch/permissions/agent-workspace-trust-decision'
 import {
   normalizeCustomWorktreeVisibilitySources,
