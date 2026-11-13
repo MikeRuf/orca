@@ -49,14 +49,15 @@ describe('oversize image dispatch', () => {
     })
   })
 
-  it('refuses at the 5 MB cap when the shrinker cannot help', async () => {
+  it('sends the original for Claude to shrink when the shrinker cannot help', async () => {
     installOversizeImageShrinker(() => null)
     await withImage(6 * 1024 * 1024, async (path) => {
-      await expect(
-        claudeDispatchMessageContent(userMessage([{ type: 'image-ref', path }]))
-      ).rejects.toMatchObject({
-        failure: { attachment: { reason: 'tooLarge', limit: 5 * 1024 * 1024 } }
+      const content = await claudeDispatchMessageContent(userMessage([{ type: 'image-ref', path }]))
+      expect(content[0]).toMatchObject({
+        type: 'image',
+        source: { type: 'base64', media_type: 'image/png' }
       })
+      expect((content[0] as { source: { data: string } }).source.data).toHaveLength(8 * 1024 * 1024)
     })
   })
 })

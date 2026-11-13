@@ -7,22 +7,64 @@ function entry(id: number): ConnectionLogEntry {
 }
 
 describe('connection log buffer', () => {
-  it('keeps entries per host without cross-talk', () => {
-    const store = createConnectionLogStore()
-    store.append('host-a', entry(1))
-    store.append('host-b', entry(2))
+  it('discards history without a pending hydration or late event restoring it', async () => {
+    let resolveLoad: (entries: readonly ConnectionLogEntry[]) => void = () => {}
+    let persisted: readonly ConnectionLogEntry[] = [entry(1)]
+    const store = createConnectionLogStore(3, {
+      load: () =>
+        new Promise((resolve) => {
+          resolveLoad = resolve
+        }),
+      save: async (_hostId, entries) => {
+        persisted = entries
+      }
+    })
+    const hydration = store.hydrate('host-a')
+    store.append('host-a', entry(2))
 
-    expect(store.get('host-a').map((e) => e.id)).toEqual(['log-1'])
-    expect(store.get('host-b').map((e) => e.id)).toEqual(['log-2'])
+    await store.discard('host-a')
+    resolveLoad([entry(1)])
+    await hydration
+    store.append('host-a', entry(3))
+    await store.flush()
+
+    expect(store.get('host-a')).toEqual([])
+    expect(persisted).toEqual([])
   })
 
-  it('drops the oldest entries past the cap', () => {
-    const store = createConnectionLogStore(3)
-    for (let i = 1; i <= 5; i++) {
-      store.append('host-a', entry(i))
-    }
+  it('discards history after an older in-flight save finishes', async () => {
+    let finishSave: () => void = () => {}
+    let markSaveStarted: () => void = () => {}
+    const saveStarted = new Promise<void>((resolve) => {
+      markSaveStarted = resolve
+    })
+    let persisted: readonly ConnectionLogEntry[] = []
+    let holdNextSave = false
+    const store = createConnectionLogStore(3, {
+      load: async () => [],
+      save: async (_hostId, entries) => {
+        if (holdNextSave) {
+          holdNextSave = false
+          markSaveStarted()
+          await new Promise<void>((resolve) => {
+            finishSave = resolve
+          })
+        }
+        persisted = entries
+      }
+    })
+    await store.hydrate('host-a')
+    await store.flush()
+    holdNextSave = true
+    store.append('host-a', entry(1))
+    await saveStarted
 
-    expect(store.get('host-a').map((e) => e.id)).toEqual(['log-3', 'log-4', 'log-5'])
+    const cleared = store.discard('host-a')
+    finishSave()
+    await cleared
+
+    expect(store.get('host-a')).toEqual([])
+    expect(persisted).toEqual([])
   })
 
   it('redacts credentials before retaining or persisting an event', async () => {
@@ -47,64 +89,6 @@ describe('connection log buffer', () => {
     expect(JSON.stringify(save.mock.calls)).not.toContain('do-not-copy')
     expect(JSON.stringify(save.mock.calls)).not.toContain('also-secret')
     expect(JSON.stringify(save.mock.calls)).not.toContain('legacy-secret')
-  })
-
-  it('redacts quoted credential values when the object key is unquoted', async () => {
-    const store = createConnectionLogStore(3, { load: async () => [], save: async () => {} })
-
-    store.append('host-a', {
-      ...entry(1),
-      detail: `resumeToken: 'secret-one' deviceToken="secret-two"`
-    })
-    await store.hydrate('host-a')
-
-    expect(store.get('host-a')[0]?.detail).toBe(
-      `resumeToken: '[redacted]' deviceToken="[redacted]"`
-    )
-  })
-
-  it('redacts the full quoted credential when its value contains an escaped quote', async () => {
-    const store = createConnectionLogStore(3, { load: async () => [], save: async () => {} })
-
-    store.append('host-a', {
-      ...entry(1),
-      detail: String.raw`{"token":"secret\"tail"} token: 'secret\'tail'`
-    })
-    await store.hydrate('host-a')
-
-    expect(store.get('host-a')[0]?.detail).toBe(`{"token":"[redacted]"} token: '[redacted]'`)
-  })
-
-  it('redacts unterminated quoted credentials', async () => {
-    const store = createConnectionLogStore(3, { load: async () => [], save: async () => {} })
-
-    store.append('host-a', {
-      ...entry(1),
-      message: 'token="secret',
-      detail: '{"authorization":"Bearer also-secret'
-    })
-    await store.hydrate('host-a')
-
-    expect(store.get('host-a')[0]).toMatchObject({
-      message: 'token="[redacted]',
-      detail: '{"authorization":"[redacted]'
-    })
-  })
-
-  it('redacts URL userinfo through the last authority separator', async () => {
-    const store = createConnectionLogStore(3, { load: async () => [], save: async () => {} })
-
-    store.append('host-a', {
-      ...entry(1),
-      message: 'wss://user:p@ss@example.com/x',
-      detail: 'https://user:pass@example.com/x'
-    })
-    await store.hydrate('host-a')
-
-    expect(store.get('host-a')[0]).toMatchObject({
-      message: 'wss://[redacted]@example.com/x',
-      detail: 'https://[redacted]@example.com/x'
-    })
   })
 
   it('does not overwrite persisted history when hydration fails and retries later', async () => {

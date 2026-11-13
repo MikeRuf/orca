@@ -13,7 +13,12 @@ import {
   type AgentJournalDispatchRejection
 } from '../../../shared/agent-session/failures/agent-session-failure-words'
 import { TUI_AGENT_DISPLAY_NAMES } from '../../../shared/agent-launch/catalog/tui-agent-display-names'
-import { AGENT_SESSION_ATTACHMENT_MAX_BYTES } from '../../../shared/agent-session/agent-session-attachments'
+import {
+  AGENT_SESSION_ATTACHMENT_MAX_BYTES,
+  AGENT_SESSION_MESSAGE_IMAGE_MAX_COUNT,
+  AGENT_SESSION_MESSAGE_IMAGE_MAX_TOTAL_BYTES
+} from '../../../shared/agent-session/agent-session-attachments'
+import { agentInlineImageMimeType } from '../../../shared/agent-inline-image-types'
 import { claudeRecord } from './journal/claude-structured-item-translation'
 import { oversizeImageShrinker, type ShrunkImage } from './oversize-image-shrinker'
 
@@ -53,12 +58,10 @@ export function claudeDispatchContentRejection(error: unknown): AgentJournalDisp
   return claudeDispatchRejection(agentSessionFailureFact('attachmentUnreadable'))
 }
 
-const BYTES_PER_MB = 1024 * 1024
-const MAX_IMAGE_BYTES = 5 * BYTES_PER_MB
+// Images up to the API's 5 MB go out byte for byte; larger ones are shrunk to save host memory.
+const SHRINK_ABOVE_BYTES = 5 * 1024 * 1024
 // Why: 3.75 MB raw is 5 MB as base64, the tightest provider limit (Bedrock).
-const SHRUNK_IMAGE_TARGET_BYTES = (MAX_IMAGE_BYTES * 3) / 4
-const MAX_IMAGE_COUNT = 20
-const MAX_TOTAL_IMAGE_BYTES = 20 * BYTES_PER_MB
+const SHRUNK_IMAGE_TARGET_BYTES = (SHRINK_ABOVE_BYTES * 3) / 4
 const MAX_REPLAY_CONTENT_KEY_BYTES = 256
 
 type ImageBudget = {
@@ -75,8 +78,8 @@ function imageTooLarge(limit: number): Error {
 
 export async function readClaudeImage(
   path: string,
-  openImpl: typeof open = open,
-  maxBytes: number = MAX_IMAGE_BYTES
+  maxBytes = AGENT_SESSION_ATTACHMENT_MAX_BYTES,
+  openImpl: typeof open = open
 ): Promise<Buffer> {
   const file = await openImpl(path, 'r')
   try {
@@ -115,29 +118,30 @@ export async function readClaudeImage(
 
 export type SendableImage = { bytes: Buffer; shrunkMediaType?: ShrunkImage['mediaType'] }
 
-/** Images within the cap go out byte for byte; larger ones are shrunk when this host can. */
-export async function readSendableImage(path: string): Promise<SendableImage> {
+/**
+ * Oversize images are shrunk when this host can. A receiver that shrinks images itself gets the
+ * original when shrinking fails; one with a lower `receiverMaxBytes` gets a refusal at that cap.
+ */
+export async function readSendableImage(
+  path: string,
+  receiverMaxBytes = AGENT_SESSION_ATTACHMENT_MAX_BYTES
+): Promise<SendableImage> {
   const shrink = oversizeImageShrinker()
   if (!shrink) {
-    return { bytes: await readClaudeImage(path) }
+    return { bytes: await readClaudeImage(path, receiverMaxBytes) }
   }
-  const bytes = await readClaudeImage(path, open, AGENT_SESSION_ATTACHMENT_MAX_BYTES)
-  if (bytes.byteLength <= MAX_IMAGE_BYTES) {
+  const bytes = await readClaudeImage(path, AGENT_SESSION_ATTACHMENT_MAX_BYTES)
+  if (bytes.byteLength <= Math.min(receiverMaxBytes, SHRINK_ABOVE_BYTES)) {
     return { bytes }
   }
-  const shrunk = shrink(bytes, SHRUNK_IMAGE_TARGET_BYTES)
-  if (!shrunk) {
-    throw imageTooLarge(MAX_IMAGE_BYTES)
+  const shrunk = shrink(bytes, Math.min(receiverMaxBytes, SHRUNK_IMAGE_TARGET_BYTES))
+  if (shrunk) {
+    return { bytes: shrunk.bytes, shrunkMediaType: shrunk.mediaType }
   }
-  return { bytes: shrunk.bytes, shrunkMediaType: shrunk.mediaType }
-}
-
-const IMAGE_MIME_BY_EXTENSION: Record<string, string> = {
-  '.gif': 'image/gif',
-  '.jpeg': 'image/jpeg',
-  '.jpg': 'image/jpeg',
-  '.png': 'image/png',
-  '.webp': 'image/webp'
+  if (bytes.byteLength > receiverMaxBytes) {
+    throw imageTooLarge(receiverMaxBytes)
+  }
+  return { bytes }
 }
 
 async function imageContent(
@@ -145,11 +149,14 @@ async function imageContent(
   budget: ImageBudget
 ): Promise<unknown> {
   budget.count += 1
-  if (budget.count > MAX_IMAGE_COUNT) {
-    throw attachmentError(`Claude messages support at most ${MAX_IMAGE_COUNT} images`, {
-      reason: 'tooMany',
-      limit: MAX_IMAGE_COUNT
-    })
+  if (budget.count > AGENT_SESSION_MESSAGE_IMAGE_MAX_COUNT) {
+    throw attachmentError(
+      `Claude messages support at most ${AGENT_SESSION_MESSAGE_IMAGE_MAX_COUNT} images`,
+      {
+        reason: 'tooMany',
+        limit: AGENT_SESSION_MESSAGE_IMAGE_MAX_COUNT
+      }
+    )
   }
   if (block.url) {
     return { type: 'image', source: { type: 'url', url: block.url } }
@@ -159,13 +166,16 @@ async function imageContent(
   }
   const { bytes: data, shrunkMediaType } = await readSendableImage(block.path)
   budget.localBytes += data.byteLength
-  if (budget.localBytes > MAX_TOTAL_IMAGE_BYTES) {
-    throw attachmentError(`Claude images must total no more than ${MAX_TOTAL_IMAGE_BYTES} bytes`, {
-      reason: 'totalTooLarge',
-      limit: MAX_TOTAL_IMAGE_BYTES
-    })
+  if (budget.localBytes > AGENT_SESSION_MESSAGE_IMAGE_MAX_TOTAL_BYTES) {
+    throw attachmentError(
+      `Claude images must total no more than ${AGENT_SESSION_MESSAGE_IMAGE_MAX_TOTAL_BYTES} bytes`,
+      {
+        reason: 'totalTooLarge',
+        limit: AGENT_SESSION_MESSAGE_IMAGE_MAX_TOTAL_BYTES
+      }
+    )
   }
-  const mediaType = IMAGE_MIME_BY_EXTENSION[extname(block.path).toLowerCase()]
+  const mediaType = agentInlineImageMimeType(block.path)
   if (!mediaType) {
     throw attachmentError(`Claude does not support the image type ${extname(block.path)}`, {
       reason: 'unsupportedType'
