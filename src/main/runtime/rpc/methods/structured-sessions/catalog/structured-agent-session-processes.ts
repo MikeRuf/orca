@@ -3,7 +3,7 @@ import { requireInstalledStructuredHost } from '../creation/structured-agent-ses
 import {
   ProcessesParams,
   StopProcessParams
-} from '../../../../../../shared/rpc-contract/structured-agent-session-params'
+} from '../../../../../../shared/rpc-contract/structured-agent-session/structured-agent-session-params'
 import {
   listAgentSessionProcesses,
   stopAgentSessionProcess
