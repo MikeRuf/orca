@@ -1,5 +1,5 @@
 import { useResetCountdownClock } from '@/hooks/useResetCountdownClock'
-import { cn } from '@/lib/utils'
+import { cn } from '@/lib/class-names'
 import { formatResetCountdown } from '../../../../shared/rate-limit-reset-format'
 import type { RateLimitWindow } from '../../../../shared/rate-limit-types'
 import { normalizeUsagePercentageDisplay } from '../../../../shared/usage-percentage-display'

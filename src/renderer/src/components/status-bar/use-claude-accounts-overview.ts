@@ -8,7 +8,7 @@ import {
 } from '../../../../shared/execution-host'
 import type { Repo } from '../../../../shared/repo-types'
 import type { RuntimeClientTarget } from '../../../../shared/runtime-client-target'
-import { selectExecutionHostDisplayLabel } from '@/lib/execution-host-display-label'
+import { selectExecutionHostDisplayLabel } from '@/runtime/hosts/display/execution-host-display-label'
 import { callRuntimeRpc } from '@/runtime/rpc/calls/runtime-rpc-call'
 import { runtimeTargetForOwnerEnvironment } from '@/runtime/rpc/targets/runtime-client-target'
 import { getProviderAccountsOwnerKey } from '@/runtime/provider-accounts/observations/runtime-provider-accounts-client'

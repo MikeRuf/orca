@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
 import { translate } from '@/i18n/i18n'
-import { cn } from '@/lib/utils'
+import { cn } from '@/lib/class-names'
 import { normalizeUsagePercentageDisplay } from '../../../../../shared/usage-percentage-display'
 import { useAppStore } from '../../../store'
 import {

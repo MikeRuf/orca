@@ -3,7 +3,7 @@ import { Check, ChevronRight, Loader2, Plus, RefreshCw, Settings } from 'lucide-
 import { Button } from '@/components/ui/button'
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible'
 import { translate } from '@/i18n/i18n'
-import { cn } from '@/lib/utils'
+import { cn } from '@/lib/class-names'
 import { ClaudeAccountShareCells, ClaudeAccountUsageMeter } from './ClaudeAccountUsageMeter'
 import type { ClaudeAccountChatUsage, ClaudeAccountUsage } from './claude-account-usage-view'
 
