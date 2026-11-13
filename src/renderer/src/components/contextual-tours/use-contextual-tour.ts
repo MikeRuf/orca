@@ -14,11 +14,13 @@ const TOUR_SOURCES = {
   'workspace-board': 'workspace_board_visible',
   'workspace-agent-sessions': 'workspace_agent_sessions_visible',
   browser: 'browser_visible',
+  'browser-extensions': 'browser_extensions_visible',
   'client-hosted-browser': 'client_hosted_browser_visible',
   tasks: 'tasks_open',
   automations: 'automations_open',
   'floating-workspace': 'floating_workspace_visible',
-  'workspace-creation': 'workspace_creation_visible'
+  'workspace-creation': 'workspace_creation_visible',
+  'projects-collapse-all': 'project_header_collapsed'
 } satisfies Record<ContextualTourId, string>
 
 export type UseContextualTourOptions = {

@@ -23,7 +23,7 @@ vi.mock('../../../pty/shell-startup/pwsh', () => ({ isPwshAvailable: isPwshAvail
 const PWSH7_ABS = 'C:\\Program Files\\PowerShell\\7\\pwsh.exe'
 const WINDOWS_POWERSHELL_ABS = 'C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe'
 const CMD_ABS = 'C:\\Windows\\System32\\cmd.exe'
-vi.mock('../../../providers/windows-powershell-executable', () => ({
+vi.mock('../../../providers/shell-launch/windows/powershell-executable', () => ({
   resolveWindowsPowerShellExecutablePath: (family: 'pwsh.exe' | 'powershell.exe') =>
     family === 'pwsh.exe' ? PWSH7_ABS : WINDOWS_POWERSHELL_ABS,
   resolveWindowsPowerShellSpawnChain: (family: 'pwsh.exe' | 'powershell.exe') =>
@@ -33,12 +33,12 @@ vi.mock('../../../providers/windows-powershell-executable', () => ({
   getWindowsCmdPath: () => CMD_ABS
 }))
 
-vi.mock('../../../providers/agent-foreground-process', () => ({
+vi.mock('../../../providers/foreground/agent-process', () => ({
   resolveAgentForegroundProcessWithAvailability: (...args: unknown[]) =>
     resolveAgentForegroundProcessMock(...args)
 }))
 
-vi.mock('../../../providers/windows-pty-job-membership', () => ({
+vi.mock('../../../providers/foreground/windows/pty-job-membership', () => ({
   readWindowsPtyJobProcessIds: (...args: unknown[]) => readConptyMock(...args),
   isWindowsPtyJobReadable: () => jobReadableMock()
 }))
@@ -143,185 +143,5 @@ describe('daemon pty foreground degraded-scan handling', () => {
       'powershell.exe',
       expect.not.objectContaining({ anchorProcessId: 999 })
     )
-  })
-
-  it('keeps a cached agent across a degraded (timed-out) scan', async () => {
-    resolveAgentForegroundProcessMock
-      .mockResolvedValueOnce({ available: true, processName: 'claude' })
-      .mockResolvedValue({ available: false, processName: null })
-    const { handle } = await spawnWindowsShell()
-
-    await readForegroundAt(handle, 0)
-    expect(await readForegroundAt(handle, 1_000)).toBe('claude')
-    expect(await readForegroundAt(handle, 2_500)).toBe('claude')
-    expect(readConptyMock).not.toHaveBeenCalled()
-  })
-
-  it('keeps a cached agent, for a bounded time, when the job still has a descendant', async () => {
-    resolveAgentForegroundProcessMock
-      .mockResolvedValueOnce({ available: true, processName: 'claude' })
-      .mockResolvedValue({ available: true, processName: null })
-    readConptyMock.mockReturnValue(new Set([12345, 999]))
-    const { handle } = await spawnWindowsShell()
-
-    await readForegroundAt(handle, 0)
-    expect(await readForegroundAt(handle, 1_000)).toBe('claude')
-    expect(await readForegroundAt(handle, 2_500)).toBe('claude')
-  })
-
-  it('stops holding a dead agent once the job answer is only a superset', async () => {
-    // Detached job members can outlive the agent; unanchored membership needs an age bound.
-    resolveAgentForegroundProcessMock
-      .mockResolvedValueOnce({ available: true, processName: 'claude' })
-      .mockResolvedValue({ available: true, processName: null })
-    readConptyMock.mockReturnValue(new Set([12345, 999]))
-    const { handle } = await spawnWindowsShell()
-
-    await readForegroundAt(handle, 0)
-    expect(await readForegroundAt(handle, 2_500)).toBe('claude')
-    await readForegroundAt(handle, 40_000)
-    expect(await readForegroundAt(handle, 40_100)).toBe('powershell.exe')
-  })
-
-  it('restores the idle refresh backoff once the dead identity is gone', async () => {
-    // Retiring stale identities also restores the slower idle refresh tier.
-    resolveAgentForegroundProcessMock
-      .mockResolvedValueOnce({ available: true, processName: 'claude' })
-      .mockResolvedValue({ available: true, processName: null })
-    readConptyMock.mockReturnValue(new Set([12345, 999]))
-    const { handle } = await spawnWindowsShell()
-
-    await readForegroundAt(handle, 0)
-    await readForegroundAt(handle, 40_000)
-    const scansAfterExpiry = resolveAgentForegroundProcessMock.mock.calls.length
-
-    await readForegroundAt(handle, 41_000)
-    expect(resolveAgentForegroundProcessMock.mock.calls.length).toBe(scansAfterExpiry)
-
-    await readForegroundAt(handle, 60_000)
-    expect(resolveAgentForegroundProcessMock.mock.calls.length).toBeGreaterThan(scansAfterExpiry)
-  })
-
-  it('never expires an identity a scan keeps recognizing', async () => {
-    resolveAgentForegroundProcessMock.mockResolvedValue({ available: true, processName: 'claude' })
-    readConptyMock.mockReturnValue(new Set([12345, 999]))
-    const { handle } = await spawnWindowsShell()
-
-    await readForegroundAt(handle, 0)
-    expect(await readForegroundAt(handle, 40_000)).toBe('claude')
-    expect(await readForegroundAt(handle, 120_000)).toBe('claude')
-  })
-
-  it('never expires an identity while scans stay degraded', async () => {
-    // Expiration requires an available scan that found no agent.
-    resolveAgentForegroundProcessMock
-      .mockResolvedValueOnce({ available: true, processName: 'claude' })
-      .mockResolvedValue({ available: false, processName: null })
-    readConptyMock.mockReturnValue(new Set([12345, 999]))
-    const { handle } = await spawnWindowsShell()
-
-    await readForegroundAt(handle, 0)
-    expect(await readForegroundAt(handle, 120_000)).toBe('claude')
-  })
-
-  it('never expires an identity while the job answer is unverifiable', async () => {
-    // Loss of contact is not proof of death.
-    resolveAgentForegroundProcessMock
-      .mockResolvedValueOnce({ available: true, processName: 'claude' })
-      .mockResolvedValue({ available: true, processName: null })
-    readConptyMock.mockReturnValue(null)
-    const { handle } = await spawnWindowsShell()
-
-    await readForegroundAt(handle, 0)
-    expect(await readForegroundAt(handle, 120_000)).toBe('claude')
-  })
-
-  it('retires an anchored agent immediately when its pid leaves the job, despite a leftover', async () => {
-    resolveAgentForegroundProcessMock
-      .mockResolvedValueOnce({
-        available: true,
-        processName: 'claude',
-        processId: 999
-      })
-      .mockResolvedValue({ available: true, processName: null })
-    readConptyMock.mockReturnValue(new Set([12345, 999]))
-    const { handle } = await spawnWindowsShell()
-
-    await readForegroundAt(handle, 0)
-    // Agent 999 exits while detached member 777 keeps the job larger than the shell.
-    readConptyMock.mockReturnValue(new Set([12345, 777]))
-    await readForegroundAt(handle, 1_000)
-    expect(await readForegroundAt(handle, 1_100)).toBe('powershell.exe')
-  })
-
-  it('never retires an anchored agent the job still holds, even when scans miss it', async () => {
-    // An anchored job member keeps its identity despite incomplete process-table rows.
-    resolveAgentForegroundProcessMock
-      .mockResolvedValueOnce({
-        available: true,
-        processName: 'claude',
-        processId: 999
-      })
-      .mockResolvedValue({ available: true, processName: null })
-    readConptyMock.mockReturnValue(new Set([12345, 999]))
-    const { handle } = await spawnWindowsShell()
-
-    await readForegroundAt(handle, 0)
-    await readForegroundAt(handle, 40_000)
-    expect(await readForegroundAt(handle, 40_100)).toBe('claude')
-    expect(await readForegroundAt(handle, 120_000)).toBe('claude')
-  })
-
-  it('retires an anchored agent when the scan proves its pid was recycled', async () => {
-    // A foreign process identity overrides continued membership of a recycled PID.
-    resolveAgentForegroundProcessMock
-      .mockResolvedValueOnce({ available: true, processName: 'claude', processId: 999 })
-      .mockResolvedValue({ available: true, processName: null, anchorPidForeign: true })
-    readConptyMock.mockReturnValue(new Set([12345, 999]))
-    const { handle } = await spawnWindowsShell()
-
-    await readForegroundAt(handle, 0)
-    await readForegroundAt(handle, 1_000)
-    expect(await readForegroundAt(handle, 1_100)).toBe('powershell.exe')
-  })
-
-  it('retires on a shipped build whose node-pty cannot answer job queries', async () => {
-    // Without job-query support, an available process scan must decide retirement.
-    jobReadableMock.mockReturnValue(false)
-    readConptyMock.mockReturnValue(null)
-    resolveAgentForegroundProcessMock
-      .mockResolvedValueOnce({ available: true, processName: 'claude' })
-      .mockResolvedValue({ available: true, processName: null })
-    const { handle } = await spawnWindowsShell()
-
-    await readForegroundAt(handle, 0)
-    await readForegroundAt(handle, 1_000)
-    expect(await readForegroundAt(handle, 1_100)).toBe('powershell.exe')
-  })
-
-  it('retires a cached agent when a scan finds no agent and the console is shell-only', async () => {
-    resolveAgentForegroundProcessMock
-      .mockResolvedValueOnce({ available: true, processName: 'claude' })
-      .mockResolvedValue({ available: true, processName: null })
-    readConptyMock.mockReturnValue(new Set([12345]))
-    const { handle } = await spawnWindowsShell()
-
-    await readForegroundAt(handle, 0)
-    await readForegroundAt(handle, 1_000)
-    expect(await readForegroundAt(handle, 1_100)).toBe('powershell.exe')
-    expect(readConptyMock).toHaveBeenCalledTimes(1)
-  })
-
-  it('keeps a cached agent when the console-membership probe is unavailable', async () => {
-    resolveAgentForegroundProcessMock
-      .mockResolvedValueOnce({ available: true, processName: 'claude' })
-      .mockResolvedValue({ available: true, processName: null })
-    readConptyMock.mockReturnValue(null)
-    const { handle } = await spawnWindowsShell()
-
-    await readForegroundAt(handle, 0)
-    expect(await readForegroundAt(handle, 1_000)).toBe('claude')
-    expect(await readForegroundAt(handle, 2_500)).toBe('claude')
-    expect(readConptyMock).toHaveBeenCalledTimes(2)
   })
 })

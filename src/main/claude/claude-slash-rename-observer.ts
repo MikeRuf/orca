@@ -1,4 +1,4 @@
-import type { ClaudeStructuredSessionEvent } from './structured/claude-structured-session-state'
+import type { ClaudeStructuredSessionEvent } from './structured/claude-structured-session-event'
 
 /** Reports a user's `/rename` once its turn ends, with the title Claude chose. */
 export function createClaudeSlashRenameObserver(

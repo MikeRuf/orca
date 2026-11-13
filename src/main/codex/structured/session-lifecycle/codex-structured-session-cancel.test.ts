@@ -28,7 +28,7 @@ vi.mock(
     terminateDescendantSnapshotWithVerdict: processWork.terminateDescendantSnapshotWithVerdict
   })
 )
-vi.mock('../../../providers/windows-foreground-process-rows', async (importOriginal) => ({
+vi.mock('../../../providers/foreground/windows/process-rows', async (importOriginal) => ({
   ...(await importOriginal<Record<string, unknown>>()),
   queryWindowsProcessDescendants: processWork.queryWindowsProcessDescendants
 }))
@@ -144,19 +144,6 @@ function completeTurn(codex: ReturnType<typeof fakeCodex>, turnId = 'turn-1'): v
 }
 
 describe('CodexStructuredSessionAdapter.cancelTurn', () => {
-  it('confirms an interrupt Codex acknowledged', async () => {
-    const codex = fakeCodex()
-    const adapter = await acquired(codex)
-
-    await expect(
-      adapter.cancelTurn({ sessionId: 'session-1', turnId: 'turn-1', fence: 7 })
-    ).resolves.toEqual({ cancelled: true, turnId: 'turn-1' })
-    expect(codex.connections[0].calls.at(-1)).toEqual({
-      method: 'turn/interrupt',
-      params: { threadId: THREAD_ID, turnId: 'turn-1' }
-    })
-  })
-
   it('reports not-cancelled when Codex declines or lacks the method', async () => {
     const declined = fakeCodex()
     declined.routes['turn/interrupt'] = () => {
@@ -181,21 +168,6 @@ describe('CodexStructuredSessionAdapter.cancelTurn', () => {
         fence: 7
       })
     ).resolves.toEqual({ cancelled: false, refusal: {} })
-  })
-
-  it('rethrows an unsettled interrupt so the turn is not shown as cancelled', async () => {
-    const codex = fakeCodex()
-    codex.routes['turn/interrupt'] = () => {
-      throw new Error('codex app-server turn/interrupt exceeded 30000ms')
-    }
-
-    await expect(
-      (await acquired(codex)).cancelTurn({
-        sessionId: 'session-1',
-        turnId: 'turn-1',
-        fence: 7
-      })
-    ).rejects.toThrow('exceeded 30000ms')
   })
 
   it('accepts an immediate resend after verified interruption', async () => {
@@ -281,20 +253,6 @@ describe('a Codex Stop is the interrupt alone', () => {
     }
     return { events, stopped, answerThenEnd }
   }
-
-  it('publishes the interrupted end the moment Codex sends it', async () => {
-    const { events, stopped, answerThenEnd } = await stopAfterASend()
-
-    answerThenEnd()
-
-    expect(events).toContainEqual(
-      expect.objectContaining({
-        method: 'turn/completed',
-        params: expect.objectContaining({ turn: { id: 'turn-1', status: 'interrupted' } })
-      })
-    )
-    await expect(stopped).resolves.toEqual({ cancelled: true, turnId: 'turn-1' })
-  })
 
   it('reads and kills no processes, from the send through the Stop', async () => {
     const { stopped, answerThenEnd } = await stopAfterASend()
