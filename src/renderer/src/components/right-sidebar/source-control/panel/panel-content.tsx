@@ -8,8 +8,10 @@ import { SourceControlUncommittedSections } from '../listing/uncommitted-section
 import { CompareUnavailable } from '../sync/compare-summary'
 import { SourceControlCommitSurface } from './commit-surface'
 import { SourceControlForkPushNotice } from './fork-push-notice'
+import { SourceControlMergedReviewNotice } from './merged-review-workspace-notice'
 import type { SourceControlPanelReadyProps } from './panel-props'
 import { useSourceControlScope } from './worktree-scope'
+import { openGitGraph } from '@/lib/source-control/graph/git-graph-tab'
 
 export function SourceControlPanelContent(props: SourceControlPanelReadyProps) {
   const { activeWorktree, currentWorktreeId, model, worktreePath } = props
@@ -64,6 +66,7 @@ export function SourceControlPanelContent(props: SourceControlPanelReadyProps) {
     refreshBranchCompare,
     refreshGitHistory,
     repositoryHuge,
+    resolveSplitTargetGroupId,
     requestDiscardAllInArea,
     requestDiscardEntry,
     requestDiscardPaths,
@@ -132,6 +135,19 @@ export function SourceControlPanelContent(props: SourceControlPanelReadyProps) {
 
       {/* Keep CommitArea through clean/mid-commit states (#1448); only active conflict operations replace the action surface. */}
       <SourceControlForkPushNotice pushTarget={activeWorktree.pushTarget ?? null} />
+
+      {model.isFolder ? null : (
+        <SourceControlMergedReviewNotice
+          review={model.hostedReview}
+          worktree={activeWorktree}
+          statusHeadOid={
+            statusReadError === undefined && repositoryHuge === undefined
+              ? model.activeGitStatusHead
+              : null
+          }
+          uncommittedCount={model.entries.length}
+        />
+      )}
 
       {shouldRenderCommitArea(
         unresolvedConflicts.length,
@@ -246,6 +262,11 @@ export function SourceControlPanelContent(props: SourceControlPanelReadyProps) {
             onLoadCommitFiles={loadCommitFiles}
             onOpenCommitFile={openCommitFile}
             onCommitAction={handleCommitAction}
+            onOpenGitGraph={(event) => {
+              if (currentWorktreeId) {
+                void openGitGraph(currentWorktreeId, () => resolveSplitTargetGroupId(event))
+              }
+            }}
           />
         </div>
       )}

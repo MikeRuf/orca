@@ -36,6 +36,7 @@ import {
 } from './status-branch-line-total-input'
 import { reconcileDriveCheckoutSuspects } from './drive-checkout-suspect-status'
 import { markRecursiveSubmoduleRestores } from './submodule-restore-recurse'
+import { withRepositoryGitCause } from '../repository-git-cause'
 
 export async function getStatus(
   worktreePath: string,
@@ -44,15 +45,19 @@ export async function getStatus(
   // Reads preserve diff caches; mutations invalidate them and settled entries also validate input stamps.
   const cacheKey = getStatusReadKey(worktreePath, options)
   return statusReadLeaseOwner.lease(cacheKey, options.signal, (sharedSignal) =>
-    runGetStatus(worktreePath, { ...options, signal: sharedSignal })
+    withRepositoryGitCause(
+      worktreePath,
+      options,
+      { family: 'status', reason: 'status-read', cache: 'miss' },
+      () => runGetStatus(worktreePath, { ...options, signal: sharedSignal })
+    )
   )
 }
 
+// Led by the worktree's line-stats key so an outside change can detach just that checkout's reads.
 function getStatusReadKey(worktreePath: string, options: GetStatusOptions): string {
   const limit = resolveGitStatusLimit(options.limit)
-  return stableInFlightKey([
-    worktreePath,
-    options.wslDistro ?? '',
+  return `${getStatusLineStatsCacheKey(worktreePath, options)}\0${stableInFlightKey([
     options.admissionTier ?? 'status',
     options.includeIgnored === true,
     options.includeLineStats !== false,
@@ -63,7 +68,7 @@ function getStatusReadKey(worktreePath: string, options: GetStatusOptions): stri
     limit,
     // Filtering options affect which rows survive and must participate in the cache key.
     options.sharedLinkPaths ?? []
-  ])
+  ])}`
 }
 
 /** Hide only configured, real, untracked shared symlinks; directory-only Git ignore rules cannot hide them. */

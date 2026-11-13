@@ -21,8 +21,6 @@ import type { RuntimeHostDescriptor } from './remote-runtime/host-status/runtime
 import type { TuiAgent } from './agent-launch/catalog/tui-agent'
 import type { RuntimeBuildInfo } from './runtime-build-info'
 
-export type * from './runtime-mobile-session-tab-contracts'
-
 export type RuntimeGraphStatus = 'ready' | 'reloading' | 'unavailable'
 
 export type RuntimeDesktopWindowStatus = 'available' | 'openable' | 'initializing' | 'blocked'
@@ -35,8 +33,6 @@ export type RuntimeTerminalDriverState =
   | { kind: 'idle' }
   | { kind: 'desktop' }
   | { kind: 'mobile'; clientId: string }
-
-export type RuntimeBrowserDriverState = RuntimeTerminalDriverState
 
 export const BROWSER_UNAVAILABLE_ERROR_CODE = 'browser_unavailable' as const
 
