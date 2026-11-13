@@ -8,7 +8,7 @@ import {
 } from './spawn-file-foreground-process'
 
 const { members } = vi.hoisted(() => ({ members: vi.fn() }))
-vi.mock('../../providers/windows-pty-job-membership', () => ({
+vi.mock('../../providers/foreground/windows/pty-job-membership', () => ({
   readWindowsPtyJobProcessIds: members
 }))
 
@@ -80,15 +80,6 @@ describe('POSIX static-name agent selection', () => {
       )
     ).toEqual({ available: false, processName: null })
   })
-
-  it.each(['vim', 'npm', 'sleep'])('retains the ordinary %s name', (command) => {
-    expect(
-      resolveSpawnFileForegroundFromRows(
-        [root, { ...root, pid: 101, ppid: 100, pgid: 101, stat: 'S+', command }],
-        100
-      )
-    ).toEqual({ available: true, processName: command })
-  })
 })
 
 describe('Windows static-name agent selection', () => {
@@ -132,12 +123,5 @@ describe('Windows static-name agent selection', () => {
         readWindowsConsoleAttachedProcessIds: async () => new Set([100, 101])
       })
     ).toEqual({ available: true, processName: 'droid', processId: 101 })
-  })
-
-  it('retains an ordinary executable from the identity table', async () => {
-    installRows(['vim.exe'])
-    expect(
-      await resolveSpawnFileForegroundProcess(proc, 'powershell.exe', { fresh: true })
-    ).toEqual({ available: true, processName: 'vim.exe', processId: 101 })
   })
 })

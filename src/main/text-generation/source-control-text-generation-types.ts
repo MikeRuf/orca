@@ -4,8 +4,8 @@ import type { AgentGenerationFailureOutput } from './agent-failure-output'
 import type {
   CommitMessageAgentCapability,
   CommitMessageModelCapability
-} from '../../shared/commit-message-agent-spec'
-import type { CommitMessagePlan } from '../../shared/commit-message-plan'
+} from '../../shared/source-control/ai/generation/commit-message-agent-spec'
+import type { CommitMessagePlan } from '../../shared/source-control/ai/generation/commit-message-plan'
 import type { TextGenerationFailureFields } from '../../shared/text-generation-failure-copy'
 
 export type GenerateCommitMessageResult =
@@ -50,6 +50,7 @@ export type TextGenerationOperation =
   | 'branch-name'
   | 'jira-issue-summary'
   | 'conversation-name'
+  | 'dictation-cleanup'
 
 export type CommitMessageGenerationTarget =
   | { kind: 'local'; cwd: string; env?: NodeJS.ProcessEnv; wslDistro?: string }
@@ -128,4 +129,5 @@ export type LocalSourceControlPlanInput = {
   operation: TextGenerationOperation
   wslDistro?: string
   spawnAgent: SpawnSourceControlAgent
+  timeoutMs?: number
 }

@@ -1,6 +1,6 @@
-import type { CommitMessagePlan } from '../../shared/commit-message-plan'
-import { isSshRequestOutcomeUnverifiable } from '../ssh/ssh-channel-multiplexer'
-import { WINDOWS_BATCH_UNSAFE_ARGUMENTS_ERROR } from '../win32-utils'
+import type { CommitMessagePlan } from '../../shared/source-control/ai/generation/commit-message-plan'
+import { isSshRequestOutcomeUnverifiable } from '../ssh/protocol/ssh-channel-multiplexer'
+import { WINDOWS_BATCH_UNSAFE_ARGUMENTS_ERROR } from '../../shared/windows-batch-spawn'
 import {
   finalizeFromAgentOutput,
   userFacingUnsafeWindowsBatchArgs
@@ -70,7 +70,6 @@ export async function runRemoteSourceControlPlan(input: {
     label: plan.label,
     outputFormat: plan.outputFormat,
     operation,
-    includeLocalMacDnsHint: false,
-    includeStdoutDetail: operation !== 'branch-name' && operation !== 'conversation-name'
+    includeLocalMacDnsHint: false
   })
 }

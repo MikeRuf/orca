@@ -20,6 +20,7 @@ export const NATIVE_CHAT_SESSION_OPTION_COPY = {
   xhigh: 'Extra high',
   max: 'Max',
   ultra: 'Ultra',
+  ultracode: 'Ultracode',
   minimalShort: 'Min',
   mediumShort: 'Med',
   xhighShort: 'XHigh',
@@ -50,7 +51,8 @@ const LEVEL_IDS = {
   high: 'high',
   xhigh: 'xhigh',
   max: 'max',
-  ultra: 'ultra'
+  ultra: 'ultra',
+  ultracode: 'ultracode'
 } as const satisfies Record<string, NativeChatSessionOptionCopyId>
 
 const SHORT_LEVEL_IDS = {
@@ -156,7 +158,12 @@ export function nativeChatModelPillLabel(
 ): string {
   // The tooltip names the category; default sources still identify a model, while unknown sources do not.
   const choice = descriptor.valueSource === 'unknown' ? null : selectedNativeChatChoice(descriptor)
-  return choice ? nativeChatSessionChoiceLabel(choice, say) : say('model')
+  if (choice) {
+    return nativeChatSessionChoiceLabel(choice, say)
+  }
+  return descriptor.kind.type === 'select'
+    ? (descriptor.kind.placeholder ?? say('model'))
+    : say('model')
 }
 
 export function nativeChatOptionsPillTitle(

@@ -1,8 +1,8 @@
 import { sessionCrewChanges } from '../../orchestration/crew/crew-changes'
-import type { JournalHostDatabase } from '../../../native-chat/agent-session-journal/journal-host-database'
-import type { JournalOperationReceipt } from '../../../native-chat/agent-session-journal/journal-row-writer'
-import { journalOpenRefusalError } from '../../../native-chat/agent-session-journal/journal-open-failure'
-import { AgentSessionJournalError } from '../../../native-chat/agent-session-journal/journal-write-guards'
+import type { JournalHostDatabase } from '../../../native-chat/agent-session-journal/database/journal-host-database'
+import type { JournalOperationReceipt } from '../../../native-chat/agent-session-journal/writing/journal-row-writer'
+import { journalOpenRefusalError } from '../../../native-chat/agent-session-journal/replay/journal-open-failure'
+import { AgentSessionJournalError } from '../../../native-chat/agent-session-journal/writing/journal-write-guards'
 import {
   requireWritableAgentSessionRecord,
   type AgentSessionStoreState
@@ -11,8 +11,8 @@ import {
   insertAgentSessionOperationRowsIfAbsent,
   writeAgentSessionStoreRows
 } from './agent-session-record-rows'
-import { readCommandReceipt } from '../../../native-chat/agent-session-journal/command-receipt-table'
-import type { CommandReceiptScope } from '../../../native-chat/agent-session-journal/command-receipt-schema'
+import { readCommandReceipt } from '../../../native-chat/agent-session-journal/writing/command-receipt-table'
+import type { CommandReceiptScope } from '../../../native-chat/agent-session-journal/writing/command-receipt-schema'
 import {
   agentSessionRuntimeIncarnation,
   attributeAgentSessionRuntime
@@ -30,6 +30,8 @@ import {
   draftAgentSessionStoreState,
   type AgentSessionStoreRowWrites
 } from './agent-session-store-draft'
+import { changesAgentSenderIdentity } from './agent-session-sender-identity-revision'
+import { AgentSessionProviderAliasIndex } from './agent-session-provider-alias-index'
 
 // Commit validated draft rows atomically before publication; failures discard the draft.
 // The promise queue preserves FIFO and defers BEGIN beyond the caller's open journal transaction.
@@ -90,6 +92,13 @@ export class AgentSessionStoreTransactions {
   private readonly admittedSends = new Map<string, number>()
   readonly acceptedSendListeners = new Set<(sessionId: string) => void>()
   private published: AgentSessionStoreState
+  /** Moves only when a commit changes what chat sender identity reads. */
+  senderIdentityRevision = 0
+  /** Replaced only when a record joins or leaves, or a /clear links one conversation to the next:
+   *  lookups derived from every record's lineage stay valid across admission and lease writes. */
+  private lineage: object = {}
+  /** Built on first use; kept by each committed record write, dropped if the unreadable set moves. */
+  private providerAliases: AgentSessionProviderAliasIndex | null = null
   /** Receipts co-written in one transaction build on each other's drafts, so adoption keeps both. */
   private staged: { transaction: number; draft: AgentSessionStoreState } | null = null
   /** Loaded takeover evidence; immutable for this runtime. */
@@ -120,6 +129,16 @@ export class AgentSessionStoreTransactions {
 
   get state(): AgentSessionStoreState {
     return this.published
+  }
+
+  lineageRevision(): object {
+    return this.lineage
+  }
+
+  /** The chat whose provider handle chain names `nativeId`, from the commit-kept alias index. */
+  providerAliasOwner(nativeId: string): string | null {
+    this.providerAliases ??= new AgentSessionProviderAliasIndex(this.published)
+    return this.providerAliases.owner(nativeId)
   }
 
   get readOnly(): boolean {
@@ -240,7 +259,24 @@ export class AgentSessionStoreTransactions {
       adopt: () => {
         if (writes) {
           freezeRows(draft, writes)
+          if (changesAgentSenderIdentity(published, draft, writes)) {
+            this.senderIdentityRevision++
+          }
           this.published = draft
+          if (published.unreadableRecords !== draft.unreadableRecords) {
+            this.providerAliases = null
+          } else {
+            this.providerAliases?.applyCommitted(draft, writes.records)
+          }
+          const lineageChanged =
+            writes.records.remove.length > 0 ||
+            writes.records.upsert.some(([id]) => {
+              const before = published.records.get(id)
+              return before?.conversationCommand !== draft.records.get(id)?.conversationCommand
+            })
+          if (lineageChanged) {
+            this.lineage = {}
+          }
           const topologyChanged =
             writes.sessionTabs !== null ||
             writes.records.remove.length > 0 ||
