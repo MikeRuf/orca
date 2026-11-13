@@ -1,4 +1,4 @@
-import { ClaudeControlRequestError } from '../../claude-agent-sdk-control-requests'
+import { ClaudeControlRequestError } from '../../sdk-transport/claude-agent-sdk-control-requests'
 import {
   AgentSessionOptionRejectedError,
   ClaudeEffortValidationError
@@ -16,7 +16,7 @@ import { beginClaudeOptionMutation } from '../claude-structured-execution-observ
 import {
   CLAUDE_APPLY_FLAG_SETTINGS_CONTROL,
   CLAUDE_CACHED_FLAG_CHECK_BUDGET_MS
-} from '../../claude-cli-flag-support'
+} from '../../cli-capabilities/claude-cli-flag-support'
 
 const EFFORT_LEVELS = ['low', 'medium', 'high', 'xhigh', 'max'] as const
 
@@ -59,7 +59,7 @@ export function restoredClaudeStructuredSessionOptions(
   )
 }
 
-const CLAUDE_STRUCTURED_OPTION_KEYS = new Set(['model', 'effort', 'fastMode'])
+const CLAUDE_STRUCTURED_OPTION_KEYS = new Set(['model', 'effort', 'fastMode', 'interactionMode'])
 
 export function isClaudeStructuredOptionKey(key: string): boolean {
   return CLAUDE_STRUCTURED_OPTION_KEYS.has(key)

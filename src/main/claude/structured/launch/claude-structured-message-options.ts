@@ -1,4 +1,5 @@
-import { claudeStartedUnechoedSend } from '../../claude-command-lifecycle'
+import { claudeBuildPermissionMode } from '../permissions/claude-plan-approval-mode'
+import { claudeStartedUnechoedSend } from '../turns/claude-command-lifecycle'
 import { claudeExecutionObservations } from '../claude-structured-execution-observations'
 import { dispatchClaudeTurn } from '../claude-structured-dispatch'
 import type { StructuredAgentSessionAdapter } from '../../../native-chat/agent-session-wire/providers/structured-agent-session-adapter'
@@ -57,6 +58,18 @@ export async function applyClaudeMessageOptions(
       setClaudeStructuredOption(session, { key: 'fastMode', value: fastMode }, timeoutMs),
       signal
     )
+  }
+  throwIfSignalAborted(signal)
+  if (options.interactionMode !== undefined) {
+    const mode = options.interactionMode === 'plan' ? 'plan' : claudeBuildPermissionMode(session)
+    await waitForPromiseWithSignal(
+      session.connection.setPermissionMode(mode, { timeoutMs }),
+      signal
+    )
+    session.appliedInputOptions.set('interactionMode', options.interactionMode)
+    if (options.interactionMode === 'default') {
+      session.appliedInputOptions.set('buildPermissionMode', mode)
+    }
   }
   throwIfSignalAborted(signal)
 }
