@@ -1,6 +1,6 @@
 import type { ClaudeAccountsOverview } from '../../../../../shared/claude-accounts-overview'
 import { withTimeout } from '../../../../../shared/promise-timeout-fallback'
-import { ClaudeOverviewParams } from '../../../../../shared/rpc-contract/accounts-params'
+import { ClaudeOverviewParams } from '../../../../../shared/rpc-contract/accounts/accounts-params'
 import { buildClaudeAccountsOverview } from '../../../../claude-accounts/claude-accounts-overview'
 import { getStructuredAgentSessionHost } from '../../../../native-chat/agent-session-wire/host/structured-agent-session-registry'
 import { defineMethod } from '../../core'
