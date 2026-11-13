@@ -5,16 +5,16 @@ import type { RuntimeClientTarget } from '../../../../shared/runtime-client-targ
 import type { ProviderRateLimits } from '../../../../shared/rate-limit-types'
 import { useResetCountdownClock } from '@/hooks/useResetCountdownClock'
 import { translate } from '@/i18n/i18n'
-import { openDesktopStructuredSession } from '@/lib/activate-ai-vault-structured-session'
-import { signInToClaudeAccount } from '@/lib/claude-account-sign-in'
-import { handleRunningClaudeSessionsAfterSwitch } from '@/lib/claude-account-switch-sessions'
+import { openDesktopStructuredSession } from '@/lib/agent-session/open/activate-ai-vault-structured-session'
+import { signInToClaudeAccount } from '@/lib/provider-accounts/claude-account-sign-in'
+import { handleRunningClaudeSessionsAfterSwitch } from '@/lib/provider-accounts/claude-account-switch-sessions'
 import {
   fetchProviderAccountsSnapshot,
   getProviderAccountsOwnerKey,
   selectClaudeProviderAccount
 } from '@/runtime/provider-accounts/observations/runtime-provider-accounts-client'
 import { useAppStore } from '../../store'
-import { getClaudeAccountErrorDescription } from '../settings/accounts/accounts-pane-action-errors'
+import { getClaudeAccountErrorDescription } from '@/lib/provider-accounts/provider-account-action-errors'
 import { buildClaudeAccountUsage, resolveClaudeChatAccountId } from './claude-account-usage-model'
 import { ClaudeAccountsPanel } from './ClaudeAccountsPanel'
 import { isOwnerNotSetUpPlaceholder } from './owner-usage-rate-limits'

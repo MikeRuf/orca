@@ -35,8 +35,8 @@ import {
 } from '../../../native-chat/agent-session-wire/host/structured-agent-session-logger'
 import { openAgentSessionRecordStoreOnce } from '../../agent-session/records/agent-session-record-store-slot'
 import type { AgentSessionRecordStore } from '../../agent-session/records/agent-session-record-store'
-import { maybeAutoRenameWorkspaceOnFirstStructuredTurn } from '../../../agent-hooks/first-work-structured-session-rename'
-import { firstWorkRenameDeps } from '../../../agent-hooks/first-work-rename-runtime'
+import { maybeAutoRenameWorkspaceOnFirstStructuredTurn } from '../../../agent-hooks/first-work/first-work-structured-session-rename'
+import { firstWorkRenameDeps } from '../../../agent-hooks/first-work/first-work-rename-runtime'
 import { createStructuredChatNamingHandler } from '../../../native-chat/structured-chat-naming'
 import { structuredChatNamingDeps } from '../../agent-session/naming/structured-chat-naming-runtime'
 import { getProfileUserDataPath } from '../../../orca-profiles/profile-storage-paths'
@@ -49,7 +49,7 @@ import {
 } from '../../orchestration/terminal-authority/structured-sessions/structured-worker-custody'
 import { preModeChatGetsFullAccess } from '../../../../shared/agent-launch/permissions/agent-chat-permission-mode'
 import { isTuiAgent } from '../../../../shared/agent-launch/catalog/tui-agent-config'
-import { claudeCliFlagSupport } from '../../../claude/claude-cli-flag-support'
+import { claudeCliFlagSupport } from '../../../claude/cli-capabilities/claude-cli-flag-support'
 import {
   runtimeHiddenHostIds,
   runtimeHiddenRepos,
@@ -67,6 +67,11 @@ export abstract class OrcaRuntimeWithGetWorktreePs extends RuntimeChatWorkerEven
   protected readonly workerAutoReleaseActivity = new WorkerAutoReleaseActivity(
     () => this._orchestrationDb
   )
+
+  /** The task each pane was dispatched, by pane key, as `worktree.ps` rows title it. */
+  listAgentTasksByPaneKey() {
+    return this.agentOrchestrationProjection.buildByPaneKey() ?? {}
+  }
 
   async getWorktreePs(
     limit = DEFAULT_WORKTREE_PS_LIMIT,
@@ -136,7 +141,8 @@ export abstract class OrcaRuntimeWithGetWorktreePs extends RuntimeChatWorkerEven
       rowSources,
       orchestrationByPaneKey: this.agentOrchestrationProjection.buildByPaneKey(),
       getSummary,
-      conversationName: this.orchestrationSenderNames.agentRowNamer()
+      conversationName: this.orchestrationSenderNames.agentRowNamer(),
+      agentList: this.readAgentListPublication()
     })
 
     const sorted = [...summaries.values()].sort(compareWorktreePs)
@@ -176,7 +182,8 @@ export abstract class OrcaRuntimeWithGetWorktreePs extends RuntimeChatWorkerEven
             ? sourceMatchersByRepoId.get(getRepoHostIdentityForParts(worktree.repoId, owner.hostId))
             : undefined,
           sourceDefaultsSupported,
-          visibilitySettings
+          visibilitySettings,
+          repoOwners
         )
       })
     }
@@ -273,6 +280,8 @@ export abstract class OrcaRuntimeWithGetWorktreePs extends RuntimeChatWorkerEven
         preModeChatGetsFullAccess(agent, this.requireStore().getSettings(), process.platform),
       launchAccountHome: (record, purpose) =>
         this.resolveStructuredAgentLaunchAccountHome(record, purpose),
+      prepareLaunchAccountHome: (record, launchDirectory) =>
+        this.prepareStructuredAgentLaunchAccountHome(record, launchDirectory),
       onRequestFailure: (failure) => this.onStructuredRequestFailureForErrorMail(failure),
       // Structured chat has no CLI hooks; this projection drives first-work renaming.
       onSessionStatusChanged: (summary, options) => {
@@ -298,13 +307,16 @@ export abstract class OrcaRuntimeWithGetWorktreePs extends RuntimeChatWorkerEven
           readStructuredAttentionWorkspaceLabels(this.requireStore(), scope),
         isWorkspaceMuted: (scope) => this.isWorkspaceNotificationMuted(scope.workspaceId),
         // The same contexts the session's chat row carries.
-        readOrchestration: (paneKey) =>
-          this.agentOrchestrationProjection.buildByPaneKey()?.[paneKey],
+        readOrchestration: (paneKey) => this.agentOrchestrationProjection.getForPaneKey(paneKey),
         dispatch: (event) => this.mobileNotifications.dispatch(event),
         reconcile: (state) => this.mobileNotifications.reconcileStructuredPromptAttention(state),
         now: () => Date.now()
       }),
-      onTurnAttention: chatWorkerTurnStopReporter(this.workerTurnStopReportDeps),
+      createTurnAttention: () =>
+        chatWorkerTurnStopReporter({
+          ...this.workerTurnStopReportDeps,
+          openExistingDb: () => this.getExistingOrchestrationDb()
+        }),
       // Re-read dispatch ownership each sweep; absence of a database cannot keep the worker alive.
       hasOpenDispatch: (record) =>
         structuredWorkerOwesWork(this.getOrchestrationDbIfAvailable?.() ?? null, record)
