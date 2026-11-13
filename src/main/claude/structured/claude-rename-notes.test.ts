@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from 'vitest'
-import { sendClaudeRenameNote } from '../claude-rename-note'
+import { sendClaudeRenameNote } from '../conversation-naming/claude-rename-note'
 import type {
   ClaudeStreamJsonConnection,
   ClaudeStreamJsonConnectionHandlers

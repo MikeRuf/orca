@@ -7,7 +7,6 @@ import {
   type AgentSessionWireRefusal
 } from '../../../../shared/agent-session/failures/agent-session-wire-refusals'
 import type { AgentSessionTurnContext } from '../operations/structured-agent-session-turns'
-import './structured-agent-session-options-read'
 import { structuredAgentSessionOptionOverridesRefusal } from './structured-agent-session-option-intent'
 
 /** Capture send-specific choices or saved defaults once under the acceptance lane. */
@@ -22,6 +21,7 @@ export function captureStructuredExecutionOptions(
       ? { ...saved, ...supplied }
       : {
           ...(saved.personality ? { personality: saved.personality } : {}),
+          ...(saved.interactionMode ? { interactionMode: saved.interactionMode } : {}),
           ...selection
         }
   // A missing Fast pick has a definite baseline on hosts that offer it.
@@ -56,6 +56,10 @@ export function captureStructuredExecutionOptions(
 export function openingMessageOptions(options: Readonly<Record<string, string>> | undefined): {
   options?: AgentSessionExecutionOptions
 } {
-  const { model, effort } = options ?? {}
-  return model ? { options: { model, ...(effort ? { effort } : {}) } } : {}
+  const { model, effort, interactionMode } = options ?? {}
+  const captured = readAgentSessionExecutionOptions({
+    ...(model ? { model, ...(effort ? { effort } : {}) } : {}),
+    ...(interactionMode ? { interactionMode } : {})
+  })
+  return captured && Object.keys(captured).length > 0 ? { options: captured } : {}
 }

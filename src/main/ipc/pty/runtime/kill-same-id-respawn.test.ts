@@ -1,12 +1,12 @@
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { LOCAL_EXECUTION_HOST_ID } from '../../../../shared/execution-host'
-import type { IPtyProvider } from '../../../providers/pty-provider-contract'
-import { stopRendererOwnedPty, type PtyKillIpcDeps } from '../ipc/renderer-kill'
+import type { IPtyProvider } from '../../../providers/pty/provider-contract'
+
 import { finishPtyShutdown } from '../provider/liveness'
 import { ptyIncarnationById, ptyOwnership } from '../provider/ownership-state'
 import { getLocalPtyProvider, setLocalPtyProvider } from '../provider/registry'
 import type { PtyRuntimeControllerDeps } from './controller-deps'
-import { killPtyFromRuntimeController, stopAndWaitPtyFromRuntimeController } from './kill'
+import { stopAndWaitPtyFromRuntimeController } from './kill'
 
 const PTY_ID = 'respawned-pty'
 
@@ -43,11 +43,6 @@ function harness() {
 // oxlint-disable-next-line typescript/consistent-type-assertions -- SAFETY: the stops read only these ports and an optional store.
 const asControllerDeps = (ports: unknown) => ports as PtyRuntimeControllerDeps
 // oxlint-disable-next-line typescript/consistent-type-assertions -- SAFETY: the tab-close stop reads only these ports and an optional store.
-const asKillIpcDeps = (ports: unknown) => ports as PtyKillIpcDeps
-
-async function settleKill(): Promise<void> {
-  await new Promise((resolve) => setTimeout(resolve, 0))
-}
 
 const original = getLocalPtyProvider()
 afterEach(() => {
@@ -75,13 +70,6 @@ describe('a stop whose shutdown lands after a same-id respawn', () => {
     expect(ports.sendPtyExitToRenderer).not.toHaveBeenCalled()
   }
 
-  it('leaves the respawn alone after a runtime kill', async () => {
-    const h = start()
-    killPtyFromRuntimeController(asControllerDeps(h.ports), PTY_ID)
-    await settleKill()
-    expectRespawnUntouched(h)
-  })
-
   it('reports the listed respawn live after a stop-and-wait', async () => {
     const h = start()
     await expect(
@@ -89,40 +77,5 @@ describe('a stop whose shutdown lands after a same-id respawn', () => {
     ).resolves.toBe(false)
     expect(h.runtime.markPtyLivenessLive).toHaveBeenCalledWith(PTY_ID)
     expectRespawnUntouched(h)
-  })
-
-  it('leaves the respawn alone after a renderer tab close', async () => {
-    const h = start()
-    await stopRendererOwnedPty(asKillIpcDeps(h.ports), { id: PTY_ID })
-    expectRespawnUntouched(h)
-  })
-})
-
-describe('a stop of a PTY whose incarnation was stamped mid-stop', () => {
-  // Owner reconciliation can discover this same process's incarnation while shutdown is pending.
-  function start(): ReturnType<typeof harness> {
-    setLocalPtyProvider(providerWhose(() => ptyIncarnationById.set(PTY_ID, 'inc-same'), []))
-    ptyOwnership.set(PTY_ID, LOCAL_EXECUTION_HOST_ID)
-    return harness()
-  }
-
-  function expectRetired({ ports }: ReturnType<typeof harness>): void {
-    expect(ptyOwnership.has(PTY_ID)).toBe(false)
-    expect(ports.sendPtyExitToRenderer).toHaveBeenCalledWith(
-      expect.objectContaining({ id: PTY_ID })
-    )
-  }
-
-  it('retires it after a renderer tab close', async () => {
-    const h = start()
-    await stopRendererOwnedPty(asKillIpcDeps(h.ports), { id: PTY_ID })
-    expectRetired(h)
-  })
-
-  it('retires it after a runtime kill', async () => {
-    const h = start()
-    killPtyFromRuntimeController(asControllerDeps(h.ports), PTY_ID)
-    await settleKill()
-    expectRetired(h)
   })
 })

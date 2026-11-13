@@ -6,7 +6,7 @@ import type { StructuredAgentSessionAdapter } from '../providers/structured-agen
 import type { StructuredAgentSessionProviderChild } from '../host/structured-agent-session-host-types'
 import type { AgentSessionExecutionOptions } from '../../../../shared/agent-session/options/agent-session-execution-options'
 
-const OPTION_ORDER = ['model', 'effort', 'serviceTier', 'personality'] as const
+const OPTION_ORDER = ['model', 'effort', 'serviceTier', 'personality', 'interactionMode'] as const
 
 /** A different Codex control needs a new turn: steer has no choice parameters. */
 export function waitsForCodexTurnOptions(
@@ -46,9 +46,12 @@ export function codexTurnOptionsDiffer(
     next: options
   })
   if (!applied) {
-    return options === undefined || Object.values(options).some((value) => value !== undefined)
+    return false
   }
   return OPTION_ORDER.some(
-    (key) => applied.next[key] !== undefined && applied.next[key] !== applied.active[key]
+    (key) =>
+      applied.active[key] !== undefined &&
+      applied.next[key] !== undefined &&
+      applied.next[key] !== applied.active[key]
   )
 }

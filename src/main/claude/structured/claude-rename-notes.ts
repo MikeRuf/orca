@@ -1,6 +1,6 @@
 import { openClaudeStreamJsonConnection } from '../claude-stream-json-connection'
 import type { ClaudeStreamJsonConnection } from '../claude-stream-json-connection'
-import { rewriteClaudeRenameNoteFrames } from '../claude-rename-note'
+import { rewriteClaudeRenameNoteFrames } from '../conversation-naming/claude-rename-note'
 
 type OpenClaudeConnection = typeof openClaudeStreamJsonConnection
 
