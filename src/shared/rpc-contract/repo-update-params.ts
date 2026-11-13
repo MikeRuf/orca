@@ -3,7 +3,7 @@ import { normalizeRepoSourceControlAiOverrides } from '../source-control/ai/sett
 import { normalizeRepoBadgeColor } from '../repo-badge-color'
 import { sanitizeRepoIcon } from '../repo-icon'
 import { sanitizeRepoSidebarStyle } from '../repo-sidebar-style'
-import { normalizeGhAccountBinding } from '../github/account-binding'
+import { normalizeGhAccountBinding } from '../github/accounts/account-binding'
 import { normalizeJiraProjectReference } from '../jira/jira-project-reference'
 import {
   normalizeCustomWorktreeVisibilitySources,
@@ -11,6 +11,8 @@ import {
 } from '../worktree/visibility-sources'
 import { OptionalFiniteNumber, OptionalString } from './rpc-param-primitives'
 import { editorFormatterSchema } from '../editor-formatter'
+import { normalizeDictationTerms } from '../dictation-dictionary'
+import { RepoWorkspaceCleanupPolicyParam } from './workspace-cleanup-policy-params'
 
 export const RepoSourceControlAiOverrides = z
   .unknown()
@@ -62,6 +64,7 @@ export function createRepoUpdateSchema<T extends Readonly<Record<string, z.ZodTy
       worktreeBasePath: OptionalString,
       kind: z.enum(['git', 'folder']).optional(),
       symlinkPaths: z.array(z.string()).optional(),
+      dictationTerms: z.unknown().transform(normalizeDictationTerms).optional(),
       issueSourcePreference: z.enum(['auto', 'upstream', 'origin']).optional(),
       defaultJiraProject: z.unknown().optional().transform(normalizeJiraProjectReference),
       ghAccount: z
@@ -93,9 +96,11 @@ export function createRepoUpdateSchema<T extends Readonly<Record<string, z.ZodTy
         .transform((value) => normalizeWorktreeVisibilitySourcePreferences(value))
         .optional(),
       externalWorktreeDiscoverySuppressedAt: z.number().finite().nullable().optional(),
+      hiddenAt: z.number().finite().nullable().optional(),
       projectGroupId: OptionalString.nullable().optional(),
       projectGroupOrder: OptionalFiniteNumber.nullable().optional(),
-      sourceControlAi: RepoSourceControlAiOverrides
+      sourceControlAi: RepoSourceControlAiOverrides,
+      workspaceCleanupPolicy: RepoWorkspaceCleanupPolicyParam.optional()
     })
   })
 }

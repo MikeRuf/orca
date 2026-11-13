@@ -4,7 +4,7 @@ import type { Repo } from '../../../../shared/repo-types'
 import { sanitizeRepoIcon } from '../../../../shared/repo-icon'
 import { sanitizeRepoSidebarStyle } from '../../../../shared/repo-sidebar-style'
 import { normalizeRepoBadgeColor } from '../../../../shared/repo-badge-color'
-import { normalizeGhAccountBinding } from '../../../../shared/github/account-binding'
+import { normalizeGhAccountBinding } from '../../../../shared/github/accounts/account-binding'
 import { normalizeJiraProjectReference } from '../../../../shared/jira/jira-project-reference'
 import { sanitizeAgentWorkspaceTrustDecision } from '../../../../shared/agent-launch/permissions/agent-workspace-trust-decision'
 import { findRepoForHost, repoMatchesHostIdentity } from './repo-host-identity'
@@ -167,6 +167,21 @@ export function createRepoUpdateActions(
           ) {
             return false
           }
+          // A host from before dictionaries drops the field and still answers with its row.
+          if (
+            sanitizedUpdates.dictationTerms !== undefined &&
+            JSON.stringify(updatedRepo?.dictationTerms ?? []) !==
+              JSON.stringify(sanitizedUpdates.dictationTerms)
+          ) {
+            return false
+          }
+          // A host from before hidden projects drops the field, which would otherwise read as hidden.
+          if (
+            sanitizedUpdates.hiddenAt !== undefined &&
+            (updatedRepo?.hiddenAt ?? null) !== sanitizedUpdates.hiddenAt
+          ) {
+            return false
+          }
           set((s) => {
             const nextRepos = s.repos.map((r) => {
               const matchesOwner = ownerHasExplicitHost
@@ -190,6 +205,7 @@ export function createRepoUpdateActions(
                 projectGroupOrder: _projectGroupOrder,
                 sourceControlAi,
                 externalWorktreeDiscoverySuppressedAt,
+                hiddenAt,
                 ghAccount,
                 externalWorktreeVisibility,
                 agentWorktreeVisibility,
@@ -225,6 +241,12 @@ export function createRepoUpdateActions(
                 mergedRepo = repoWithoutSuppression
               } else if (externalWorktreeDiscoverySuppressedAt !== undefined) {
                 mergedRepo = { ...mergedRepo, externalWorktreeDiscoverySuppressedAt }
+              }
+              if (hiddenAt === null) {
+                const { hiddenAt: _hiddenAt, ...repoWithoutHiddenAt } = mergedRepo
+                mergedRepo = repoWithoutHiddenAt
+              } else if (hiddenAt !== undefined) {
+                mergedRepo = { ...mergedRepo, hiddenAt }
               }
               if (ghAccount === null) {
                 const { ghAccount: _ghAccount, ...repoWithoutGhAccount } = mergedRepo

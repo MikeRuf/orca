@@ -14,7 +14,7 @@ import { Presence } from '../components/AutoHeight'
 import { DisclosureChevron } from '../components/DisclosureChevron'
 import { HostDiagnosticsLink } from '../components/HostDiagnosticsLink'
 import { HostOfflineBanner, useHostOfflineBanner } from '../components/HostOfflineBanner'
-import { isConnectionOutage } from '../transport/connection-health'
+import { isConnectionOutage } from '../transport/connection/connection-health'
 import { HostRouteNoticeBanner } from '../components/HostRouteNoticeBanner'
 import { MobileRepoIcon } from '../components/MobileRepoIcon'
 import type { CollapsingTitle } from '../components/nav-bar/PageTitle'
@@ -279,7 +279,7 @@ export function HostWorkspaceList({
               ) : null}
             </>
           }
-          ListFooterComponent={listState}
+          ListFooterComponent={listState ?? undefined}
           onScroll={pageTitle?.collapsing.onScroll}
           {...pageTitle?.collapsing.touchHandlers}
           scrollEventThrottle={16}

@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useAppStore } from '@/store'
 import { joinPath } from '@/lib/path'
-import { buildWorkspaceFileContext } from '@/lib/workspace-file-host-routing'
+import { buildWorkspaceFileContext } from '@/runtime/files/workspace-file-host-routing'
 import { readRuntimeFileContent } from '@/runtime/files/reads/runtime-file-read-client'
 import type { TabShortcut } from '@/lib/tab-shortcuts-store'
 

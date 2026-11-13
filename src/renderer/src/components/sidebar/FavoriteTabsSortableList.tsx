@@ -3,7 +3,7 @@ import { DndContext, PointerSensor, closestCenter, useSensor, useSensors } from 
 import { SortableContext, useSortable, verticalListSortingStrategy } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
 import { moveFavoriteTab, tabShortcutKey, type TabShortcut } from '@/lib/tab-shortcuts-store'
-import { cn } from '@/lib/utils'
+import { cn } from '@/lib/class-names'
 
 // A short travel before a drag starts keeps a plain click opening the tab.
 const pointerOptions = { activationConstraint: { distance: 4 } }

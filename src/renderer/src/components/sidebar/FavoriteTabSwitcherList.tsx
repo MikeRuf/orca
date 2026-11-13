@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react'
 import { Star } from 'lucide-react'
 import { translate } from '@/i18n/i18n'
-import { cn } from '@/lib/utils'
+import { cn } from '@/lib/class-names'
 import type { TabShortcut } from '@/lib/tab-shortcuts-store'
 import { FavoriteTabIcon } from './FavoriteTabIcon'
 import { FavoriteTabWaitingMark } from './FavoriteTabWaitingMark'
