@@ -8,6 +8,7 @@ import {
 } from './native-chat-restart-host-offer'
 import type { RuntimeClientTarget } from '../../../../../shared/runtime-client-target'
 import { getStructuredAgentSessionStatusFeed } from '@/runtime/native-chat/status/structured-agent-session-status-feed'
+import { answerServerRestart } from './native-chat-server-restart-auto-resume'
 import { markNativeChatLaunchResumeDecided } from './native-chat-launch-resume-decision'
 import { announceRestartResults } from '../runs/native-chat-restart-action-notifications'
 import {
@@ -310,11 +311,8 @@ export function createNativeChatRestartOccurrence(
 
   const discovery = createRemoteRestartOfferLifecycle({
     read: (allowed) => readNativeChatRestartOffer(allowed, true),
-    requestDialog: () => {
-      if (current()) {
-        requestNativeChatResumeOnRestartDialog()
-      }
-    },
+    requestDialog: () =>
+      current() && answerServerRestart(api, requestNativeChatResumeOnRestartDialog),
     currentAction: () => actionsBegun
   })
   function dispose(): void {
@@ -325,7 +323,7 @@ export function createNativeChatRestartOccurrence(
     consumeNativeChatResumeOnRestartDialogRequest()
   }
 
-  return {
+  const api = {
     getNativeChatRestartOffer: (): NativeChatRestartOffer => offer,
     getNativeChatRestartResuming: (): readonly string[] => resuming,
     getNativeChatRestartRun: (): ResumeRun | null => run,
@@ -341,4 +339,5 @@ export function createNativeChatRestartOccurrence(
     observeRuntimeStatus: discovery.observeRuntimeStatus,
     readNativeChatRestartOffer
   }
+  return api
 }
