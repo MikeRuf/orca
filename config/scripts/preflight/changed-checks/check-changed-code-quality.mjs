@@ -7,6 +7,7 @@ import { runProcessSync } from '@orca/process-host'
 import { scanAstGrep } from '../../static-analysis/structural-scan/ast-grep-scan.mjs'
 import { resolvePullRequestDiffBase } from '../../git/pr-diff-base/git-pull-request-diff-base.mjs'
 import { resolveOxlintInvocation } from '../../tool-invocation/oxlint-cli-invocation.mjs'
+import { admitOxlintScanSync } from '../heavy-check-admission/heavy-check-admission.mjs'
 import { createExistingTypeAssertionMatcher } from '../../static-analysis/type-assertion-budget/existing-type-assertions.mjs'
 import {
   JS_PLUGINS_CONFIG,
@@ -544,12 +545,14 @@ function isSuppressedDiagnostic(diagnostic, root) {
 
 function runOxlintScan(root, scan, files) {
   const { command, prefixArgs } = resolveOxlintInvocation(root)
-  const result = spawnSync(command, [...prefixArgs, ...scan.args, '--format', 'json', ...files], {
-    cwd: root,
-    encoding: 'utf8',
-    maxBuffer: 128 * 1024 * 1024,
-    windowsHide: true
-  })
+  const result = admitOxlintScanSync(root, scan, () =>
+    spawnSync(command, [...prefixArgs, ...scan.args, '--format', 'json', ...files], {
+      cwd: root,
+      encoding: 'utf8',
+      maxBuffer: 128 * 1024 * 1024,
+      windowsHide: true
+    })
+  )
   if (result.error) {
     throw result.error
   }

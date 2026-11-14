@@ -8,6 +8,7 @@ import {
   readPinnedBunVersion,
   resolvePinnedBunExecutable
 } from '../../tool-invocation/pinned-bun-executable.mjs'
+import { heavyCheckAdmission } from '../../preflight/heavy-check-admission/heavy-check-admission.mjs'
 import { resolveTsrsTypecheckCommand, supportsTsrs } from './tsrs-typecheck-compiler.mjs'
 
 const BYTES_PER_GIB = 1024 ** 3
@@ -226,15 +227,29 @@ export function resolveTypecheckCommand(
   }
 }
 
-function checkProject(
+// The batch planner only sees this run; the admission ledger also sees other worktrees' checks.
+function checkProject(project, { admission, ...options }) {
+  const request = {
+    label: `${options.compiler} ${project.config}`,
+    gib: project.heapGib,
+    worktree: options.root
+  }
+  return admission.withSlot(request, (slot) => spawnProjectCheck(project.config, options, slot))
+}
+
+function spawnProjectCheck(
   config,
-  { compiler, bunExecutable, bunThreads, checkers, root, spawnCompiler }
+  { compiler, bunExecutable, bunThreads, checkers, root, spawnCompiler },
+  slot
 ) {
   return new Promise((resolve, reject) => {
     const child = spawnCompiler({
       ...resolveTypecheckCommand(config, { compiler, bunExecutable, bunThreads, checkers, root }),
       stdio: 'inherit'
     })
+    if (child.pid) {
+      slot.attach(child.pid)
+    }
     child.on('error', reject)
     child.on('close', (code, signal) => {
       if (signal) {
@@ -258,7 +273,8 @@ export async function runTypecheckProjects({
   projects = TYPECHECK_PROJECTS,
   spawnCompiler = spawnProcess,
   memoryBytes = totalmem(),
-  parallelism = availableParallelism()
+  parallelism = availableParallelism(),
+  admission = heavyCheckAdmission()
 } = {}) {
   const batches = typecheckBatches(projects, { compiler, bunConcurrency, memoryBytes, parallelism })
   if (compiler === 'bun' || compiler === 'tsrs') {
@@ -271,7 +287,8 @@ export async function runTypecheckProjects({
         while (next < pending.length) {
           const index = next++
           try {
-            await checkProject(pending[index].config, {
+            await checkProject(pending[index], {
+              admission,
               compiler,
               bunExecutable,
               bunThreads,
@@ -292,7 +309,8 @@ export async function runTypecheckProjects({
   for (const batch of batches) {
     const results = await Promise.allSettled(
       batch.map((project) =>
-        checkProject(project.config, {
+        checkProject(project, {
+          admission,
           compiler,
           bunExecutable,
           bunThreads,

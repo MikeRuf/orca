@@ -7,6 +7,10 @@ import process from 'node:process'
 import { pathToFileURL } from 'node:url'
 import { resolveOxlintInvocation } from '../../tool-invocation/oxlint-cli-invocation.mjs'
 import { resolvePnpmCliInvocation } from '../../tool-invocation/pnpm-cli-invocation.mjs'
+import {
+  TYPE_AWARE_LINT_GIB,
+  heavyCheckAdmission
+} from '../heavy-check-admission/heavy-check-admission.mjs'
 
 // package.json script names, slowest first so short steps fill in around them.
 export const LINT_STEPS = [
@@ -58,6 +62,9 @@ export const LINT_STEPS = [
   'verify:acp-protocol'
 ]
 
+// Full-tree type-aware scans; the changed-code gate books its own type-aware scan internally.
+const HEAVY_LINT_STEPS = new Set(['audit:code-quality:type-aware'])
+
 // Steps with no package script of their own run as the bare command.
 function resolveLintCommands(scripts, root) {
   const pnpm = resolvePnpmCliInvocation()
@@ -76,7 +83,13 @@ function resolveLintCommands(scripts, root) {
 async function runStep({ name, program, args }, root) {
   const startedAt = performance.now()
   try {
-    const result = await runProcess({ program, args, cwd: root, timeoutMs: null }, 'tail')
+    const run = () => runProcess({ program, args, cwd: root, timeoutMs: null }, 'tail')
+    const result = HEAVY_LINT_STEPS.has(name)
+      ? await heavyCheckAdmission().withSlot(
+          { label: `lint ${name}`, gib: TYPE_AWARE_LINT_GIB, worktree: root },
+          run
+        )
+      : await run()
     return {
       name,
       ok: result.code === 0 && !result.signal && !result.timedOut,
