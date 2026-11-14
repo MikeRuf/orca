@@ -270,7 +270,8 @@ export type StructuredAgentSessionConversationNaming = {
     sessionId: string,
     name: string,
     write: AgentSessionUserNameWrite,
-    onApplied?: (record: AgentSessionRecord) => void
+    /** `changed` is false for a save of the name the chat already had. */
+    onApplied?: (record: AgentSessionRecord, changed: boolean) => void
   ) => Promise<{ name: string | null; applied: boolean } | null>
 }
 

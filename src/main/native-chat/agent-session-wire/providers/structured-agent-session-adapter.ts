@@ -345,6 +345,8 @@ export type StructuredAgentSessionAdapter = StructuredAgentSessionAdapterStop & 
     name: string
     sequence: number
     inheritance?: boolean
+    /** A re-save of the name the chat already had, as a title box does on losing focus. */
+    unchanged?: boolean
   }): Promise<void> | undefined
   stopProviderNaming?(): void
   captureConversationTitleOwner?(record: AgentSessionRecord): {

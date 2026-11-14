@@ -8,12 +8,14 @@ import {
 import type { ClaudeNamingInputs } from './claude-naming-invocation'
 import { renameClaudeTranscript } from '../transcripts/claude-provider-session-rename'
 import type { StructuredAgentSessionAcquireInput } from '../../native-chat/agent-session-wire/providers/structured-agent-session-adapter'
+import { sendClaudeRenameNote } from './claude-rename-note'
 
 type Intent = {
   record: AgentSessionRecord
   name: string
   sequence: number
   inheritance?: boolean
+  unchanged?: boolean
   inputs: Promise<ClaudeNamingInputs>
 }
 type Operation = {
@@ -219,7 +221,7 @@ export class ClaudeConversationNaming {
             try {
               if (owner) {
                 delivered.add(owner)
-                await this.rename(owner, intent.name)
+                await this.rename(owner, intent)
               } else {
                 if (
                   [...operation.generations].some(
@@ -256,7 +258,7 @@ export class ClaudeConversationNaming {
               if (this.stopped || !applicable(generation)) {
                 continue
               }
-              await this.rename(generation, intent.name)
+              await this.rename(generation, intent)
               delivered.add(generation)
               error = undefined
             } finally {
@@ -292,14 +294,22 @@ export class ClaudeConversationNaming {
     }
   }
 
-  private rename(generation: ClaudeNamingGeneration, name: string): Promise<void> {
-    if (!generation.connection || generation.phase !== 'ready') {
-      return Promise.reject(new Error('Claude naming owner retired before its control was issued'))
+  private async rename(generation: ClaudeNamingGeneration, intent: Intent): Promise<void> {
+    const connection = generation.connection
+    if (!connection || generation.phase !== 'ready') {
+      throw new Error('Claude naming owner retired before its control was issued')
     }
-    return generation.connection.renameSession(
-      name,
+    await connection.renameSession(
+      intent.name,
       generation.nativeId,
       this.deps.timeoutMs === undefined ? undefined : { timeoutMs: this.deps.timeoutMs }
     )
+    // Why: inherited names are Orca restoring a title the model already had, and an unchanged save
+    // (a title box losing focus, even after a restart) renames nothing; neither is news to Claude.
+    if (!intent.inheritance && !intent.unchanged) {
+      await sendClaudeRenameNote(connection, generation.nativeId, intent.name).catch(
+        (error: unknown) => console.warn('[claude-naming] rename note not delivered:', error)
+      )
+    }
   }
 }
