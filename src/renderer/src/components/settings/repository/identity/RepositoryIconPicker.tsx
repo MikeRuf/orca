@@ -18,6 +18,7 @@ import {
 import { useMountedRef } from '@/hooks/useMountedRef'
 import { RepositoryIconColorSection } from './RepositoryIconColorSection'
 import { RepositoryIconTabs } from './RepositoryIconTabs'
+import { RepositorySidebarStyleSection } from './RepositorySidebarStyleSection'
 import {
   buildRepositoryGitHubAvatarUpdate,
   resolveRepositoryGitHubAvatar
@@ -181,6 +182,7 @@ export function RepositoryIconPicker({
         onSetIcon={setIcon}
         onUseGitHubAvatar={() => void handleUseGitHubAvatar()}
       />
+      <RepositorySidebarStyleSection repo={repo} updateRepo={updateRepo} />
     </div>
   )
 }

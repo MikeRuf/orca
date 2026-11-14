@@ -10,6 +10,7 @@ import {
   normalizeExecutionHostId
 } from '../../../shared/execution-host'
 import { normalizeRepoBadgeColor } from '../../../shared/repo-badge-color'
+import { sanitizeRepoSidebarStyle } from '../../../shared/repo-sidebar-style'
 import { sanitizeRepoIcon } from '../../../shared/repo-icon'
 import {
   normalizeGhAccountBinding,
@@ -45,6 +46,7 @@ export function registerRepoUpdateHandler(mainWindow: BrowserWindow, store: Stor
             | 'displayName'
             | 'badgeColor'
             | 'repoIcon'
+            | 'sidebarStyle'
             | 'upstream'
             | 'hookSettings'
             | 'editorFormatter'
@@ -142,6 +144,14 @@ export function registerRepoUpdateHandler(mainWindow: BrowserWindow, store: Stor
           delete updates.repoIcon
         } else {
           updates.repoIcon = repoIcon
+        }
+      }
+      if ('sidebarStyle' in updates) {
+        const sidebarStyle = sanitizeRepoSidebarStyle(updates.sidebarStyle)
+        if (sidebarStyle === undefined) {
+          delete updates.sidebarStyle
+        } else {
+          updates.sidebarStyle = sidebarStyle
         }
       }
       if ('badgeColor' in updates) {

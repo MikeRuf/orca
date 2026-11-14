@@ -2,6 +2,7 @@ import { z } from 'zod'
 import { normalizeRepoSourceControlAiOverrides } from '../../source-control/ai/settings/source-control-ai-repo-settings'
 import { normalizeRepoBadgeColor } from '../../repo-badge-color'
 import { sanitizeRepoIcon } from '../../repo-icon'
+import { sanitizeRepoSidebarStyle } from '../../repo-sidebar-style'
 import { normalizeGhAccountBinding } from '../../github/accounts/account-binding'
 import { normalizeJiraProjectReference } from '../../jira/jira-project-reference'
 import {
@@ -51,6 +52,10 @@ export function createRepoUpdateSchema<T extends Readonly<Record<string, z.ZodTy
       repoIcon: z
         .unknown()
         .transform((value) => sanitizeRepoIcon(value))
+        .optional(),
+      sidebarStyle: z
+        .unknown()
+        .transform((value) => sanitizeRepoSidebarStyle(value))
         .optional(),
       upstream: RepoUpstream,
       hookSettings: z.unknown().optional(),

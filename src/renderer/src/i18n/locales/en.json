@@ -6856,11 +6856,6 @@
           "b0a7bfc34c": "Hide from sidebar",
           "88d402b71d": "Onboarding checklist"
         },
-        "SetupScriptCodeBlock": {
-          "showLess": "Show less",
-          "showMore_one": "Show {{count}} more line",
-          "showMore_other": "Show {{count}} more lines"
-        },
         "SetupScriptPromptCard": {
           "ff1e819a11": "Add a setup script",
           "70715947fb": "Setup script cannot be empty",
@@ -6887,16 +6882,6 @@
           "foundSetupScriptIn": "Found a setup script in <file>{{source}}</file>.",
           "7275f674cc": "Detected setup",
           "detectedFromSource": "Detected from <file>{{source}}</file>"
-        },
-        "SetupScriptReviewDialog": {
-          "title": "Review setup script",
-          "description": "Saving runs this whenever Orca creates a worktree for {{repo}}.",
-          "setupScript": "Setup script",
-          "archiveScript": "Archive script",
-          "save": "Save local setup",
-          "descriptionWithSource": "From <file>{{source}}</file>. Saving runs this whenever Orca creates a worktree for {{repo}}.",
-          "notImported": "Not imported",
-          "notImportedHint": "These settings have no Orca equivalent and won't be saved."
         },
         "SidebarFeedbackDialog": {
           "8bf619e4cf": "Cancel",
@@ -7285,6 +7270,7 @@
           "projectGroupRefreshSuccess_other": "Added {{count}} projects to {{group}}",
           "projectGroupRefreshing": "Refreshing {{group}}…",
           "refreshProjectGroup": "Refresh projects",
+          "customizeAppearance": "Customize Appearance…",
           "hostServerReplaced": "Different server: forget it, then connect",
           "hostVmResumeFailed": "Resume failed",
           "hostVmSetupFailed": "Setup failed",
@@ -8022,7 +8008,26 @@
           "running": "Running",
           "idle": "Idle"
         },
+        "ProjectAppearanceDialog": {
+          "title": "Appearance of {{value0}}",
+          "description": "Icon, color, background and font in the sidebar. Changes apply as you make them."
+        },
+        "SetupScriptReviewDialog": {
+          "title": "Review setup script",
+          "description": "Saving runs this whenever Orca creates a worktree for {{repo}}.",
+          "setupScript": "Setup script",
+          "archiveScript": "Archive script",
+          "save": "Save local setup",
+          "descriptionWithSource": "From <file>{{source}}</file>. Saving runs this whenever Orca creates a worktree for {{repo}}.",
+          "notImported": "Not imported",
+          "notImportedHint": "These settings have no Orca equivalent and won't be saved."
+        },
         "projectOrderSaveFailed": "Could not save the complete project order",
+        "SetupScriptCodeBlock": {
+          "showLess": "Show less",
+          "showMore_one": "Show {{count}} more line",
+          "showMore_other": "Show {{count}} more lines"
+        },
         "hostSection": {
           "localWindows": "Local Windows",
           "localMac": "Local Mac",
@@ -14002,20 +14007,6 @@
           "review": "Review",
           "replacesAction": "{{value0}} runs instead of Orca’s {{value1}}"
         },
-        "PluginAuthor": {
-          "publisher": "Publisher",
-          "catalogByline": "Listed as {{publisher}} by {{catalog}}",
-          "publisherByline": "Publisher: {{publisher}}",
-          "declaredByline": "Declared publisher: {{publisher}}",
-          "catalogClaim": "Publisher listed by {{catalog}}. Authorship is not verified.",
-          "unnamedCatalogClaim": "Publisher listed by the catalog. Authorship is not verified.",
-          "gitClaim": "Publisher derived by Orca from the repository URL. Authorship is not verified.",
-          "unknownClaim": "Publisher source is unknown. Authorship is not verified.",
-          "manifestClaim": "Publisher declared by the plugin. Authorship is not verified.",
-          "shownPluginCount_one": "{{count}} matching plugin shown, including this one",
-          "shownPluginCount_other": "{{count}} matching plugins shown, including this one",
-          "samePublisher": "More listed as {{value0}}"
-        },
         "PluginDetailInfo": {
           "previous": "Previous",
           "updated": "Updated",
@@ -14273,6 +14264,33 @@
           "noMatches": "No matches.",
           "searchHosts": "Search hosts…",
           "searchLanguages": "Search languages…"
+        },
+        "RepositorySidebarStyleSection": {
+          "headerTitle": "Project header row",
+          "rowsTitle": "Workspace rows under it",
+          "reset": "Reset",
+          "background": "Background",
+          "textColor": "Text color",
+          "defaultColor": "Default",
+          "font": "Font",
+          "fontPlaceholder": "Default",
+          "size": "Size",
+          "clear": "Use default {{value0}}",
+          "title": "Sidebar appearance"
+        },
+        "PluginAuthor": {
+          "publisher": "Publisher",
+          "catalogByline": "Listed as {{publisher}} by {{catalog}}",
+          "publisherByline": "Publisher: {{publisher}}",
+          "declaredByline": "Declared publisher: {{publisher}}",
+          "catalogClaim": "Publisher listed by {{catalog}}. Authorship is not verified.",
+          "unnamedCatalogClaim": "Publisher listed by the catalog. Authorship is not verified.",
+          "gitClaim": "Publisher derived by Orca from the repository URL. Authorship is not verified.",
+          "unknownClaim": "Publisher source is unknown. Authorship is not verified.",
+          "manifestClaim": "Publisher declared by the plugin. Authorship is not verified.",
+          "shownPluginCount_one": "{{count}} matching plugin shown, including this one",
+          "shownPluginCount_other": "{{count}} matching plugins shown, including this one",
+          "samePublisher": "More listed as {{value0}}"
         },
         "accountsPaneActionErrors": {
           "codexSignInTimedOut": "Codex sign-in took too long to finish. Please try again.",
