@@ -18792,6 +18792,11 @@
         "pasteUnavailable": "貼り付けできません — このチャットは現在入力を受け付けていません。",
         "model": "モデル",
         "effort": "推論レベル",
+        "contextWindow": "コンテキストウィンドウ",
+        "customValue": "カスタム…",
+        "customValueLabel": "トークン数（千単位）",
+        "customValueApply": "設定",
+        "customValueRange": "{{value0}}〜{{value1}}で指定してください",
         "fastMode": "高速モード",
         "speed": "速度",
         "thinking": "思考",
@@ -18814,12 +18819,12 @@
           "xhigh": "最高",
           "max": "最大",
           "ultra": "ウルトラ",
+          "contextWindowDefault": "デフォルト",
           "standard": "標準"
         },
         "noCommandsOrSkills": "一致するコマンドやスキルがありません",
         "commands": "コマンド",
         "skills": "スキル",
-        "checkingSkills": "新しいスキルを確認しています…",
         "loadingSkills": "スキルを読み込み中…",
         "clearDescription": "会話のコンテキストをクリア",
         "skillsUnavailableHost": "SSH チャットではスキルを一覧表示できません",
@@ -18870,7 +18875,8 @@
         "sessionAttachmentsStarting": "{{agent}} のチャットを起動中です。開くまで待ってから、ファイルを再度添付してください。",
         "sessionAttachmentsFailed": "{{agent}} チャットを開けませんでした。チャットで [再試行] を使用して、ファイルを再度添付してください。",
         "moreControls": "その他のチャット操作",
-        "exitPlanMode": "プランモードを終了"
+        "exitPlanMode": "プランモードを終了",
+        "checkingSkills": "新しいスキルを確認しています…"
       },
       "tool": {
         "result": "結果",

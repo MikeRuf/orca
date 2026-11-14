@@ -39,16 +39,22 @@ export function structuredAgentSessionOptionView(
   const {
     [AGENT_CHAT_PERMISSION_MODE_OPTION_ID]: heldPermission,
     interactionMode,
+    contextWindow,
     ...heldSelection
   } = held
   const modelView = modelOptionView(state, seed, heldSelection)
   const requestedMode = interactionMode ?? requested?.interactionMode
+  const requestedWindow = contextWindow ?? requested?.contextWindow
+  const catalogFree = {
+    ...(requestedMode === undefined ? {} : { interactionMode: requestedMode }),
+    ...(requestedWindow === undefined ? {} : { contextWindow: requestedWindow })
+  }
   const view =
-    requestedMode === undefined
+    Object.keys(catalogFree).length === 0
       ? modelView
       : commitStructuredAgentSessionOptionValues(
           { ...modelView, record: cloneStructuredAgentSessionOptionRecord(modelView.record) },
-          { interactionMode: requestedMode }
+          catalogFree
         )
   const permissionMode =
     heldPermission ??
@@ -171,7 +177,14 @@ export function structuredAgentSessionMessageSelection(
 ): Record<string, string> {
   const selection: Record<string, string> = {}
   const snapshot = structuredAgentSessionOptionSnapshot(view)
-  for (const id of ['model', 'effort', 'fastMode', 'serviceTier', 'interactionMode'] as const) {
+  for (const id of [
+    'model',
+    'effort',
+    'fastMode',
+    'serviceTier',
+    'interactionMode',
+    'contextWindow'
+  ] as const) {
     const descriptor = snapshot.find((entry) => entry.id === id)
     if (view.acceptedInputSources !== undefined) {
       if (!view.acceptedInputSources[id]) {

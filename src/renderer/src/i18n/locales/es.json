@@ -19213,6 +19213,11 @@
         "pasteUnavailable": "No se puede pegar — este chat no acepta entradas en este momento.",
         "model": "Modelo",
         "effort": "Esfuerzo",
+        "contextWindow": "Ventana de contexto",
+        "customValue": "Personalizado…",
+        "customValueLabel": "Tamaño en miles de tokens",
+        "customValueApply": "Aplicar",
+        "customValueRange": "Usa de {{value0}} a {{value1}}",
         "fastMode": "Modo rápido",
         "speed": "Velocidad",
         "thinking": "Razonamiento",
@@ -19235,12 +19240,12 @@
           "xhigh": "Muy alto",
           "max": "Máximo",
           "ultra": "Supremo",
+          "contextWindowDefault": "Predeterminado",
           "standard": "Estándar"
         },
         "noCommandsOrSkills": "No hay comandos o habilidades coincidentes",
         "commands": "Comandos",
         "skills": "Habilidades",
-        "checkingSkills": "Buscando habilidades nuevas…",
         "loadingSkills": "Cargando habilidades…",
         "clearDescription": "Borrar el contexto de la conversación",
         "skillsUnavailableHost": "Las habilidades no se pueden listar en los chats SSH",
@@ -19286,7 +19291,8 @@
         "sessionAttachmentsFailed": "El chat {{agent}} no se pudo abrir. Utilice Reintentar en el chat y luego adjunte los archivos nuevamente.",
         "sessionAttachmentsStarting": "El chat de {{agent}} aún se está abriendo. Espera a que se abra y vuelve a adjuntar los archivos.",
         "moreControls": "Más controles de chat",
-        "exitPlanMode": "Salir del modo de planificación"
+        "exitPlanMode": "Salir del modo de planificación",
+        "checkingSkills": "Buscando habilidades nuevas…"
       },
       "tool": {
         "result": "Resultado",

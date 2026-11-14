@@ -263,7 +263,7 @@ export type StructuredAgentSessionAdapter = StructuredAgentSessionAdapterStop & 
   confirmIdle?(sessionId: string): Promise<AgentSessionIdleConfirmation> | undefined
   /** The root turn the live child is running, null when idle; absent when the agent cannot say. */
   liveTurnId?(sessionId: string): string | null | undefined
-  /** The live child opened in another approval mode than requested and this input picks another model. */
+  /** This input needs a relaunch: a new model under a fallback approval mode, or a launch-only setting it lacks. */
   requiresModelTransitionRestart?(input: {
     sessionId: string
     fence: number

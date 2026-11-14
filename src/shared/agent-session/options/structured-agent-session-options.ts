@@ -197,7 +197,8 @@ export function applyStructuredAgentSessionOptions(
       ...(!policyEffort && current.effort ? { effort: current.effort } : {}),
       ...(current.fastMode !== undefined ? { fastMode: current.fastMode } : {}),
       ...(current.serviceTier ? { serviceTier: current.serviceTier } : {}),
-      ...(current.interactionMode ? { interactionMode: current.interactionMode } : {})
+      ...(current.interactionMode ? { interactionMode: current.interactionMode } : {}),
+      ...(current.contextWindow ? { contextWindow: current.contextWindow } : {})
     },
     (id) =>
       current.defaulted?.some((key) => key === id)
@@ -253,7 +254,7 @@ export function commitStructuredAgentSessionOption(
   if (id === AGENT_CHAT_PERMISSION_MODE_OPTION_ID) {
     return { ...state, permissionMode: value, reportedPermissionMode: undefined }
   }
-  if (!state.catalog && id !== 'interactionMode') {
+  if (!state.catalog && id !== 'interactionMode' && id !== 'contextWindow') {
     return state
   }
   const decoded = decodeStructuredAgentSessionOptionValue(id, value)

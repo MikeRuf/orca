@@ -13,6 +13,7 @@ import type {
   TurnOutcome
 } from '../operations/structured-agent-session-turns'
 import { isAgentSessionInteractionMode } from '../../../../shared/agent-session/options/agent-session-interaction-mode'
+import { isAgentSessionContextWindow } from '../../../../shared/agent-session/options/agent-session-context-window'
 import {
   type savedAgentSessionCatalogModels,
   structuredAgentSessionPickReply
@@ -33,7 +34,8 @@ function acceptsOptionPick(
         (value === 'own' ||
           agentChatPermissionModes(provider)?.modes.some((mode) => mode === value) === true)
     : definition?.restingOptions.acceptsKey(key) === true &&
-        (key !== 'interactionMode' || isAgentSessionInteractionMode(value))
+        (key !== 'interactionMode' || isAgentSessionInteractionMode(value)) &&
+        (key !== 'contextWindow' || isAgentSessionContextWindow(value))
 }
 
 export function structuredAgentSessionOptionOverridesRefusal(

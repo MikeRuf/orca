@@ -19254,7 +19254,6 @@
         "noCommands": "沒有符合的命令",
         "commands": "命令",
         "skills": "技能",
-        "checkingSkills": "正在檢查新技能…",
         "loadingSkills": "正在載入技能…",
         "skillsLoaded": "技能已載入",
         "clearDescription": "清除對話上下文",
@@ -19294,6 +19293,11 @@
         "pasteUnavailable": "無法貼上 — 此聊天目前不接受輸入。",
         "model": "模型",
         "effort": "推理強度",
+        "contextWindow": "上下文視窗",
+        "customValue": "自訂…",
+        "customValueLabel": "大小（千個 token）",
+        "customValueApply": "設定",
+        "customValueRange": "請輸入 {{value0}} 到 {{value1}}",
         "fastMode": "快速模式",
         "speed": "速度",
         "thinking": "思考",
@@ -19316,6 +19320,7 @@
           "xhigh": "極高",
           "max": "最大",
           "ultra": "極致",
+          "contextWindowDefault": "預設",
           "standard": "標準"
         },
         "pendingAttachmentLimit": "等待附加的檔案過多。請先完成訊息，再附加更多檔案。",
@@ -19352,7 +19357,8 @@
         },
         "imageUnavailable": "無法預覽",
         "moreControls": "更多聊天控制項",
-        "exitPlanMode": "結束計畫模式"
+        "exitPlanMode": "結束計畫模式",
+        "checkingSkills": "正在檢查新技能…"
       },
       "tool": {
         "exitCode": "結束碼 {{value0}}",

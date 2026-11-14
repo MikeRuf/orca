@@ -142,7 +142,7 @@ export type ClaudeSession = {
   /** Inputs carried by launch or accepted controls, independent of provider reports. */
   appliedInputOptions: Map<string, string>
   /** What Orca put on this process's command line, and the first root init's answer; this process only. */
-  launchIntent?: { permissionMode?: string; model?: string }
+  launchIntent?: { permissionMode?: string; model?: string; contextWindow?: string }
   firstRootInit?: { permissionMode: string | null }
   /** Full access processes only: Claude's mode in wire order, ahead of `reportedOptions`. */
   orderedPermissionMode?: (() => string | null | undefined) | null

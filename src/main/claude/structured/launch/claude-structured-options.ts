@@ -11,6 +11,7 @@ import {
 import type { ClaudeSession } from '../claude-structured-session-state'
 import type { StructuredAgentSessionAdapter } from '../../../native-chat/agent-session-wire/providers/structured-agent-session-adapter'
 import { decodeStructuredAgentSessionOptionValue } from '../../../../shared/agent-session/options/structured-agent-session-option-codec'
+import { agentSessionContextWindowTokens } from '../../../../shared/agent-session/options/agent-session-context-window'
 
 import { beginClaudeOptionMutation } from '../claude-structured-execution-observations'
 import {
@@ -36,8 +37,19 @@ export function claudeModelTransitionRestart(
     const model = input.executionOptions?.model
     const opened = session?.firstRootInit?.permissionMode
     const requested = session?.launchIntent?.permissionMode
+    if (!session || session.fence !== input.fence) {
+      return false
+    }
+    // The CLI reads its window only at launch, so a changed pick reopens the chat on its transcript.
+    const picked = input.executionOptions?.contextWindow
+    if (
+      picked !== undefined &&
+      (agentSessionContextWindowTokens(picked) === null ? undefined : picked) !==
+        session.launchIntent?.contextWindow
+    ) {
+      return true
+    }
     return Boolean(
-      session?.fence === input.fence &&
       model !== undefined &&
       model !== session.launchIntent?.model &&
       requested !== undefined &&
@@ -59,7 +71,13 @@ export function restoredClaudeStructuredSessionOptions(
   )
 }
 
-const CLAUDE_STRUCTURED_OPTION_KEYS = new Set(['model', 'effort', 'fastMode', 'interactionMode'])
+const CLAUDE_STRUCTURED_OPTION_KEYS = new Set([
+  'model',
+  'effort',
+  'fastMode',
+  'interactionMode',
+  'contextWindow'
+])
 
 export function isClaudeStructuredOptionKey(key: string): boolean {
   return CLAUDE_STRUCTURED_OPTION_KEYS.has(key)

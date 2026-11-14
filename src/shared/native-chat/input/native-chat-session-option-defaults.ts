@@ -58,6 +58,7 @@ export const STRUCTURED_LAUNCH_SEED_OPTION_IDS = [
 export const STRUCTURED_LAUNCH_OPTION_IDS = [
   ...STRUCTURED_LAUNCH_SEED_OPTION_IDS,
   'interactionMode',
+  'contextWindow',
   AGENT_CHAT_PERMISSION_MODE_OPTION_ID
 ] as const
 
@@ -230,6 +231,7 @@ export function structuredLaunchRequestedOptions(selection: {
   return {
     ...(permissionMode ? { [AGENT_CHAT_PERMISSION_MODE_OPTION_ID]: permissionMode } : {}),
     ...(explicit.interactionMode ? { interactionMode: explicit.interactionMode } : {}),
+    ...(explicit.contextWindow ? { contextWindow: explicit.contextWindow } : {}),
     ...(changed ? {} : explicit),
     ...held
   }

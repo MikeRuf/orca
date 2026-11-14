@@ -20083,7 +20083,6 @@
         "noCommands": "Подходящих команд нет",
         "commands": "Команды",
         "skills": "Навыки",
-        "checkingSkills": "Поиск новых навыков…",
         "loadingSkills": "Загрузка навыков…",
         "skillsLoaded": "Навыки загружены",
         "clearDescription": "Очистить контекст разговора",
@@ -20123,6 +20122,11 @@
         "pasteUnavailable": "Вставка недоступна: этот чат сейчас не принимает ввод.",
         "model": "Модель",
         "effort": "Усилие",
+        "contextWindow": "Контекстное окно",
+        "customValue": "Свой…",
+        "customValueLabel": "Размер в тысячах токенов",
+        "customValueApply": "Задать",
+        "customValueRange": "Укажите от {{value0}} до {{value1}}",
         "fastMode": "Быстрый режим",
         "speed": "Скорость",
         "thinking": "Обдумывание",
@@ -20145,6 +20149,7 @@
           "xhigh": "Очень высокий",
           "max": "Максимальный",
           "ultra": "Предельный",
+          "contextWindowDefault": "По умолчанию",
           "standard": "Стандартный"
         },
         "pendingAttachmentLimit": "Слишком много вложений ожидает отправки. Завершите сообщение, прежде чем добавлять ещё.",
@@ -20181,7 +20186,8 @@
         },
         "imageUnavailable": "Предпросмотр недоступен",
         "exitPlanMode": "Выйти из режима планирования",
-        "moreControls": "Другие элементы управления чатом"
+        "moreControls": "Другие элементы управления чатом",
+        "checkingSkills": "Поиск новых навыков…"
       },
       "tool": {
         "exitCode": "код {{value0}}",

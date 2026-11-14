@@ -6,6 +6,7 @@ import type {
 } from '../../native-chat/input/native-chat-session-options'
 import { encodeStructuredAgentSessionOptionValue } from './structured-agent-session-option-codec'
 import { canSetStructuredAgentSessionOption } from './structured-agent-session-option-snapshot'
+import { isCatalogFreeStructuredOption } from './structured-agent-session-option-state'
 import {
   structuredAgentSessionOptionPicks,
   type StructuredAgentSessionOptionState
@@ -71,7 +72,7 @@ export function admitsStructuredAgentSessionOption(
   return !(
     !context.isCurrentContext() ||
     !context.ready ||
-    (!view.catalog && id !== 'interactionMode') ||
+    (!view.catalog && !isCatalogFreeStructuredOption(id)) ||
     encoded === null ||
     (id === AGENT_CHAT_PERMISSION_MODE_OPTION_ID &&
       value === 'own' &&
@@ -85,7 +86,7 @@ export function structuredAgentSessionOptionAvailability(
   context: WriteAdmissionContext
 ): SessionOptionDescriptor[] {
   return context.snapshot.map((descriptor) =>
-    descriptor.id === 'interactionMode' && descriptor.kind.type === 'select'
+    isCatalogFreeStructuredOption(descriptor.id) && descriptor.kind.type === 'select'
       ? {
           ...descriptor,
           settable:

@@ -19049,6 +19049,11 @@
         "pasteUnavailable": "无法粘贴 — 此聊天当前不接受输入",
         "model": "模型",
         "effort": "推理强度",
+        "contextWindow": "上下文窗口",
+        "customValue": "自定义…",
+        "customValueLabel": "大小（千个 token）",
+        "customValueApply": "设置",
+        "customValueRange": "请输入 {{value0}} 到 {{value1}}",
         "fastMode": "快速模式",
         "speed": "速度",
         "thinking": "思考",
@@ -19071,12 +19076,12 @@
           "xhigh": "极高",
           "max": "最大",
           "ultra": "极致",
+          "contextWindowDefault": "默认",
           "standard": "标准"
         },
         "noCommandsOrSkills": "没有匹配的命令或技能",
         "commands": "命令",
         "skills": "技能",
-        "checkingSkills": "正在检查新技能…",
         "loadingSkills": "正在加载技能…",
         "clearDescription": "清除对话上下文",
         "skillsUnavailableHost": "SSH 聊天中无法列出技能",
@@ -19126,7 +19131,8 @@
         "sessionAttachmentsFailed": "{{agent}} 聊天无法打开，请在聊天中点击重试，然后重新附加文件",
         "sessionAttachmentsStarting": "{{agent}} 聊天仍在打开中，请等待其打开后再重新附加文件",
         "moreControls": "更多聊天控件",
-        "exitPlanMode": "退出计划模式"
+        "exitPlanMode": "退出计划模式",
+        "checkingSkills": "正在检查新技能…"
       },
       "tool": {
         "result": "结果",

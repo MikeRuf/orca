@@ -9,6 +9,7 @@ import {
   restoredClaudeStructuredSessionOptions
 } from './claude-structured-options'
 import type { ClaudeCliFlagFact } from '../../cli-capabilities/claude-cli-flag-support'
+import { agentSessionContextWindowTokens } from '../../../../shared/agent-session/options/agent-session-context-window'
 
 /** Saved choices replace configured flags so the CLI receives each flag once. */
 function withoutConfiguredFlag(
@@ -27,6 +28,8 @@ export type ClaudeStructuredSpawnOptions = {
   options: Map<string, string>
   /** Saved Fast must be applied before input when launch settings cannot carry it. */
   fastModeAtStart: boolean
+  /** The chat's window pick as launched; absent leaves it to the settings files. */
+  contextWindow?: string
 } & Partial<Pick<ClaudeSession, 'cliFlag' | 'flagSettingsControl'>>
 
 /** Pass SDK-valid saved choices through; let the installed CLI reject unsupported values. */
@@ -69,7 +72,19 @@ export function claudeStructuredSpawnOptions(input: {
       }
     }
   }
-  return { sdkOptions, options, fastModeAtStart }
+  const contextWindow = input.saved?.contextWindow
+  const windowTokens = agentSessionContextWindowTokens(contextWindow)
+  // Flag-tier settings outrank the user's files; the CLI reads the window only at launch.
+  if (windowTokens !== null && !Object.hasOwn(sdkOptions.extraArgs ?? {}, 'settings')) {
+    const settings = typeof sdkOptions.settings === 'object' ? sdkOptions.settings : {}
+    sdkOptions.settings = { ...settings, autoCompactWindow: windowTokens }
+  }
+  return {
+    sdkOptions,
+    options,
+    fastModeAtStart,
+    ...(windowTokens !== null ? { contextWindow } : {})
+  }
 }
 
 /** Orca passes this flag only for a Full access chat; the agent's own arguments cannot carry it. */
@@ -98,7 +113,8 @@ export function adoptClaudeStructuredSpawnOptions(
     model: spawn.sdkOptions.model ?? configuredModel,
     permissionMode: claudeLaunchSkipsPermissions(spawn.sdkOptions)
       ? 'bypassPermissions'
-      : permissionMode
+      : permissionMode,
+    ...(spawn.contextWindow ? { contextWindow: spawn.contextWindow } : {})
   }
   session.fastModeAtStart = spawn.fastModeAtStart
   session.cliFlag = spawn.cliFlag

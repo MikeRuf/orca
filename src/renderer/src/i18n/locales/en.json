@@ -20723,7 +20723,6 @@
         "noCommands": "No matching commands",
         "commands": "Commands",
         "skills": "Skills",
-        "checkingSkills": "Checking for new skills...",
         "loadingSkills": "Loading skills...",
         "skillsLoaded": "Skills loaded",
         "clearDescription": "Clear conversation context",
@@ -20763,6 +20762,11 @@
         "pasteUnavailable": "Can't paste — this chat isn't accepting input right now.",
         "model": "Model",
         "effort": "Effort",
+        "contextWindow": "Context window",
+        "customValue": "Custom…",
+        "customValueLabel": "Size in thousands of tokens",
+        "customValueApply": "Set",
+        "customValueRange": "Use {{value0}} to {{value1}}",
         "fastMode": "Fast mode",
         "speed": "Speed",
         "thinking": "Thinking",
@@ -20786,6 +20790,7 @@
           "xhigh": "Extra high",
           "max": "Max",
           "ultra": "Ultra",
+          "contextWindowDefault": "Default",
           "standard": "Standard"
         },
         "pendingAttachmentLimit": "Too many attachments are waiting. Finish composing before attaching more.",
@@ -20820,7 +20825,8 @@
           "medium": "Med",
           "xhigh": "XHigh"
         },
-        "imageUnavailable": "Preview unavailable"
+        "imageUnavailable": "Preview unavailable",
+        "checkingSkills": "Checking for new skills..."
       },
       "tool": {
         "exitCode": "exit {{value0}}",

@@ -19516,7 +19516,6 @@
         "noCommands": "Keine passenden Befehle",
         "commands": "Befehle",
         "skills": "Skills",
-        "checkingSkills": "Nach neuen Skills wird gesucht…",
         "loadingSkills": "Skills werden geladen…",
         "skillsLoaded": "Skills geladen",
         "clearDescription": "Unterhaltungskontext leeren",
@@ -19556,6 +19555,11 @@
         "pasteUnavailable": "Einfügen nicht möglich — dieser Chat nimmt derzeit keine Eingaben an.",
         "model": "Modell",
         "effort": "Denkaufwand",
+        "contextWindow": "Kontextfenster",
+        "customValue": "Eigene…",
+        "customValueLabel": "Größe in Tausend Tokens",
+        "customValueApply": "Festlegen",
+        "customValueRange": "{{value0}} bis {{value1}} verwenden",
         "fastMode": "Schnellmodus",
         "speed": "Geschwindigkeit",
         "thinking": "Nachdenken",
@@ -19578,6 +19582,7 @@
           "xhigh": "Sehr hoch",
           "max": "Maximal",
           "ultra": "Ultra",
+          "contextWindowDefault": "Standard",
           "standard": "Standard"
         },
         "pendingAttachmentLimit": "Zu viele Anhänge warten. Die Nachricht fertigstellen, bevor weitere Dateien angehängt werden.",
@@ -19614,7 +19619,8 @@
         },
         "imageUnavailable": "Vorschau nicht verfügbar",
         "moreControls": "Weitere Chat-Steuerelemente",
-        "exitPlanMode": "Planungsmodus verlassen"
+        "exitPlanMode": "Planungsmodus verlassen",
+        "checkingSkills": "Nach neuen Skills wird gesucht…"
       },
       "tool": {
         "exitCode": "Rückgabecode {{value0}}",

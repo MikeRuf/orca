@@ -1,4 +1,5 @@
 import * as z from 'zod'
+import { isAgentSessionContextWindow } from './agent-session-context-window'
 
 /** Freeze choices on acceptance; permission stays a launch setting. Strip unknown keys from free-form send/saved options. */
 export const AgentSessionExecutionOptionsSchema = z.object({
@@ -7,7 +8,8 @@ export const AgentSessionExecutionOptionsSchema = z.object({
   personality: z.string().min(1).max(64).optional(),
   fastMode: z.enum(['true', 'false']).optional(),
   serviceTier: z.string().min(1).max(64).optional(),
-  interactionMode: z.enum(['default', 'plan']).optional()
+  interactionMode: z.enum(['default', 'plan']).optional(),
+  contextWindow: z.string().refine(isAgentSessionContextWindow).optional()
 })
 
 export type AgentSessionExecutionOptions = z.infer<typeof AgentSessionExecutionOptionsSchema>

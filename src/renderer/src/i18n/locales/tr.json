@@ -19494,7 +19494,6 @@
         "noCommands": "Eşleşen komut yok",
         "commands": "Komutlar",
         "skills": "Beceriler",
-        "checkingSkills": "Yeni beceriler denetleniyor…",
         "loadingSkills": "Beceriler yükleniyor...",
         "skillsLoaded": "Beceriler yüklendi",
         "clearDescription": "Konuşma bağlamını temizle",
@@ -19534,6 +19533,11 @@
         "pasteUnavailable": "Yapıştırılamıyor — bu sohbet şu anda girdi kabul etmiyor.",
         "model": "Model",
         "effort": "Çaba",
+        "contextWindow": "Bağlam penceresi",
+        "customValue": "Özel…",
+        "customValueLabel": "Bin token cinsinden boyut",
+        "customValueApply": "Ayarla",
+        "customValueRange": "{{value0}} ile {{value1}} arasında girin",
         "fastMode": "Hızlı mod",
         "speed": "Hız",
         "thinking": "Düşünüyor",
@@ -19556,6 +19560,7 @@
           "xhigh": "Ekstra yüksek",
           "max": "Maks",
           "ultra": "Ultra",
+          "contextWindowDefault": "Varsayılan",
           "standard": "Standart"
         },
         "pendingAttachmentLimit": "Bekleyen ek sayısı çok fazla. Daha fazla eklemeden önce yazmayı bitirin.",
@@ -19592,7 +19597,8 @@
         },
         "imageUnavailable": "Önizleme kullanılamıyor",
         "exitPlanMode": "Plan modundan çık",
-        "moreControls": "Diğer sohbet kontrolleri"
+        "moreControls": "Diğer sohbet kontrolleri",
+        "checkingSkills": "Yeni beceriler denetleniyor…"
       },
       "tool": {
         "exitCode": "çıkış {{value0}}",

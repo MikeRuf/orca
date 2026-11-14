@@ -20703,7 +20703,6 @@
         "noCommands": "Nenhum comando correspondente",
         "commands": "Comandos",
         "skills": "Skills",
-        "checkingSkills": "Procurando novas habilidades…",
         "loadingSkills": "Carregando skills...",
         "skillsLoaded": "Skills carregadas",
         "skillsUnavailableHost": "As skills não estão disponíveis para este host",
@@ -20727,6 +20726,11 @@
         "worktreeNotReady": "Worktree não está pronta — tente novamente em um momento.",
         "model": "Modelo",
         "effort": "Esforço",
+        "contextWindow": "Janela de contexto",
+        "customValue": "Personalizado…",
+        "customValueLabel": "Tamanho em milhares de tokens",
+        "customValueApply": "Definir",
+        "customValueRange": "Use de {{value0}} a {{value1}}",
         "fastMode": "Modo rápido",
         "thinking": "Pensando",
         "sessionOptions": "Opções da sessão",
@@ -20746,6 +20750,7 @@
           "xhigh": "Extra alto",
           "max": "Máximo",
           "ultra": "Ultra",
+          "contextWindowDefault": "Padrão",
           "standard": "Padrão",
           "ultracode": "Ultracode"
         },
@@ -20805,7 +20810,8 @@
         },
         "imageUnavailable": "Prévia indisponível",
         "exitPlanMode": "Sair do modo de planejamento",
-        "moreControls": "Mais controles do chat"
+        "moreControls": "Mais controles do chat",
+        "checkingSkills": "Procurando novas habilidades…"
       },
       "tool": {
         "exitCode": "saída {{value0}}",
