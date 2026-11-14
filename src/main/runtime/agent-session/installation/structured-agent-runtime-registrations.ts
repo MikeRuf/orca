@@ -134,6 +134,17 @@ function createClaudeAdapter(
     logger: deps.logger,
     onChildWorkEvidence: (sessionId, evidence, producer) =>
       host()?.publishChildWorkEvidence(sessionId, evidence, producer),
+    onSlashRename: (sessionId, title) => {
+      void host()
+        ?.setUserConversationName(sessionId, title, 'rename')
+        .catch((error: unknown) =>
+          deps.logger?.warn('applying a /rename to the chat tab failed', {
+            scope: 'claude-slash-rename',
+            sessionId,
+            error
+          })
+        )
+    },
     onDispatchSettledLate: followUps.onDispatchSettledLate,
     ...(deps.openClaudeConnection ? { openClaudeConnection: deps.openClaudeConnection } : {}),
     ...(deps.readProcessStartTime ? { readProcessStartTime: deps.readProcessStartTime } : {})
