@@ -20123,11 +20123,14 @@
         "addFavorite": "Add to Favorites",
         "favorites": "Favorite tabs",
         "noFavorites": "Right-click a tab and choose Add to Favorites.",
+        "appearanceDescription": "Background and font of this favorite in the sidebar. Changes apply as you make them.",
+        "appearanceRow": "Favorite row",
         "recents": "Recent tabs",
         "noRecents": "Tabs you visit appear here.",
         "untitled": "Untitled tab",
         "closed": "That tab is closed.",
-        "openFailed": "Could not open that tab."
+        "openFailed": "Could not open that tab.",
+        "waitingOnYou": "Waiting on your answer"
       }
     },
     "i18n": {
@@ -24690,6 +24693,8 @@
       "newAgentTab": "New {{agent}} tab",
       "tabNewBrowserSplitRight": "New browser tab in right split",
       "tabToggleLast": "Back to the last tab (any workspace)",
+      "tabCycleFavorites": "Cycle through favorite tabs",
+      "tabCycleFavoritesBackward": "Cycle through favorite tabs backward",
       "eca3c9fdd7": "Select tab 1–9",
       "53ae577e44": "Go forward in browser",
       "324e886c0f": "Go to previous change",

@@ -1729,12 +1729,48 @@ html.native-shell .app-layout {
 
 /* The faint border and wash alone made the open workspace hard to find (Mike, 2026-11-05):
    a thick red ring, inset so the row keeps its size and an overflow-clipped list cannot cut it. */
-[data-worktree-card-surface][data-worktree-card-active='primary'] {
+[data-worktree-card-surface][data-worktree-card-active='primary'],
+[data-favorite-tab-active] {
   box-shadow: inset 0 0 0 3px #b91c1c;
 }
 
-.dark [data-worktree-card-surface][data-worktree-card-active='primary'] {
+.dark [data-worktree-card-surface][data-worktree-card-active='primary'],
+.dark [data-favorite-tab-active] {
   box-shadow: inset 0 0 0 3px #ef4444;
+}
+
+/* A white chip because the row behind it can be any color the user picked for the favorite. */
+.favorite-tab-waiting-mark {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  align-self: center;
+  width: 1.35em;
+  height: 1.35em;
+  border-radius: 9999px;
+  background: #ffffff;
+  font-weight: 800;
+  line-height: 1;
+  animation: favorite-tab-waiting-flash 1s steps(1, end) infinite;
+}
+
+/* Must outrank the favorite's own text color, which is !important on every descendant. */
+.favorite-tab-waiting-mark,
+[data-project-sidebar-text] .favorite-tab-waiting-mark {
+  color: #dc2626 !important;
+}
+
+@keyframes favorite-tab-waiting-flash {
+  50% {
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .favorite-tab-waiting-mark {
+    animation: none;
+  }
 }
 
 /* #15971: the wash matches the pill's fill, so its border carries the shape. A neutral sidebar tint

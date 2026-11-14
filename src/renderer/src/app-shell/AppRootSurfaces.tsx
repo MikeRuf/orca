@@ -11,6 +11,7 @@ import NewWorkspaceComposerModal from '../components/NewWorkspaceComposerModal'
 import { CrashReportDialog } from '../components/crash-report/CrashReportDialog'
 import { MarkdownTemplatePicker } from '../components/editor/markdown/documents/MarkdownTemplatePicker'
 import RecentTabSwitcher from '../components/tab-bar/RecentTabSwitcher'
+import FavoriteTabSwitcher from '../components/sidebar/FavoriteTabSwitcher'
 import { SkillFreshnessUpdateDialog } from '../components/skills/freshness/SkillFreshnessUpdateDialog'
 import { StarNagAgentValueMomentObserver } from '../components/star-nag/StarNagAgentValueMomentObserver'
 import { NativeChatResumeOnRestartModal } from '../components/native-chat-recovery/NativeChatResumeRuntimeModal'
@@ -387,6 +388,9 @@ export const AppRootSurfaces = memo(function AppRootSurfaces(props: {
       ) : null}
       <OverlayBoundary boundaryId="overlay.recent-tab-switcher" resetKey={activeView}>
         <RecentTabSwitcher />
+      </OverlayBoundary>
+      <OverlayBoundary boundaryId="overlay.favorite-tab-switcher" resetKey={activeView}>
+        <FavoriteTabSwitcher />
       </OverlayBoundary>
       {/* Its live terminal requires the link-routing preference context. */}
       <OverlayBoundary boundaryId="overlay.skill-freshness-update-dialog">

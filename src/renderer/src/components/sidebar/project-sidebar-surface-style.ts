@@ -2,7 +2,8 @@ import type React from 'react'
 import {
   SIDEBAR_BASE_FONT_SIZE,
   sanitizeRepoSidebarStyle,
-  type RepoSidebarSurface
+  type RepoSidebarSurface,
+  type RepoSidebarSurfaceStyle
 } from '../../../../shared/repo-sidebar-style'
 import type { Repo } from '../../../../shared/repo-types'
 
@@ -21,7 +22,13 @@ export function getProjectSidebarSurfaceProps(
   surface: RepoSidebarSurface
 ): ProjectSidebarSurfaceProps {
   // Re-sanitize: the values reach inline styles, and a hand-edited profile skips the write path.
-  const style = sanitizeRepoSidebarStyle(repo?.sidebarStyle)?.[surface]
+  return getSidebarSurfaceProps(sanitizeRepoSidebarStyle(repo?.sidebarStyle)?.[surface])
+}
+
+/** Props that paint any sidebar row; `style` must already be sanitized. */
+export function getSidebarSurfaceProps(
+  style: RepoSidebarSurfaceStyle | undefined
+): ProjectSidebarSurfaceProps {
   if (!style) {
     return NO_SURFACE_PROPS
   }

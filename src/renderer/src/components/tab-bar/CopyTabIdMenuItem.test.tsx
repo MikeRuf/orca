@@ -6,7 +6,10 @@ import { toast } from 'sonner'
 import { CopyTabIdMenuItem } from './CopyTabIdMenuItem'
 
 vi.mock('sonner', () => ({ toast: { success: vi.fn(), error: vi.fn() } }))
-vi.mock('@/i18n/i18n', () => ({ translate: (_key: string, fallback: string) => fallback }))
+vi.mock('@/i18n/i18n', async (importOriginal) => ({
+  ...(await importOriginal<object>()),
+  translate: (_key: string, fallback: string) => fallback
+}))
 vi.mock('@/components/ui/context-menu', () => ({
   ContextMenuItem: ({
     children,

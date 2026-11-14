@@ -42,7 +42,7 @@ function sanitizeFontSize(value: unknown): number | undefined {
   return Math.min(MAX_SIDEBAR_FONT_SIZE, Math.max(MIN_SIDEBAR_FONT_SIZE, Math.round(value)))
 }
 
-function sanitizeSurface(value: unknown): RepoSidebarSurfaceStyle | undefined {
+export function sanitizeSidebarSurfaceStyle(value: unknown): RepoSidebarSurfaceStyle | undefined {
   if (!value || typeof value !== 'object' || Array.isArray(value)) {
     return undefined
   }
@@ -76,8 +76,8 @@ export function sanitizeRepoSidebarStyle(value: unknown): RepoSidebarStyle | nul
     return undefined
   }
   const raw = value as Record<string, unknown>
-  const header = sanitizeSurface(raw.header)
-  const rows = sanitizeSurface(raw.rows)
+  const header = sanitizeSidebarSurfaceStyle(raw.header)
+  const rows = sanitizeSidebarSurfaceStyle(raw.rows)
   if (!header && !rows) {
     return null
   }
