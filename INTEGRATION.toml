@@ -1,0 +1,38 @@
+# Integration manifest, written by common/git_tools/integrate.py.
+# Lives only on the integration branch, as its last commit. Change it
+# with `integrate add` / `integrate remove`, then `integrate build --push`.
+branch = "mike"
+remote = "origin"
+upstream = "upstream"
+base = "main"
+# Merged in this order, each from <remote>/<topic>.
+topics = [
+  "fix/chat-tab-rename",
+  "fix/cli-repo-add-kind",
+  "fix/chat-rename-note-v2",
+  "feat/project-row-style",
+  "feat/dev-update-install",
+  "feat/shutdown-notice",
+  "feat/auto-resume-server-restart",
+  "feat/build-info-status",
+  "feat/last-tab-toggle",
+  "perf/heavy-check-lock",
+  "feat/chat-image-shrink",
+  "feat/favorite-tab-style",
+  "feat/steer-all-queued",
+  "feat/claude-project-account",
+  "feat/idle-stop-rpc",
+  "feat/chat-context-window",
+  "feat/rewake-hook-line",
+  "feat/chat-process-monitor",
+  "feat/chat-session-links",
+]
+# Run once in the build worktree before merging (hooks may need it).
+setup = "pnpm install --frozen-lockfile --ignore-scripts && pnpm exec husky"
+# Run in the build worktree after the last merge; failing keeps the old build.
+check = "pnpm install --frozen-lockfile --ignore-scripts && pnpm run typecheck"
+# Prepended to PATH for setup, check and git hooks; ~ and globs expand.
+path = [
+  "~/.local/share/orca-dev-build/node-*-linux-x64/bin",
+  "~/.local/share/orca-dev-build/bin",
+]
