@@ -3,6 +3,7 @@ import type { ChangelogData } from '../../../../../shared/update-status-types'
 import { Button } from '../../ui/button'
 import { useTranslate } from '@/i18n/use-translate'
 import { openAppHttpLink } from '@/lib/browser/navigation/app-http-link-open'
+import { DEV_RELEASE_REF } from '@/lib/dev-release-build'
 
 function isAnimatedGif(url: string | undefined): boolean {
   return typeof url === 'string' && url.toLowerCase().endsWith('.gif')
@@ -158,6 +159,9 @@ export function UpdateAvailableSimpleContent({
       ) : (
         <p className="text-xs leading-relaxed text-muted-foreground">
           {t('auto.components.UpdateCard.fdd4a364fa', "Sessions won't be interrupted.")}
+          {DEV_RELEASE_REF
+            ? ` ${t('auto.components.UpdateCard.replacesDevRelease', 'This replaces your dev release ({{value0}}) with the official build.', { value0: DEV_RELEASE_REF })}`
+            : ''}
         </p>
       )}
       {releaseUrl && (

@@ -78,6 +78,10 @@ function createDarkBuildMarkerPlugin(): Plugin {
 
 // Pin official skill installs to the bundled commit on every channel; main installs, renderer prints the command.
 const ORCA_BUILD_COMMIT_LITERAL = JSON.stringify(resolveBuildSourceCommit())
+// When this build was made, and, for a build from a fork or branch, the name its build script gives it.
+const ORCA_BUILD_TIME_LITERAL = JSON.stringify(new Date().toISOString())
+const orcaDevReleaseRef = process.env.ORCA_DEV_RELEASE_REF?.trim()
+const ORCA_DEV_RELEASE_REF_LITERAL = orcaDevReleaseRef ? JSON.stringify(orcaDevReleaseRef) : 'null'
 
 function createStartupDiagnosticsBanner(chunkName: string): string {
   return `
@@ -252,6 +256,8 @@ export const electronViteConfig: UserConfig = {
       ORCA_POSTHOG_WRITE_KEY: ORCA_POSTHOG_WRITE_KEY_LITERAL,
       ORCA_DIAGNOSTICS_TOKEN_URL: ORCA_DIAGNOSTICS_TOKEN_URL_LITERAL,
       ORCA_BUILD_COMMIT: ORCA_BUILD_COMMIT_LITERAL,
+      ORCA_BUILD_TIME: ORCA_BUILD_TIME_LITERAL,
+      ORCA_DEV_RELEASE_REF: ORCA_DEV_RELEASE_REF_LITERAL,
       ...DARK_BUILD_DEFINES
     },
     // @xterm/headless declares exports:null; point Vite directly at its published CJS main to permit inlining.
@@ -275,6 +281,7 @@ export const electronViteConfig: UserConfig = {
     cacheDir: resolve('.cache/vite/renderer'),
     define: {
       ORCA_BUILD_COMMIT: ORCA_BUILD_COMMIT_LITERAL,
+      ORCA_DEV_RELEASE_REF: ORCA_DEV_RELEASE_REF_LITERAL,
       ...DARK_BUILD_DEFINES
     },
     resolve: {

@@ -3870,6 +3870,7 @@
           "statusDownloaded": "Update ready to install",
           "statusError": "Update error"
         },
+        "replacesDevRelease": "This replaces your dev release ({{value0}}) with the official build.",
         "b3b02a9d84": "Try again"
       },
       "WorktreeJumpPalette": {
@@ -5714,6 +5715,19 @@
             },
             "mainWorktree": "main worktree",
             "detached": "detached"
+          },
+          "BuildInfoStatusSegment": {
+            "devRelease": "*** dev release: {{value0}} ***",
+            "version": "Version",
+            "built": "Built",
+            "commit": "Commit",
+            "devRef": "Dev release",
+            "noInfo": "This server does not report its build.",
+            "ariaLabel": "Build information for this app and connected servers",
+            "label": "Orca {{value0}}",
+            "thisApp": "This app",
+            "noServers": "No servers connected.",
+            "switchToOfficial": "Switch to the official release…"
           },
           "antigravity": {
             "unknownAccount": "Google account",

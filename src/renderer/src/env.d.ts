@@ -138,6 +138,8 @@ declare module 'monaco-editor/esm/vs/editor/browser/widget/diffEditor/utils/edit
 declare global {
   /** Full commit the build was made from, stamped by the renderer build. */
   const ORCA_BUILD_COMMIT: string
+  /** Set by a fork or branch build script; null for official builds. */
+  const ORCA_DEV_RELEASE_REF: string | null
   var MonacoEnvironment:
     | {
         getWorker(workerId: string, label: string): Worker
