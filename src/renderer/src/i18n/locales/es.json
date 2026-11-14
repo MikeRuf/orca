@@ -20077,6 +20077,9 @@
         "resize": "Arrastra para cambiar el tamaño",
         "stopButton": "Detener",
         "agentNote": "Los procesos del agente ejecutan el propio chat, por eso no tienen botón Detener. Cerrar el chat los termina."
+      },
+      "chatLinks": {
+        "notOpen": "Ese chat no está abierto en ningún espacio de trabajo"
       }
     },
     "tab": {

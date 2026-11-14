@@ -21613,6 +21613,9 @@
         "resize": "Drag to resize",
         "stopButton": "Stop",
         "agentNote": "Agent processes run the chat itself, so they have no Stop button. Closing the chat ends them."
+      },
+      "chatLinks": {
+        "notOpen": "That chat isn't open in any workspace"
       }
     },
     "tab": {

@@ -1,5 +1,6 @@
 import {
   createNativeChatFileHref,
+  createNativeChatSessionHref,
   routeNativeChatHref
 } from '../../../../../shared/native-chat/native-chat-href-routing'
 import { formatFileLinkLocation } from '../../../../../shared/file-links/file-link-location'
@@ -15,7 +16,7 @@ type MarkdownNode = {
 const SCHEME_PREFIX_PATTERN = /^[A-Za-z][A-Za-z0-9+.-]*:/
 
 /**
- * Sanitize keeps only the protocols it knows, so a `file:` link or image naming a file loses its
+ * Sanitize keeps only the protocols it knows, so a `file:` or `orca://chat/` link loses its
  * address before any chat code sees it. Rewrite those destinations to the
  * chat's own file hrefs first; the existing file link and image paths then open them on the
  * chat's host. Web links and plain paths are left as written.
@@ -32,7 +33,9 @@ function rewriteFileDestinations(node: MarkdownNode, definitions: Map<string, Ma
     SCHEME_PREFIX_PATTERN.test(url)
   ) {
     const route = routeNativeChatHref(url)
-    if (route.kind === 'file') {
+    if (route.kind === 'chat' && node.type === 'link') {
+      node.url = createNativeChatSessionHref(route.sessionId)
+    } else if (route.kind === 'file') {
       if (definition) {
         // One definition can serve both images (literal paths) and links (locations).
         node.type = node.type === 'imageReference' ? 'image' : 'link'

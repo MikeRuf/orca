@@ -21778,6 +21778,9 @@
         "resize": "Arraste para redimensionar",
         "stopButton": "Parar",
         "agentNote": "Os processos do agente executam o próprio chat, por isso não têm botão Parar. Fechar o chat os encerra."
+      },
+      "chatLinks": {
+        "notOpen": "Esse chat não está aberto em nenhum espaço de trabalho"
       }
     },
     "tab": {

@@ -20279,6 +20279,9 @@
         "resize": "Zum Ändern der Größe ziehen",
         "stopButton": "Beenden",
         "agentNote": "Agent-Prozesse betreiben den Chat selbst und haben daher keine Beenden-Schaltfläche. Das Schließen des Chats beendet sie."
+      },
+      "chatLinks": {
+        "notOpen": "Dieser Chat ist in keinem Workspace geöffnet"
       }
     },
     "tab": {

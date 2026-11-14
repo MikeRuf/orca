@@ -20350,6 +20350,9 @@
         "resize": "Faites glisser pour redimensionner",
         "stopButton": "Arrêter",
         "agentNote": "Les processus de l'agent font tourner le chat lui-même, ils n'ont donc pas de bouton Arrêter. Fermer le chat les arrête."
+      },
+      "chatLinks": {
+        "notOpen": "Ce chat n'est ouvert dans aucun espace de travail"
       }
     },
     "tab": {
