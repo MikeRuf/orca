@@ -13,6 +13,7 @@ import {
 } from '../../../codex/structured/journal/codex-goal-journal-rows'
 import { isProviderRecord } from '../../../provider-process/provider-json-record'
 import { classifyProviderFrame } from './provider-frame-disposition'
+import { claudeRewakeHookLine } from './claude-rewake-hook-response'
 import { hookOutcomeRowBody } from '../../../../shared/agent-session/journal/agent-session-hook-outcome'
 
 export type UnhandledProviderFrameJournalItem = {
@@ -194,6 +195,9 @@ export function unhandledProviderFrameJournalItem(
       [record.summary, record.details]
         .filter((part): part is string => typeof part === 'string' && part.trim().length > 0)
         .join('\n\n') || message
+  }
+  if (provider === 'claude' && kind === 'message:system:hook_response') {
+    message = claudeRewakeHookLine(payload) ?? message
   }
   if (provider === 'claude' && kind === CLAUDE_LOCAL_COMMAND_OUTPUT_FRAME_KIND) {
     const content =

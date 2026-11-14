@@ -1,3 +1,4 @@
+import { claudeRewakeHookLine } from './claude-rewake-hook-response'
 import type { CodexAppServerNotificationMethod } from '../../../codex/app-server/codex-app-server-notification-schema'
 import { CODEX_SUBAGENT_ITEM_TYPE } from '../../../codex/structured/background-work/codex-subagent-activity'
 import { isProviderRecord } from '../../../provider-process/provider-json-record'
@@ -232,6 +233,9 @@ const PROVIDER_FRAME_CATALOGS: ReadonlyMap<
         return subtype === 'success' ? 'status-chrome' : 'error-surface'
       }
       if (kind === 'message:system:hook_response') {
+        if (claudeRewakeHookLine(payload)) {
+          return 'timeline-substantive'
+        }
         return isProviderRecord(payload) && payload.outcome === 'error'
           ? 'error-surface'
           : 'suppressed-benign'
