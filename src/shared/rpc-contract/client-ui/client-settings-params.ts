@@ -131,6 +131,8 @@ export const SettingsUpdate = z
       .transform((value) => normalizePRBotAuthorOverrides(value))
       .optional(),
     nativeChatAutoContinueAfterUsageLimit: z.boolean().optional(),
+    /** No UI reaches a headless server's copy of this, so idle stop there is set over RPC. 0 never stops. */
+    nativeChatIdleStopMinutes: z.number().int().min(0).optional(),
     nativeChatPermissionMode: z.enum(AGENT_CHAT_PERMISSION_MODES).optional(),
     workspaceCleanupPolicy: WorkspaceCleanupRulesParam.optional()
   })

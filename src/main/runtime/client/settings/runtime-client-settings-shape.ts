@@ -37,6 +37,7 @@ export type RuntimeClientSettings = Pick<
   | 'machineName'
   | 'nativeChatPermissionMode'
   | 'nativeChatAutoContinueAfterUsageLimit'
+  | 'nativeChatIdleStopMinutes'
   | 'nativeChatQueueFollowUps'
   | 'nativeChatCiResultLines'
   | 'sourceControlGroupOrder'
@@ -85,5 +86,6 @@ export type RuntimeClientSettingsUpdate = Pick<
   | 'machineName'
   | 'nativeChatPermissionMode'
   | 'nativeChatAutoContinueAfterUsageLimit'
+  | 'nativeChatIdleStopMinutes'
   | 'workspaceCleanupPolicy'
 >
