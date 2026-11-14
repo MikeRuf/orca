@@ -127,5 +127,23 @@ export const KEYBINDING_DEFINITION_CORE_4: readonly KeybindingDefinition[] = [
     },
     // Why: macOS uses Shift+Space as an input-source shortcut; Orca otherwise rejects Shift-only bindings to avoid stealing typed text.
     allowShiftOnlyKeybindings: true
+  },
+  {
+    id: 'tab.toggleLast',
+    title: 'Back to the last tab (any workspace)',
+    group: 'Tab Navigation',
+    scope: 'tabs',
+    searchKeywords: [
+      'shortcut',
+      'tab',
+      'last',
+      'previous',
+      'toggle',
+      'back',
+      'alternate',
+      'workspace'
+    ],
+    defaultBindings: platformBindings(['Alt+Q']),
+    allowInTerminal: true
   }
 ]

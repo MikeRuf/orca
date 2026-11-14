@@ -24,6 +24,7 @@ import { LocalGitToolchainScanBanner } from './LocalGitToolchainScanBanner'
 import { SeveredTerminalDaemonBanner } from './SeveredTerminalDaemonBanner'
 import { StalledTerminalDaemonBanner } from './StalledTerminalDaemonBanner'
 import { StartupWorktreeRefreshStatus } from './StartupWorktreeRefreshStatus'
+import { TabShortcutsSection } from './TabShortcutsSection'
 
 // Load the shared Activity badge/list pipeline after the sidebar shell.
 const SidebarAgentsList = lazyWithRetry(() => import('./SidebarAgentsList'))
@@ -182,6 +183,7 @@ function Sidebar({
           {sidebarOpen && (
             <>
               <SidebarNav />
+              <TabShortcutsSection />
               <SidebarHeader
                 activityBadgeTarget={setAgentBadgeTarget}
                 onWorkspaceBoardMenuOpenChange={setWorkspaceBoardMenuOpen}

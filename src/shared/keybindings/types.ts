@@ -78,6 +78,7 @@ export type KeybindingActionId =
   | 'tab.nextAllTypes'
   | 'tab.previousAllTypes'
   | 'tab.previousRecent'
+  | 'tab.toggleLast'
   | 'tab.nextTerminal'
   | 'tab.previousTerminal'
   | 'tab.selectByIndex'
