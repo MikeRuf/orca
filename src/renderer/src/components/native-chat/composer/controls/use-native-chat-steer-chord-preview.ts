@@ -15,14 +15,15 @@ export function useNativeChatSteerChordPreview(
     hasDraft: boolean
     chordSteersHead: boolean
   },
-  steerHead: (() => boolean) | undefined,
+  /** The chord sends every queued card here; the phone's steers the head alone. */
+  steerAll: (() => boolean) | undefined,
   send: (intent?: NativeChatComposerSendIntent) => void,
   pickerOpen: boolean
 ) {
   return useSteerChordPreview(
     root,
     sendState,
-    steerHead,
+    steerAll,
     () => send({ alternate: true }),
     pickerOpen,
     isMacPlatform() ? 'Meta' : 'Control'

@@ -25,6 +25,7 @@ import type { StructuredAgentSessionPendingSend } from '../session/structured/de
 import {
   headSteerableQueuedMessageCard,
   projectQueuedMessageCards,
+  steerableQueuedMessageCards,
   queuedMessagesQueuePause,
   type QueuedMessageCard
 } from '../../../../../shared/agent-session/view/structured-agent-session-queued-cards'
@@ -64,6 +65,8 @@ export type StructuredAgentSessionQueuedMessagesController = {
   edit: (messageId: string) => Promise<void>
   /** Cmd/Ctrl+Shift+Enter: steer the head card; absent while there is no head card to steer. */
   steerHead: (() => boolean) | undefined
+  /** Cmd/Ctrl+Enter on an empty composer: steer every card that can; absent while none can. */
+  steerAll: (() => boolean) | undefined
   /** The agent is working, so a card's send steers into its turn. */
   isWorking: boolean
 }
@@ -208,6 +211,35 @@ export function useStructuredAgentSessionQueuedMessages(args: {
     void steer(head.messageId)
     return true
   }, [editingMessageId, enabled, reordered.cards, steer])
+  const steerableIds = useMemo(
+    () =>
+      enabled
+        ? steerableQueuedMessageCards(reordered.cards)
+            .map((card) => card.messageId)
+            .filter((messageId) => messageId !== editingMessageId)
+        : [],
+    [editingMessageId, enabled, reordered.cards]
+  )
+  const steerAll = useCallback((): boolean => {
+    const messageIds = steerableIds.filter((messageId) => !inFlightRef.current.has(messageId))
+    if (messageIds.length === 0) {
+      return false
+    }
+    void run(messageIds, 'send', async () => {
+      // One at a time, so the agent reads them in queue order and a refused card keeps the rest behind it.
+      for (const messageId of messageIds) {
+        const sent = await mutate<AgentSessionSendResult>(
+          'agentSession.queuedMessageSend',
+          'agentSession.queuedMessageSend',
+          { messageId }
+        )
+        if (!sent) {
+          return
+        }
+      }
+    })
+    return true
+  }, [mutate, run, steerableIds])
   const steerableHead = enabled ? headSteerableQueuedMessageCard(reordered.cards) : null
   // The same checks as the press, read from rendered state, so the composer never offers a dead steer.
   const headSteers =
@@ -295,6 +327,7 @@ export function useStructuredAgentSessionQueuedMessages(args: {
     editCapable: editing.capable,
     editor: editing.editor,
     steerHead: headSteers ? steerHead : undefined,
+    steerAll: steerableIds.some((messageId) => !inFlight.has(messageId)) ? steerAll : undefined,
     isWorking
   }
 }

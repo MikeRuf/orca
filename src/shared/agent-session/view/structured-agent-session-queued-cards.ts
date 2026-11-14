@@ -185,6 +185,13 @@ export function headSteerableQueuedMessageCard(
   return head && head.hold !== 'sending' && queuedMessageCardSteers(head) ? head : null
 }
 
+/** The cards Cmd/Ctrl+Enter on an empty composer sends, in send order. */
+export function steerableQueuedMessageCards(
+  cards: readonly QueuedMessageCard[]
+): QueuedMessageCard[] {
+  return cards.filter((card) => card.hold !== 'sending' && queuedMessageCardSteers(card))
+}
+
 /** The card's line: its text, or for a card of images alone, the image's name or their count. */
 export function queuedMessageCardLine(
   card: Pick<QueuedMessageCard, 'text' | 'images' | 'displayText'>,

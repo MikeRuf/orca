@@ -18,7 +18,13 @@ export function nativeChatStructuredStopControls(
     isStopping: boolean
     onStop: (() => void) | undefined
     steerHead: (() => boolean) | undefined
+    steerAll: (() => boolean) | undefined
     afterStop: NativeChatAfterStopSend | undefined
+  }
+  /** The composer's steers from this controller; none while a Stop is ending the turn. */
+  steers: (queued: Pick<StopController['queuedMessages'], 'steerHead' | 'steerAll'>) => {
+    steerHead?: () => boolean
+    steerAll?: () => boolean
   }
 } {
   const stopping =
@@ -36,8 +42,11 @@ export function nativeChatStructuredStopControls(
       isStopping: stopInFlight,
       onStop: controller.canStop ? () => void (stopInFlight || controller.stop()) : undefined,
       steerHead: stopping ? undefined : controller.queuedMessages.steerHead,
+      steerAll: stopping ? undefined : controller.queuedMessages.steerAll,
       afterStop: stopping ? (controller.sendsQueue ? 'queue' : 'send') : undefined
-    }
+    },
+    steers: ({ steerHead, steerAll }) =>
+      stopping ? {} : { ...(steerHead ? { steerHead } : {}), ...(steerAll ? { steerAll } : {}) }
   }
 }
 
