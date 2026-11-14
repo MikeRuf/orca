@@ -1,5 +1,10 @@
 import { ipcRenderer } from 'electron'
 import type { AppIdentity } from '../../shared/app-identity'
+import {
+  PENDING_DEV_UPDATE_CHANGED_CHANNEL,
+  PENDING_DEV_UPDATE_INSTALL_REQUESTED_CHANNEL,
+  type PendingDevUpdate
+} from '../../shared/pending-dev-update'
 import type { MacosUpgradeSupport } from '../../shared/macos-upgrade-support'
 import type { FloatingTerminalCwdRequest } from '../../shared/ui-chrome-types'
 import type { MacCapturedDigitRowChord } from '../../shared/macos-symbolic-hotkeys'
@@ -48,6 +53,26 @@ export const appApi = {
       () => ipcRenderer.invoke('app:relaunch'),
       awaitBeforeUnloadCheckpoint
     ),
+  getPendingDevUpdate: (): Promise<PendingDevUpdate | null> => ipcRenderer.invoke('devUpdate:get'),
+  installPendingDevUpdate: (): Promise<void> =>
+    prepareAndInvokeAppRestart(
+      window,
+      () => ipcRenderer.invoke('devUpdate:install'),
+      awaitBeforeUnloadCheckpoint
+    ),
+  onPendingDevUpdateChanged: (
+    callback: (pending: PendingDevUpdate | null) => void
+  ): (() => void) => {
+    const listener = (_event: Electron.IpcRendererEvent, pending: PendingDevUpdate | null): void =>
+      callback(pending ?? null)
+    ipcRenderer.on(PENDING_DEV_UPDATE_CHANGED_CHANNEL, listener)
+    return () => ipcRenderer.removeListener(PENDING_DEV_UPDATE_CHANGED_CHANNEL, listener)
+  },
+  onPendingDevUpdateInstallRequested: (callback: () => void): (() => void) => {
+    const listener = (): void => callback()
+    ipcRenderer.on(PENDING_DEV_UPDATE_INSTALL_REQUESTED_CHANNEL, listener)
+    return () => ipcRenderer.removeListener(PENDING_DEV_UPDATE_INSTALL_REQUESTED_CHANNEL, listener)
+  },
   restart: (): Promise<void> =>
     prepareAndInvokeAppRestart(
       window,

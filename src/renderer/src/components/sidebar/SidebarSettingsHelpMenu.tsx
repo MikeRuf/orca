@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import {
+  Download,
   BookOpen,
   CircleHelp,
   ExternalLink,
@@ -33,6 +34,8 @@ import { SetupGuideProgressRing } from '../setup-guide/SetupGuideProgressRing'
 import { useSetupGuideProgress } from '../setup-guide/use-setup-guide-progress'
 import { lazyWithRetry } from '@/app-shell/startup/lazy-with-retry'
 import type * as SidebarFeedbackDialogModule from './sidebar-feedback/SidebarFeedbackDialog'
+import { pendingDevUpdateLabel, usePendingDevUpdate } from '../dev-update/use-pending-dev-update'
+import { startPendingDevUpdateInstall } from '../dev-update/dev-update-install-flow'
 import { useTranslate } from '@/i18n/use-translate'
 import {
   getUpdateCheckClickOptions,
@@ -101,6 +104,7 @@ export function SidebarSettingsHelpMenu(): React.JSX.Element {
   const openSettingsPage = useAppStore((s) => s.openSettingsPage)
   const openSettingsTarget = useAppStore((s) => s.openSettingsTarget)
   const updateStatus = useAppStore((s) => s.updateStatus)
+  const pendingDevUpdate = usePendingDevUpdate()
   const setupProgress = useSetupGuideProgress(true, false, false)
 
   const settingsShortcut = useShortcutKeyDetails('app.settings')
@@ -302,6 +306,12 @@ export function SidebarSettingsHelpMenu(): React.JSX.Element {
               <ExternalLink className="ml-auto size-3 text-muted-foreground" />
             </DropdownMenuItem>
             <DropdownMenuSeparator />
+            {pendingDevUpdate ? (
+              <DropdownMenuItem onSelect={startPendingDevUpdateInstall}>
+                <Download className="size-3.5" />
+                {pendingDevUpdateLabel(pendingDevUpdate)}
+              </DropdownMenuItem>
+            ) : null}
             <DropdownMenuItem
               disabled={updateStatus.state === 'checking' || updateStatus.state === 'downloading'}
               onPointerDown={handleCheckForUpdatesPointerDown}

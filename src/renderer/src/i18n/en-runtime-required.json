@@ -1270,6 +1270,11 @@
             }
           }
         }
+      },
+      "devUpdate": {
+        "noticeBody": "Your build {{value0}} is ready. Orca restarts to install it; background sessions keep running.",
+        "waitingTitle_one": "Waiting for 1 chat to finish",
+        "waitingTitle_other": "Waiting for {{count}} chats to finish"
       }
     },
     "hooks": {

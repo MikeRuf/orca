@@ -1483,7 +1483,8 @@
       "body": "Orca is still running in the system tray"
     },
     "activityWaiting": "Orca - activity waiting",
-    "activityWaitingSuffix": "activity waiting"
+    "activityWaitingSuffix": "activity waiting",
+    "installDevUpdate": "Install Pending Development Update ({{commit}})"
   },
   "worktreeJumpPalette": {
     "goToWebsite": "Go to {{value0}}",
@@ -20087,6 +20088,21 @@
       },
       "NewWorkspaceComposerFooter": {
         "create": "Create"
+      },
+      "devUpdate": {
+        "noticeTitle": "Development update ready",
+        "noticeBody": "Your build {{value0}} is ready. Orca restarts to install it; background sessions keep running.",
+        "install": "Install",
+        "installFailed": "Could not start the update: {{value0}}",
+        "menuLabel": "Install Pending Development Update ({{value0}})",
+        "unreadableTitle": "Could not check for busy chats",
+        "stillBusyTitle": "Chats still busy after 30 minutes",
+        "waitingTitle_one": "Waiting for 1 chat to finish",
+        "waitingTitle_other": "Waiting for {{count}} chats to finish",
+        "unreadableBody": "Not installed, so no chat is cut off. Install now if no chat on this app is working.",
+        "stillBusyBody": "Not installed yet. Still working: {{value0}}.",
+        "waitingBody": "They were asked to wrap up; Orca installs the update once they are idle. Working: {{value0}}.",
+        "installNow": "Install now"
       }
     },
     "i18n": {

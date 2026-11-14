@@ -15,6 +15,12 @@ export function createWebAppApi(): Partial<PreloadApi> {
       getMacosUpgradeSupport: () => Promise.resolve('unknown'),
       restartAsAdministrator: () =>
         Promise.reject(new Error('Administrator restart requires the Windows desktop app.')),
+      // Locally built installers exist only beside the Windows desktop app.
+      getPendingDevUpdate: () => Promise.resolve(null),
+      installPendingDevUpdate: () =>
+        Promise.reject(new Error('Development updates install only in the Windows desktop app.')),
+      onPendingDevUpdateChanged: () => () => undefined,
+      onPendingDevUpdateInstallRequested: () => () => undefined,
       getIdentity: () =>
         Promise.resolve({
           name: 'Orca',
