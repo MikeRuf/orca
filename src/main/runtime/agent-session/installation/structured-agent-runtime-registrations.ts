@@ -121,6 +121,9 @@ function createClaudeAdapter(
         resolveLaunchArgs: () => deps.resolveLaunchArgs('claude'),
         ...(deps.resolveClaudeCommand ? { resolveCommand: deps.resolveClaudeCommand } : {}),
         resolveAuthPolicy: deps.resolveClaudeAuthPolicy,
+        ...(deps.resolveProjectClaudeAccountId
+          ? { resolveProjectClaudeAccountId: deps.resolveProjectClaudeAccountId }
+          : {}),
         attachmentDirectory: agentSessionAttachmentStoreRoot(deps.stateDirectory),
         ...(deps.claudeCliFlags ? { cliFlags: deps.claudeCliFlags } : {})
       })

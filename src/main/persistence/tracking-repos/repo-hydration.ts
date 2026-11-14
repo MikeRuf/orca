@@ -10,6 +10,7 @@ import { normalizeOrcadRetainedMarker } from '../../../shared/orcad-retained-mar
 import { normalizeRepoWorkspaceCleanupPolicy } from '../../../shared/workspace-cleanup/workspace-cleanup-policy'
 import { sanitizeAgentWorkspaceTrustDecision } from '../../../shared/agent-launch/permissions/agent-workspace-trust-decision'
 import {
+  sanitizeClaudeAccountId,
   sanitizeForkSyncMode,
   sanitizeGitRemoteIdentity,
   sanitizeRepoProjectHostSetupMethod,
@@ -37,6 +38,7 @@ export function hydrateRepo(repo: Repo, gitUsernameCache: ReadonlyMap<string, st
     workspaceCleanupPolicy: rawWorkspaceCleanupPolicy,
     projectHostSetupMethod: rawProjectHostSetupMethod,
     forkSyncMode: rawForkSyncMode,
+    claudeAccountId: rawClaudeAccountId,
     agentWorkspaceTrust: rawAgentWorkspaceTrust,
     ghAccount: rawGhAccount,
     defaultJiraProject: rawDefaultJiraProject,
@@ -52,6 +54,7 @@ export function hydrateRepo(repo: Repo, gitUsernameCache: ReadonlyMap<string, st
   const workspaceCleanupPolicy = normalizeRepoWorkspaceCleanupPolicy(rawWorkspaceCleanupPolicy)
   const projectHostSetupMethod = sanitizeRepoProjectHostSetupMethod(rawProjectHostSetupMethod)
   const forkSyncMode = sanitizeForkSyncMode(rawForkSyncMode)
+  const claudeAccountId = sanitizeClaudeAccountId(rawClaudeAccountId)
   const agentWorkspaceTrust = sanitizeAgentWorkspaceTrustDecision(rawAgentWorkspaceTrust)
   const ghAccount = normalizeGhAccountBinding(rawGhAccount)
   const defaultJiraProject = normalizeJiraProjectReference(rawDefaultJiraProject)
@@ -79,6 +82,7 @@ export function hydrateRepo(repo: Repo, gitUsernameCache: ReadonlyMap<string, st
     ...(workspaceCleanupPolicy !== undefined ? { workspaceCleanupPolicy } : {}),
     ...(projectHostSetupMethod !== undefined ? { projectHostSetupMethod } : {}),
     ...(forkSyncMode !== undefined ? { forkSyncMode } : {}),
+    ...(claudeAccountId ? { claudeAccountId } : {}),
     ...(agentWorkspaceTrust !== undefined ? { agentWorkspaceTrust } : {}),
     ...(ghAccount ? { ghAccount } : {}),
     ...(defaultJiraProject !== undefined ? { defaultJiraProject } : {}),

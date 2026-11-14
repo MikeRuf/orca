@@ -59,6 +59,7 @@ export type NativeChatComposerActionsProps = {
   onExitGoalMode?: () => void
   /** Absent until the session has reported or the transcript can estimate. */
   contextUsage?: NativeChatContextUsageSummary | null
+  accountUsage?: React.ReactNode
   /** The chat's agent, whose permission modes the picker describes. */
   agent?: string
   /** A launch prompt: Attach and dictation are its only controls; launching is the panel's. */
@@ -92,6 +93,7 @@ export const NativeChatComposerActions = memo(function NativeChatComposerActions
   sessionOptionsPickerRequest,
   onExitGoalMode,
   contextUsage,
+  accountUsage,
   focusComposer,
   agent,
   launchPrompt = false
@@ -304,6 +306,7 @@ export const NativeChatComposerActions = memo(function NativeChatComposerActions
         />
       )
     },
+    ...(accountUsage ? [{ id: 'account', priority: 1, content: accountUsage }] : []),
     ...(contextUsage
       ? [
           {

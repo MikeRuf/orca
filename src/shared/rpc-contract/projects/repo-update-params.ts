@@ -81,6 +81,11 @@ export function createRepoUpdateSchema<T extends Readonly<Record<string, z.ZodTy
           return normalizeGhAccountBinding(value) ?? undefined
         }),
       forkSyncMode: z.enum(['ask', 'safe-auto', 'off']).optional(),
+      claudeAccountId: z
+        .string()
+        .regex(/^[a-zA-Z0-9_-]{1,512}$/)
+        .nullable()
+        .optional(),
       agentWorkspaceTrust: z.enum(['pre-trust', 'agent-asks']).optional(),
       externalWorktreeVisibility: z.enum(['hide', 'show']).nullable().optional(),
       externalWorktreeVisibilityPromptDismissedAt: z.number().finite().optional(),

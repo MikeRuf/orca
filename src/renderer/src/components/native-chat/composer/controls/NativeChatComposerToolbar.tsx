@@ -13,7 +13,7 @@ export type NativeChatComposerControl = {
   overflow?: (close: () => void) => ReactNode
 }
 
-type Layout = { compact: boolean; hidden: string[]; terminal: boolean }
+type Layout = { compact: boolean; tight: boolean; hidden: string[]; terminal: boolean }
 
 export function NativeChatComposerToolbar({
   left,
@@ -30,7 +30,12 @@ export function NativeChatComposerToolbar({
   const root = useRef<HTMLDivElement>(null)
   const primaryRef = useRef<HTMLDivElement>(null)
   const moreRef = useRef<HTMLDivElement>(null)
-  const [layout, setLayout] = useState<Layout>({ compact: false, hidden: [], terminal: false })
+  const [layout, setLayout] = useState<Layout>({
+    compact: false,
+    tight: false,
+    hidden: [],
+    terminal: false
+  })
   const [open, setOpen] = useState(false)
   const menuControls = useRef<string[]>([])
   const focusReturn = useNativeChatPickerFocusReturn(focusComposer, true)
@@ -65,18 +70,21 @@ export function NativeChatComposerToolbar({
         (leading.length > 0 || more ? groupGap : 0)
       )
     }
-    let next: Layout = { compact: false, hidden: [], terminal: false }
+    let next: Layout = { compact: false, tight: false, hidden: [], terminal: false }
     // Probe the same mounted controls before paint; hidden controls retain their natural measure.
-    for (const compact of open ? [true] : [false, true]) {
+    for (const stage of open ? ['tight'] : ['full', 'compact', 'tight']) {
+      const compact = stage !== 'full'
+      const tight = stage === 'tight'
       bar.dataset.compact = String(compact)
+      bar.dataset.tight = String(tight)
       for (const node of nodes) {
         widths.set(node.dataset.composerControl!, node.getBoundingClientRect().width)
       }
-      next = { compact, hidden: open ? [...menuControls.current] : [], terminal: false }
+      next = { compact, tight, hidden: open ? [...menuControls.current] : [], terminal: false }
       if (required(next.hidden) <= bar.clientWidth) {
         break
       }
-      if (compact) {
+      if (tight) {
         const active = nodes.find((node) => node.querySelector('[aria-expanded="true"]'))?.dataset
           .composerControl
         const candidates = controls
@@ -112,8 +120,10 @@ export function NativeChatComposerToolbar({
       menuControls.current = next.hidden
     }
     bar.dataset.compact = String(next.compact)
+    bar.dataset.tight = String(next.tight)
     setLayout((previous) =>
       previous.compact === next.compact &&
+      previous.tight === next.tight &&
       previous.hidden.join() === next.hidden.join() &&
       previous.terminal === next.terminal
         ? previous
@@ -181,6 +191,7 @@ export function NativeChatComposerToolbar({
     <div
       ref={root}
       data-compact={layout.compact}
+      data-tight={layout.tight}
       data-terminal={layout.terminal}
       className="group/toolbar flex w-full items-center justify-between gap-2 text-chat-foreground-faint data-[terminal=true]:flex-wrap data-[terminal=true]:justify-end data-[terminal=true]:[&_[data-composer-primary-label]]:hidden data-[terminal=true]:[&_[data-composer-primary-icon]]:block data-[terminal=false]:[&_[data-composer-primary-icon]]:hidden data-[compact=true]:[&_[data-composer-label]]:invisible data-[compact=true]:[&_[data-composer-label]]:absolute data-[compact=true]:[&_[data-composer-label]]:w-max data-[compact=true]:[&_[data-composer-compact-icon]]:block data-[compact=false]:[&_[data-composer-compact-icon]]:hidden"
     >

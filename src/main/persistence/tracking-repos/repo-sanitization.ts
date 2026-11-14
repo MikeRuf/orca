@@ -66,6 +66,11 @@ export function sanitizeRepoProjectHostSetupMethod(
   return value === 'imported-existing-folder' || value === 'cloned' ? value : undefined
 }
 
+/** Malformed ids clear the assignment so a launch falls back to the selected account. */
+export function sanitizeClaudeAccountId(value: unknown): string | null {
+  return typeof value === 'string' && /^[a-zA-Z0-9_-]{1,512}$/.test(value) ? value : null
+}
+
 export function sanitizeForkSyncMode(value: unknown): Repo['forkSyncMode'] | undefined {
   return value === 'ask' || value === 'safe-auto' || value === 'off' ? value : undefined
 }
@@ -83,6 +88,7 @@ export function sanitizeRepoUpdatesForPersistence<
       | 'worktreeBasePath'
       | 'projectHostSetupMethod'
       | 'forkSyncMode'
+      | 'claudeAccountId'
       | 'agentWorkspaceTrust'
       | 'defaultJiraProject'
       | 'customWorktreeVisibilitySources'
@@ -159,6 +165,9 @@ export function sanitizeRepoUpdatesForPersistence<
     } else {
       sanitized.projectHostSetupMethod = setupMethod
     }
+  }
+  if ('claudeAccountId' in sanitized) {
+    sanitized.claudeAccountId = sanitizeClaudeAccountId(sanitized.claudeAccountId)
   }
   if ('forkSyncMode' in sanitized) {
     const forkSyncMode = sanitizeForkSyncMode(sanitized.forkSyncMode)

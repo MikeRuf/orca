@@ -1,3 +1,4 @@
+import { claudeAccountLaunchPreparation } from './claude-account-launch-preparation'
 import { claudeAccountUsagePreparation } from './claude-account-usage-preparation'
 import { claudeProfileSelectionHomes } from './claude-profile-selection-homes'
 import { prepareClaudeProfileForLaunch } from './claude-profile-launch-preparation'
@@ -184,12 +185,22 @@ export class ClaudeProfileRouter {
     if (!profile) {
       return this.preparation()
     }
-    await prepareClaudeProfileForLaunch(
-      profile,
-      (value) => this.setUp(value),
-      this.args.refreshWaitMs
-    )
+    await this.readyForLaunch(profile)
     return this.preparation()
+  }
+
+  private readyForLaunch(profile: Parameters<typeof prepareClaudeProfileForLaunch>[0]) {
+    return prepareClaudeProfileForLaunch(profile, (v) => this.setUp(v), this.args.refreshWaitMs)
+  }
+
+  /** A project's account for one launch; the global selection and pointer stay untouched. */
+  async prepareAccountLaunch(accountId: string): Promise<ClaudeRuntimeAuthPreparation | null> {
+    if (!this.accountLogin(accountId)) {
+      return null
+    }
+    const profile = this.describe(accountId)
+    await this.readyForLaunch(profile)
+    return claudeAccountLaunchPreparation(accountId, profile.home)
   }
 
   accountHome(accountId: string): string {

@@ -22731,6 +22731,38 @@
         "cleaningUp": "Cleaning up…",
         "skipCleanup": "Skip cleanup and insert as heard"
       }
+    },
+    "claude-accounts": {
+      "fiveHour": "5-hour",
+      "week": "Week",
+      "fiveHourShort": "5h",
+      "thisChat": "This chat",
+      "shareEstimate": "Chat shares are estimates from token counts.",
+      "chipLabel": "Claude account {{name}}, usage details",
+      "projectTitle": "Claude Account",
+      "projectDescription": "Run this project’s Claude chats on a specific account.",
+      "projectLongDescription": "New chats start on this account, and resumed chats move to it. If it is signed out, chats use the default account.",
+      "useDefault": "Use default account",
+      "removedAccount": "Removed account",
+      "signedOutOption": "{{email}} (signed out)",
+      "projects": "Projects",
+      "noProjects": "None assigned",
+      "chats": "Chats",
+      "otherUse": "Other use",
+      "toggleDetails": "Toggle account details",
+      "setDefault": "Use {{name}} for projects with no account",
+      "signIn": "Sign in",
+      "oneChat": "1 chat",
+      "chatCount": "{{count}} chats",
+      "updatedAgo": "Updated {{minutes}} min ago",
+      "refresh": "Refresh usage",
+      "addAccount": "Add account",
+      "manageAccounts": "Manage accounts",
+      "setDefaultFailed": "Could not change the default.",
+      "systemDefault": "System default",
+      "untitledChat": "Untitled chat",
+      "projectSelectLabelOnHost": "Account on {{host}}",
+      "titleOnHost": "Claude accounts on {{host}}"
     }
   },
   "dashboardPopout": {
