@@ -18,7 +18,8 @@ import {
 import type { AgentSessionAttachmentProblem } from '../../../../shared/agent-session/failures/agent-session-failure-details'
 import {
   ClaudeDispatchContentError,
-  readClaudeImage
+  readSendableImage,
+  type SendableImage
 } from '../../../claude/structured/claude-structured-dispatch-content'
 
 type ImageLimits = { image: number; total: number }
@@ -83,9 +84,9 @@ async function readImage(
   if (!mimeType) {
     throw attachmentError('Pi image file type is unsupported', { reason: 'unsupportedType' })
   }
-  let bytes: Buffer
+  let image: SendableImage
   try {
-    bytes = await readClaudeImage(block.path, maxBytes)
+    image = await readSendableImage(block.path, maxBytes)
   } catch (error) {
     if (error instanceof ClaudeDispatchContentError) {
       throw new PiRpcPromptError('Pi image could not be read', error.failure)
@@ -95,8 +96,12 @@ async function readImage(
       agentSessionFailureFact('attachmentUnreadable')
     )
   }
+  const { bytes, shrunkMediaType } = image
   if (bytes.byteLength === 0) {
     throw attachmentError('Pi image is empty', { reason: 'empty' })
+  }
+  if (shrunkMediaType) {
+    return { bytes, mimeType: shrunkMediaType }
   }
   if (detectImageFileSignature(bytes)?.mimeType !== mimeType) {
     throw attachmentError('Pi image file did not contain a supported image', {

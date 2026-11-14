@@ -20,6 +20,7 @@ import {
 } from '../../../shared/agent-session/agent-session-attachments'
 import { agentInlineImageMimeType } from '../../../shared/agent-inline-image-types'
 import { claudeRecord } from './journal/claude-structured-item-translation'
+import { oversizeImageShrinker, type ShrunkImage } from './oversize-image-shrinker'
 
 export class ClaudeDispatchContentError extends Error {
   readonly failure: SubmissionRejectionFact
@@ -64,6 +65,13 @@ type ImageBudget = {
   localBytes: number
 }
 
+function imageTooLarge(limit: number): Error {
+  return attachmentError(`Claude image must be no larger than ${limit} bytes`, {
+    reason: 'tooLarge',
+    limit
+  })
+}
+
 export async function readClaudeImage(
   path: string,
   maxBytes = AGENT_SESSION_ATTACHMENT_MAX_BYTES,
@@ -71,17 +79,12 @@ export async function readClaudeImage(
 ): Promise<Buffer> {
   const file = await openImpl(path, 'r')
   try {
-    const tooLarge = (): Error =>
-      attachmentError(`Claude image must be no larger than ${maxBytes} bytes`, {
-        reason: 'tooLarge',
-        limit: maxBytes
-      })
     const info = await file.stat()
     if (!info.isFile()) {
       throw attachmentError('Claude image must be a file', { reason: 'notAFile' })
     }
     if (info.size > maxBytes) {
-      throw tooLarge()
+      throw imageTooLarge(maxBytes)
     }
     const buffer = Buffer.allocUnsafe(info.size + 1)
     let bytesRead = 0
@@ -95,7 +98,7 @@ export async function readClaudeImage(
     // A file can grow after EOF; verify the open descriptor still matches the bytes read.
     const finalInfo = await file.stat()
     if (bytesRead > maxBytes) {
-      throw tooLarge()
+      throw imageTooLarge(maxBytes)
     }
     if (finalInfo.size !== bytesRead) {
       throw new Error('Claude image changed while it was read')
@@ -107,6 +110,31 @@ export async function readClaudeImage(
   } finally {
     await file.close()
   }
+}
+
+export type SendableImage = { bytes: Buffer; shrunkMediaType?: ShrunkImage['mediaType'] }
+
+/**
+ * Only images over the receiver's cap are shrunk (older Pi); Claude and newer Pi shrink images
+ * themselves, so a second lossy pass here would only cost quality.
+ */
+export async function readSendableImage(
+  path: string,
+  receiverMaxBytes = AGENT_SESSION_ATTACHMENT_MAX_BYTES
+): Promise<SendableImage> {
+  const shrink = oversizeImageShrinker()
+  if (!shrink) {
+    return { bytes: await readClaudeImage(path, receiverMaxBytes) }
+  }
+  const bytes = await readClaudeImage(path, AGENT_SESSION_ATTACHMENT_MAX_BYTES)
+  if (bytes.byteLength <= receiverMaxBytes) {
+    return { bytes }
+  }
+  const shrunk = shrink(bytes, receiverMaxBytes)
+  if (!shrunk) {
+    throw imageTooLarge(receiverMaxBytes)
+  }
+  return { bytes: shrunk.bytes, shrunkMediaType: shrunk.mediaType }
 }
 
 async function imageContent(
@@ -129,7 +157,7 @@ async function imageContent(
   if (!block.path) {
     throw attachmentError('image reference has neither a path nor a URL', { reason: 'noSource' })
   }
-  const data = await readClaudeImage(block.path)
+  const { bytes: data, shrunkMediaType } = await readSendableImage(block.path)
   budget.localBytes += data.byteLength
   if (budget.localBytes > AGENT_SESSION_MESSAGE_IMAGE_MAX_TOTAL_BYTES) {
     throw attachmentError(
@@ -150,7 +178,7 @@ async function imageContent(
     type: 'image',
     source: {
       type: 'base64',
-      media_type: mediaType,
+      media_type: shrunkMediaType ?? mediaType,
       data: data.toString('base64')
     }
   }

@@ -1,3 +1,5 @@
+import { installOversizeImageShrinker } from './claude/structured/oversize-image-shrinker'
+import { shrinkImageWithNativeImage } from './window/native-image-shrink'
 import { app, clipboard, dialog, type BrowserWindow } from 'electron'
 import { isRoutedOrcaDeepLink } from './startup/open-routing/orca-deep-link-url'
 import { createMacAppActivationHandler } from './window/activation/macos-app-activation'
@@ -174,6 +176,7 @@ if (preflightReady) {
   // The first renderer pulls on mount; nothing listens this early.
   state.osOpenedDocuments.capture(process.argv)
   registerMainProcessIpcHandlers()
+  installOversizeImageShrinker(shrinkImageWithNativeImage)
   installMainProcessQuitHandlers()
   void app.whenReady().then(async () => {
     try {
