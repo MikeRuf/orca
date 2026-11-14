@@ -80,6 +80,8 @@ export const AGENT_SESSION_CONVERSATION_OUTLINE_RUNTIME_CAPABILITY =
   'agent-session.conversation-outline.v1' as const
 export const AGENT_SESSION_CONTINUATION_CONTEXT_RUNTIME_CAPABILITY =
   'agent-session.continuation-context.v1' as const
+// Probe before showing a chat's process list; older hosts have neither method.
+export const AGENT_SESSION_PROCESSES_RUNTIME_CAPABILITY = 'agent-session.processes.v1' as const
 // Probe additive item reads before offering full output; older hosts retain only heads.
 export const AGENT_SESSION_ITEM_DETAIL_RUNTIME_CAPABILITY = 'agent-session.item-detail.v1' as const
 // Probe before asking whether a send is recorded; older hosts answer only through the history pages a client loaded.
@@ -169,6 +171,7 @@ export const AGENT_SESSION_RUNTIME_CAPABILITIES = /* @__PURE__ */ (() =>
     AGENT_SESSION_PHONE_REWIND_RUNTIME_CAPABILITY,
     AGENT_SESSION_CONVERSATION_OUTLINE_RUNTIME_CAPABILITY,
     AGENT_SESSION_CONTINUATION_CONTEXT_RUNTIME_CAPABILITY,
+    AGENT_SESSION_PROCESSES_RUNTIME_CAPABILITY,
     AGENT_SESSION_ITEM_DETAIL_RUNTIME_CAPABILITY,
     AGENT_SESSION_SEND_RECORDED_RUNTIME_CAPABILITY,
     AGENT_SESSION_BACKGROUND_TASK_STOP_CAPABILITY,

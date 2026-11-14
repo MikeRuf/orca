@@ -19812,7 +19812,20 @@
       "splitRight": "向右拆分",
       "splitDown": "向下拆分",
       "newRowsAnnouncement": "你离开期间有新消息",
-      "newRowsMarker": "新消息"
+      "newRowsMarker": "新消息",
+      "processes": {
+        "label": "此聊天启动的进程",
+        "title": "进程",
+        "agent": "代理",
+        "stop": "停止 {{name}}",
+        "stopped": "已发送停止",
+        "stopRefused": "无法停止",
+        "loadFailed": "无法读取进程列表。",
+        "unsupported": "聊天在 Linux 主机上运行时可查看进程列表。",
+        "resize": "拖动以调整大小",
+        "stopButton": "停止",
+        "agentNote": "代理进程负责运行聊天本身，因此没有停止按钮。关闭聊天即可结束它们。"
+      }
     },
     "tab": {
       "bar": {

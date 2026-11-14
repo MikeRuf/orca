@@ -1,6 +1,7 @@
 import '../../../../../shared/agent-session/agent-session-attention-capabilities'
 import {
   AGENT_SESSION_CONTINUATION_CONTEXT_RUNTIME_CAPABILITY,
+  AGENT_SESSION_PROCESSES_RUNTIME_CAPABILITY,
   AGENT_SESSION_QUESTION_ANSWERS_RUNTIME_CAPABILITY,
   AGENT_SESSION_ITEM_DETAIL_RUNTIME_CAPABILITY
 } from '../../../../../shared/agent-session/agent-session-runtime-capabilities'
@@ -60,6 +61,12 @@ export async function structuredAgentSessionHostCapabilityState(
   } catch {
     return 'unknown'
   }
+}
+
+export function supportsStructuredAgentSessionProcesses(
+  target: RuntimeClientTarget
+): Promise<boolean> {
+  return structuredAgentSessionHostSupports(target, AGENT_SESSION_PROCESSES_RUNTIME_CAPABILITY)
 }
 
 export function supportsStructuredAgentSessionContinuationContext(

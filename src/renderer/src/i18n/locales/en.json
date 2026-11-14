@@ -21600,6 +21600,19 @@
         "questionNotSentDetail": "Your question is still in this chat. Send /btw again to retry.",
         "questionUnconfirmed": "{{agent}} couldn't confirm the side chat got your question",
         "questionUnconfirmedDetail": "Check the side chat before asking again. Your question is still in this chat."
+      },
+      "processes": {
+        "label": "Processes this chat started",
+        "title": "Processes",
+        "agent": "agent",
+        "stop": "Stop {{name}}",
+        "stopped": "Stop sent",
+        "stopRefused": "Could not stop it",
+        "loadFailed": "Could not read the process list.",
+        "unsupported": "Process lists are available when the chat runs on a Linux host.",
+        "resize": "Drag to resize",
+        "stopButton": "Stop",
+        "agentNote": "Agent processes run the chat itself, so they have no Stop button. Closing the chat ends them."
       }
     },
     "tab": {

@@ -19956,7 +19956,20 @@
         "many_other": "已建立 {{count}} 個 PR"
       },
       "splitRight": "向右分割",
-      "splitDown": "向下分割"
+      "splitDown": "向下分割",
+      "processes": {
+        "label": "此聊天啟動的程序",
+        "title": "程序",
+        "agent": "代理",
+        "stop": "停止 {{name}}",
+        "stopped": "已送出停止",
+        "stopRefused": "無法停止",
+        "loadFailed": "無法讀取程序清單。",
+        "unsupported": "聊天在 Linux 主機上執行時可查看程序清單。",
+        "resize": "拖曳以調整大小",
+        "stopButton": "停止",
+        "agentNote": "代理程序負責執行聊天本身，因此沒有停止按鈕。關閉聊天即可結束它們。"
+      }
     },
     "tab": {
       "bar": {

@@ -19553,7 +19553,20 @@
         "many_other": "풀 리퀘스트 {{count}}개 열림"
       },
       "splitRight": "오른쪽으로 분할",
-      "splitDown": "아래로 분할"
+      "splitDown": "아래로 분할",
+      "processes": {
+        "label": "이 채팅이 시작한 프로세스",
+        "title": "프로세스",
+        "agent": "에이전트",
+        "stop": "{{name}} 중지",
+        "stopped": "중지를 보냈습니다",
+        "stopRefused": "중지할 수 없습니다",
+        "loadFailed": "프로세스 목록을 읽을 수 없습니다.",
+        "unsupported": "프로세스 목록은 Linux 호스트에서 실행되는 채팅에서 사용할 수 있습니다.",
+        "resize": "드래그하여 크기 조정",
+        "stopButton": "중지",
+        "agentNote": "에이전트 프로세스는 채팅 자체를 실행하므로 중지 버튼이 없습니다. 채팅을 닫으면 종료됩니다."
+      }
     },
     "tab": {
       "bar": {

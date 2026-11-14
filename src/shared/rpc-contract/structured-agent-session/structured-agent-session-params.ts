@@ -325,6 +325,12 @@ export const UnsubscribeParams = z
 /** Read-only owner classification retained for restart safety; mutation handoff is separate. */
 export const HandoffStatusParams = z.object({ sessionId: SessionId }).strict()
 
+export const ProcessesParams = z.object({ sessionId: SessionId }).strict()
+
+export const StopProcessParams = z
+  .object({ sessionId: SessionId, pid: z.number().int().positive() })
+  .strict()
+
 export const RewindParams = z
   .object({
     envelope: MutationEnvelope,

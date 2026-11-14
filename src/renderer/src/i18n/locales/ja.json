@@ -19556,7 +19556,20 @@
         "many_other": "{{count}} 件のプルリクエストを開きました"
       },
       "splitRight": "右に分割",
-      "splitDown": "下に分割"
+      "splitDown": "下に分割",
+      "processes": {
+        "label": "このチャットが起動したプロセス",
+        "title": "プロセス",
+        "agent": "エージェント",
+        "stop": "{{name}} を停止",
+        "stopped": "停止を送信しました",
+        "stopRefused": "停止できませんでした",
+        "loadFailed": "プロセス一覧を読み取れませんでした。",
+        "unsupported": "プロセス一覧は Linux ホストで動作するチャットで利用できます。",
+        "resize": "ドラッグしてサイズを変更",
+        "stopButton": "停止",
+        "agentNote": "エージェントのプロセスはチャット自体を動かしているため、停止ボタンはありません。チャットを閉じると終了します。"
+      }
     },
     "tab": {
       "bar": {
