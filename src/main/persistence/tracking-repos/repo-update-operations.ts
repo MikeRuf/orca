@@ -95,6 +95,7 @@ export class RepoUpdatePersistenceOperations {
         | 'displayName'
         | 'badgeColor'
         | 'repoIcon'
+        | 'sidebarStyle'
         | 'upstream'
         | 'gitRemoteIdentity'
         | 'hookSettings'

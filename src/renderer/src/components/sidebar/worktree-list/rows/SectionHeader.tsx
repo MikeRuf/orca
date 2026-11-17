@@ -26,10 +26,6 @@ import { getSidebarHeaderVisual } from './header-visuals'
 import { resolveProjectGroupHeaderColor } from './project-header-color'
 import { ProjectHeaderActions } from './ProjectHeaderActions'
 import {
-  getProjectGroupHeaderPaddingLeft,
-  WORKTREE_SECTION_HEADER_PADDING_LEFT
-} from './indentation'
-import {
   FolderPathStatusIndicator,
   isFolderWorkspaceCreateDisabled
 } from './FolderPathStatusIndicator'
@@ -48,6 +44,7 @@ import {
   toggleSectionHeaderCollapse
 } from './header-event-guards'
 import { getWorktreeOptionId } from './option-dom'
+import { getProjectHeaderRowProps } from '../../project-header-row-props'
 import type { SectionHeaderRowContext } from './section-header-row-context'
 import type { Translate } from '@/i18n/use-translate'
 
@@ -246,13 +243,10 @@ export function renderWorktreeSectionHeaderRow(
               'rounded-md bg-worktree-sidebar-accent ring-1 ring-worktree-sidebar-ring/40',
             row.repo && 'overflow-hidden'
           )}
-          style={{
+          {...getProjectHeaderRowProps(isRepoHeader ? row.repo : undefined, {
             // Why: non-project headers like "All" are flat-list labels; don't reserve project hierarchy indent.
-            paddingLeft:
-              isRepoHeader || isProjectGroupHeader
-                ? getProjectGroupHeaderPaddingLeft(row.projectGroupDepth ?? 0)
-                : WORKTREE_SECTION_HEADER_PADDING_LEFT
-          }}
+            indentDepth: isRepoHeader || isProjectGroupHeader ? (row.projectGroupDepth ?? 0) : null
+          })}
           onDragOver={
             isPinnedHeader
               ? ctx.onWorkspacePinDragOver
