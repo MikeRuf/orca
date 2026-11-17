@@ -1,5 +1,5 @@
 import { nativeImage, type NativeImage } from 'electron'
-import type { ShrunkImage } from '../claude/structured/oversize-image-shrinker'
+import type { ShrunkImage } from '../claude/structured/dispatch/oversize-image-shrinker'
 import { readRasterImageDimensions } from '../../shared/file-preview/raster-image-dimensions'
 import { applyExifOrientation, readJpegExifOrientation } from './jpeg-exif-orientation'
 
