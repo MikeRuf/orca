@@ -10,6 +10,7 @@ import {
 import type { ClaudeRateLimitAccountsState } from '../../shared/managed-account-types'
 import type { ProviderRateLimits, RateLimitState } from '../../shared/rate-limit-types'
 import { resolveSessionFilePath } from '../native-chat/session-file-resolver'
+import { chatClaudeAccountId } from './chat-account/claude-chat-account-overrides'
 import { readClaudeChatWindowTokens, type ClaudeChatWindows } from './claude-chat-transcript-tokens'
 
 const SESSION_WINDOW_MS = 5 * 60 * 60 * 1000
@@ -94,6 +95,7 @@ async function buildChat(
     title: record.conversationName ?? record.lastTurn?.prompt ?? '',
     working: record.lastTurn?.state === 'open',
     accountId,
+    chosenAccountId: chatClaudeAccountId(record.sessionId),
     ...tokens
   }
 }

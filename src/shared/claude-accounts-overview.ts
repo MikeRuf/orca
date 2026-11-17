@@ -21,6 +21,8 @@ export type ClaudeOverviewChat = {
   working: boolean
   /** Null until a launch recorded its account. */
   accountId: string | null
+  /** The account this chat was switched to; its next start runs there. */
+  chosenAccountId?: string | null
   sessionTokens: number
   weeklyTokens: number
 }

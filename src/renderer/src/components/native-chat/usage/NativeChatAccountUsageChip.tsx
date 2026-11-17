@@ -91,11 +91,13 @@ function NativeChatAccountUsageCard({
 export function NativeChatAccountUsageChip({
   account,
   chatShare,
-  busiestChats
+  busiestChats,
+  switcher
 }: {
   account: ClaudeAccountUsage
   chatShare: ClaudeAccountUsageShare | null
   busiestChats: ClaudeAccountChatUsage[]
+  switcher?: React.ReactNode
 }): React.JSX.Element {
   const display = normalizeUsagePercentageDisplay(useAppStore((s) => s.usagePercentageDisplay))
   const [open, setOpen] = useState(false)
@@ -166,6 +168,7 @@ export function NativeChatAccountUsageChip({
           chatShare={chatShare}
           busiestChats={busiestChats}
         />
+        {switcher}
       </PopoverContent>
     </Popover>
   )
