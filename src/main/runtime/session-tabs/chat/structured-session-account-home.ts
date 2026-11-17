@@ -4,7 +4,10 @@ import { getProfileUserDataPath } from '../../../orca-profiles/profile-storage-p
 import { resolveHostStructuredAgentLaunchEnvironment } from '../../agent-session/launch/structured-agent-launch-support'
 import { agentWorkspaceTrustDecisionForWorkspace } from '../../../agent-launch/trust/agent-workspace-trust-spawn'
 import { OrcaRuntimeWithStructuredSessionCliWriterHost } from './structured-session-cli-writer-host'
-import type { AgentSessionAccountHome } from '../../../../shared/agent-session/lifecycle/accounts/agent-session-account-home'
+import {
+  agentSessionAccountHome,
+  type AgentSessionAccountHome
+} from '../../../../shared/agent-session/lifecycle/accounts/agent-session-account-home'
 import type { AgentSessionRecord } from '../../../../shared/agent-session/lifecycle/agent-session-record'
 import { CLAUDE_STRUCTURED_AGENT } from '../../../claude/structured/claude-structured-agent-definition'
 import { chosenClaudeAccountId } from '../../../claude-accounts/chat-account/claude-chat-account-overrides'
