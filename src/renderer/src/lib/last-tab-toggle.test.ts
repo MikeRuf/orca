@@ -34,7 +34,7 @@ describe('createLastTabTracker', () => {
 
 describe('the Alt+Q binding', () => {
   it('matches the key event Windows sends for Alt+Q', async () => {
-    const { keybindingMatchesAction } = await import('../../../shared/keybindings')
+    const { keybindingMatchesAction } = await import('../../../shared/keybindings/matching')
     const altQ = {
       key: 'q',
       code: 'KeyQ',
