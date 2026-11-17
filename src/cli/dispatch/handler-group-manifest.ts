@@ -217,6 +217,11 @@ export const HANDLER_GROUPS: readonly HandlerGroup[] = [
     load: async () => (await import('../agents/agent-launch.js')).AGENT_LAUNCH_HANDLERS
   },
   {
+    name: 'agent-session-commands',
+    keys: ['agent notify-busy', 'agent close'],
+    load: async () => (await import('../agents/agent-sessions.js')).AGENT_SESSION_HANDLERS
+  },
+  {
     name: 'installed-agents',
     keys: ['agent installed'],
     load: async () => (await import('../agents/installed-agents.js')).INSTALLED_AGENT_HANDLERS
