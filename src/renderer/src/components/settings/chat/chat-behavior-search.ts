@@ -17,7 +17,7 @@ export const getChatBehaviorEntriesByKey = createLocalizedCatalog(() => ({
     ),
     description: translate(
       'auto.components.settings.ExperimentalPane.nativeChat.resumeCopy',
-      'When Orca quits or installs an update, chats that were working are automatically resumed when Orca is reopened.'
+      'When Orca quits or installs an update, or a server it uses restarts, chats that were working are automatically resumed.'
     ),
     keywords: [
       translate('components.settings.nativeChat.resumeSearchUpdate', 'update'),
