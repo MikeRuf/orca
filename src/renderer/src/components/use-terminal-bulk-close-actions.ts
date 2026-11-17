@@ -1,4 +1,5 @@
 import { useCallback } from 'react'
+import { hasUnsentBrowserNotes } from '@/store/slices/browser/annotations/browser-page-annotation'
 import { useAppStore } from '../store'
 import { editorTabsNeedingSavePrompt } from '@/store/slices/editor/tabs/editor-tab-close-target'
 import { isEditorTabContentType } from '@/store/slices/editor/tabs/editor-tab-content-type'
@@ -7,7 +8,7 @@ import {
   hasEditorFrameFlush,
   runAfterEditorFramesFlush
 } from './editor/save/flush/editor-pending-flush'
-import { closeTerminalTab } from './terminal/terminal-tab-actions'
+import { closeTerminalTab } from './terminal/tab-lifecycle/terminal-tab-actions'
 import { isWebRuntimeSessionActive } from '@/runtime/web-session-tabs-sync/identity/web-runtime-session-environment'
 import { closeBrowserWorkspaceTabOnHosts } from '@/runtime/browser/closing/browser-workspace-tab-close'
 import { destroyWorkspaceWebviews } from '../store/slices/browser/cleanup/browser-webview-cleanup'
@@ -46,7 +47,12 @@ export function useTerminalBulkCloseActions(
         .map((tab) => tab.id)
       for (const id of tabIds) {
         const unifiedTab = byId.get(id) ?? byEntity.get(id)
-        if (unifiedTab?.isPinned) {
+        // Bulk closes keep pinned tabs and tabs holding unsent browser notes open.
+        if (
+          unifiedTab?.isPinned ||
+          (unifiedTab?.contentType === 'browser' &&
+            hasUnsentBrowserNotes(state, unifiedTab.entityId))
+        ) {
           continue
         }
         if (unifiedTab && isEditorTabContentType(unifiedTab.contentType)) {

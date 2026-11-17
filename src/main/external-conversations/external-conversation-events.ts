@@ -1,4 +1,4 @@
-import type { AgentPaneChange } from '../agent-hooks/agent-transition-detector'
+import type { AgentPaneChange } from '../agent-hooks/observations/agent-transition-detector'
 import { agentMainAgentVerdict } from '../../shared/agent-status/lifecycle/agent-main-agent-verdict'
 import type { PendingPrompt } from '../../shared/agent-status/contracts/agent-pending-prompt'
 import type { AgentStatusIpcPayload } from '../../shared/agent-status/contracts/agent-status-ipc-payload'
@@ -7,7 +7,7 @@ import type { AgentTurnOutcome } from '../../shared/agent-status/lifecycle/agent
 import type {
   ConnectorAgent,
   ExternalConversationLink
-} from '../../shared/external-conversation-link'
+} from '../../shared/connectors/external-conversation-link'
 import { judgeIdleAgentTurn } from '../runtime/agent-state-rules/agent-turn-idle-verdict'
 import {
   TerminalAgentTurnNews,

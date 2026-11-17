@@ -4,14 +4,18 @@ import type { Translate } from '@/i18n/use-translate'
 import type { StructuredAgentSessionLaunchLifecycle } from '@/lib/agent-session/launch/structured-agent-session-launch-registry'
 import { agentSessionRefusalCauseParts } from '../../../../../../shared/agent-session/failures/agent-session-refusal-notice'
 import type { StructuredLaunchFailure } from '@/lib/agent-session/launch/structured-agent-session-launch-failure'
+import {
+  wslHostChatOfferAction,
+  wslHostChatOfferText,
+  type WslHostChatOffer
+} from '@/lib/agent-session/launch/structured-chat-wsl-host-offer'
 import type { AgentSessionRefusalReference } from '../../../../../../shared/agent-session/failures/agent-session-wire-refusals'
-import { joinSentences } from '../../../../../../shared/sentence-joining'
+import { joinSentences } from '../../../../../../shared/text/sentence-joining'
 import { agentSessionWriteNoticeText } from './agent-session-write-notice-text'
 import {
-  isNativeChatSignInFailureKind,
-  nativeChatSignInLabel,
-  type NativeChatSignIn
-} from '../../host-access/native-chat-sign-in'
+  nativeChatSetupAction,
+  type NativeChatHostSetup
+} from '../../host-access/native-chat-host-setup'
 import type {
   NativeChatComposerNotice,
   NativeChatComposerNoticeContent
@@ -23,14 +27,19 @@ function nativeChatLaunchNotice(
     failure = null,
     agentLabel,
     onRetry,
-    signIn = null
+    setup = null,
+    wslHostOffer = null,
+    wslHostOfferSettingUp = false
   }: {
     lifecycle: StructuredAgentSessionLaunchLifecycle | null
     failure?: StructuredLaunchFailure | null
     agentLabel?: string
     onRetry: () => void
-    /** Replace Retry with sign-in until authentication succeeds. */
-    signIn?: NativeChatSignIn | null
+    /** Replace Retry with the host setup step (sign in, install) that fixes the failure. */
+    setup?: NativeChatHostSetup | null
+    /** A WSL folder's chat runs on its distro's host; Retry here would only refuse again. */
+    wslHostOffer?: WslHostChatOffer | null
+    wslHostOfferSettingUp?: boolean
   },
   t: Translate = translate
 ): NativeChatComposerNotice | null {
@@ -44,6 +53,14 @@ function nativeChatLaunchNotice(
           'auto.components.native.chat.NativeChatLaunchRetry.unknown',
           'Chat connection could not be confirmed.'
         )
+  if (lifecycle === 'failed' && wslHostOffer) {
+    return {
+      key: 'launch',
+      kind: 'error',
+      text: joinSentences([message, wslHostChatOfferText(t)]),
+      action: wslHostChatOfferAction(wslHostOffer, t, wslHostOfferSettingUp)
+    }
+  }
   const cause = failure
     ? (failure.causeText ??
       agentSessionWriteNoticeText(
@@ -58,7 +75,8 @@ function nativeChatLaunchNotice(
     details?.reason,
     agentLabel,
     details && 'account' in details ? details.account : undefined,
-    t
+    t,
+    setup?.host
   )
   return {
     content: signInContent,
@@ -66,19 +84,13 @@ function nativeChatLaunchNotice(
     kind: 'error',
     text: cause ? (saysStartFailure ? cause : joinSentences([message, cause])) : message,
     action:
-      signIn && isNativeChatSignInFailureKind(failure?.details?.reason, signIn)
-        ? {
-            label: nativeChatSignInLabel(signIn, t),
-            primary: true,
-            onClick: signIn.signIn,
-            disabled: signIn.signingIn
-          }
-        : signInContent
-          ? undefined
-          : {
-              label: t('auto.components.native.chat.NativeChatLaunchRetry.retry', 'Retry'),
-              onClick: onRetry
-            }
+      nativeChatSetupAction(failure?.details?.reason, setup, t) ??
+      (signInContent
+        ? undefined
+        : {
+            label: t('auto.components.native.chat.NativeChatLaunchRetry.retry', 'Retry'),
+            onClick: onRetry
+          })
   }
 }
 
@@ -89,9 +101,11 @@ export function structuredSessionNotices(
     sessionError,
     readRefusal,
     composerError,
-    signIn = null,
+    setup = null,
     availability = null,
-    hostPermission = null
+    hostPermission = null,
+    wslHostOffer = null,
+    wslHostOfferSettingUp = false
   }: {
     launch: {
       lifecycle: StructuredAgentSessionLaunchLifecycle | null
@@ -102,9 +116,12 @@ export function structuredSessionNotices(
     sessionError: string | null
     readRefusal?: AgentSessionRefusalReference
     composerError: (NativeChatComposerNoticeContent & { onDismiss: () => void }) | null
-    signIn?: NativeChatSignIn | null
+    setup?: NativeChatHostSetup | null
     availability?: NativeChatComposerNotice | null
     hostPermission?: NativeChatComposerNotice | null
+    wslHostOffer?: WslHostChatOffer | null
+    /** This distro's host is being set up, so its button shows busy. */
+    wslHostOfferSettingUp?: boolean
   },
   t?: Translate
 ): NativeChatComposerNotice[] {
@@ -115,7 +132,9 @@ export function structuredSessionNotices(
       failure: launch.failure,
       agentLabel,
       onRetry: launch.retry,
-      signIn
+      setup,
+      wslHostOffer,
+      wslHostOfferSettingUp
     },
     t
   )

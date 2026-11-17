@@ -3,7 +3,7 @@ import type React from 'react'
 import { Bot, ChevronRight, FileJson, Play } from 'lucide-react'
 import { Collapsible, CollapsibleTrigger, CollapsibleContent } from '@/components/ui/collapsible'
 import { Tooltip, TooltipTrigger, TooltipContent } from '@/components/ui/tooltip'
-import { cn } from '@/lib/utils'
+import { cn } from '@/lib/class-names'
 import {
   SubagentExpansionProvider,
   subagentTranscriptKey,
@@ -18,7 +18,7 @@ import {
   type AiVaultSession,
   type AiVaultSubagentRunStatus
 } from '../../../../../../shared/ai-vault/contracts/ai-vault-types'
-import { LOCAL_EXECUTION_HOST_ID } from '../../../../../../shared/execution-host'
+import { LOCAL_EXECUTION_HOST_ID } from '../../../../../../shared/execution-host/execution-host'
 import { canOpenAiVaultSessionLogInOrca } from '../session-actions/ai-vault-session-path-actions'
 import { openAiVaultSessionLogInOrca } from '../session-actions/ai-vault-session-log-open'
 import { useTranslate } from '@/i18n/use-translate'

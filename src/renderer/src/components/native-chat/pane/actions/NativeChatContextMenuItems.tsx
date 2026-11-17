@@ -1,6 +1,6 @@
 import { Copy, ExternalLink, FileText, Globe, Quote, Search, Undo2 } from 'lucide-react'
 import { DropdownMenuItem, DropdownMenuShortcut } from '@/components/ui/dropdown-menu'
-import { formatOptionalPrimaryShortcutLabel } from '@/hooks/useShortcutLabel'
+import { formatOptionalPrimaryShortcutLabel } from '@/lib/keyboard/useShortcutLabel'
 import { useAppStore } from '@/store'
 import { useConfirmationDialog } from '@/components/confirmation-dialog-context'
 import type { LinkAction } from '@/components/link-actions/link-action-request'
@@ -9,7 +9,7 @@ import type { NativeChatContextMenuTarget } from './native-chat-context-menu-tar
 import type { NativeChatRewindSurface } from '../../messages/actions/use-native-chat-rewind-host'
 
 function copyText(text: string): void {
-  // Best-effort, as the hover copy buttons are: the clipboard can reject when unfocused.
+  // Best-effort, as the row Copy buttons are: the clipboard can reject when unfocused.
   window.api.ui.writeClipboardText(text).catch(() => {})
 }
 
