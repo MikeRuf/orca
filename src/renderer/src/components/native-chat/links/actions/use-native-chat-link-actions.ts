@@ -1,4 +1,7 @@
 import { useCallback, useState, type RefObject } from 'react'
+import { toast } from 'sonner'
+import { translate } from '@/i18n/i18n'
+import { activateStructuredAgentSessionTabBySessionId } from '@/lib/agent-session/structured-agent-session-link-activation'
 import {
   closeLinkActionRequest,
   type LinkActionRequest
@@ -46,6 +49,17 @@ export function useNativeChatLinkActions(
         return
       }
       const route = routeNativeChatHref(href)
+      if (route.kind === 'chat') {
+        if (!activateStructuredAgentSessionTabBySessionId(route.sessionId)) {
+          toast.error(
+            translate(
+              'components.native-chat.chatLinks.notOpen',
+              "That chat isn't open in any workspace"
+            )
+          )
+        }
+        return
+      }
       if (route.kind === 'file') {
         openFileLink?.(event, href)
         return
