@@ -5,7 +5,7 @@ import {
   type ClaudeOverviewAccount,
   type ClaudeOverviewChat
 } from '../../../../shared/claude-accounts-overview'
-import type { Repo } from '../../../../shared/repo-types'
+import type { Repo } from '../../../../shared/repository/repo-types'
 import { getRepoIdFromWorktreeId } from '../../../../shared/worktree/id'
 import { translate } from '@/i18n/i18n'
 import type { ClaudeAccountChatUsage, ClaudeAccountUsage } from './claude-account-usage-view'

@@ -1,9 +1,9 @@
 import { useMemo } from 'react'
 import { toast } from 'sonner'
 import { CLAUDE_SYSTEM_ACCOUNT_ID } from '../../../../shared/claude-accounts-overview'
-import type { RuntimeClientTarget } from '../../../../shared/runtime-client-target'
-import type { ProviderRateLimits } from '../../../../shared/rate-limit-types'
-import { useResetCountdownClock } from '@/hooks/useResetCountdownClock'
+import type { RuntimeClientTarget } from '../../../../shared/remote-runtime/host-catalog/runtime-client-target'
+import type { ProviderRateLimits } from '../../../../shared/agent-usage/rate-limits/rate-limit-types'
+import { useResetCountdownClock } from '@/components/status-bar/usage/useResetCountdownClock'
 import { translate } from '@/i18n/i18n'
 import { openDesktopStructuredSession } from '@/lib/agent-session/open/activate-ai-vault-structured-session'
 import { signInToClaudeAccount } from '@/lib/provider-accounts/claude-account-sign-in'
@@ -17,7 +17,7 @@ import { useAppStore } from '../../store'
 import { getClaudeAccountErrorDescription } from '@/lib/provider-accounts/provider-account-action-errors'
 import { buildClaudeAccountUsage, resolveClaudeChatAccountId } from './claude-account-usage-model'
 import { ClaudeAccountsPanel } from './ClaudeAccountsPanel'
-import { isOwnerNotSetUpPlaceholder } from './owner-usage-rate-limits'
+import { isOwnerNotSetUpPlaceholder } from './usage/owner-usage-rate-limits'
 import {
   repoRuntimeTarget,
   useClaudeAccountsHostLabel,
@@ -59,7 +59,7 @@ export function ClaudeAccountsRosterSection({
   )
   const claudeRow = providers.find((provider) => provider.provider === 'claude')
   if (!overview || accounts.length === 0 || !claudeRow || isOwnerNotSetUpPlaceholder(claudeRow)) {
-    return <div className="w-[360px]">{renderRoster(providers)}</div>
+    return <div className="w-[440px]">{renderRoster(providers)}</div>
   }
 
   const setDefault = async (id: string): Promise<void> => {

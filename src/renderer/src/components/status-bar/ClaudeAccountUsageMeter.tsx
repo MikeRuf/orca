@@ -1,8 +1,8 @@
-import { useResetCountdownClock } from '@/hooks/useResetCountdownClock'
+import { useResetCountdownClock } from '@/components/status-bar/usage/useResetCountdownClock'
 import { cn } from '@/lib/class-names'
-import { formatResetCountdown } from '../../../../shared/rate-limit-reset-format'
-import type { RateLimitWindow } from '../../../../shared/rate-limit-types'
-import { normalizeUsagePercentageDisplay } from '../../../../shared/usage-percentage-display'
+import { formatResetCountdown } from '../../../../shared/agent-usage/rate-limits/rate-limit-reset-format'
+import type { RateLimitWindow } from '../../../../shared/agent-usage/rate-limits/rate-limit-types'
+import { normalizeUsagePercentageDisplay } from '../../../../shared/agent-usage/display/usage-percentage-display'
 import { useAppStore } from '../../store'
 import {
   CLAUDE_ACCOUNT_USAGE_BAR_CLASS,
@@ -10,8 +10,8 @@ import {
   claudeAccountUsageTone,
   type ClaudeAccountUsageShare
 } from './claude-account-usage-view'
-import { clampUsedPercent } from './tooltip'
-import { formatBareUsagePercentage } from './usage-percentage-label'
+import { clampUsedPercent } from './usage/provider-usage-panel'
+import { formatBareUsagePercentage } from './usage/usage-percentage-label'
 
 /** One limit window: label, percent, bar, and reset time. */
 export function ClaudeAccountUsageMeter({

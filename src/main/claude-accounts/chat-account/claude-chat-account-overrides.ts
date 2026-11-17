@@ -2,6 +2,7 @@ import { readFileSync } from 'node:fs'
 import { join } from 'node:path'
 import { writeFileAtomically } from '../../filesystem/atomic-file-publication'
 import { getProfileUserDataPath } from '../../orca-profiles/profile-storage-paths'
+import { getRepoIdFromWorktreeId } from '../../../shared/worktree/id'
 
 const OVERRIDES_FILE_NAME = 'claude-chat-accounts.json'
 
@@ -34,6 +35,19 @@ function loadOverrides(): Record<string, string> {
 /** The Claude account one chat was switched to; null follows the project, then the selection. */
 export function chatClaudeAccountId(sessionId: string): string | null {
   return loadOverrides()[sessionId] ?? null
+}
+
+/** A chat's own Claude account, then its project's; null runs the current selection. */
+export function chosenClaudeAccountId(
+  store: { getRepo(repoId: string): { claudeAccountId?: string | null } | undefined },
+  sessionId: string,
+  workspaceId: string
+): string | null {
+  return (
+    chatClaudeAccountId(sessionId) ??
+    store.getRepo(getRepoIdFromWorktreeId(workspaceId))?.claudeAccountId ??
+    null
+  )
 }
 
 export function setChatClaudeAccountId(sessionId: string, accountId: string | null): void {

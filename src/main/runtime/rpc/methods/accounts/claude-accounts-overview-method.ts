@@ -1,5 +1,5 @@
 import type { ClaudeAccountsOverview } from '../../../../../shared/claude-accounts-overview'
-import { withTimeout } from '../../../../../shared/promise-timeout-fallback'
+import { withTimeout } from '../../../../../shared/concurrency/promise-timeout-fallback'
 import { ClaudeOverviewParams } from '../../../../../shared/rpc-contract/accounts/accounts-params'
 import { buildClaudeAccountsOverview } from '../../../../claude-accounts/claude-accounts-overview'
 import { getStructuredAgentSessionHost } from '../../../../native-chat/agent-session-wire/host/structured-agent-session-registry'
@@ -10,6 +10,7 @@ const USAGE_REFRESH_WAIT_MS = 10_000
 export const CLAUDE_ACCOUNTS_OVERVIEW_METHOD = defineMethod({
   name: 'accounts.claudeOverview',
   permission: 'workspace',
+  requires: ['accounts'],
   params: ClaudeOverviewParams,
   handler: async ({ refreshUsage }, { runtime }): Promise<ClaudeAccountsOverview> => {
     const rateLimits = runtime.getUsageRateLimits()

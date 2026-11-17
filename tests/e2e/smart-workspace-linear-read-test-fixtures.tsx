@@ -3,7 +3,7 @@ import { createTestStore } from '@/store/slices/linear/linear-slice-test-harness
 import { clearLinearRequestMaps } from '@/store/slices/linear/linear-slice-request-state'
 import React from 'react'
 import type * as ReactModule from 'react'
-import { registerRuntimeClientIpcBridge } from '@/hooks/ipc-events/runtime-client-ipc-bridge'
+import { registerRuntimeClientIpcBridge } from '@/hooks/ipc-events/runtime-events/runtime-client-ipc-bridge'
 import { cleanup } from '@testing-library/react'
 import { afterEach, vi } from 'vitest'
 import { WorkspaceAttachmentSourceStatus } from '../../src/renderer/src/components/sidebar/workspace-card/review/WorkspaceAttachmentSourceStatus'
@@ -17,10 +17,10 @@ import { useWorkItemSourceSearch } from '../../src/renderer/src/components/new-w
 import type * as MainLinearClient from '../../src/main/linear/accounts/linear-account-client'
 import type * as RuntimeLinearClient from '@/runtime/linear/runtime-linear-client'
 import type * as RuntimeLinearIssueMutations from '@/runtime/linear/runtime-linear-issue-client'
-import type { RuntimeClientEvent } from '../../src/shared/runtime-client-events'
+import type { RuntimeClientEvent } from '../../src/shared/remote-runtime/session-graph/runtime-client-events'
 import type { LinearIssue } from '../../src/shared/linear/issue-types'
 import type { LinearConnectionStatus } from '../../src/shared/linear/workspace-types'
-import type { Repo } from '../../src/shared/repo-types'
+import type { Repo } from '../../src/shared/repository/repo-types'
 
 // @vitest-environment happy-dom
 

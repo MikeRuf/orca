@@ -1,4 +1,4 @@
-import type { ProviderRateLimits } from './rate-limit-types'
+import type { ProviderRateLimits } from './agent-usage/rate-limits/rate-limit-types'
 
 /** Stands in for the login Claude uses with no managed account selected. */
 export const CLAUDE_SYSTEM_ACCOUNT_ID = 'system'
