@@ -238,6 +238,11 @@
           "dispatchedAgents_other": "{{agentType}} - dispatched {{count}} agents"
         }
       },
+      "devUpdate": {
+        "noticeBody": "Your build {{value0}} is ready. Orca restarts to install it; background sessions keep running.",
+        "waitingTitle_one": "Waiting for 1 chat to finish",
+        "waitingTitle_other": "Waiting for {{count}} chats to finish"
+      },
       "editor": {
         "CheckRunJobs": {
           "stepsFailedOfTotal_one": "{{failed}} / {{count}} steps failed",
@@ -2326,10 +2331,6 @@
       "linkedCount_other": "{{count}} workspaces linked to {{key}}"
     }
   },
-  "languages": {
-    "pluginsDisabledCount_one": "{{count}} community translation needs plugins turned on.",
-    "pluginsDisabledCount_other": "{{count}} community translations need plugins turned on."
-  },
   "localBuild": {
     "liveTerminals_one": "{{count}} live terminal will reconnect after restart.",
     "liveTerminals_other": "{{count}} live terminals will reconnect after restart."
@@ -2860,6 +2861,16 @@
       "linkedAndScannedCount_other": "{{size}} in linked worktrees · {{count}} workspaces"
     }
   },
+  "worktreeJumpPalette": {
+    "filter": {
+      "ariaActiveCount_one": "Filter: {{count}} active.",
+      "ariaActiveCount_other": "Filter: {{count}} active."
+    }
+  },
+  "languages": {
+    "pluginsDisabledCount_one": "{{count}} community translation needs plugins turned on.",
+    "pluginsDisabledCount_other": "{{count}} community translations need plugins turned on."
+  },
   "worktree": {
     "delete": {
       "loss": {
@@ -2870,12 +2881,6 @@
       },
       "withChildrenTitle_one": "Delete {{name}} and {{count}} child workspace?",
       "withChildrenTitle_other": "Delete {{name}} and {{count}} child workspaces?"
-    }
-  },
-  "worktreeJumpPalette": {
-    "filter": {
-      "ariaActiveCount_one": "Filter: {{count}} active.",
-      "ariaActiveCount_other": "Filter: {{count}} active."
     }
   }
 }

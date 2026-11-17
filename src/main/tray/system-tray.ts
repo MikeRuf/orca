@@ -1,4 +1,4 @@
-import { Menu, Tray, nativeImage, nativeTheme, type NativeImage } from 'electron'
+import { BrowserWindow, Menu, Tray, nativeImage, nativeTheme, type NativeImage } from 'electron'
 import menuBarIconPath from '../../../resources/tray/orca-menu-barTemplate.png?asset&asarUnpack'
 import menuBarIconRetinaPath from '../../../resources/tray/orca-menu-barTemplate@2x.png?asset&asarUnpack'
 import { deferAppKitSceneMutation } from '../window/desktop-integration/appkit-scene-mutation'
@@ -7,6 +7,11 @@ import { translateMain } from '../i18n/main-i18n'
 import { quitAndStopAllSessionsMenuText } from '../menu/app-menu-quit-item'
 import { composeTrayAttentionIcon, tintTrayTemplateForAttention } from './tray-attention-icon'
 import { stampTrayDevBadge } from './tray-dev-badge'
+import {
+  launchPendingDevUpdateInstall,
+  readPendingDevUpdate
+} from '../dev-update/pending-dev-update'
+import { PENDING_DEV_UPDATE_INSTALL_REQUESTED_CHANNEL } from '../../shared/pending-dev-update'
 
 export type SystemTrayOptions = {
   /** App icon id from settings; the tray reuses the app icon image. */
@@ -240,6 +245,38 @@ export function createSystemTray(opts: SystemTrayOptions): Tray | null {
   return tray
 }
 
+function pendingDevUpdateTrayItems(opts: SystemTrayOptions): Electron.MenuItemConstructorOptions[] {
+  const pending = readPendingDevUpdate()
+  if (!pending) {
+    return []
+  }
+  return [
+    {
+      label: translateMain(
+        'tray.installDevUpdate',
+        'Install Pending Development Update ({{commit}})',
+        {
+          commit: pending.commit.slice(0, 7)
+        }
+      ),
+      click: safeMenuAction(() => {
+        // The window's flow waits for busy chats; with no window there is no chat UI to wait for.
+        const windows = BrowserWindow.getAllWindows().filter((window) => !window.isDestroyed())
+        if (windows.length > 0) {
+          opts.onOpen()
+          for (const window of windows) {
+            window.webContents.send(PENDING_DEV_UPDATE_INSTALL_REQUESTED_CHANNEL)
+          }
+          return
+        }
+        if (launchPendingDevUpdateInstall()) {
+          opts.onQuit()
+        }
+      })
+    }
+  ]
+}
+
 function buildTrayMenu(opts: SystemTrayOptions): Menu {
   return Menu.buildFromTemplate([
     ...(devIndicator
@@ -253,6 +290,7 @@ function buildTrayMenu(opts: SystemTrayOptions): Menu {
       label: translateMain('tray.openOrca', 'Open Orca'),
       click: safeMenuAction(() => opts.onOpen())
     },
+    ...pendingDevUpdateTrayItems(opts),
     { type: 'separator' },
     // Share app-menu translation keys so tray labels cannot drift.
     ...(process.platform === 'darwin'
