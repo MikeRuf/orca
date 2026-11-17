@@ -6,7 +6,7 @@ import {
   type NativeChatRestartOffer,
   type HostOfferRead
 } from './native-chat-restart-host-offer'
-import type { RuntimeClientTarget } from '../../../../../shared/runtime-client-target'
+import type { RuntimeClientTarget } from '../../../../../shared/remote-runtime/host-catalog/runtime-client-target'
 import { getStructuredAgentSessionStatusFeed } from '@/runtime/native-chat/status/structured-agent-session-status-feed'
 import { answerServerRestart } from './native-chat-server-restart-auto-resume'
 import { markNativeChatLaunchResumeDecided } from './native-chat-launch-resume-decision'
