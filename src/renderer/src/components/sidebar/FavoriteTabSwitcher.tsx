@@ -6,8 +6,8 @@ import { readCurrentTabLocation } from '@/lib/last-tab-toggle'
 import { getShortcutPlatform } from '@/lib/keyboard/shortcut-platform'
 import { openTabShortcut } from '@/lib/tab-shortcut-resolution'
 import { readTabShortcuts, type TabShortcut } from '@/lib/tab-shortcuts-store'
-import { keybindingMatchesAction } from '../../../../shared/keybindings'
-import { getNextRecentTabSwitcherIndex } from '../tab-bar/recent-tab-switching'
+import { keybindingMatchesAction } from '../../../../shared/keybindings/matching'
+import { getNextRecentTabSwitcherIndex } from '../tab-bar/recent-switcher/recent-tab-switching'
 import { FavoriteTabSwitcherList } from './FavoriteTabSwitcherList'
 
 type SwitcherState = { favorites: TabShortcut[]; selectedIndex: number }

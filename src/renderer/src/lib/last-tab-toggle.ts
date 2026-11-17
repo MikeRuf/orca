@@ -1,5 +1,5 @@
 import { useAppStore } from '@/store'
-import { keybindingMatchesAction } from '../../../shared/keybindings'
+import { keybindingMatchesAction } from '../../../shared/keybindings/matching'
 import { getShortcutPlatform } from '@/lib/keyboard/shortcut-platform'
 import type { WorkspaceTabContentType } from '@/lib/workspace/search/tabs/workspace-tab-search-types'
 import { describeTab, openTabShortcut } from '@/lib/tab-shortcut-resolution'

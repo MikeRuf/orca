@@ -6,7 +6,7 @@ import {
   SIDEBAR_BASE_FONT_SIZE,
   type RepoSidebarSurfaceStyle
 } from '../../../../../../shared/repo-sidebar-style'
-import { DEFAULT_REPO_BADGE_COLOR } from '../../../../../../shared/repo-badge-color'
+import { DEFAULT_REPO_BADGE_COLOR } from '../../../../../../shared/repository/appearance/repo-badge-color'
 import { Button } from '../../../ui/button'
 import { ColorPicker } from '../../../ui/color-picker'
 import { Input } from '../../../ui/input'

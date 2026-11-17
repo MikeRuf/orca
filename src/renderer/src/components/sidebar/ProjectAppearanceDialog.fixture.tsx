@@ -1,4 +1,4 @@
-import type { Repo } from '../../../../shared/repo-types'
+import type { Repo } from '../../../../shared/repository/repo-types'
 import { defineFixture } from '../../component-fixtures/component-fixture'
 import { makeRepo } from '../worktree-jump/worktree-jump-palette-test-fixtures'
 import { ProjectAppearanceDialog } from './ProjectAppearanceDialog'

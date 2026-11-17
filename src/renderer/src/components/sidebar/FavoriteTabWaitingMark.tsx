@@ -3,7 +3,7 @@ import { useAppStore } from '@/store'
 import { translate } from '@/i18n/i18n'
 import type { TabShortcut } from '@/lib/tab-shortcuts-store'
 import { structuredAgentSessionPaneKey } from '../../../../shared/agent-session/view/structured-agent-session-projection'
-import { createActivityStatusSelector } from '../tab-bar/use-terminal-tab-activity'
+import { createActivityStatusSelector } from '../tab-bar/terminal-tabs/use-terminal-tab-activity'
 
 type AppState = ReturnType<typeof useAppStore.getState>
 

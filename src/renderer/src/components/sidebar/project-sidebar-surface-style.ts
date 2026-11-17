@@ -5,7 +5,7 @@ import {
   type RepoSidebarSurface,
   type RepoSidebarSurfaceStyle
 } from '../../../../shared/repo-sidebar-style'
-import type { Repo } from '../../../../shared/repo-types'
+import type { Repo } from '../../../../shared/repository/repo-types'
 
 export type ProjectSidebarSurfaceProps = {
   style?: React.CSSProperties
