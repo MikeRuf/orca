@@ -20634,6 +20634,19 @@
         "questionNotSentDetail": "質問はこのチャットに残っています。再試行するには、もう一度 /btw を送信してください。",
         "questionUnconfirmed": "{{agent}} のサイドチャットに質問が届いたか確認できませんでした",
         "questionUnconfirmedDetail": "もう一度質問する前に、サイドチャットを確認してください。質問はこのチャットに残っています。"
+      },
+      "processes": {
+        "label": "このチャットが起動したプロセス",
+        "title": "プロセス",
+        "agent": "エージェント",
+        "stop": "{{name}} を停止",
+        "stopped": "停止を送信しました",
+        "stopRefused": "停止できませんでした",
+        "loadFailed": "プロセス一覧を読み取れませんでした。",
+        "unsupported": "プロセス一覧は Linux ホストで動作するチャットで利用できます。",
+        "resize": "ドラッグしてサイズを変更",
+        "stopButton": "停止",
+        "agentNote": "エージェントのプロセスはチャット自体を動かしているため、停止ボタンはありません。チャットを閉じると終了します。"
       }
     },
     "tab": {

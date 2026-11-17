@@ -96,6 +96,8 @@ export const WORK_METHODS = [
     params: { envelope: envelope(), change: { kind: 'clear' } }
   },
   { method: 'agentSession.handoffStatus', params: { sessionId: SESSION } },
+  { method: 'agentSession.processes', params: { sessionId: SESSION } },
+  { method: 'agentSession.stopProcess', params: { sessionId: SESSION, pid: 4242 } },
   { method: 'agentSession.options', params: { sessionId: SESSION } },
   { method: 'agentSession.modelCatalog', params: { agent: 'codex', sessionId: SESSION } },
   { method: 'agentSession.history', params: { sessionId: SESSION, direction: 'tail' } },
