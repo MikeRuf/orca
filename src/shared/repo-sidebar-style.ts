@@ -1,4 +1,4 @@
-import { normalizeRepoBadgeColor } from './repo-badge-color'
+import { normalizeRepoBadgeColor } from './repository/appearance/repo-badge-color'
 
 /** One sidebar surface of a project: its header row, or the workspace rows under it. */
 export type RepoSidebarSurfaceStyle = {

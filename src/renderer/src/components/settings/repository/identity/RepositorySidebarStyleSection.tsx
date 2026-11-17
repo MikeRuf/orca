@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { RotateCcw } from 'lucide-react'
-import type { Repo } from '../../../../../../shared/repo-types'
+import type { Repo } from '../../../../../../shared/repository/repo-types'
 import {
   MAX_SIDEBAR_FONT_SIZE,
   MIN_SIDEBAR_FONT_SIZE,
@@ -10,7 +10,7 @@ import {
   type RepoSidebarSurface,
   type RepoSidebarSurfaceStyle
 } from '../../../../../../shared/repo-sidebar-style'
-import { DEFAULT_REPO_BADGE_COLOR } from '../../../../../../shared/repo-badge-color'
+import { DEFAULT_REPO_BADGE_COLOR } from '../../../../../../shared/repository/appearance/repo-badge-color'
 import { Button } from '../../../ui/button'
 import { ColorPicker } from '../../../ui/color-picker'
 import { Input } from '../../../ui/input'

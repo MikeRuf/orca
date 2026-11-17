@@ -1,5 +1,5 @@
-import { getDefaultSettings } from '../../../../shared/constants'
-import type { Repo } from '../../../../shared/repo-types'
+import { getDefaultSettings } from '../../../../shared/orca-profiles/constants'
+import type { Repo } from '../../../../shared/repository/repo-types'
 import { defineFixture } from '../../component-fixtures/component-fixture'
 import { Ellipsis, Plus } from 'lucide-react'
 import { RepoIconGlyph } from '../repo/repo-icon'
