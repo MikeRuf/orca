@@ -1,3 +1,5 @@
+import { getRepoIdFromWorktreeId } from '../../../../shared/worktree/id'
+import { chatClaudeAccountId } from '../../../claude-accounts/chat-account/claude-chat-account-overrides'
 import { getRepoHostIdentityForParts } from '../../../../shared/repo-host-identity'
 import { createRepoRowExecutionHostLookup } from '../../../../shared/execution-host/worktree-execution-host-resolution'
 import { resolveWorktreeHostRouting } from '../catalog/worktree-launch-host-repo'
@@ -63,6 +65,15 @@ import { startPRWatchRuntime } from '../../agent-session/pr-watch-runtime'
 const DEFAULT_WORKTREE_PS_LIMIT = 200
 
 export abstract class OrcaRuntimeWithGetWorktreePs extends RuntimeChatWorkerEvents {
+  /** A chat's own Claude account, then its project's; null runs the current selection. */
+  protected chosenClaudeAccountId(sessionId: string, workspaceId: string): string | null {
+    return (
+      chatClaudeAccountId(sessionId) ??
+      this.requireStore().getRepo(getRepoIdFromWorktreeId(workspaceId))?.claudeAccountId ??
+      null
+    )
+  }
+
   protected readonly workerAutoReleaseActivity = new WorkerAutoReleaseActivity(
     () => this._orchestrationDb
   )

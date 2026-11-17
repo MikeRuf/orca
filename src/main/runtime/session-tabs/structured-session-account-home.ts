@@ -9,10 +9,8 @@ import {
   type AgentSessionAccountHome
 } from '../../../shared/agent-session/lifecycle/agent-session-account-home'
 import type { AgentSessionRecord } from '../../../shared/agent-session/lifecycle/agent-session-record'
-import { getRepoIdFromWorktreeId } from '../../../shared/worktree/id'
 import { CLAUDE_STRUCTURED_AGENT } from '../../claude/structured/claude-structured-agent-definition'
 import { getClaudeProfileRouter } from '../../claude-accounts/profiles/routing/claude-profile-installed-router'
-import { chatClaudeAccountId } from '../../claude-accounts/chat-account/claude-chat-account-overrides'
 
 export abstract class OrcaRuntimeWithStructuredSessionAccountHome extends OrcaRuntimeWithStructuredSessionCliWriterHost {
   /** Resolve account home through this host's agent registration; null means unregistered and create refuses. */
@@ -59,15 +57,6 @@ export abstract class OrcaRuntimeWithStructuredSessionAccountHome extends OrcaRu
           hostSettings: () => this.requireStore().getSettings()
         }
       )
-  }
-
-  /** A chat's own Claude account, then its project's; null runs the current selection. */
-  protected chosenClaudeAccountId(sessionId: string, workspaceId: string): string | null {
-    return (
-      chatClaudeAccountId(sessionId) ??
-      this.requireStore().getRepo(getRepoIdFromWorktreeId(workspaceId))?.claudeAccountId ??
-      null
-    )
   }
 
   /** Must match the launch's pick (prepareClaudeLaunchAccount), or every send retires the agent. */
