@@ -1,6 +1,6 @@
 import { translate } from '@/i18n/i18n'
 import type { Translate } from '@/i18n/use-translate'
-import type { UpdateStatus } from '../../../../../shared/update-status-types'
+import type { UpdateStatus } from '../../../../../shared/updater/update-status-types'
 import { DEV_RELEASE_REF } from '@/lib/dev-release-build'
 
 export function isUpdateCardVisible({
