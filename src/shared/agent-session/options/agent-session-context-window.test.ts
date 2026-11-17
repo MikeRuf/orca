@@ -23,7 +23,7 @@ function liveClaude() {
 describe('the context window picker', () => {
   it('admits a typed size that is not one of the listed presets', () => {
     const state = liveClaude()
-    expect(canSetStructuredAgentSessionOption(state, 'contextWindow', '350000')).toBe(true)
+    expect(canSetStructuredAgentSessionOption(state, 'contextWindow', '420000')).toBe(true)
     expect(canSetStructuredAgentSessionOption(state, 'contextWindow', '20000')).toBe(false)
     expect(canSetStructuredAgentSessionOption(state, 'contextWindow', '350K')).toBe(false)
   })

@@ -1,7 +1,7 @@
 import type { SessionOptionDescriptor } from '../../native-chat/input/native-chat-session-options'
 import type { StructuredAgentSessionOptionState } from './structured-agent-session-options'
 
-const PRESET_WINDOWS = ['200000', '500000', '1000000'] as const
+const PRESET_WINDOWS = ['200000', '350000', '500000', '1000000'] as const
 
 /** Bounds for a typed size; below the floor a session compacts almost every turn. */
 export const AGENT_SESSION_CONTEXT_WINDOW_RANGE = { min: 50_000, max: 1_000_000 } as const
