@@ -40,6 +40,7 @@ import { useStatusBarController } from './composition/use-status-bar-controller'
 import { isOwnerNotSetUpPlaceholder } from './usage/owner-usage-rate-limits'
 import { StatusBarVisibilityMenu } from './composition/StatusBarVisibilityMenu'
 import { isPairedWebClientWindow } from '@/app-shell/chrome/desktop-window-chrome'
+import { BuildInfoStatusSegment } from './BuildInfoStatusSegment'
 import { GitBlameStatusSegment } from './GitBlameStatusSegment'
 
 const PetStatusSegment = lazyWithRetry(() =>
@@ -308,6 +309,7 @@ export function StatusBarSurface({
             </Tooltip>
           )}
         </div>
+        <BuildInfoStatusSegment />
       </div>
 
       {/* Why: attention segments never clip; below the tightest density they scroll rather than vanish. */}

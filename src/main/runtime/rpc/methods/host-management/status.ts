@@ -29,6 +29,12 @@ export const STATUS_METHODS = [
         ...(hostMachine ? { hostMachine } : {}),
         ...(pairedDeviceId ? { pairedDeviceId } : {}),
         appVersion: snapshot.appVersion,
+        buildInfo: {
+          version: snapshot.appVersion,
+          commit: typeof ORCA_BUILD_COMMIT === 'string' ? ORCA_BUILD_COMMIT : '',
+          builtAt: typeof ORCA_BUILD_TIME === 'string' ? ORCA_BUILD_TIME : '',
+          devRef: typeof ORCA_DEV_RELEASE_REF === 'string' ? ORCA_DEV_RELEASE_REF : null
+        },
         remoteUpdateSupport: snapshot.support
       }
     }

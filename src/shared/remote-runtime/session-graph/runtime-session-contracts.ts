@@ -23,6 +23,7 @@ import type {
 import type { CliStatusCaller } from '../../orchestration/orchestration-caller-status'
 import type { RuntimeHostDescriptor } from '../host-status/runtime-host-descriptor'
 import type { TuiAgent } from '../../agent-launch/catalog/tui-agent'
+import type { RuntimeBuildInfo } from '../../runtime-build-info'
 
 export type RuntimeGraphStatus = 'ready' | 'reloading' | 'unavailable'
 
@@ -87,6 +88,8 @@ export type RuntimeStatus = {
   /** Absent on older hosts; missing degradation reports never prove all optional features work. */
   degradations?: RuntimeDegradation[]
   appVersion?: string
+  /** Absent on older hosts. */
+  buildInfo?: RuntimeBuildInfo
   remoteUpdateSupport?: RemoteServerUpdateSupport
   remoteControl?: RemoteRuntimeSharedConnectionDiagnostics | null
   hostPlatform?: NodeJS.Platform
