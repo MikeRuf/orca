@@ -4,13 +4,13 @@ import {
   ORCAD_HOST_NEWER_DEFERRAL_CODE,
   type WslHostConnectIntent,
   type WslHostStatus
-} from '../../../../../../shared/wsl-host-types'
+} from '../../../../../../shared/remote-runtime/wsl-hosts/wsl-host-types'
 import { toast } from 'sonner'
 import {
   isWslHostRuntimeEnvironment,
   type PublicKnownRuntimeEnvironment
 } from '../../../../../../shared/remote-runtime/host-catalog/runtime-environments'
-import { toRuntimeExecutionHostId } from '../../../../../../shared/execution-host'
+import { toRuntimeExecutionHostId } from '../../../../../../shared/execution-host/execution-host'
 import { translate } from '@/i18n/i18n'
 import { useTranslate, type Translate } from '@/i18n/use-translate'
 import { useAppStore } from '@/store/index'
@@ -40,11 +40,7 @@ import { Badge } from '../../../ui/badge'
 import { Button } from '../../../ui/button'
 import { DropdownMenuItem } from '../../../ui/dropdown-menu'
 import { managedServerOutcomeLabel } from '../../runtime-environments/managed-servers/managed-server-copy'
-import {
-  ServerListRow,
-  ServerRowChip,
-  type ServerRowStatus
-} from '../../runtime-environments/server-rows/runtime-server-list-row'
+import { ServerListRow, ServerRowChip, type ServerRowStatus } from '../../host-rows/ServerListRow'
 import { WslMoveOrchestratorStatusLine } from '../../../wsl-move/WslMoveOrchestratorStatusLine'
 import { wslMoveOrchestratorLine } from '../../../wsl-move/wsl-move-orchestrator-copy'
 import {
@@ -53,7 +49,7 @@ import {
 } from '../../../wsl-move/wsl-move-orchestrator-status'
 import { openWslMoveDialogFor } from '../../../wsl-move/wsl-move-entry'
 import { WslMoveUnfinishedNotice } from '../../../wsl-move/WslMoveUnfinishedNotice'
-import { readIpcErrorDetail } from '@/lib/ipc-error'
+import { readIpcErrorDetail } from '@/runtime/errors/ipc-error'
 
 function getWslHostRowStatus(
   status: WslHostStatus | undefined,

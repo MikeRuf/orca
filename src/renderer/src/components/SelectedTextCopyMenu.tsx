@@ -2,8 +2,8 @@ import React from 'react'
 import { createPortal } from 'react-dom'
 import { Copy } from 'lucide-react'
 import { useTranslate } from '@/i18n/use-translate'
-import { addViewportSizeChangeListener } from '@/hooks/viewport-size-change-listener'
-import { addAppKeyListener, removeAppKeyListener } from '@/lib/app-keyboard-router'
+import { addViewportSizeChangeListener } from '@/lib/window-activity/viewport-size-change-listener'
+import { addAppKeyListener, removeAppKeyListener } from '@/lib/keyboard/app-keyboard-router'
 
 type SelectedTextCopyMenuProps = {
   children: React.ReactNode

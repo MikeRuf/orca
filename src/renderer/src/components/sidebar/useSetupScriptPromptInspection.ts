@@ -1,14 +1,14 @@
 import { useEffect } from 'react'
-import { inspectSetupScriptPromptState } from '@/lib/setup-script-prompt'
+import { inspectSetupScriptPromptState } from '@/runtime/repo-hooks/setup-script-prompt'
 import {
   checkRuntimeHooks,
   inspectRuntimeSetupScriptImports
 } from '@/runtime/repo-hooks/runtime-hooks-client'
-import type { GlobalSettings } from '../../../../shared/global-settings-types'
-import { isGitRepoKind } from '../../../../shared/repo-kind'
-import type { Repo } from '../../../../shared/repo-types'
-import { getRepoHostIdentity } from '../../../../shared/repo-host-identity'
-import { getRepoExecutionHostId } from '../../../../shared/execution-host'
+import type { GlobalSettings } from '../../../../shared/settings/global-settings-types'
+import { isGitRepoKind } from '../../../../shared/repository/repo-kind'
+import type { Repo } from '../../../../shared/repository/repo-types'
+import { getRepoHostIdentity } from '../../../../shared/repository/repo-host-identity'
+import { getRepoExecutionHostId } from '../../../../shared/execution-host/execution-host'
 import type { SetupScriptPromptState } from './setup-script-prompt-render-state'
 
 /** Inspect the active repo's setup while the prompt can show; settings changes and retries inspect again. */

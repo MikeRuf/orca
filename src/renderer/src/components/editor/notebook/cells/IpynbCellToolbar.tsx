@@ -24,10 +24,10 @@ import {
 } from '@/components/ui/dropdown-menu'
 import { ShortcutKeyCombo } from '@/components/ShortcutKeyCombo'
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
-import type { ShortcutKeyComboDetails } from '@/hooks/useShortcutLabel'
+import type { ShortcutKeyComboDetails } from '@/lib/keyboard/useShortcutLabel'
 import { translate } from '@/i18n/i18n'
 import { useTranslate, type Translate } from '@/i18n/use-translate'
-import { cn } from '@/lib/utils'
+import { cn } from '@/lib/class-names'
 import type { IpynbCellKind } from '../document/ipynb-parse'
 
 const CELL_KINDS: readonly IpynbCellKind[] = ['code', 'markdown', 'raw']

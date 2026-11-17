@@ -1,9 +1,9 @@
 import React from 'react'
 import { BookOpen, CalendarClock, EyeOff, Files, Search, Smartphone } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
-import { useAppStore } from '@/store'
-import { cn } from '@/lib/utils'
-import { useShortcutKeyComboDetails } from '@/hooks/useShortcutLabel'
+import { useAppStore } from '@/store/index'
+import { cn } from '@/lib/class-names'
+import { useShortcutKeyComboDetails } from '@/lib/keyboard/useShortcutLabel'
 import { ShortcutKeyCombo } from '@/components/ShortcutKeyCombo'
 import { useMobileSidebarOnboardingBadge } from './mobile-sidebar-onboarding-badge'
 import { ContextMenu, ContextMenuTrigger } from '@/components/ui/context-menu'
@@ -13,8 +13,8 @@ import { SetupGuideSidebarEntry } from './SetupGuideSidebarEntry'
 import { SidebarTaskNavButton } from './SidebarTaskNavButton'
 import { HideSidebarMenu } from './sidebar-nav-controls'
 import { useTranslate } from '@/i18n/use-translate'
-import { lazyWithRetry } from '@/lib/lazy-with-retry'
-import type { GlobalSettings } from '../../../../shared/global-settings-types'
+import { lazyWithRetry } from '@/app-shell/startup/lazy-with-retry'
+import type { GlobalSettings } from '../../../../shared/settings/global-settings-types'
 
 export function shouldShowMobileButton(
   settings: Partial<Pick<GlobalSettings, 'showMobileButton'>> | null | undefined
