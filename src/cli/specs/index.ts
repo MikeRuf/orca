@@ -16,6 +16,7 @@ import { AGENT_HOOK_COMMAND_SPECS } from './agent-hooks'
 import { AGENT_LAUNCH_COMMAND_SPECS } from './agent-launch'
 import { AGENT_NOTIFY_BUSY_COMMAND_SPECS } from './agent-notify-busy'
 import { AGENT_CLOSE_COMMAND_SPECS } from './agent-close'
+import { AGENT_CONVERSATION_COMMAND_SPECS } from './agent-conversations'
 import { CONNECTOR_COMMAND_SPECS } from './connector'
 import { DIAGNOSTICS_COMMAND_SPECS } from './diagnostics'
 import { SPEECH_COMMAND_SPECS } from './speech'
@@ -36,6 +37,8 @@ import { PLUGIN_AUTHORING_COMMAND_SPECS, PLUGIN_RUNTIME_COMMAND_SPECS } from './
 import { PAIR_COMMAND_SPECS } from './pair'
 import { PLUGIN_VIEW_COMMAND_SPECS } from './plugin-view'
 import { PLUGIN_INSTALL_COMMAND_SPECS } from './plugin-install'
+import { WORKSPACE_CLEANUP_COMMAND_SPECS } from './workspace-cleanup'
+import { UNINSTALL_COMMAND_SPECS } from './uninstall'
 
 export const COMMAND_SPECS: CommandSpec[] = [
   ...CORE_COMMAND_SPECS,
@@ -45,6 +48,7 @@ export const COMMAND_SPECS: CommandSpec[] = [
   ...PROJECT_COMMAND_SPECS,
   ...FILE_COMMAND_SPECS,
   ...AUTOMATION_COMMAND_SPECS,
+  ...WORKSPACE_CLEANUP_COMMAND_SPECS,
   ...BROWSER_BASIC_COMMAND_SPECS,
   ...BROWSER_ADVANCED_COMMAND_SPECS,
   ...ORCHESTRATION_COMMAND_SPECS.map(withFullRecordFlag),
@@ -53,6 +57,7 @@ export const COMMAND_SPECS: CommandSpec[] = [
   ...AGENT_LAUNCH_COMMAND_SPECS,
   ...AGENT_NOTIFY_BUSY_COMMAND_SPECS,
   ...AGENT_CLOSE_COMMAND_SPECS,
+  ...AGENT_CONVERSATION_COMMAND_SPECS,
   ...CHAT_COMMAND_SPECS,
   ...CONNECTOR_COMMAND_SPECS,
   ...DIAGNOSTICS_COMMAND_SPECS,
@@ -74,5 +79,6 @@ export const COMMAND_SPECS: CommandSpec[] = [
   ...PLUGIN_RUNTIME_COMMAND_SPECS,
   ...PLUGIN_VIEW_COMMAND_SPECS,
   ...PLUGIN_INSTALL_COMMAND_SPECS,
-  ...PAIR_COMMAND_SPECS
+  ...PAIR_COMMAND_SPECS,
+  ...UNINSTALL_COMMAND_SPECS
 ]

@@ -2,10 +2,10 @@ import { randomUUID } from 'node:crypto'
 import type { CommandHandler } from '../dispatch/dispatch'
 import { getRequiredStringFlag } from '../arguments/flags'
 import { printResult } from '../output/command-result-output'
-import { RuntimeClientError } from '../runtime/types'
+import { RuntimeClientError } from '../runtime/connection/types'
 import type { AgentSessionHistoryResult } from '../../shared/agent-session/agent-session-wire'
 import { structuredAgentSessionMessageSendMutation } from '../../shared/agent-session/requests/structured-agent-session-send-mutation'
-import { createStructuredAgentSessionOperationId } from '../../shared/agent-session/lifecycle/structured-agent-session-mutation'
+import { createStructuredAgentSessionOperationId } from '../../shared/agent-session/lifecycle/operations/structured-agent-session-mutation'
 
 const CHAT_PANE_PREFIX = 'structured-agent-session-'
 
