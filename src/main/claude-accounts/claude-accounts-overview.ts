@@ -8,7 +8,10 @@ import {
   type ClaudeOverviewChat
 } from '../../shared/claude-accounts-overview'
 import type { ClaudeRateLimitAccountsState } from '../../shared/agent-accounts/managed-account-types'
-import type { ProviderRateLimits, RateLimitState } from '../../shared/agent-usage/rate-limits/rate-limit-types'
+import type {
+  ProviderRateLimits,
+  RateLimitState
+} from '../../shared/agent-usage/rate-limits/rate-limit-types'
 import { resolveSessionFilePath } from '../native-chat/session-file-resolver'
 import { chatClaudeAccountId } from './chat-account/claude-chat-account-overrides'
 import { readClaudeChatWindowTokens, type ClaudeChatWindows } from './claude-chat-transcript-tokens'
