@@ -1,4 +1,8 @@
 import { useSyncExternalStore } from 'react'
+import {
+  sanitizeSidebarSurfaceStyle,
+  type RepoSidebarSurfaceStyle
+} from '../../../shared/repo-sidebar-style'
 
 /** A tab by identity; names are read live from the app, the snapshot only covers a closed tab. */
 export type TabShortcut = {
@@ -8,6 +12,8 @@ export type TabShortcut = {
   title: string
   project: string
   workspace: string
+  /** Favorites only. */
+  style?: RepoSidebarSurfaceStyle
 }
 
 type TabShortcutsState = {
@@ -40,6 +46,12 @@ function isShortcut(value: unknown): value is TabShortcut {
   )
 }
 
+// Why: the style reaches inline CSS, and storage can be edited by hand.
+function withSafeStyle({ style, ...tab }: TabShortcut): TabShortcut {
+  const safe = sanitizeSidebarSurfaceStyle(style)
+  return safe ? { ...tab, style: safe } : tab
+}
+
 function load(): TabShortcutsState {
   const empty: TabShortcutsState = {
     favorites: [],
@@ -55,7 +67,9 @@ function load(): TabShortcutsState {
       return empty
     }
     return {
-      favorites: Array.isArray(raw.favorites) ? raw.favorites.filter(isShortcut) : [],
+      favorites: Array.isArray(raw.favorites)
+        ? raw.favorites.filter(isShortcut).map(withSafeStyle)
+        : [],
       recents: Array.isArray(raw.recents)
         ? raw.recents.filter(isShortcut).slice(0, MAX_RECENTS)
         : [],
@@ -118,6 +132,35 @@ export function addFavoriteTab(tab: TabShortcut): void {
 
 export function removeFavoriteTab(tab: Pick<TabShortcut, 'worktreeId' | 'tabId'>): void {
   commit({ ...current(), favorites: current().favorites.filter((row) => !sameTab(row, tab)) })
+}
+
+/** Moves a favorite to where another one sits; keys are `worktreeId:tabId`. */
+export function moveFavoriteTab(fromKey: string, toKey: string): void {
+  const favorites = [...current().favorites]
+  const from = favorites.findIndex((row) => tabShortcutKey(row) === fromKey)
+  const to = favorites.findIndex((row) => tabShortcutKey(row) === toKey)
+  if (from === -1 || to === -1 || from === to) {
+    return
+  }
+  const [moved] = favorites.splice(from, 1)
+  favorites.splice(to, 0, moved)
+  commit({ ...current(), favorites })
+}
+
+export function tabShortcutKey(tab: Pick<TabShortcut, 'worktreeId' | 'tabId'>): string {
+  return `${tab.worktreeId}:${tab.tabId}`
+}
+
+export function setFavoriteTabStyle(
+  tab: Pick<TabShortcut, 'worktreeId' | 'tabId'>,
+  style: RepoSidebarSurfaceStyle
+): void {
+  commit({
+    ...current(),
+    favorites: current().favorites.map((row) =>
+      sameTab(row, tab) ? withSafeStyle({ ...row, style }) : row
+    )
+  })
 }
 
 export function setTabShortcutSectionOpen(section: 'favorites' | 'recents', open: boolean): void {

@@ -32,7 +32,8 @@ export const lists = defineFixture({
             tabId: 'tab-open',
             title: 'travel_agent',
             project: 'travel',
-            workspace: 'main'
+            workspace: 'main',
+            style: { background: '#1e3a8a', textColor: '#ffffff', fontSize: 15 }
           },
           {
             worktreeId: 'gone',
@@ -65,7 +66,11 @@ export const lists = defineFixture({
     settings: getDefaultSettings('/home/fixture'),
     repos: [repo],
     worktreesByRepo: { [repo.id]: [worktree] },
-    unifiedTabsByWorktree: { [worktree.id]: [openTab] } as never
+    unifiedTabsByWorktree: { [worktree.id]: [openTab] } as never,
+    activeWorktreeId: worktree.id,
+    activeGroupIdByWorktree: { [worktree.id]: 'g1' },
+    // oxlint-disable-next-line typescript/consistent-type-assertions -- SAFETY: the row reads only id and activeTabId
+    groupsByWorktree: { [worktree.id]: [{ id: 'g1', activeTabId: 'tab-open' }] } as never
   },
   render: () => (
     <div className="bg-worktree-sidebar py-2 text-worktree-sidebar-foreground">
