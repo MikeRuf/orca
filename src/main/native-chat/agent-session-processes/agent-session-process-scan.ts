@@ -2,7 +2,7 @@
 // the environment proves membership where a parent-pid walk would lose reparented children.
 
 import { readFile, readdir } from 'node:fs/promises'
-import { ORCA_AGENT_SESSION_ID_ENV } from '../../../shared/agent-session/lifecycle/agent-session-caller-env'
+import { ORCA_AGENT_SESSION_ID_ENV } from '../../../shared/agent-session/lifecycle/launch/agent-session-caller-env'
 import type {
   AgentSessionProcess,
   AgentSessionProcessList,

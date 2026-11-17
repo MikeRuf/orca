@@ -1,6 +1,6 @@
 import { useId, useMemo } from 'react'
 import { CLAUDE_SYSTEM_ACCOUNT_ID } from '../../../../../shared/claude-accounts-overview'
-import type { Repo } from '../../../../../shared/repo-types'
+import type { Repo } from '../../../../../shared/repository/repo-types'
 import { useTranslate } from '@/i18n/use-translate'
 import {
   repoRuntimeTarget,

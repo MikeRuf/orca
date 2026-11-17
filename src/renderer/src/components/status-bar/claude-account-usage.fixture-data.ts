@@ -1,4 +1,4 @@
-import type { ProviderRateLimits } from '../../../../shared/rate-limit-types'
+import type { ProviderRateLimits } from '../../../../shared/agent-usage/rate-limits/rate-limit-types'
 import type { ClaudeAccountUsage } from './claude-account-usage-view'
 
 const HOUR_MS = 3_600_000

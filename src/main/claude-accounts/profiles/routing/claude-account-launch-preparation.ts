@@ -1,4 +1,4 @@
-import { CLAUDE_INJECTED_CONFIG_DIR_ENV } from '../../../../shared/claude-profile-routing'
+import { CLAUDE_INJECTED_CONFIG_DIR_ENV } from '../../../../shared/agent-accounts/claude/claude-profile-routing'
 import type { ClaudeRuntimeAuthPreparation } from '../../runtime-auth/runtime-auth-types'
 
 /** The environment one launch needs to run on this account's folder. */
