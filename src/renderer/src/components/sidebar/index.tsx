@@ -24,6 +24,7 @@ import { LocalGitToolchainScanBanner } from './LocalGitToolchainScanBanner'
 import { SeveredTerminalDaemonBanner } from './SeveredTerminalDaemonBanner'
 import { StalledTerminalDaemonBanner } from './StalledTerminalDaemonBanner'
 import { StartupWorktreeRefreshStatus } from './StartupWorktreeRefreshStatus'
+import { TabShortcutsSection } from './TabShortcutsSection'
 import { WorktreeCardsIntroNotice } from './WorktreeCardsIntroNotice'
 import { WorktreeCardsUpdateNotice } from './WorktreeCardsUpdateNotice'
 
@@ -184,6 +185,7 @@ function Sidebar({
           {sidebarOpen && (
             <>
               <SidebarNav />
+              <TabShortcutsSection />
               <SidebarHeader
                 activityBadgeTarget={setAgentBadgeTarget}
                 onWorkspaceBoardMenuOpenChange={setWorkspaceBoardMenuOpen}

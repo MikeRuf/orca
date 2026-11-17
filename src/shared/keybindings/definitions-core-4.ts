@@ -153,6 +153,24 @@ export const KEYBINDING_DEFINITION_CORE_4: readonly KeybindingDefinition[] = [
     allowShiftOnlyKeybindings: true
   },
   {
+    id: 'tab.toggleLast',
+    title: 'Back to the last tab (any workspace)',
+    group: 'Tab Navigation',
+    scope: 'tabs',
+    searchKeywords: [
+      'shortcut',
+      'tab',
+      'last',
+      'previous',
+      'toggle',
+      'back',
+      'alternate',
+      'workspace'
+    ],
+    defaultBindings: platformBindings(['Alt+Q']),
+    allowInTerminal: true
+  },
+  {
     id: 'tab.moveLeft',
     title: 'Move active tab left',
     group: 'Tabs',
