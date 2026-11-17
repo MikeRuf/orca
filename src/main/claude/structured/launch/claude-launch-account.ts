@@ -3,16 +3,19 @@ import type { ClaudeProfileRouter } from '../../../claude-accounts/profiles/rout
 import { applyClaudeEnvPatch } from '../../../claude-accounts/runtime-auth/environment'
 import { resolveStructuredClaudeAccountHomePath } from '../../../runtime/agent-session/environment/structured-agent-account-home'
 
-/** The account a launch runs under is the current selection; the receipt records what it used. */
+/** A project's signed-in account wins over the current selection; the receipt records what it used. */
 export async function prepareClaudeLaunchAccount(
   router: ClaudeProfileRouter | undefined,
   env: Record<string, string>,
-  recordHome: string
+  recordHome: string,
+  projectAccountId?: string | null
 ): Promise<ClaudeAccountRecipe> {
   if (!router) {
     return { route: 'system', home: recordHome, configDir: env.CLAUDE_CONFIG_DIR ?? null }
   }
-  const preparation = await router.prepareLaunch()
+  const preparation =
+    (projectAccountId ? await router.prepareAccountLaunch(projectAccountId) : null) ??
+    (await router.prepareLaunch())
   const home =
     preparation.provenance === 'system'
       ? await resolveStructuredClaudeAccountHomePath({

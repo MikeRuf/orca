@@ -142,6 +142,8 @@ export type ClaudeStructuredLaunchPartDeps = {
   attachmentDirectory?: string
   /** Omit version-gated flags when support cannot be checked. */
   cliFlags?: Pick<ClaudeCliFlagSupport, 'check'>
+  /** The project's Claude account for a workspace, if it has one. */
+  resolveProjectClaudeAccountId?: (workspaceId: string) => string | null
   /** Whether Claude wrote a transcript for this id; defaults to the transcript resolver. */
   hasTranscript?: (input: {
     providerSessionId: string
@@ -266,7 +268,12 @@ export function claudeStructuredLaunchPart(
       sources,
       { runtimeOnPath: false }
     )
-    const accountRecipe = await prepareClaudeLaunchAccount(router, env, accountHome.path)
+    const accountRecipe = await prepareClaudeLaunchAccount(
+      router,
+      env,
+      accountHome.path,
+      deps.resolveProjectClaudeAccountId?.(record.location.workspaceId)
+    )
     const launchHome = accountRecipe.home
     const resumesTranscript = resumedWithoutRouter ?? (await resumes(launchHome))
     if (fork?.throughEntryId && !resumesTranscript) {

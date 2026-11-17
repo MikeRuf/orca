@@ -26,6 +26,7 @@ import {
 } from '../../../../../shared/rpc-contract/accounts/accounts-params'
 import { HostAccountLaunchEnvParams } from '../../../../../shared/agent-launch/startup/host-account-launch-env'
 import { withTimeout } from '../../../../../shared/concurrency/promise-timeout-fallback'
+import { CLAUDE_ACCOUNTS_OVERVIEW_METHOD } from './claude-accounts-overview-method'
 
 // Use a per-process counter: same-millisecond subscriptions must not evict each other's cleanup.
 let accountsSubscriptionSeq = 0
@@ -54,6 +55,7 @@ function signInOwner({ caller }: Pick<RpcContext, 'caller'>): string {
 }
 
 const ACCOUNT_METHOD_DEFINITIONS = [
+  CLAUDE_ACCOUNTS_OVERVIEW_METHOD,
   // Only the owning desktop pushes this host's account launch environment, including WSL.
   defineMethod({
     name: 'accounts.setHostLaunchEnv',

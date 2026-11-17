@@ -97,6 +97,10 @@ export const ListAccountsParams = z.object({
   refreshStaleUsage: z.boolean().optional()
 })
 
+export const ClaudeOverviewParams = z.object({
+  refreshUsage: z.boolean().default(false)
+})
+
 export const AccountsUnsubscribeParams = z.object({
   subscriptionId: z
     .unknown()

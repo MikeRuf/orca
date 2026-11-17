@@ -4,6 +4,7 @@ import type { Repo } from '../../../shared/repository/repo-types'
 import type { RepoHostTarget } from '../../../shared/repository/repo-host-identity'
 import { isFolderRepo } from '../../../shared/repository/repo-kind'
 
+import { sanitizeClaudeAccountId } from '../../persistence/tracking-repos/repo-sanitization'
 import {
   type ExecutionHostId,
   getRepoExecutionHostId,
@@ -57,6 +58,7 @@ export function registerRepoUpdateHandler(mainWindow: BrowserWindow, store: Stor
             | 'dictationTerms'
             | 'issueSourcePreference'
             | 'forkSyncMode'
+            | 'claudeAccountId'
             | 'agentWorkspaceTrust'
             | 'externalWorktreeVisibilityPromptDismissedAt'
             | 'externalWorktreeInboxBaselinePaths'
@@ -102,6 +104,9 @@ export function registerRepoUpdateHandler(mainWindow: BrowserWindow, store: Stor
         updates.forkSyncMode !== 'off'
       ) {
         delete updates.forkSyncMode
+      }
+      if ('claudeAccountId' in updates) {
+        updates.claudeAccountId = sanitizeClaudeAccountId(updates.claudeAccountId)
       }
       // Null clears the binding; malformed values must not become account selections.
       if ('ghAccount' in updates) {
