@@ -19763,6 +19763,11 @@
         "pasteUnavailable": "貼り付けできません — このチャットは現在入力を受け付けていません。",
         "model": "モデル",
         "effort": "推論レベル",
+        "contextWindow": "コンテキストウィンドウ",
+        "customValue": "カスタム…",
+        "customValueLabel": "トークン数（千単位）",
+        "customValueApply": "設定",
+        "customValueRange": "{{value0}}〜{{value1}}で指定してください",
         "fastMode": "高速モード",
         "speed": "速度",
         "thinking": "思考",
@@ -19777,7 +19782,6 @@
         "availableAfterSessionStarts": "セッション開始後に利用できます。",
         "optionUpdateFailed": "オプションを更新できませんでした",
         "optionValue": {
-          "ultracode": "Ultracode",
           "fast": "高速",
           "minimal": "最小",
           "low": "低",
@@ -19786,12 +19790,13 @@
           "xhigh": "最高",
           "max": "最大",
           "ultra": "ウルトラ",
-          "standard": "標準"
+          "contextWindowDefault": "デフォルト",
+          "standard": "標準",
+          "ultracode": "Ultracode"
         },
         "noCommandsOrSkills": "一致するコマンドやスキルがありません",
         "commands": "コマンド",
         "skills": "スキル",
-        "checkingSkills": "新しいスキルを確認しています…",
         "loadingSkills": "スキルを読み込み中…",
         "clearDescription": "会話のコンテキストをクリア",
         "skillsUnavailableHost": "SSH チャットではスキルを一覧表示できません",
@@ -19842,7 +19847,8 @@
         "sessionAttachmentsStarting": "{{agent}} のチャットを起動中です。開くまで待ってから、ファイルを再度添付してください。",
         "sessionAttachmentsFailed": "{{agent}} チャットを開けませんでした。チャットで [再試行] を使用して、ファイルを再度添付してください。",
         "moreControls": "その他のチャット操作",
-        "exitPlanMode": "プランモードを終了"
+        "exitPlanMode": "プランモードを終了",
+        "checkingSkills": "新しいスキルを確認しています…"
       },
       "tool": {
         "result": "結果",
@@ -19931,8 +19937,6 @@
         "toggleDetails": "ターンの詳細を切り替えます"
       },
       "jumpToLatest": "最新にジャンプ",
-      "newRowsAnnouncement": "離れている間に新しいメッセージが届きました",
-      "newRowsMarker": "新着",
       "find": {
         "label": "チャット内を検索",
         "noResults": "結果はありません",
@@ -20247,7 +20251,6 @@
         "deferredNote": "必要時に読み込まれます。使用量には含まれません。"
       },
       "dismissDeliveryNotice": "閉じる",
-      "editDeliveryNotice": "編集",
       "addSelectionToChat": "チャットに追加",
       "messageNotSent": "メッセージは送信されませんでした",
       "messageSending": "送信中…",
@@ -20353,9 +20356,6 @@
       "antigravitySignIn": {
         "sentence": "Antigravity にサインインしていません。<settings>設定 → アカウント → Antigravity</settings>でサインインしてから、メッセージをもう一度送信してください。"
       },
-      "signIn": {
-        "title": "チャットを始めるには {{agent}} にサインインしてください"
-      },
       "claudeSignIn": {
         "signingIn": "サインイン中…"
       },
@@ -20371,7 +20371,6 @@
         "outdatedHost": "このホストの古い Orca はチャットの権限設定に対応していないため、{{value0}} が確認なしで実行されます。{{value1}} を使うには、このホストの Orca を更新してください。"
       },
       "explicitChatWsl": "WSL ではチャットを利用できません。ターミナルで Agent を開いてください。",
-      "explicitChatWslAddHost": "Windows から開いた WSL フォルダーではチャットを利用できません。そこでチャットするには、ディストリビューションを WSL ホストとして追加する（プロジェクトを追加 → リモートホストを追加 → WSL ディストリビューションを追加）か、ターミナルで Agent を開いてください。",
       "explicitChatSsh": "SSH 接続ではチャットを利用できません。ターミナルで Agent を開いてください。",
       "structuredSessionTerminalNotVisible": "Orca はターミナルで {{value0}} を開きましたが、起動が終了したときにここに表示できませんでした。チャットの下書きが保存されました。",
       "explicitChatUnavailable": "このワークスペースではチャットを実行できません。Agent のインストール状況を確認するか、ターミナルで開いてください。",
@@ -20504,16 +20503,6 @@
         "modelApplyFailed": "モデル {{value}} を適用できませんでした。",
         "effortApplyFailed": "推論レベル {{value}} を適用できませんでした。"
       },
-      "githubPeek": {
-        "updated": "{{time}} に更新",
-        "oneComment": "コメント 1 件",
-        "comments": "コメント {{count}} 件",
-        "unavailable": "プレビューは利用できません。",
-        "retry": "再試行"
-      },
-      "webPeek": {
-        "unavailable": "このページのプレビューはありません。"
-      },
       "usageLimitActions": {
         "continueNow": "今すぐ続ける",
         "leadIn": "待たずにこのチャットを続ける：",
@@ -20555,7 +20544,6 @@
         "turnWorking": "このチャットの Agent が作業中です。ターンが終わってからブランチを切り替えてください。",
         "worktree": "ワークツリー"
       },
-      "creationChatNotOpened": "ワークツリーの準備はできましたが、チャットを開けませんでした。再試行すると、メッセージを入力した状態でチャットを開きます。",
       "explicitChatWindows": "この Agent のチャットはまだ Windows では利用できません。ターミナルで開いてください。",
       "fork": {
         "action": "この応答から分岐",
@@ -20577,6 +20565,38 @@
         "sourceTooltip": "{{name}} から分岐",
         "unknownSourceTooltip": "別のチャットから分岐"
       },
+      "cardKindHidden": {
+        "description": "いつでも次の場所で変更できます：",
+        "settingsLink": "設定 > Chat UI > ターンのアクティビティ",
+        "failed": "保存できませんでした。「設定 > Chat UI > ターンのアクティビティ」でオフにできます。"
+      },
+      "openedPullRequests": {
+        "one": "{{name}} を開きました",
+        "hide": "開いたプルリクエストを表示しない",
+        "hidden": "Orca は今後開いたプルリクエストを表示しません",
+        "many_one": "{{count}} 件のプルリクエストを開きました",
+        "many_other": "{{count}} 件のプルリクエストを開きました"
+      },
+      "splitRight": "右に分割",
+      "splitDown": "下に分割",
+      "newRowsAnnouncement": "離れている間に新しいメッセージが届きました",
+      "newRowsMarker": "新着",
+      "editDeliveryNotice": "編集",
+      "signIn": {
+        "title": "チャットを始めるには {{agent}} にサインインしてください"
+      },
+      "explicitChatWslAddHost": "Windows から開いた WSL フォルダーではチャットを利用できません。そこでチャットするには、ディストリビューションを WSL ホストとして追加する（プロジェクトを追加 → リモートホストを追加 → WSL ディストリビューションを追加）か、ターミナルで Agent を開いてください。",
+      "githubPeek": {
+        "updated": "{{time}} に更新",
+        "oneComment": "コメント 1 件",
+        "comments": "コメント {{count}} 件",
+        "unavailable": "プレビューは利用できません。",
+        "retry": "再試行"
+      },
+      "webPeek": {
+        "unavailable": "このページのプレビューはありません。"
+      },
+      "creationChatNotOpened": "ワークツリーの準備はできましたが、チャットを開けませんでした。再試行すると、メッセージを入力した状態でチャットを開きます。",
       "usage": {
         "description": "このチャットの Codex アカウントの使用量を表示",
         "loading": "Codex の使用量を読み込み中…",
@@ -20596,11 +20616,6 @@
           "alreadyRedeemed": "そのリセットクレジットはすでに使用されています。"
         }
       },
-      "cardKindHidden": {
-        "description": "いつでも次の場所で変更できます：",
-        "settingsLink": "設定 > Chat UI > ターンのアクティビティ",
-        "failed": "保存できませんでした。「設定 > Chat UI > ターンのアクティビティ」でオフにできます。"
-      },
       "ciResultLine": {
         "failingLead": "CI 失敗:",
         "greenLead": "CI 成功:",
@@ -20608,15 +20623,6 @@
         "hide": "CI 結果の行を表示しない",
         "hidden": "Orca は今後 CI 結果の行を表示しません"
       },
-      "openedPullRequests": {
-        "one": "{{name}} を開きました",
-        "hide": "開いたプルリクエストを表示しない",
-        "hidden": "Orca は今後開いたプルリクエストを表示しません",
-        "many_one": "{{count}} 件のプルリクエストを開きました",
-        "many_other": "{{count}} 件のプルリクエストを開きました"
-      },
-      "splitRight": "右に分割",
-      "splitDown": "下に分割",
       "sideChat": {
         "description": "このチャットの横に分岐して、別の質問をする",
         "argumentHint": "<question>",
@@ -21455,40 +21461,6 @@
       "stepUnpack": "展開",
       "stepCheck": "確認"
     },
-    "orchestrationCrew": {
-      "mentionAll": "全員にメンション",
-      "mentionAgent": "{{name}} にメンション:",
-      "mentionInMessage": "メッセージでメンション",
-      "mentionRejected": "ターミナルが Agent の参照を受け付けませんでした。もう一度お試しください。",
-      "title": "オーケストレーション",
-      "sendingUnavailable": "送信できません",
-      "workers_other": "ワーカー {{count}} 個",
-      "managedBy": "管理元",
-      "managing": "管理対象",
-      "talkingWith": "やり取り中の相手",
-      "collapse": "オーケストレーションパネルを折りたたむ",
-      "show": "オーケストレーションを表示: {{counts}}",
-      "summary": "オーケストレーション: {{counts}}",
-      "needsYou_other": "{{count}} 件があなたの対応待ち",
-      "waitingPrefix": "あなたの対応待ち · ",
-      "noTask": "共有タスクなし",
-      "open": "{{name}} を開く",
-      "more": "{{name}} のその他の操作",
-      "openChat": "チャットを開く",
-      "copiedAddress": "{{name}} のアドレスをコピーしました",
-      "copyAddress": "アドレスをコピー",
-      "showDetails": "{{name}} のタスクと最新のメッセージを表示",
-      "task": "タスク",
-      "asksYou": "あなたへの質問",
-      "openFailed": "{{name}}: {{detail}}",
-      "chatUnavailable": "このホストではチャットを開けません。もう一度お試しください。",
-      "terminalExited": "このターミナルは終了しています。",
-      "openOnHost": "{{host}} でこの Agent を開いてください。",
-      "cannotLocate": "このホストではこの Agent が見つかりません。もう一度お試しください。",
-      "latest": "最新",
-      "to": "宛先",
-      "from": "送信元"
-    },
     "linearWorkspacePicker": {
       "search": "Linear ワークスペースを検索",
       "empty": "ワークスペースが見つかりません。",
@@ -21587,6 +21559,40 @@
       "dropTooManyPaths": "ドロップされたパスが多すぎます。",
       "dropPathsTooLarge": "ドロップされたパスのリストが大きすぎます。",
       "fileOwnerResolveFailed": "ファイルの所有者を解決できませんでした。"
+    },
+    "orchestrationCrew": {
+      "mentionAll": "全員にメンション",
+      "mentionAgent": "{{name}} にメンション:",
+      "mentionInMessage": "メッセージでメンション",
+      "mentionRejected": "ターミナルが Agent の参照を受け付けませんでした。もう一度お試しください。",
+      "title": "オーケストレーション",
+      "sendingUnavailable": "送信できません",
+      "workers_other": "ワーカー {{count}} 個",
+      "managedBy": "管理元",
+      "managing": "管理対象",
+      "talkingWith": "やり取り中の相手",
+      "collapse": "オーケストレーションパネルを折りたたむ",
+      "show": "オーケストレーションを表示: {{counts}}",
+      "summary": "オーケストレーション: {{counts}}",
+      "needsYou_other": "{{count}} 件があなたの対応待ち",
+      "waitingPrefix": "あなたの対応待ち · ",
+      "noTask": "共有タスクなし",
+      "open": "{{name}} を開く",
+      "more": "{{name}} のその他の操作",
+      "openChat": "チャットを開く",
+      "copiedAddress": "{{name}} のアドレスをコピーしました",
+      "copyAddress": "アドレスをコピー",
+      "showDetails": "{{name}} のタスクと最新のメッセージを表示",
+      "task": "タスク",
+      "asksYou": "あなたへの質問",
+      "openFailed": "{{name}}: {{detail}}",
+      "chatUnavailable": "このホストではチャットを開けません。もう一度お試しください。",
+      "terminalExited": "このターミナルは終了しています。",
+      "openOnHost": "{{host}} でこの Agent を開いてください。",
+      "cannotLocate": "このホストではこの Agent が見つかりません。もう一度お試しください。",
+      "latest": "最新",
+      "to": "宛先",
+      "from": "送信元"
     },
     "agentNotes": {
       "targetSelected": "選択中",
@@ -24114,49 +24120,6 @@
     "title": "Orca を起動できませんでした",
     "finishFailed": "Orca は起動を完了できませんでした: {{detail}}"
   },
-  "wslDriveProject": {
-    "label": "Git",
-    "converted": "このプロジェクトでは、Orca は Windows 上で Git を実行します。ターミナルと Agent は引き続き {{distro}} で実行されます。",
-    "checkFailed": "このプロジェクトを確認できませんでした。",
-    "convertFailed": "Git を切り替えられませんでした。",
-    "description": "このプロジェクトは Windows ドライブ上にあります。ここでは WSL の Git は遅く、Windows で行われた変更を見落とします。代わりに Git for Windows を使用してください。ターミナルと Agent は {{distro}} のままです。",
-    "useWindowsGit": "Git for Windows を使用",
-    "review": "このプロジェクトについて Orca 内で変わるものはありません。タブ、ターミナル、チャット、ワークスペースはそのまま残り、実行中のターミナルも動作し続けます。",
-    "lineEndings": "このリポジトリで core.autocrlf も設定して、WSL ターミナルの git ですべてのファイルが変更ありと表示されないようにします。",
-    "cancel": "キャンセル",
-    "confirm": "Git for Windows を使用",
-    "blocker": {
-      "notWsl": "このプロジェクトはすでに Windows 上で Git を実行しています。",
-      "repair": "先にこのプロジェクトの WSL ランタイムを修正してください。ディストリビューションが見つからないか、WSL を利用できません。",
-      "notWindowsDrive": "このプロジェクトのフォルダーの 1 つが Windows ドライブ上にありません。",
-      "gitMissing": "Git for Windows がインストールされていません。git-scm.com からインストールしてから、もう一度お試しください。",
-      "wslWorktrees": "これらのワークスペースは WSL の Git で作成されたため、Git for Windows では読み取れません: {{paths}}。これらを削除するか、このプロジェクトで WSL の Git を使い続けてください。",
-      "worktreeFolder": "このプロジェクトの新しいワークスペースは WSL 内に作成するよう設定されています。先にこのプロジェクトの設定で、Windows ドライブ上のフォルダーを選択してください。"
-    }
-  },
-  "wslDriveUnc": {
-    "label": "場所",
-    "description": "Orca はこのプロジェクトを WSL 経由で開いています。代わりに {{drivePath}} で開いてください。Git が Windows 上で実行されるため、ここではずっと高速になります。ターミナルと Agent は {{distro}} のままです。",
-    "convert": "{{drivePath}} で開く",
-    "review": "Orca はこのプロジェクトのターミナルを一時停止してから再起動し、{{drivePath}} でプロジェクトを開き直します。タブ、履歴を含むターミナル、チャット、設定は引き継がれ、一時停止したターミナルは中断したところから再開します。",
-    "cancel": "キャンセル",
-    "confirm": "再起動して変換",
-    "failed": "このプロジェクトを変換できませんでした。",
-    "restarting": "このプロジェクトを変換するために Orca を再起動しています…",
-    "terminalsBusy": "このプロジェクトの一部のターミナルが使用中です。処理が終わるのを待つか、ターミナルを閉じてから、もう一度お試しください。",
-    "pauseFailed": "このプロジェクトのターミナルを一時停止できなかったため、何も変更されていません。",
-    "blocker": {
-      "pending": "Orca はすでにプロジェクトを変換中です。変換は Orca の再起動時に完了します。",
-      "state": "このプロジェクトについて、安全に変換できない保存済みの状態が見つかったため、何も変更されていません。",
-      "duplicate": "{{drivePath}} はすでに Orca のプロジェクトです。",
-      "mixed": "このプロジェクトの一部のフォルダーが、Windows ドライブ上ではなく WSL 内にあります。",
-      "overlap": "このプロジェクトは、Orca が変換できないプロジェクトとフォルダーを共有しているため、変換すると両者が分断されます。",
-      "notDriveMount": "このディストリビューションでは、そのフォルダーは {{drivePath}} ではありません。その Windows ドライブからマウントされていません。",
-      "notConvertible": "このプロジェクトは、このコンピュータの Windows ドライブ上にありません。",
-      "differingState": "Orca はこのフォルダーについて、WSL パスと {{drivePath}} の両方で異なる情報を保存しているため、何も変更されていません。",
-      "projectSplit": "このプロジェクトには変換対象外のリポジトリも含まれているため、何も変更されていません。"
-    }
-  },
   "localBuild": {
     "chooseTitle": "ローカルの Orca ビルドを選択",
     "chooseButton": "ビルドを選択",
@@ -25007,36 +24970,6 @@
     "terminalStopped": "WSL ディストリビューション {{distro}} が停止しているため、Orca はこのターミナルを起動しませんでした。ディストリビューションを起動してから、もう一度お試しください。",
     "terminalUnverifiable": "WSL ディストリビューション {{distro}} が実行中か確認できなかったため、Orca はこのターミナルを起動しませんでした。ディストリビューションを起動してから、もう一度お試しください。"
   },
-  "plugins": {
-    "frameSaveAs": {
-      "title": "ファイルを保存",
-      "allFiles": "すべてのファイル"
-    },
-    "frameOpenExternal": {
-      "open": "開く",
-      "cancel": "キャンセル",
-      "message": "{{plugin}} が {{host}} を開こうとしています",
-      "alwaysAllow": "このプラグインで {{host}} を常に許可"
-    },
-    "actionConfirmation": {
-      "cancel": "キャンセル",
-      "deleteAutomation": "{{plugin}} がオートメーション「{{automation}}」を削除しようとしています",
-      "deleteAutomationDetail": "このオートメーションはこのプラグインが作成したものではありません。スケジュールが停止し、オートメーションの一覧から削除されます。",
-      "delete": "削除",
-      "changeAutomation": "{{plugin}} がオートメーション「{{automation}}」を変更しようとしています",
-      "changeAutomationDetail": "このオートメーションはこのプラグインが作成したものではありません。変更される項目: {{fields}}。",
-      "change": "変更",
-      "changeElevatedAutomationDetail": "このオートメーションは、あなたが選択した追加の設定（引数、権限モード、事前チェックコマンド）で Agent を実行します。変更される項目: {{fields}}。",
-      "newPrompt": "新しいプロンプト: 「{{prompt}}」",
-      "unknownProject": "不明なプロジェクト",
-      "automationNewWorkspaces": "オートメーション {{id}}: 実行ごとに {{project}} の新しいワークスペースを使用、スケジュール: {{schedule}}。",
-      "automationInWorkspace": "オートメーション {{id}}: {{project}} / {{workspace}} で実行、スケジュール: {{schedule}}。"
-    }
-  },
-  "checks": {
-    "gitlabAllowedFailure": "失敗を許可",
-    "rerunUnsuccessful": "成功しなかったチェックを再実行"
-  },
   "remoteHostBrowserControl": {
     "title": "{{host}} がブラウザのタブを操作しています",
     "description": "この SSH ホストの Agent は、ホストのワークスペース内の Orca ブラウザのタブを開いて操作できます。操作中のタブにはホスト名が表示されます。この設定は 設定 > SSH で変更できます。",
@@ -25147,6 +25080,79 @@
       "dismiss": "閉じる",
       "cancelDownload": "ダウンロードをキャンセル"
     }
+  },
+  "wslDriveProject": {
+    "label": "Git",
+    "converted": "このプロジェクトでは、Orca は Windows 上で Git を実行します。ターミナルと Agent は引き続き {{distro}} で実行されます。",
+    "checkFailed": "このプロジェクトを確認できませんでした。",
+    "convertFailed": "Git を切り替えられませんでした。",
+    "description": "このプロジェクトは Windows ドライブ上にあります。ここでは WSL の Git は遅く、Windows で行われた変更を見落とします。代わりに Git for Windows を使用してください。ターミナルと Agent は {{distro}} のままです。",
+    "useWindowsGit": "Git for Windows を使用",
+    "review": "このプロジェクトについて Orca 内で変わるものはありません。タブ、ターミナル、チャット、ワークスペースはそのまま残り、実行中のターミナルも動作し続けます。",
+    "lineEndings": "このリポジトリで core.autocrlf も設定して、WSL ターミナルの git ですべてのファイルが変更ありと表示されないようにします。",
+    "cancel": "キャンセル",
+    "confirm": "Git for Windows を使用",
+    "blocker": {
+      "notWsl": "このプロジェクトはすでに Windows 上で Git を実行しています。",
+      "repair": "先にこのプロジェクトの WSL ランタイムを修正してください。ディストリビューションが見つからないか、WSL を利用できません。",
+      "notWindowsDrive": "このプロジェクトのフォルダーの 1 つが Windows ドライブ上にありません。",
+      "gitMissing": "Git for Windows がインストールされていません。git-scm.com からインストールしてから、もう一度お試しください。",
+      "wslWorktrees": "これらのワークスペースは WSL の Git で作成されたため、Git for Windows では読み取れません: {{paths}}。これらを削除するか、このプロジェクトで WSL の Git を使い続けてください。",
+      "worktreeFolder": "このプロジェクトの新しいワークスペースは WSL 内に作成するよう設定されています。先にこのプロジェクトの設定で、Windows ドライブ上のフォルダーを選択してください。"
+    }
+  },
+  "wslDriveUnc": {
+    "label": "場所",
+    "description": "Orca はこのプロジェクトを WSL 経由で開いています。代わりに {{drivePath}} で開いてください。Git が Windows 上で実行されるため、ここではずっと高速になります。ターミナルと Agent は {{distro}} のままです。",
+    "convert": "{{drivePath}} で開く",
+    "review": "Orca はこのプロジェクトのターミナルを一時停止してから再起動し、{{drivePath}} でプロジェクトを開き直します。タブ、履歴を含むターミナル、チャット、設定は引き継がれ、一時停止したターミナルは中断したところから再開します。",
+    "cancel": "キャンセル",
+    "confirm": "再起動して変換",
+    "failed": "このプロジェクトを変換できませんでした。",
+    "restarting": "このプロジェクトを変換するために Orca を再起動しています…",
+    "terminalsBusy": "このプロジェクトの一部のターミナルが使用中です。処理が終わるのを待つか、ターミナルを閉じてから、もう一度お試しください。",
+    "pauseFailed": "このプロジェクトのターミナルを一時停止できなかったため、何も変更されていません。",
+    "blocker": {
+      "pending": "Orca はすでにプロジェクトを変換中です。変換は Orca の再起動時に完了します。",
+      "state": "このプロジェクトについて、安全に変換できない保存済みの状態が見つかったため、何も変更されていません。",
+      "duplicate": "{{drivePath}} はすでに Orca のプロジェクトです。",
+      "mixed": "このプロジェクトの一部のフォルダーが、Windows ドライブ上ではなく WSL 内にあります。",
+      "overlap": "このプロジェクトは、Orca が変換できないプロジェクトとフォルダーを共有しているため、変換すると両者が分断されます。",
+      "notDriveMount": "このディストリビューションでは、そのフォルダーは {{drivePath}} ではありません。その Windows ドライブからマウントされていません。",
+      "notConvertible": "このプロジェクトは、このコンピュータの Windows ドライブ上にありません。",
+      "differingState": "Orca はこのフォルダーについて、WSL パスと {{drivePath}} の両方で異なる情報を保存しているため、何も変更されていません。",
+      "projectSplit": "このプロジェクトには変換対象外のリポジトリも含まれているため、何も変更されていません。"
+    }
+  },
+  "plugins": {
+    "frameSaveAs": {
+      "title": "ファイルを保存",
+      "allFiles": "すべてのファイル"
+    },
+    "frameOpenExternal": {
+      "open": "開く",
+      "cancel": "キャンセル",
+      "message": "{{plugin}} が {{host}} を開こうとしています",
+      "alwaysAllow": "このプラグインで {{host}} を常に許可"
+    },
+    "actionConfirmation": {
+      "cancel": "キャンセル",
+      "deleteAutomation": "{{plugin}} がオートメーション「{{automation}}」を削除しようとしています",
+      "deleteAutomationDetail": "このオートメーションはこのプラグインが作成したものではありません。スケジュールが停止し、オートメーションの一覧から削除されます。",
+      "delete": "削除",
+      "changeAutomation": "{{plugin}} がオートメーション「{{automation}}」を変更しようとしています",
+      "changeAutomationDetail": "このオートメーションはこのプラグインが作成したものではありません。変更される項目: {{fields}}。",
+      "change": "変更",
+      "changeElevatedAutomationDetail": "このオートメーションは、あなたが選択した追加の設定（引数、権限モード、事前チェックコマンド）で Agent を実行します。変更される項目: {{fields}}。",
+      "newPrompt": "新しいプロンプト: 「{{prompt}}」",
+      "unknownProject": "不明なプロジェクト",
+      "automationNewWorkspaces": "オートメーション {{id}}: 実行ごとに {{project}} の新しいワークスペースを使用、スケジュール: {{schedule}}。",
+      "automationInWorkspace": "オートメーション {{id}}: {{project}} / {{workspace}} で実行、スケジュール: {{schedule}}。"
+    }
+  },
+  "checks": {
+    "gitlabAllowedFailure": "失敗を許可",
+    "rerunUnsuccessful": "成功しなかったチェックを再実行"
   },
   "renderer": {
     "lib": {

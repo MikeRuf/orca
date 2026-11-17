@@ -19143,6 +19143,11 @@
         "pasteUnavailable": "No se puede pegar — este chat no acepta entradas en este momento.",
         "model": "Modelo",
         "effort": "Esfuerzo",
+        "contextWindow": "Ventana de contexto",
+        "customValue": "Personalizado…",
+        "customValueLabel": "Tamaño en miles de tokens",
+        "customValueApply": "Aplicar",
+        "customValueRange": "Usa de {{value0}} a {{value1}}",
         "fastMode": "Modo rápido",
         "speed": "Velocidad",
         "thinking": "Razonamiento",
@@ -19165,12 +19170,12 @@
           "xhigh": "Muy alto",
           "max": "Máximo",
           "ultra": "Supremo",
+          "contextWindowDefault": "Predeterminado",
           "standard": "Estándar"
         },
         "noCommandsOrSkills": "No hay comandos o habilidades coincidentes",
         "commands": "Comandos",
         "skills": "Habilidades",
-        "checkingSkills": "Buscando habilidades nuevas…",
         "loadingSkills": "Cargando habilidades…",
         "clearDescription": "Borrar el contexto de la conversación",
         "skillsUnavailableHost": "Las habilidades no se pueden listar en los chats SSH",
@@ -19216,7 +19221,8 @@
         "sessionAttachmentsFailed": "El chat {{agent}} no se pudo abrir. Utilice Reintentar en el chat y luego adjunte los archivos nuevamente.",
         "sessionAttachmentsStarting": "El chat de {{agent}} aún se está abriendo. Espera a que se abra y vuelve a adjuntar los archivos.",
         "moreControls": "Más controles de chat",
-        "exitPlanMode": "Salir del modo de planificación"
+        "exitPlanMode": "Salir del modo de planificación",
+        "checkingSkills": "Buscando habilidades nuevas…"
       },
       "tool": {
         "result": "Resultado",
@@ -19351,8 +19357,6 @@
         "toggleDetails": "Alternar detalles del turno"
       },
       "jumpToLatest": "Saltar a lo último",
-      "newRowsAnnouncement": "Llegaron mensajes nuevos mientras no estabas",
-      "newRowsMarker": "Nuevo",
       "find": {
         "label": "Buscar en el chat",
         "noResults": "Sin resultados",
@@ -19761,10 +19765,10 @@
         "unavailable": "Espera a que el chat termine de conectarse.",
         "pending": "Espera a que la conversación vuelva al mensaje anterior.",
         "title": "¿Rebobinar hasta aquí?",
+        "confirmation": "¿Descartar este mensaje y todo lo que viene después? El mensaje vuelve al compositor para que puedas editarlo y reenviarlo. Los cambios de archivos en disco se conservan.",
         "confirm": "Rebobinar",
         "cancel": "Cancelar",
-        "action": "Rebobinar hasta aquí",
-        "confirmation": "¿Descartar este mensaje y todo lo que viene después? El mensaje vuelve al compositor para que puedas editarlo y reenviarlo. Los cambios de archivos en disco se conservan."
+        "action": "Rebobinar hasta aquí"
       },
       "visualUnavailable": "Visualización no disponible",
       "visualLoading": "Cargando visualización",
@@ -19773,9 +19777,9 @@
         "description": "Abrir el historial de sesiones de agentes",
         "argumentHint": "[búsqueda]",
         "workspaceUnavailable": "El workspace de este chat aún no se ha cargado. Vuelve a probar /resume en un momento.",
-        "replace": "Reemplazar",
+        "replaceTitle": "¿Reemplazar este chat?",
         "replaceDescription": "Reanudar “{{title}}” aquí detendrá lo que {{agent}} está haciendo en este chat.",
-        "replaceTitle": "¿Reemplazar este chat?"
+        "replace": "Reemplazar"
       },
       "antigravitySignIn": {
         "sentence": "Antigravity no ha iniciado sesión. Inicia sesión en <settings>Ajustes → Cuentas → Antigravity</settings>. Después, vuelve a enviar tu mensaje."
@@ -19995,7 +19999,9 @@
         "many_many": "{{count}} solicitudes de extracción creadas"
       },
       "splitRight": "Dividir a la derecha",
-      "splitDown": "Dividir hacia abajo"
+      "splitDown": "Dividir hacia abajo",
+      "newRowsAnnouncement": "Llegaron mensajes nuevos mientras no estabas",
+      "newRowsMarker": "Nuevo"
     },
     "tab": {
       "bar": {

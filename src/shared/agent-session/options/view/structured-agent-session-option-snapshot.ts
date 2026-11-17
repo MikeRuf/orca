@@ -28,6 +28,10 @@ import { listedModelDescribing } from '../model-catalog/structured-agent-session
 import { structuredAgentSessionPermissionDescriptor } from '../permissions/structured-agent-session-permission-option'
 import { structuredAgentSessionInteractionDescriptor } from '../permissions/agent-session-interaction-mode'
 import type { StructuredAgentSessionOptionState } from '../structured-agent-session-options'
+import {
+  isAgentSessionContextWindow,
+  structuredAgentSessionContextWindowDescriptor
+} from '../agent-session-context-window'
 
 /** Unpickable placeholder cannot become a launch selection before a real model answer. */
 const PROVIDER_DEFAULT_MODEL_PLACEHOLDER: SessionOptionDescriptor = {
@@ -260,7 +264,13 @@ export function structuredAgentSessionOptionSnapshot(
     state.fastModeRestricted && option.id === 'fastMode' ? { ...option, settable: false } : option
   )
   const interaction = structuredAgentSessionInteractionDescriptor(state)
-  return [...options, ...(permission ? [permission] : []), ...(interaction ? [interaction] : [])]
+  const contextWindow = structuredAgentSessionContextWindowDescriptor(state)
+  return [
+    ...options,
+    ...(permission ? [permission] : []),
+    ...(interaction ? [interaction] : []),
+    ...(contextWindow ? [contextWindow] : [])
+  ]
 }
 
 /** Presentation only until a launch or fence can carry picks. */
@@ -286,14 +296,18 @@ export function canSetStructuredAgentSessionOption(
   if (!interactionReady || pending || (id === 'fastMode' && state.fastModeRestricted)) {
     return false
   }
-  if (id === 'permissionMode' || id === 'interactionMode') {
+  if (id === 'permissionMode' || id === 'interactionMode' || id === 'contextWindow') {
     const descriptor = snapshot.find((entry) => entry.id === id)
     return (
       descriptor?.settable === true &&
       descriptor.kind.type === 'select' &&
       (value === 'own'
         ? state.permissionOwnSupported === true
-        : descriptor.kind.choices.some((choice) => choice.value === value))
+        : descriptor.kind.choices.some((choice) => choice.value === value) ||
+          // A typed size is valid without being listed; only the current one joins the choices.
+          (id === 'contextWindow' &&
+            descriptor.kind.custom !== undefined &&
+            isAgentSessionContextWindow(value)))
     )
   }
   return (

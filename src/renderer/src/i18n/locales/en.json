@@ -20911,7 +20911,6 @@
         "noCommands": "No matching commands",
         "commands": "Commands",
         "skills": "Skills",
-        "checkingSkills": "Checking for new skills...",
         "loadingSkills": "Loading skills...",
         "skillsLoaded": "Skills loaded",
         "clearDescription": "Clear conversation context",
@@ -20951,6 +20950,11 @@
         "pasteUnavailable": "Can't paste — this chat isn't accepting input right now.",
         "model": "Model",
         "effort": "Effort",
+        "contextWindow": "Context window",
+        "customValue": "Custom…",
+        "customValueLabel": "Size in thousands of tokens",
+        "customValueApply": "Set",
+        "customValueRange": "Use {{value0}} to {{value1}}",
         "fastMode": "Fast mode",
         "speed": "Speed",
         "thinking": "Thinking",
@@ -20974,6 +20978,7 @@
           "xhigh": "Extra high",
           "max": "Max",
           "ultra": "Ultra",
+          "contextWindowDefault": "Default",
           "standard": "Standard"
         },
         "pendingAttachmentLimit": "Too many attachments are waiting. Finish composing before attaching more.",
@@ -21009,6 +21014,7 @@
           "xhigh": "XHigh"
         },
         "imageUnavailable": "Preview unavailable",
+        "checkingSkills": "Checking for new skills...",
         "permissionAppliesNextMessage": "{{saved}} applies to your next message; running {{active}}",
         "modelAndEffortValue": "{{model}} · {{effort}}",
         "modelAndEffort": "Model and effort"
@@ -21190,8 +21196,6 @@
         "openAgent": "Open {{value0}}"
       },
       "jumpToLatest": "Jump to latest",
-      "newRowsAnnouncement": "New messages arrived while you were away",
-      "newRowsMarker": "New",
       "find": {
         "label": "Find in chat",
         "noResults": "No results",
@@ -21501,8 +21505,6 @@
       "thoughtForDuration": "Thought for {{duration}}",
       "explicitChatWsl": "Chat is not available in WSL. Open the agent in a terminal instead.",
       "explicitChatWslAddHost": "Chat is not available in a WSL folder opened from Windows. Add the distro as a WSL host (Add a project → Add remote host → Add WSL distro) to chat there, or open the agent in a terminal.",
-      "explicitChatWslMoveToHost": "Chat is not available in a WSL folder opened from Windows. Run the project on a WSL host to chat there, or open the agent in a terminal.",
-      "explicitChatWslRunAsHost": "Run {{distro}} as a host",
       "explicitChatSsh": "Chat is not available over SSH. Open the agent in a terminal instead.",
       "explicitChatUnavailable": "This workspace cannot run the chat. Check the agent installation or open it in a terminal.",
       "structuredSessionHostDeclined": "Opened {{value0}} in a terminal",
@@ -21530,9 +21532,6 @@
       },
       "antigravitySignIn": {
         "sentence": "Antigravity isn't signed in. Sign in under <settings>Settings → Accounts → Antigravity</settings>. Then send your message again."
-      },
-      "signIn": {
-        "title": "Sign in to {{agent}} to start chatting"
       },
       "claudeSignIn": {
         "signingIn": "Signing in…"
@@ -21775,6 +21774,47 @@
           "alreadyRedeemed": "That reset credit was already used."
         }
       },
+      "cardKindHidden": {
+        "description": "You can change this anytime in",
+        "settingsLink": "Settings > Chat UI > Turn activity",
+        "failed": "Couldn't save that. You can turn it off in Settings > Chat UI > Turn activity."
+      },
+      "ciResultLine": {
+        "failingLead": "CI failing on",
+        "greenLead": "CI green on",
+        "at": "at",
+        "hide": "Don't show CI result lines",
+        "hidden": "Orca won't show CI result lines anymore"
+      },
+      "openedPullRequests": {
+        "one": "Opened {{name}}",
+        "hide": "Don't show opened pull requests",
+        "hidden": "Orca won't show opened pull requests anymore",
+        "many_one": "Opened {{count}} pull request",
+        "many_other": "Opened {{count}} pull requests"
+      },
+      "explicitChatWindows": "This agent's chat isn't available on Windows yet. Open it in a terminal instead.",
+      "splitRight": "Split Right",
+      "splitDown": "Split Down",
+      "sideChat": {
+        "description": "Ask a side question in a fork beside this chat",
+        "argumentHint": "<question>",
+        "notReady": "Side chats are not ready yet. Try again in a moment.",
+        "replyRunning": "Available when this reply finishes.",
+        "noReply": "Available after the first reply.",
+        "textOnly": "Side chats take text only. Remove attachments, then send it again.",
+        "questionNotSent": "{{agent}} didn't get your question",
+        "questionNotSentDetail": "Your question is still in this chat. Send /btw again to retry.",
+        "questionUnconfirmed": "{{agent}} couldn't confirm the side chat got your question",
+        "questionUnconfirmedDetail": "Check the side chat before asking again. Your question is still in this chat."
+      },
+      "newRowsAnnouncement": "New messages arrived while you were away",
+      "newRowsMarker": "New",
+      "signIn": {
+        "title": "Sign in to {{agent}} to start chatting"
+      },
+      "explicitChatWslMoveToHost": "Chat is not available in a WSL folder opened from Windows. Run the project on a WSL host to chat there, or open the agent in a terminal.",
+      "explicitChatWslRunAsHost": "Run {{distro}} as a host",
       "mcp": {
         "title": "MCP servers",
         "close": "Close",
@@ -21826,40 +21866,6 @@
           "unfinished": "Sign-in isn’t finished yet. Finish it on the page that opened, then press Done.",
           "pastePlaceholder": "http://localhost:…"
         }
-      },
-      "cardKindHidden": {
-        "description": "You can change this anytime in",
-        "settingsLink": "Settings > Chat UI > Turn activity",
-        "failed": "Couldn't save that. You can turn it off in Settings > Chat UI > Turn activity."
-      },
-      "ciResultLine": {
-        "failingLead": "CI failing on",
-        "greenLead": "CI green on",
-        "at": "at",
-        "hide": "Don't show CI result lines",
-        "hidden": "Orca won't show CI result lines anymore"
-      },
-      "openedPullRequests": {
-        "one": "Opened {{name}}",
-        "hide": "Don't show opened pull requests",
-        "hidden": "Orca won't show opened pull requests anymore",
-        "many_one": "Opened {{count}} pull request",
-        "many_other": "Opened {{count}} pull requests"
-      },
-      "explicitChatWindows": "This agent's chat isn't available on Windows yet. Open it in a terminal instead.",
-      "splitRight": "Split Right",
-      "splitDown": "Split Down",
-      "sideChat": {
-        "description": "Ask a side question in a fork beside this chat",
-        "argumentHint": "<question>",
-        "notReady": "Side chats are not ready yet. Try again in a moment.",
-        "replyRunning": "Available when this reply finishes.",
-        "noReply": "Available after the first reply.",
-        "textOnly": "Side chats take text only. Remove attachments, then send it again.",
-        "questionNotSent": "{{agent}} didn't get your question",
-        "questionNotSentDetail": "Your question is still in this chat. Send /btw again to retry.",
-        "questionUnconfirmed": "{{agent}} couldn't confirm the side chat got your question",
-        "questionUnconfirmedDetail": "Check the side chat before asking again. Your question is still in this chat."
       },
       "urlRequest": {
         "title": "Sign-in requested",

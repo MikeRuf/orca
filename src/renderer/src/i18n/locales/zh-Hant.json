@@ -19203,7 +19203,6 @@
         "noCommands": "沒有符合的命令",
         "commands": "命令",
         "skills": "技能",
-        "checkingSkills": "正在檢查新技能…",
         "loadingSkills": "正在載入技能…",
         "skillsLoaded": "技能已載入",
         "clearDescription": "清除對話上下文",
@@ -19243,6 +19242,11 @@
         "pasteUnavailable": "無法貼上 — 此聊天目前不接受輸入。",
         "model": "模型",
         "effort": "推理強度",
+        "contextWindow": "上下文視窗",
+        "customValue": "自訂…",
+        "customValueLabel": "大小（千個 token）",
+        "customValueApply": "設定",
+        "customValueRange": "請輸入 {{value0}} 到 {{value1}}",
         "fastMode": "快速模式",
         "speed": "速度",
         "thinking": "思考",
@@ -19265,6 +19269,7 @@
           "xhigh": "極高",
           "max": "最大",
           "ultra": "極致",
+          "contextWindowDefault": "預設",
           "standard": "標準"
         },
         "pendingAttachmentLimit": "等待附加的檔案過多。請先完成訊息，再附加更多檔案。",
@@ -19301,7 +19306,8 @@
         },
         "imageUnavailable": "無法預覽",
         "moreControls": "更多聊天控制項",
-        "exitPlanMode": "結束計畫模式"
+        "exitPlanMode": "結束計畫模式",
+        "checkingSkills": "正在檢查新技能…"
       },
       "tool": {
         "exitCode": "結束碼 {{value0}}",
@@ -19434,8 +19440,6 @@
         "stateUnverifiableCount_other": "狀態不可用：{{value0}}"
       },
       "jumpToLatest": "跳到最新訊息",
-      "newRowsAnnouncement": "你離開期間有新訊息",
-      "newRowsMarker": "新訊息",
       "find": {
         "label": "在聊天中查詢",
         "noResults": "沒有結果",
@@ -19555,10 +19559,10 @@
         "unavailable": "請等待聊天完成連線。",
         "pending": "請等待對話回溯到更早的訊息。",
         "title": "回溯到此處？",
+        "confirmation": "要丟棄此訊息及其之後的所有內容嗎？該訊息會返回到輸入框，以便您編輯並重新傳送。磁碟上的檔案變更會保留。",
         "confirm": "回溯",
         "cancel": "取消",
-        "action": "回溯到此處",
-        "confirmation": "要丟棄此訊息及其之後的所有內容嗎？該訊息會返回到輸入框，以便您編輯並重新傳送。磁碟上的檔案變更會保留。"
+        "action": "回溯到此處"
       },
       "drop": {
         "messageTitle": "拖放以附加到此訊息",
@@ -19704,9 +19708,9 @@
         "description": "開啟代理程式工作階段歷史記錄",
         "argumentHint": "[搜尋]",
         "workspaceUnavailable": "此聊天的工作區尚未載入。請稍後再試一次 /resume。",
-        "replace": "取代",
+        "replaceTitle": "要取代此聊天嗎？",
         "replaceDescription": "在此繼續「{{title}}」會停止 {{agent}} 在此聊天中進行的工作。",
-        "replaceTitle": "要取代此聊天嗎？"
+        "replace": "取代"
       },
       "hostPermission": {
         "checkAgain": "再次檢查",
@@ -19905,7 +19909,9 @@
         "many_other": "已建立 {{count}} 個 PR"
       },
       "splitRight": "向右分割",
-      "splitDown": "向下分割"
+      "splitDown": "向下分割",
+      "newRowsAnnouncement": "你離開期間有新訊息",
+      "newRowsMarker": "新訊息"
     },
     "tab": {
       "bar": {

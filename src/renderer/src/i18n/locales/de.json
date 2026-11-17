@@ -19466,7 +19466,6 @@
         "noCommands": "Keine passenden Befehle",
         "commands": "Befehle",
         "skills": "Skills",
-        "checkingSkills": "Nach neuen Skills wird gesucht…",
         "loadingSkills": "Skills werden geladen…",
         "skillsLoaded": "Skills geladen",
         "clearDescription": "Unterhaltungskontext leeren",
@@ -19506,6 +19505,11 @@
         "pasteUnavailable": "Einfügen nicht möglich — dieser Chat nimmt derzeit keine Eingaben an.",
         "model": "Modell",
         "effort": "Denkaufwand",
+        "contextWindow": "Kontextfenster",
+        "customValue": "Eigene…",
+        "customValueLabel": "Größe in Tausend Tokens",
+        "customValueApply": "Festlegen",
+        "customValueRange": "{{value0}} bis {{value1}} verwenden",
         "fastMode": "Schnellmodus",
         "speed": "Geschwindigkeit",
         "thinking": "Nachdenken",
@@ -19528,6 +19532,7 @@
           "xhigh": "Sehr hoch",
           "max": "Maximal",
           "ultra": "Ultra",
+          "contextWindowDefault": "Standard",
           "standard": "Standard"
         },
         "pendingAttachmentLimit": "Zu viele Anhänge warten. Die Nachricht fertigstellen, bevor weitere Dateien angehängt werden.",
@@ -19564,7 +19569,8 @@
         },
         "imageUnavailable": "Vorschau nicht verfügbar",
         "moreControls": "Weitere Chat-Steuerelemente",
-        "exitPlanMode": "Planungsmodus verlassen"
+        "exitPlanMode": "Planungsmodus verlassen",
+        "checkingSkills": "Nach neuen Skills wird gesucht…"
       },
       "tool": {
         "exitCode": "Rückgabecode {{value0}}",
@@ -19734,8 +19740,6 @@
         "stateUnverifiableCount_other": "{{value0}} mit nicht verfügbarem Status"
       },
       "jumpToLatest": "Zur neuesten Nachricht springen",
-      "newRowsAnnouncement": "Während der Abwesenheit sind neue Nachrichten eingegangen",
-      "newRowsMarker": "Neu",
       "find": {
         "label": "Im Chat suchen",
         "noResults": "Keine Ergebnisse",
@@ -19863,10 +19867,10 @@
         "unavailable": "Warten, bis die Verbindung zum Chat hergestellt ist.",
         "pending": "Warten, bis das Gespräch zur früheren Nachricht zurückgesetzt wurde.",
         "title": "Bis hierher zurücksetzen?",
+        "confirmation": "Diese Nachricht und alle folgenden verwerfen? Die Nachricht steht danach wieder im Eingabefeld und kann bearbeitet und erneut gesendet werden. Dateiänderungen auf dem Datenträger bleiben erhalten.",
         "confirm": "Zurücksetzen",
         "cancel": "Abbrechen",
-        "action": "Bis hierher zurücksetzen",
-        "confirmation": "Diese Nachricht und alle folgenden verwerfen? Die Nachricht steht danach wieder im Eingabefeld und kann bearbeitet und erneut gesendet werden. Dateiänderungen auf dem Datenträger bleiben erhalten."
+        "action": "Bis hierher zurücksetzen"
       },
       "drop": {
         "messageTitle": "Ablegen, um Dateien an diese Nachricht anzuhängen",
@@ -20015,9 +20019,9 @@
         "description": "Agenten-Sitzungsverlauf öffnen",
         "argumentHint": "[search]",
         "workspaceUnavailable": "Der Arbeitsbereich dieses Chats ist noch nicht geladen. /resume gleich erneut versuchen.",
-        "replace": "Ersetzen",
+        "replaceTitle": "Diesen Chat ersetzen?",
         "replaceDescription": "Wenn „{{title}}“ hier fortgesetzt wird, wird die aktuelle Arbeit von {{agent}} in diesem Chat gestoppt.",
-        "replaceTitle": "Diesen Chat ersetzen?"
+        "replace": "Ersetzen"
       },
       "hostPermission": {
         "checkAgain": "Erneut prüfen",
@@ -20216,7 +20220,9 @@
         "many_other": "{{count}} Pull Requests erstellt"
       },
       "splitRight": "Rechts teilen",
-      "splitDown": "Unten teilen"
+      "splitDown": "Unten teilen",
+      "newRowsAnnouncement": "Während der Abwesenheit sind neue Nachrichten eingegangen",
+      "newRowsMarker": "Neu"
     },
     "tab": {
       "bar": {

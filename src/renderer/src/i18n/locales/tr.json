@@ -19614,7 +19614,6 @@
         "noCommands": "Eşleşen komut yok",
         "commands": "Komutlar",
         "skills": "Beceriler",
-        "checkingSkills": "Yeni beceriler denetleniyor…",
         "loadingSkills": "Beceriler yükleniyor...",
         "skillsLoaded": "Beceriler yüklendi",
         "clearDescription": "Konuşma bağlamını temizle",
@@ -19654,6 +19653,11 @@
         "pasteUnavailable": "Yapıştırılamıyor — bu sohbet şu anda girdi kabul etmiyor.",
         "model": "Model",
         "effort": "Çaba",
+        "contextWindow": "Bağlam penceresi",
+        "customValue": "Özel…",
+        "customValueLabel": "Bin token cinsinden boyut",
+        "customValueApply": "Ayarla",
+        "customValueRange": "{{value0}} ile {{value1}} arasında girin",
         "fastMode": "Hızlı mod",
         "speed": "Hız",
         "thinking": "Düşünüyor",
@@ -19676,6 +19680,7 @@
           "xhigh": "Ekstra yüksek",
           "max": "Maks",
           "ultra": "Ultra",
+          "contextWindowDefault": "Varsayılan",
           "standard": "Standart"
         },
         "pendingAttachmentLimit": "Bekleyen ek sayısı çok fazla. Daha fazla eklemeden önce yazmayı bitirin.",
@@ -19712,7 +19717,8 @@
         },
         "imageUnavailable": "Önizleme kullanılamıyor",
         "exitPlanMode": "Plan modundan çık",
-        "moreControls": "Diğer sohbet kontrolleri"
+        "moreControls": "Diğer sohbet kontrolleri",
+        "checkingSkills": "Yeni beceriler denetleniyor…"
       },
       "tool": {
         "exitCode": "çıkış {{value0}}",
@@ -19882,8 +19888,6 @@
         "stateUnverifiableCount_other": "Durum bilgisi alınamıyor: {{value0}}"
       },
       "jumpToLatest": "En son öğeye git",
-      "newRowsAnnouncement": "Siz yokken yeni mesajlar geldi",
-      "newRowsMarker": "Yeni",
       "find": {
         "label": "Sohbette bul",
         "noResults": "Sonuç yok",
@@ -20011,10 +20015,10 @@
         "unavailable": "Sohbet bağlantısının tamamlanmasını bekleyin.",
         "pending": "Sohbetin önceki mesaja dönmesini bekleyin.",
         "title": "Buraya geri dönülsün mü?",
+        "confirmation": "Bu mesaj ve sonrasındaki her şey silinsin mi? Mesaj, düzenleyip yeniden gönderebilmeniz için yazma kutusuna geri getirilir. Diskteki dosya değişiklikleri korunur.",
         "confirm": "Geri dön",
         "cancel": "İptal",
-        "action": "Buraya geri dön",
-        "confirmation": "Bu mesaj ve sonrasındaki her şey silinsin mi? Mesaj, düzenleyip yeniden gönderebilmeniz için yazma kutusuna geri getirilir. Diskteki dosya değişiklikleri korunur."
+        "action": "Buraya geri dön"
       },
       "drop": {
         "messageTitle": "Bu mesaja eklemek için bırakın",
@@ -20160,9 +20164,9 @@
         "description": "Ajan Oturum Geçmişini aç",
         "argumentHint": "[arama]",
         "workspaceUnavailable": "Bu sohbetin çalışma alanı henüz yüklenmedi. Birazdan /resume komutunu yeniden deneyin.",
-        "replace": "Değiştir",
+        "replaceTitle": "Bu sohbet değiştirilsin mi?",
         "replaceDescription": "“{{title}}” sohbetini burada sürdürmek, {{agent}} ajanının bu sohbetteki çalışmasını durdurur.",
-        "replaceTitle": "Bu sohbet değiştirilsin mi?"
+        "replace": "Değiştir"
       },
       "hostPermission": {
         "checkAgain": "Yeniden kontrol et",
@@ -20361,7 +20365,9 @@
         "many_other": "{{count}} pull request oluşturuldu"
       },
       "splitRight": "Sağa Böl",
-      "splitDown": "Aşağı Böl"
+      "splitDown": "Aşağı Böl",
+      "newRowsAnnouncement": "Siz yokken yeni mesajlar geldi",
+      "newRowsMarker": "Yeni"
     },
     "tab": {
       "bar": {

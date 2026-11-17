@@ -20656,7 +20656,6 @@
         "noCommands": "Nenhum comando correspondente",
         "commands": "Comandos",
         "skills": "Skills",
-        "checkingSkills": "Procurando novas habilidades…",
         "loadingSkills": "Carregando skills...",
         "skillsLoaded": "Skills carregadas",
         "skillsUnavailableHost": "As skills não estão disponíveis para este host",
@@ -20680,6 +20679,11 @@
         "worktreeNotReady": "Worktree não está pronta — tente novamente em um momento.",
         "model": "Modelo",
         "effort": "Esforço",
+        "contextWindow": "Janela de contexto",
+        "customValue": "Personalizado…",
+        "customValueLabel": "Tamanho em milhares de tokens",
+        "customValueApply": "Definir",
+        "customValueRange": "Use de {{value0}} a {{value1}}",
         "fastMode": "Modo rápido",
         "thinking": "Pensando",
         "sessionOptions": "Opções da sessão",
@@ -20699,6 +20703,7 @@
           "xhigh": "Extra alto",
           "max": "Máximo",
           "ultra": "Ultra",
+          "contextWindowDefault": "Padrão",
           "standard": "Padrão",
           "ultracode": "Ultracode"
         },
@@ -20758,7 +20763,8 @@
         },
         "imageUnavailable": "Prévia indisponível",
         "exitPlanMode": "Sair do modo de planejamento",
-        "moreControls": "Mais controles do chat"
+        "moreControls": "Mais controles do chat",
+        "checkingSkills": "Procurando novas habilidades…"
       },
       "tool": {
         "exitCode": "saída {{value0}}",
@@ -21279,8 +21285,6 @@
         "notDoneGoalChangeIncomplete": "Não foi possível concluir a alteração do objetivo. Verifique o chat.",
         "mailOwnerUnconfirmed": "Orca não conseguiu confirmar se esta mensagem ainda se destina a este chat."
       },
-      "newRowsAnnouncement": "Novas mensagens chegaram enquanto você estava ausente",
-      "newRowsMarker": "Novas",
       "find": {
         "label": "Localizar no chat",
         "noResults": "Nenhum resultado",
@@ -21319,10 +21323,10 @@
         "unavailable": "Aguarde o término da conexão do chat.",
         "pending": "Aguarde a conversa voltar à mensagem anterior.",
         "title": "Voltar até aqui?",
+        "confirmation": "Descartar esta mensagem e tudo depois dela? A mensagem volta ao campo de texto para você editar e enviar novamente. As alterações nos arquivos em disco são mantidas.",
         "confirm": "Voltar",
         "cancel": "Cancelar",
-        "action": "Voltar até aqui",
-        "confirmation": "Descartar esta mensagem e tudo depois dela? A mensagem volta ao campo de texto para você editar e enviar novamente. As alterações nos arquivos em disco são mantidas."
+        "action": "Voltar até aqui"
       },
       "wrapLines": "Quebrar linhas",
       "disableLineWrap": "Desativar quebra de linha",
@@ -21469,9 +21473,9 @@
         "description": "Abrir histórico de sessões do agente",
         "argumentHint": "[busca]",
         "workspaceUnavailable": "O espaço de trabalho deste chat ainda não foi carregado. Tente /resume novamente em instantes.",
-        "replace": "Substituir",
+        "replaceTitle": "Substituir este chat?",
         "replaceDescription": "Retomar “{{title}}” aqui interromperá o que o {{agent}} está fazendo neste chat.",
-        "replaceTitle": "Substituir este chat?"
+        "replace": "Substituir"
       },
       "hostPermission": {
         "checkAgain": "Verificar novamente",
@@ -21673,6 +21677,8 @@
       },
       "splitRight": "Dividir à direita",
       "splitDown": "Dividir para baixo",
+      "newRowsAnnouncement": "Novas mensagens chegaram enquanto você estava ausente",
+      "newRowsMarker": "Novas",
       "editDeliveryNotice": "Editar",
       "explicitChatWslAddHost": "O bate-papo não está disponível em uma pasta WSL aberta no Windows. Adicione a distribuição como um host WSL (Adicionar um projeto → Adicionar host remoto → Adicionar distribuição WSL) para conversar lá ou abra o agente em um terminal.",
       "githubPeek": {

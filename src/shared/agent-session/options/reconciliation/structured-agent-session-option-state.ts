@@ -14,8 +14,14 @@ const ANSWERED_VALUE_IDS = [
   'effort',
   'fastMode',
   'serviceTier',
-  'interactionMode'
+  'interactionMode',
+  'contextWindow'
 ] as const
+
+/** Model-independent picks a host answers without any model catalog. */
+export function isCatalogFreeStructuredOption(id: string): boolean {
+  return id === 'interactionMode' || id === 'contextWindow'
+}
 
 export function createStructuredAgentSessionOptionRecord(
   agent: AgentType

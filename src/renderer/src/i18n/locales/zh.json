@@ -19731,9 +19731,6 @@
         "pasteNotSaved": "此粘贴内容未保存。请重新粘贴或将其移除",
         "pastedTextTooLarge": "此次粘贴会使消息超过单条消息 256 KB 的上限。请缩短后再粘贴",
         "imageUnavailable": "预览不可用",
-        "permissionAppliesNextMessage": "{{saved}} 从下一条消息起生效；当前为 {{active}}",
-        "modelAndEffortValue": "{{model}} · {{effort}}",
-        "modelAndEffort": "模型和推理强度",
         "draftNotSaved": "此草稿尚未保存成功，Orca 会继续尝试",
         "imageNotBroughtBack": "无法随此草稿恢复 {{name}}，请重新附加或将其移除",
         "pastedImageNotBroughtBack": "无法随此草稿恢复这张粘贴的图片，请将其移除，如仍需要请重新粘贴",
@@ -19748,6 +19745,11 @@
         "pasteUnavailable": "无法粘贴 — 此聊天当前不接受输入",
         "model": "模型",
         "effort": "推理强度",
+        "contextWindow": "上下文窗口",
+        "customValue": "自定义…",
+        "customValueLabel": "大小（千个 token）",
+        "customValueApply": "设置",
+        "customValueRange": "请输入 {{value0}} 到 {{value1}}",
         "fastMode": "快速模式",
         "speed": "速度",
         "thinking": "思考",
@@ -19770,13 +19772,13 @@
           "xhigh": "极高",
           "max": "最大",
           "ultra": "极致",
+          "contextWindowDefault": "默认",
           "standard": "标准",
           "ultracode": "Ultracode"
         },
         "noCommandsOrSkills": "没有匹配的命令或技能",
         "commands": "命令",
         "skills": "技能",
-        "checkingSkills": "正在检查新技能…",
         "loadingSkills": "正在加载技能…",
         "clearDescription": "清除对话上下文",
         "skillsUnavailableHost": "SSH 聊天中无法列出技能",
@@ -19826,7 +19828,11 @@
         "sessionAttachmentsFailed": "{{agent}} 聊天无法打开，请在聊天中点击重试，然后重新附加文件",
         "sessionAttachmentsStarting": "{{agent}} 聊天仍在打开中，请等待其打开后再重新附加文件",
         "moreControls": "更多聊天控件",
-        "exitPlanMode": "退出计划模式"
+        "exitPlanMode": "退出计划模式",
+        "checkingSkills": "正在检查新技能…",
+        "permissionAppliesNextMessage": "{{saved}} 从下一条消息起生效；当前为 {{active}}",
+        "modelAndEffortValue": "{{model}} · {{effort}}",
+        "modelAndEffort": "模型和推理强度"
       },
       "tool": {
         "result": "结果",
@@ -21787,18 +21793,6 @@
       "keywordDefaultProject": "默认项目",
       "keywordIssuePicker": "议题选择器"
     },
-    "RepositoryBrowserProfileSection": {
-      "title": "浏览器配置文件",
-      "description": "此项目中新打开的浏览器标签页（包括智能体打开的）会使用此配置文件。让多个项目指向同一个配置文件，即可共享登录状态",
-      "keywordProfile": "浏览器配置文件",
-      "keywordCookies": "Cookie",
-      "keywordSignIn": "登录",
-      "selectLabel": "新标签页使用的配置文件",
-      "inherit": "浏览器设置（{{scope}}）",
-      "deletedOption": "已删除的配置文件",
-      "deleted": "为此项目选择的配置文件已被删除，因此新标签页会沿用浏览器设置",
-      "saveFailed": "无法保存浏览器配置文件，此项目所在主机上的 Orca 可能需要更新"
-    },
     "managed-runtime": {
       "cancelled": "已取消安装",
       "cancelling": "正在取消…",
@@ -21968,6 +21962,18 @@
         "cleaningUp": "正在整理…",
         "skipCleanup": "跳过整理，按原文插入"
       }
+    },
+    "RepositoryBrowserProfileSection": {
+      "title": "浏览器配置文件",
+      "description": "此项目中新打开的浏览器标签页（包括智能体打开的）会使用此配置文件。让多个项目指向同一个配置文件，即可共享登录状态",
+      "keywordProfile": "浏览器配置文件",
+      "keywordCookies": "Cookie",
+      "keywordSignIn": "登录",
+      "selectLabel": "新标签页使用的配置文件",
+      "inherit": "浏览器设置（{{scope}}）",
+      "deletedOption": "已删除的配置文件",
+      "deleted": "为此项目选择的配置文件已被删除，因此新标签页会沿用浏览器设置",
+      "saveFailed": "无法保存浏览器配置文件，此项目所在主机上的 Orca 可能需要更新"
     },
     "orchestrationCrew": {
       "mentionAll": "全部提及",
