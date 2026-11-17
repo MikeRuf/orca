@@ -1,9 +1,9 @@
 // Type-only, so the cycle back through workspace-cleanup-filter-model erases at build.
 import type { WorkspaceCleanupBrowseState } from './workspace-cleanup-browse-state'
-import type { ExecutionHostId } from '../execution-host'
+import type { ExecutionHostId } from '../execution-host/execution-host'
 import type { HostedReviewProvider } from '../source-control/hosted-review/hosted-review-contracts'
 import { getWorkspaceCleanupCandidateHostId } from './workspace-cleanup-host-identity'
-import type { WorktreeAtRiskLocalFiles } from '../worktree/at-risk-local-files'
+import type { WorktreeAtRiskLocalFiles } from '../worktree/removal/at-risk-local-files'
 import type { AutomationWorkspaceProvenance } from '../worktree/types'
 import {
   isFinalAutomationRunStatus,
@@ -20,6 +20,7 @@ export type WorkspaceCleanupReason =
   | 'merged'
   | 'unchanged'
   | 'automation-run'
+  | 'orchestration-worker'
 
 /** What HEAD holds beyond the workspace's base ref (worktree base, else project base, else repo default). */
 export type WorkspaceCleanupMergeEvidence = {
@@ -33,6 +34,8 @@ export type WorkspaceCleanupMergeEvidence = {
   headInDefaultBranch: boolean
   /** Commits on HEAD the base ref cannot reach. */
   aheadOfDefault: number
+  /** Set only for a released orchestration worker's workspace: every change on HEAD is in its coordinator's branch. */
+  headInCoordinatorBranch?: boolean
 }
 
 export type WorkspaceCleanupInactivityInput = {
@@ -92,7 +95,9 @@ export type WorkspaceCleanupCandidate = {
     browserTabCount: number
     diffCommentCount: number
     newestDiffCommentAt: number | null
-    retainedDoneAgentCount: number
+    finishedAgentCount?: number | null
+    /** Accepted from older hosts, never used as finished-agent evidence. */
+    retainedDoneAgentCount?: number
   }
   git: {
     clean: boolean | null
@@ -240,13 +245,24 @@ export function getWorkspaceCleanupInactivityReasons(
   return reasons
 }
 
-/** HEAD's commits already live in the base or in a merged review, so removing it loses no commits. */
+/** HEAD's commits already live in the base, a merged review or the coordinator's branch, so removing it loses no commits. */
 export function isWorkspaceCleanupHeadLanded(
   merge: WorkspaceCleanupMergeEvidence | undefined
 ): boolean {
   return (
-    merge !== undefined && (merge.headInDefaultBranch || merge.mergedReview?.containsHead === true)
+    merge !== undefined &&
+    (merge.headInDefaultBranch ||
+      merge.mergedReview?.containsHead === true ||
+      merge.headInCoordinatorBranch === true)
   )
+}
+
+/** A workspace a worker start created, whose worker was released, and whose work already landed. */
+export function getWorkspaceCleanupOrchestrationWorkerReasons(
+  releasedWorker: boolean,
+  merge: WorkspaceCleanupMergeEvidence | undefined
+): WorkspaceCleanupReason[] {
+  return releasedWorker && isWorkspaceCleanupHeadLanded(merge) ? ['orchestration-worker'] : []
 }
 
 export function getWorkspaceCleanupMergeReasons(

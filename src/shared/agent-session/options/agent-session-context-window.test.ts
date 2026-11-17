@@ -1,12 +1,12 @@
 import { describe, expect, it } from 'vitest'
-import '../../native-chat/input/native-chat-session-option-snapshot'
-import { canSetStructuredAgentSessionOption } from './structured-agent-session-option-snapshot'
+import '../../native-chat/input/session-options/native-chat-session-option-snapshot'
+import { canSetStructuredAgentSessionOption } from './view/structured-agent-session-option-snapshot'
 import {
   applyStructuredAgentSessionOptions,
   createStructuredAgentSessionOptionState
 } from './structured-agent-session-options'
-import './structured-agent-session-option-view'
-import { structuredAgentSessionSeedCatalog } from './structured-agent-session-seed-catalog'
+import './view/structured-agent-session-option-view'
+import { structuredAgentSessionSeedCatalog } from './model-catalog/structured-agent-session-seed-catalog'
 
 function liveClaude() {
   const seed = structuredAgentSessionSeedCatalog('claude')
