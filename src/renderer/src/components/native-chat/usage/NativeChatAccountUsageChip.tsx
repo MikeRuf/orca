@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
 import { translate } from '@/i18n/i18n'
 import { cn } from '@/lib/class-names'
-import { normalizeUsagePercentageDisplay } from '../../../../../shared/usage-percentage-display'
+import { normalizeUsagePercentageDisplay } from '../../../../../shared/agent-usage/display/usage-percentage-display'
 import { useAppStore } from '../../../store'
 import {
   ClaudeAccountShareCells,
@@ -15,8 +15,8 @@ import {
   type ClaudeAccountUsage,
   type ClaudeAccountUsageShare
 } from '../../status-bar/claude-account-usage-view'
-import { clampUsedPercent } from '../../status-bar/tooltip'
-import { formatBareUsagePercentage } from '../../status-bar/usage-percentage-label'
+import { clampUsedPercent } from '../../status-bar/usage/provider-usage-panel'
+import { formatBareUsagePercentage } from '../../status-bar/usage/usage-percentage-label'
 
 function NativeChatAccountUsageCard({
   account,

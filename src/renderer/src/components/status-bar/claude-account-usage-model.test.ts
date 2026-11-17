@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import type { ClaudeAccountsOverview } from '../../../../shared/claude-accounts-overview'
-import type { ProviderRateLimits } from '../../../../shared/rate-limit-types'
+import type { ProviderRateLimits } from '../../../../shared/agent-usage/rate-limits/rate-limit-types'
 import { buildClaudeAccountUsage, resolveClaudeChatAccountId } from './claude-account-usage-model'
 
 const limits = (session: number, weekly: number) =>

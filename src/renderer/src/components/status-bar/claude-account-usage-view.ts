@@ -1,4 +1,4 @@
-import type { ProviderRateLimits } from '../../../../shared/rate-limit-types'
+import type { ProviderRateLimits } from '../../../../shared/agent-usage/rate-limits/rate-limit-types'
 
 /** Share of a window's used percent, in the same points as the window; null until tokens are known. */
 export type ClaudeAccountUsageShare = {
