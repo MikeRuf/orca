@@ -4,8 +4,14 @@ import { getProfileUserDataPath } from '../../../orca-profiles/profile-storage-p
 import { resolveHostStructuredAgentLaunchEnvironment } from '../../agent-session/launch/structured-agent-launch-support'
 import { agentWorkspaceTrustDecisionForWorkspace } from '../../../agent-launch/trust/agent-workspace-trust-spawn'
 import { OrcaRuntimeWithStructuredSessionCliWriterHost } from './structured-session-cli-writer-host'
-import type { AgentSessionAccountHome } from '../../../../shared/agent-session/lifecycle/accounts/agent-session-account-home'
+import {
+  agentSessionAccountHome,
+  type AgentSessionAccountHome
+} from '../../../../shared/agent-session/lifecycle/accounts/agent-session-account-home'
 import type { AgentSessionRecord } from '../../../../shared/agent-session/lifecycle/agent-session-record'
+import { CLAUDE_STRUCTURED_AGENT } from '../../../claude/structured/claude-structured-agent-definition'
+import { chosenClaudeAccountId } from '../../../claude-accounts/chat-account/claude-chat-account-overrides'
+import { getClaudeProfileRouter } from '../../../claude-accounts/profiles/routing/claude-profile-installed-router'
 
 export abstract class OrcaRuntimeWithStructuredSessionAccountHome extends OrcaRuntimeWithStructuredSessionCliWriterHost {
   /** Resolve account home through this host's agent registration; null means unregistered and create refuses. */
@@ -54,6 +60,22 @@ export abstract class OrcaRuntimeWithStructuredSessionAccountHome extends OrcaRu
       )
   }
 
+  /** Must match the launch's pick (prepareClaudeLaunchAccount), or every send retires the agent. */
+  private chosenClaudeAccountHome(record: AgentSessionRecord): AgentSessionAccountHome | null {
+    const router = getClaudeProfileRouter()
+    if (record.provider !== 'claude' || !router) {
+      return null
+    }
+    const accountId = chosenClaudeAccountId(
+      this.requireStore(),
+      record.sessionId,
+      record.location.workspaceId
+    )
+    return accountId && router.accountLogin(accountId)
+      ? agentSessionAccountHome(CLAUDE_STRUCTURED_AGENT, router.accountHome(accountId))
+      : null
+  }
+
   /** The account home a start of this chat would launch under now, read without side effects; null
    *  for an agent whose chats keep the account they were created on. `identity` names it before its
    *  folder exists; the default read checks availability. */
@@ -64,6 +86,10 @@ export abstract class OrcaRuntimeWithStructuredSessionAccountHome extends OrcaRu
     const { provider, location } = record
     if (!structuredAgentRuntimeMetadata(provider)?.launchFollowsSelection?.()) {
       return null
+    }
+    const chosen = this.chosenClaudeAccountHome(record)
+    if (chosen) {
+      return chosen
     }
     const read = this.structuredAgentAccountHomeResolver(provider, '', purpose)
     const launchEnv = this.structuredAgentLaunchEnv(provider, this.requireStore().getSettings())
@@ -78,6 +104,10 @@ export abstract class OrcaRuntimeWithStructuredSessionAccountHome extends OrcaRu
     const { provider, location } = record
     if (!structuredAgentRuntimeMetadata(provider)?.launchFollowsSelection?.()) {
       return null
+    }
+    const chosen = this.chosenClaudeAccountHome(record)
+    if (chosen) {
+      return chosen
     }
     const prepare = this.structuredAgentAccountHomeResolver(provider, '', 'launch', launchDirectory)
     await this.accounts.prepareHostAgentLaunch(provider)

@@ -327,6 +327,11 @@ export const HandoffStatusParams = z.object({ sessionId: SessionId }).strict()
 
 export const ProcessesParams = z.object({ sessionId: SessionId }).strict()
 
+/** Null returns the chat to its project's account, or the current selection. */
+export const SetClaudeAccountParams = z
+  .object({ sessionId: SessionId, accountId: z.string().min(1).max(256).nullable() })
+  .strict()
+
 export const StopProcessParams = z
   .object({ sessionId: SessionId, pid: z.number().int().positive() })
   .strict()

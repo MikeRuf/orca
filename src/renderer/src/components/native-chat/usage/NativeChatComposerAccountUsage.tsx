@@ -10,6 +10,7 @@ import {
   useClaudeAccountsOverview
 } from '../../status-bar/use-claude-accounts-overview'
 import { NativeChatAccountUsageChip } from './NativeChatAccountUsageChip'
+import { NativeChatAccountSwitchList } from './NativeChatAccountSwitchList'
 
 const BUSIEST_CHATS = 3
 
@@ -23,15 +24,23 @@ function ComposerAccountUsage({
   sessionId: string
 }): React.JSX.Element | null {
   const repos = useAppStore((state) => state.repos)
-  const { overview } = useClaudeAccountsOverview(target)
+  const { overview, refresh } = useClaudeAccountsOverview(target)
   const view = useMemo(() => {
     if (!overview) {
       return null
     }
     const accountId = resolveClaudeChatAccountId(overview, repos, worktreeId, sessionId)
-    const account = buildClaudeAccountUsage(overview, repos).find(({ id }) => id === accountId)
+    const accounts = buildClaudeAccountUsage(overview, repos)
+    const account = accounts.find(({ id }) => id === accountId)
+    const chosenId =
+      overview.chats.find((chat) => chat.sessionId === sessionId)?.chosenAccountId ?? null
     return account
-      ? { account, chatShare: account.chats.find(({ id }) => id === sessionId) ?? null }
+      ? {
+          account,
+          accounts,
+          chosenId,
+          chatShare: account.chats.find(({ id }) => id === sessionId) ?? null
+        }
       : null
   }, [overview, repos, worktreeId, sessionId])
   if (!view) {
@@ -42,6 +51,15 @@ function ComposerAccountUsage({
       account={view.account}
       chatShare={view.chatShare}
       busiestChats={view.account.chats.slice(0, BUSIEST_CHATS)}
+      switcher={
+        <NativeChatAccountSwitchList
+          target={target}
+          sessionId={sessionId}
+          accounts={view.accounts}
+          chosenId={view.chosenId}
+          onSwitched={refresh}
+        />
+      }
     />
   )
 }

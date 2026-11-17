@@ -1,5 +1,5 @@
 import { getRepoHostIdentityForParts } from '../../../../shared/repository/repo-host-identity'
-import { getRepoIdFromWorktreeId } from '../../../../shared/worktree/id'
+import { chosenClaudeAccountId } from '../../../claude-accounts/chat-account/claude-chat-account-overrides'
 import { createRepoRowExecutionHostLookup } from '../../../../shared/execution-host/worktree-execution-host-resolution'
 import { resolveWorktreeHostRouting } from '../catalog/worktree-launch-host-repo'
 import { resolveHostStructuredAgentLaunchEnvironment } from '../../agent-session/launch/structured-agent-launch-support'
@@ -268,8 +268,8 @@ export abstract class OrcaRuntimeWithGetWorktreePs extends RuntimeChatWorkerEven
       ...catalogDeps,
       claudeCliFlags: claudeCliFlagSupport,
       usageLimitAutoContinue: this.usageLimitAutoContinueHostDeps(),
-      resolveProjectClaudeAccountId: (workspaceId) =>
-        this.requireStore().getRepo(getRepoIdFromWorktreeId(workspaceId))?.claudeAccountId ?? null,
+      resolveProjectClaudeAccountId: (workspaceId, sessionId) =>
+        chosenClaudeAccountId(this.requireStore(), sessionId, workspaceId),
       idleSweep: { idleMs: () => nativeChatIdleStopMs(this.requireStore().getSettings()) },
       nativeChatVisuals: {
         isEnabled: () => this.requireStore().getSettings().nativeChatInlineVisuals !== false
