@@ -24,14 +24,12 @@ import {
   type StructuredAgentSessionOptionRecord
 } from '../reconciliation/structured-agent-session-option-state'
 import { withUnlistedEffort } from '../model-catalog/structured-agent-session-unlisted-effort'
+import { unlistedModelLabel } from '../model-catalog/model-id-label'
 import { listedModelDescribing } from '../model-catalog/structured-agent-session-listed-model'
 import { structuredAgentSessionPermissionDescriptor } from '../permissions/structured-agent-session-permission-option'
 import { structuredAgentSessionInteractionDescriptor } from '../permissions/agent-session-interaction-mode'
 import type { StructuredAgentSessionOptionState } from '../structured-agent-session-options'
-import {
-  isAgentSessionContextWindow,
-  structuredAgentSessionContextWindowDescriptor
-} from '../agent-session-context-window'
+import { acceptsCustomContextWindow, withContextWindow } from '../agent-session-context-window'
 
 /** Unpickable placeholder cannot become a launch selection before a real model answer. */
 const PROVIDER_DEFAULT_MODEL_PLACEHOLDER: SessionOptionDescriptor = {
@@ -159,7 +157,10 @@ function drawnModelControls(state: StructuredAgentSessionOptionState) {
   // Before discovery, name only accepted input; static rows cannot supply installed capabilities.
   const catalog =
     state.catalogSource === 'seed' ? { ...displayCatalog, models: [] } : displayCatalog
-  const models = withTrackedNativeChatModel(catalog, catalog.models, { model: record.values.model })
+  const models = withTrackedNativeChatModel(catalog, catalog.models, {
+    agent: record.agent,
+    model: record.values.model
+  })
   const shown = structuredAgentSessionShownModel(catalog, models, record)
   // A listed row describes the chat's model by id or resolved name; stand-ins keep their own options.
   const controls = shown.controlsModelId
@@ -256,21 +257,33 @@ function modelOptionSnapshot(state: StructuredAgentSessionOptionState): SessionO
   return snapshot.length === 0 ? [AGENT_CHOSEN_MODEL, ...shownSnapshot] : shownSnapshot
 }
 
+/** The pill and the checked row name the fallback; an unlisted one is named like the agent's listed rows. */
+function withFallbackModel(
+  option: SessionOptionDescriptor,
+  model: string,
+  agent: string
+): SessionOptionDescriptor {
+  const { kind } = option
+  if (kind.type !== 'select' || kind.choices.some((choice) => choice.value === model)) {
+    return { ...option, fallbackModel: model }
+  }
+  const choice = { value: model, label: unlistedModelLabel(agent, model), description: model }
+  return { ...option, fallbackModel: model, kind: { ...kind, choices: [...kind.choices, choice] } }
+}
+
 export function structuredAgentSessionOptionSnapshot(
   state: StructuredAgentSessionOptionState
 ): SessionOptionDescriptor[] {
   const permission = structuredAgentSessionPermissionDescriptor(state)
   const options = modelOptionSnapshot(state).map((option) =>
-    state.fastModeRestricted && option.id === 'fastMode' ? { ...option, settable: false } : option
+    state.fastModeRestricted && option.id === 'fastMode'
+      ? { ...option, settable: false }
+      : option.id === 'model' && state.fallbackModel
+        ? withFallbackModel(option, state.fallbackModel, state.record.agent)
+        : option
   )
   const interaction = structuredAgentSessionInteractionDescriptor(state)
-  const contextWindow = structuredAgentSessionContextWindowDescriptor(state)
-  return [
-    ...options,
-    ...(permission ? [permission] : []),
-    ...(interaction ? [interaction] : []),
-    ...(contextWindow ? [contextWindow] : [])
-  ]
+  return withContextWindow(state, options, permission, interaction)
 }
 
 /** Presentation only until a launch or fence can carry picks. */
@@ -304,10 +317,7 @@ export function canSetStructuredAgentSessionOption(
       (value === 'own'
         ? state.permissionOwnSupported === true
         : descriptor.kind.choices.some((choice) => choice.value === value) ||
-          // A typed size is valid without being listed; only the current one joins the choices.
-          (id === 'contextWindow' &&
-            descriptor.kind.custom !== undefined &&
-            isAgentSessionContextWindow(value)))
+          acceptsCustomContextWindow(id, descriptor.kind, value))
     )
   }
   return (

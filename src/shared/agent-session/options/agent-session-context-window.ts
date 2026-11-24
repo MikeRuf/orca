@@ -68,3 +68,22 @@ export function structuredAgentSessionContextWindowDescriptor(
     settable: true
   }
 }
+
+/** The option snapshot's descriptors with the context window picker last, when the agent offers one. */
+export function withContextWindow(
+  state: StructuredAgentSessionOptionState,
+  options: readonly SessionOptionDescriptor[],
+  ...extras: readonly (SessionOptionDescriptor | null | undefined)[]
+): SessionOptionDescriptor[] {
+  const shown = [...options, ...extras, structuredAgentSessionContextWindowDescriptor(state)]
+  return shown.filter((descriptor): descriptor is SessionOptionDescriptor => descriptor != null)
+}
+
+/** A typed size is valid without being listed; only the current one joins the choices. */
+export function acceptsCustomContextWindow(
+  id: string,
+  kind: { custom?: unknown },
+  value: unknown
+): boolean {
+  return id === 'contextWindow' && kind.custom !== undefined && isAgentSessionContextWindow(value)
+}

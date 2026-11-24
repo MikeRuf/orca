@@ -4,6 +4,7 @@ import type {
   ClaudeStructuredSdkOptions
 } from './claude-structured-launch-resolution'
 import type { ClaudeSession } from '../claude-structured-session-state'
+import { claudePromptSuggestionPause } from '../claude-prompt-suggestion-pause'
 import {
   claudeEffortLevel,
   restoredClaudeStructuredSessionOptions
@@ -65,7 +66,9 @@ export function claudeStructuredSpawnOptions(input: {
         !Object.hasOwn(sdkOptions.extraArgs ?? {}, 'settings')
       ) {
         options.set('fastMode', fastMode)
-        sdkOptions.settings = { fastMode: decoded }
+        // Laid over the launch's own overlay: a tidy-up's turns every configured hook off there.
+        const overlay = typeof sdkOptions.settings === 'object' ? sdkOptions.settings : {}
+        sdkOptions.settings = { ...overlay, fastMode: decoded }
       } else if (input.flagSettingsControl !== 'unsupported') {
         options.set('fastMode', fastMode)
         fastModeAtStart = true
@@ -103,6 +106,7 @@ export function adoptClaudeStructuredSpawnOptions(
     | 'appliedInputOptions'
     | 'cliFlag'
     | 'flagSettingsControl'
+    | 'promptSuggestionPause'
   >,
   spawn: ClaudeStructuredSpawnOptions
 ): void {
@@ -119,6 +123,9 @@ export function adoptClaudeStructuredSpawnOptions(
   session.fastModeAtStart = spawn.fastModeAtStart
   session.cliFlag = spawn.cliFlag
   session.flagSettingsControl = spawn.flagSettingsControl
+  session.promptSuggestionPause = spawn.sdkOptions.promptSuggestions
+    ? claudePromptSuggestionPause()
+    : undefined
   const fastMode = spawn.options.get('fastMode')
   if (fastMode !== undefined && !spawn.fastModeAtStart) {
     session.appliedInputOptions.set('fastMode', fastMode)
