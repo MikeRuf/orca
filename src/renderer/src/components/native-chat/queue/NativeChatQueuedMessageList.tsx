@@ -12,7 +12,8 @@ import type { AgentSessionFailureFact } from '../../../../../shared/agent-sessio
 import { refocusAfterQueueAction } from './native-chat-queue-refocus'
 import {
   headSteerableQueuedMessageCard,
-  queuedMessageCardNeedsAttention
+  queuedMessageCardNeedsAttention,
+  steerableQueuedMessageCards
 } from '../../../../../shared/agent-session/view/structured-agent-session-queued-cards'
 import type { QueuedEditAttachTarget } from './editing/NativeChatQueuedMessageComposer'
 import { invalidateNativeChatDockFit } from '../pane/dock/native-chat-dock-fit'
@@ -110,6 +111,7 @@ export function NativeChatQueuedMessageList({
         .filter(queuedMessageCardNeedsAttention)
         .map((card) => queuedMessageCardCaption(card, agentName, statedFailures, t))
         .find((caption) => caption !== null) ?? null)
+  const chordCards = controller.queueCapable ? steerableQueuedMessageCards(cards) : []
   const newestIsPersons = newest !== undefined && !newest.from
   const shownIds = useRef<ReadonlySet<string> | null>(null)
   // Before paint, so the new card never shows a frame before the scroll.
@@ -246,6 +248,9 @@ export function NativeChatQueuedMessageList({
                       agentName={agentName}
                       statedFailures={statedFailures}
                       showsSteerShortcut={card === steerableHead}
+                      sendsOnChord={
+                        chordCards.includes(card) && card.messageId !== controller.editor?.messageId
+                      }
                       agentWorking={controller.isWorking}
                       steerHeld={steerHeld}
                       pending={controller.pending(card.messageId)}

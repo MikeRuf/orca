@@ -28,6 +28,7 @@ import {
   type QueuedMessageCard
 } from '../../../../../shared/agent-session/view/structured-agent-session-queued-cards'
 import { useStructuredAgentSessionWaitingAgentMail } from './use-structured-agent-session-waiting-agent-mail'
+import { useSteerAll } from './use-structured-agent-session-queued-steer-all'
 import type { NativeChatMessage } from '../../../../../shared/native-chat/native-chat-types'
 import {
   pendingQueueSendsOnTheirWay,
@@ -65,6 +66,8 @@ export type StructuredAgentSessionQueuedMessagesController = {
   edit: (messageId: string) => Promise<void>
   /** Cmd/Ctrl+Shift+Enter: steer the head card; absent while there is no head card to steer. */
   steerHead: (() => boolean) | undefined
+  /** Cmd/Ctrl+Enter on an empty composer: steer every card that can; absent while none can. */
+  steerAll?: (() => boolean) | undefined
   /** The agent is working, so a card's send steers into its turn. */
   isWorking: boolean
   /** The host still holds this message: a card here, or another agent's mail the transcript draws. */
@@ -237,6 +240,7 @@ export function useStructuredAgentSessionQueuedMessages(args: {
     void steer(head.messageId)
     return true
   }, [editingMessageId, enabled, steerOrder, steer])
+  const steerAll = useSteerAll(args, steerOrder, editingMessageId, { inFlightRef, inFlight, run })
   const steerableHead = enabled ? headSteerableQueuedMessageCard(steerOrder) : null
   // The same checks as the press, read from rendered state, so the composer never offers a dead steer.
   const headSteers =
@@ -328,6 +332,7 @@ export function useStructuredAgentSessionQueuedMessages(args: {
     editCapable: editing.capable,
     editor: editing.editor,
     steerHead: headSteers ? steerHead : undefined,
+    steerAll,
     isWorking,
     holds: mail.holds,
     stopping: args.stopping,
