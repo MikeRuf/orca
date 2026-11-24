@@ -26,22 +26,37 @@ import {
 
 const HOST_TARGET = { runtime: 'host', wslDistro: null } as const
 
-/** Puts the accounts panel in the Claude row's place, or leaves the roster as it was. */
-export function ClaudeAccountsRosterSection({
-  target,
-  providers,
-  renderRoster,
-  onClose,
-  onAddAccount,
-  onManageAccounts
-}: {
+type ClaudeAccountsRosterProps = {
   target: RuntimeClientTarget
   providers: ProviderRateLimits[]
   renderRoster: (providers: ProviderRateLimits[]) => React.ReactNode
   onClose: () => void
   onAddAccount: () => void
   onManageAccounts: () => void
+}
+
+/** Puts the accounts panel in the Claude row's place, or leaves the roster as it was. */
+export function ClaudeAccountsRosterSection({
+  target,
+  ...props
+}: Omit<ClaudeAccountsRosterProps, 'target'> & {
+  target: RuntimeClientTarget | null
 }): React.JSX.Element {
+  // A remote owner this device cannot reach has no accounts to list.
+  if (!target) {
+    return <div className="w-[440px]">{props.renderRoster(props.providers)}</div>
+  }
+  return <ClaudeAccountsRoster target={target} {...props} />
+}
+
+function ClaudeAccountsRoster({
+  target,
+  providers,
+  renderRoster,
+  onClose,
+  onAddAccount,
+  onManageAccounts
+}: ClaudeAccountsRosterProps): React.JSX.Element {
   const allRepos = useAppStore((state) => state.repos)
   const ownerKey = getProviderAccountsOwnerKey(target)
   const repos = useMemo(
@@ -94,7 +109,7 @@ export function ClaudeAccountsRosterSection({
         structuredSession: { workspaceId: chat.workspaceId, sessionId },
         agent: 'claude'
       },
-      target
+      { target }
     )
   }
 
