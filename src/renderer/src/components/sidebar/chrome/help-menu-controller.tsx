@@ -1,6 +1,7 @@
 import { DiscordIcon } from '../../icons/DiscordIcon'
 import React, { useState } from 'react'
 import {
+  Download,
   BookOpen,
   ExternalLink,
   Github,
@@ -27,6 +28,8 @@ import {
   getUpdateCheckHint
 } from '@/app-shell/updates/update-check-click-options'
 import { openHelpLink } from './help-link-open'
+import { pendingDevUpdateLabel, usePendingDevUpdate } from '../../dev-update/use-pending-dev-update'
+import { startPendingDevUpdateInstall } from '../../dev-update/dev-update-install-flow'
 
 // Keep feedback off the boot graph; menu warming and selection share the same lazy module entry.
 const loadSidebarFeedbackDialog = (): Promise<typeof SidebarFeedbackDialogModule> =>
@@ -90,6 +93,7 @@ export function useHelpMenuController(milestones: SetupMilestones | null): HelpM
   const openSettingsPage = useAppStore((s) => s.openSettingsPage)
   const openSettingsTarget = useAppStore((s) => s.openSettingsTarget)
   const updateStatus = useAppStore((s) => s.updateStatus)
+  const pendingDevUpdate = usePendingDevUpdate()
   const [feedbackOpen, setFeedbackOpen] = useState(false)
   // Retain the mounted dialog through its closing animation.
   const [feedbackDialogMounted, setFeedbackDialogMounted] = useState(false)
@@ -228,6 +232,12 @@ export function useHelpMenuController(milestones: SetupMilestones | null): HelpM
           <ExternalLink className="ml-auto size-3 text-muted-foreground" />
         </DropdownMenuItem>
         <DropdownMenuSeparator />
+        {pendingDevUpdate ? (
+          <DropdownMenuItem onSelect={startPendingDevUpdateInstall}>
+            <Download className="size-3.5" />
+            {pendingDevUpdateLabel(pendingDevUpdate)}
+          </DropdownMenuItem>
+        ) : null}
         <DropdownMenuItem
           disabled={updateStatus.state === 'checking' || updateStatus.state === 'downloading'}
           onPointerDown={handleCheckForUpdatesPointerDown}

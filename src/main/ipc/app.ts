@@ -22,6 +22,11 @@ import { listWslDistrosAsync } from '../wsl/discovery/distro-catalog'
 import { isGitBashAvailable } from '../pty/shell-startup/git-bash'
 import { destroySystemTray, rebuildSystemTrayMenu } from '../tray/system-tray'
 import {
+  launchPendingDevUpdateInstall,
+  readPendingDevUpdate,
+  startPendingDevUpdateWatch
+} from '../dev-update/pending-dev-update'
+import {
   ensureDefaultFloatingWorkspacePath,
   trustFloatingWorkspaceDirectory,
   resolveFloatingTerminalCwd
@@ -222,6 +227,18 @@ export function registerAppHandlers(store: Store, options: RegisterAppHandlersOp
       relaunchApp('admin-restart')
       quitProcess()
     }, 150)
+  })
+
+  startPendingDevUpdateWatch(rebuildSystemTrayMenu)
+  ipcMain.handle('devUpdate:get', () => readPendingDevUpdate())
+  ipcMain.handle('devUpdate:install', async () => {
+    // The helper waits for this process to exit; a normal quit keeps background sessions alive.
+    if (!launchPendingDevUpdateInstall()) {
+      return false
+    }
+    await runBeforeRelaunchCleanup(options.onBeforeRelaunch)
+    setTimeout(() => quitProcess(), 150)
+    return true
   })
 
   ipcMain.handle('app:restartAsAdministrator', async () => {
