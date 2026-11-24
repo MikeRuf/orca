@@ -43,7 +43,8 @@ export function setAgentSessionRecordUserName(
   const normalized = normalizeAgentSessionConversationName(name)
   if (write === 'release') {
     const released = releaseAgentSessionRecordUserName(record, name, now)
-    return { record: released, applied: released !== record }
+    // A release hands the name back to automatic naming; no rename to tell the agent about.
+    return { record: released, applied: released !== record, changed: false }
   }
   if (
     normalized === null ||
