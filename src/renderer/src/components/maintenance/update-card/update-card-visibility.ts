@@ -1,3 +1,4 @@
+// @protected-copy scope=file
 import { translate } from '@/i18n/i18n'
 import type { Translate } from '@/i18n/use-translate'
 import type { UpdateStatus } from '../../../../../shared/updater/update-status-types'
@@ -22,6 +23,12 @@ export function isUpdateCardVisible({
   devRelease?: boolean
 }): boolean {
   const isUserInitiated = 'userInitiated' in status && Boolean(status.userInitiated)
+  if (status.state === 'downloaded' && status.requiredByTeam) {
+    return status.teamRestart?.phase !== 'snoozed'
+  }
+  if (status.state === 'error' && status.requiredByTeam) {
+    return true
+  }
 
   // A dev release updates through its own build script; an unasked official offer would replace it.
   if (devRelease && !isUserInitiated && !updateUserInitiatedCycle) {
@@ -34,11 +41,11 @@ export function isUpdateCardVisible({
   if (status.state === 'not-available' && (!isUserInitiated || autoDismissed)) {
     return false
   }
-  if (status.state === 'idle') {
+  if (status.state === 'idle' || (status.state === 'available' && status.automaticDownload)) {
     return false
   }
   if (cachedVersion && dismissedVersion === cachedVersion && !updateUserInitiatedCycle) {
-    if (status.state !== 'downloading' && status.state !== 'error') {
+    if (status.state === 'available') {
       return false
     }
   }
@@ -63,6 +70,9 @@ export function getUpdateCardAriaLabel(status: UpdateStatus, t: Translate = tran
     case 'downloaded':
       return t('auto.components.UpdateCard.aria.statusDownloaded', 'Update ready to install')
     case 'error':
+      if (status.installOnQuit) {
+        return t('updates.installOnQuit.title', 'Update ready to install')
+      }
       return status.installBlock
         ? t('updates.installBlock.waitingLabel', 'Update waiting')
         : t('auto.components.UpdateCard.aria.statusError', 'Update error')
