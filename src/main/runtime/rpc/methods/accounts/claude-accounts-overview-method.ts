@@ -20,7 +20,7 @@ export const CLAUDE_ACCOUNTS_OVERVIEW_METHOD = defineMethod({
         undefined
       )
     }
-    const snapshot = runtime.getAccountsSnapshot()
+    const snapshot = await runtime.getAccountsSnapshot()
     return buildClaudeAccountsOverview({
       claude: snapshot.claude,
       rateLimits: snapshot.rateLimits,
