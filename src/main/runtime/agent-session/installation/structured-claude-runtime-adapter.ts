@@ -15,6 +15,7 @@ import type { ClaudeCommandCatalogProbe } from '../../../claude/command-catalog/
 import { openClaudeStreamJsonConnection } from '../../../claude/claude-stream-json-connection'
 import type { ClaudeCliFlagSupport } from '../../../claude/cli-capabilities/claude-cli-flag-support'
 import { prewarmClaudeCliFlags } from '../../../claude/cli-capabilities/claude-cli-flag-prewarm'
+import { createClaudeSlashRenameObserver } from '../../../claude/claude-slash-rename-observer'
 
 export type StructuredClaudeRuntimeAdapterDeps = {
   store: AgentSessionRecordStore
@@ -39,6 +40,8 @@ export type StructuredClaudeRuntimeAdapterDeps = {
   onDispatchSettledLate?: ClaudeStructuredSessionAdapterDeps['onDispatchSettledLate']
   onUserRenamed?: ClaudeStructuredSessionAdapterDeps['onUserRenamed']
   onChildWorkEvidence?: ClaudeStructuredSessionAdapterDeps['onChildWorkEvidence']
+  /** A `/rename` typed in the chat named Claude's session; the tab should follow. */
+  onSlashRename?: (sessionId: string, title: string) => void
   logger?: ClaudeStructuredSessionAdapterDeps['logger']
 }
 
@@ -76,6 +79,9 @@ export function createStructuredClaudeRuntimeAdapter(
   deps: StructuredClaudeRuntimeAdapterDeps
 ): ClaudeStructuredSessionAdapter {
   const { store } = deps
+  const observeSlashRename = deps.onSlashRename
+    ? createClaudeSlashRenameObserver(deps.onSlashRename)
+    : null
   if (deps.claudeCliFlags) {
     // Before any chat launches, so the first one rarely waits on the version check.
     void prewarmClaudeCliFlags({
@@ -131,6 +137,7 @@ export function createStructuredClaudeRuntimeAdapter(
       })
     },
     onEvent: (event) => {
+      observeSlashRename?.(event)
       const lifecycle = structuredClaudeLifecycleEvent(event)
       if (lifecycle) {
         deps.onLifecycleEvent(lifecycle)
