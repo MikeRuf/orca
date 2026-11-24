@@ -38,6 +38,7 @@ type RepositoryUpdates = Partial<
     | 'displayName'
     | 'badgeColor'
     | 'repoIcon'
+    | 'sidebarStyle'
     | 'upstream'
     | 'hookSettings'
     | 'editorFormatter'

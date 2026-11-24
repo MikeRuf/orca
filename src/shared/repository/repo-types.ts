@@ -12,6 +12,7 @@ import type { OrcadRetainedMarker } from '../remote-runtime/orcad-lifecycle/orca
 import type { EditorFormatter } from '../editor/formatting/editor-formatter'
 import type { AgentWorkspaceTrustDecision } from '../agent-launch/permissions/agent-workspace-trust-decision'
 import type { RepoWorkspaceCleanupPolicy } from '../workspace-cleanup/workspace-cleanup-policy'
+import type { RepoSidebarStyle } from '../repo-sidebar-style'
 
 export type RepoKind = 'git' | 'folder'
 
@@ -47,6 +48,8 @@ export type Repo = {
   displayName: string
   badgeColor: string
   repoIcon?: RepoIcon | null
+  /** Per-project sidebar backgrounds and fonts for the header row and the rows under it. */
+  sidebarStyle?: RepoSidebarStyle | null
   /** Fork parent; same-name forks use its avatar, renamed forks keep their own. Absent means non-fork or unresolved. */
   upstream?: GitHubRepositoryIdentity | null
   addedAt: number

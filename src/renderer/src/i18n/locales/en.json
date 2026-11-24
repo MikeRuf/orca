@@ -7473,11 +7473,6 @@
           "b0a7bfc34c": "Hide from sidebar",
           "88d402b71d": "Onboarding checklist"
         },
-        "SetupScriptCodeBlock": {
-          "showLess": "Show less",
-          "showMore_one": "Show {{count}} more line",
-          "showMore_other": "Show {{count}} more lines"
-        },
         "SetupScriptPromptCard": {
           "ff1e819a11": "Add a setup script",
           "70715947fb": "Setup script cannot be empty",
@@ -7504,16 +7499,6 @@
           "foundSetupScriptIn": "Found a setup script in <file>{{source}}</file>.",
           "7275f674cc": "Detected setup",
           "detectedFromSource": "Detected from <file>{{source}}</file>"
-        },
-        "SetupScriptReviewDialog": {
-          "title": "Review setup script",
-          "description": "Saving runs this whenever Orca creates a worktree for {{repo}}.",
-          "setupScript": "Setup script",
-          "archiveScript": "Archive script",
-          "save": "Save local setup",
-          "descriptionWithSource": "From <file>{{source}}</file>. Saving runs this whenever Orca creates a worktree for {{repo}}.",
-          "notImported": "Not imported",
-          "notImportedHint": "These settings have no Orca equivalent and won't be saved."
         },
         "SidebarFeedbackDialog": {
           "8bf619e4cf": "Cancel",
@@ -7904,6 +7889,7 @@
           "projectGroupRefreshSuccess_other": "Added {{count}} projects to {{group}}",
           "projectGroupRefreshing": "Refreshing {{group}}…",
           "refreshProjectGroup": "Refresh projects",
+          "customizeAppearance": "Customize Appearance…",
           "hostServerReplaced": "Different server: forget it, then connect",
           "hostVmResumeFailed": "Resume failed",
           "hostVmSetupFailed": "Setup failed",
@@ -8637,7 +8623,26 @@
           "running": "Running",
           "idle": "Idle"
         },
+        "ProjectAppearanceDialog": {
+          "title": "Appearance of {{value0}}",
+          "description": "Icon, color, background and font in the sidebar. Changes apply as you make them."
+        },
+        "SetupScriptReviewDialog": {
+          "title": "Review setup script",
+          "description": "Saving runs this whenever Orca creates a worktree for {{repo}}.",
+          "setupScript": "Setup script",
+          "archiveScript": "Archive script",
+          "save": "Save local setup",
+          "descriptionWithSource": "From <file>{{source}}</file>. Saving runs this whenever Orca creates a worktree for {{repo}}.",
+          "notImported": "Not imported",
+          "notImportedHint": "These settings have no Orca equivalent and won't be saved."
+        },
         "projectOrderSaveFailed": "Could not save the complete project order",
+        "SetupScriptCodeBlock": {
+          "showLess": "Show less",
+          "showMore_one": "Show {{count}} more line",
+          "showMore_other": "Show {{count}} more lines"
+        },
         "hostSection": {
           "localWindows": "Local Windows",
           "localMac": "Local Mac",
@@ -12709,6 +12714,7 @@
               "recipe": {
                 "options": {
                   "commitMessage": "Generate the commit message from staged changes.",
+                  "commitMessageSharedModel": "Pull request details, Branch name and Chat name can also use this model when they don’t pick their own; their “Same as default” option shows which model they use.",
                   "pullRequest": "Generate the hosted review title and description.",
                   "branchName": "Rename Orca-created branches from the initial agent task.",
                   "fixCommitFailure": "Start an agent when a commit hook or git commit fails.",
@@ -12718,8 +12724,7 @@
                   "supportedAgents": "Supported agents for this recipe: {{value0}}.",
                   "unsupportedSavedAgent": "{{value0}} cannot run this text-generation recipe. Pick one of the supported agents below.",
                   "resolveComments": "Start an agent from selected unresolved PR or MR comments.",
-                  "fixPushFailure": "Start an agent when a pre-push hook or git push fails.",
-                  "commitMessageSharedModel": "Pull request details, Branch name and Chat name can also use this model when they don’t pick their own; their “Same as default” option shows which model they use."
+                  "fixPushFailure": "Start an agent when a pre-push hook or git push fails."
                 }
               }
             }
@@ -14684,20 +14689,6 @@
           "readyToUpdate": "Ready to update",
           "movedRepository": "Comes from a different repository"
         },
-        "PluginAuthor": {
-          "publisher": "Publisher",
-          "catalogByline": "Listed as {{publisher}} by {{catalog}}",
-          "publisherByline": "Publisher: {{publisher}}",
-          "declaredByline": "Declared publisher: {{publisher}}",
-          "catalogClaim": "Publisher listed by {{catalog}}. Authorship is not verified.",
-          "unnamedCatalogClaim": "Publisher listed by the catalog. Authorship is not verified.",
-          "gitClaim": "Publisher derived by Orca from the repository URL. Authorship is not verified.",
-          "unknownClaim": "Publisher source is unknown. Authorship is not verified.",
-          "manifestClaim": "Publisher declared by the plugin. Authorship is not verified.",
-          "shownPluginCount_one": "{{count}} matching plugin shown, including this one",
-          "shownPluginCount_other": "{{count}} matching plugins shown, including this one",
-          "samePublisher": "More listed as {{value0}}"
-        },
         "PluginDetailInfo": {
           "previous": "Previous",
           "updated": "Updated",
@@ -14960,6 +14951,33 @@
           "noMatches": "No matches.",
           "searchHosts": "Search hosts…",
           "searchLanguages": "Search languages…"
+        },
+        "RepositorySidebarStyleSection": {
+          "headerTitle": "Project header row",
+          "rowsTitle": "Workspace rows under it",
+          "reset": "Reset",
+          "background": "Background",
+          "textColor": "Text color",
+          "defaultColor": "Default",
+          "font": "Font",
+          "fontPlaceholder": "Default",
+          "size": "Size",
+          "clear": "Use default {{value0}}",
+          "title": "Sidebar appearance"
+        },
+        "PluginAuthor": {
+          "publisher": "Publisher",
+          "catalogByline": "Listed as {{publisher}} by {{catalog}}",
+          "publisherByline": "Publisher: {{publisher}}",
+          "declaredByline": "Declared publisher: {{publisher}}",
+          "catalogClaim": "Publisher listed by {{catalog}}. Authorship is not verified.",
+          "unnamedCatalogClaim": "Publisher listed by the catalog. Authorship is not verified.",
+          "gitClaim": "Publisher derived by Orca from the repository URL. Authorship is not verified.",
+          "unknownClaim": "Publisher source is unknown. Authorship is not verified.",
+          "manifestClaim": "Publisher declared by the plugin. Authorship is not verified.",
+          "shownPluginCount_one": "{{count}} matching plugin shown, including this one",
+          "shownPluginCount_other": "{{count}} matching plugins shown, including this one",
+          "samePublisher": "More listed as {{value0}}"
         },
         "accountsPaneActionErrors": {
           "codexSignInTimedOut": "Codex sign-in took too long to finish. Please try again.",
@@ -25871,19 +25889,6 @@
       }
     }
   },
-  "tabStrip": {
-    "overflow": {
-      "chipOnlyName_one": "{{title}}, {{count}} tab",
-      "chipOnlyName_other": "{{title}}, {{count}} tabs",
-      "entryNeedsAttention": "{{title}}, needs attention",
-      "moreTabs_one": "{{count}} more tab",
-      "moreTabs_other": "{{count}} more tabs",
-      "needAttention_one": ", {{count}} needs attention",
-      "needAttention_other": ", {{count}} need attention",
-      "openTabs_one": "{{count}} open tab",
-      "openTabs_other": "{{count}} open tabs"
-    }
-  },
   "updates": {
     "installOnQuit": {
       "title": "Update ready to install",
@@ -26633,6 +26638,7 @@
     },
     "repairChoice": {
       "sectionStartsEmpty": "{{section}}: no readable backup, so it will start empty.",
+      "sectionKeptCurrent": "{{section}}: your current runs will be kept",
       "sectionRestored": "{{section}}: restored from the backup saved {{time}}.",
       "projectsForgotten": "Orca will forget your projects and their workspace details. Files on disk are not touched.",
       "newerProjectsRemoved": "Projects added after that backup will be removed from Orca, along with their workspace details. Files on disk are not touched.",
@@ -26641,8 +26647,7 @@
       "title": "Repair profile",
       "message": "Part of this profile's saved state is damaged.",
       "restUnchanged": "Everything else stays as it is now.",
-      "damagedCopyKept": "Orca keeps a copy of the damaged file in its data folder, then restarts.",
-      "sectionKeptCurrent": "{{section}}: your current runs will be kept"
+      "damagedCopyKept": "Orca keeps a copy of the damaged file in its data folder, then restarts."
     },
     "recoveryNotApplied": {
       "quitButton": "Quit",
@@ -27486,6 +27491,307 @@
   "wslDistroHold": {
     "terminalStopped": "The WSL distro {{distro}} is stopped, so Orca didn't start this terminal. Start the distro, then try again.",
     "terminalUnverifiable": "Orca couldn't check whether the WSL distro {{distro}} is running, so it didn't start this terminal. Start the distro, then try again."
+  },
+  "plugins": {
+    "blockedByTeam": "Blocked by your team.",
+    "requiredFailures": {
+      "toast": "A required plugin could not be installed",
+      "open": "Open Plugins",
+      "label": "Required by your team",
+      "body": "Orca couldn’t install {{plugin}}."
+    },
+    "frameSaveAs": {
+      "title": "Save File",
+      "allFiles": "All Files"
+    },
+    "frameOpenExternal": {
+      "open": "Open",
+      "cancel": "Cancel",
+      "message": "{{plugin}} wants to open {{host}}",
+      "alwaysAllow": "Always allow {{host}} for this plugin"
+    },
+    "actionConfirmation": {
+      "cancel": "Cancel",
+      "deleteAutomation": "{{plugin}} wants to delete the automation “{{automation}}”",
+      "deleteAutomationDetail": "The plugin did not create it. Its schedule stops and it is removed from Automations.",
+      "delete": "Delete",
+      "changeAutomation": "{{plugin}} wants to change the automation “{{automation}}”",
+      "changeAutomationDetail": "The plugin did not create it. It would change: {{fields}}.",
+      "change": "Change",
+      "changeElevatedAutomationDetail": "It runs its agent with extra settings you chose (arguments, a permission mode or a precheck command). It would change: {{fields}}.",
+      "newPrompt": "New prompt: “{{prompt}}”",
+      "unknownProject": "an unknown project",
+      "automationNewWorkspaces": "Automation {{id}}: a new workspace of {{project}} each run, on {{schedule}}.",
+      "automationInWorkspace": "Automation {{id}}: in {{project}} / {{workspace}}, on {{schedule}}."
+    },
+    "catalog": {
+      "managedByTeam": "Managed by your team",
+      "managedByNamedTeams": "Managed by {{teams}}",
+      "teamPublisher": "Your team"
+    },
+    "displayText": {
+      "tb0b38488": "GitHub Themes for Orca",
+      "tb8aa98fc": "VS Code Default Themes for Orca",
+      "tfc425a57": "Multipass VM Recipes",
+      "t0f9f5503": "GitHub's own VS Code themes: Light Default, Dark Default, Dark Dimmed and the high-contrast variants.",
+      "t0b4f7e19": "Unofficial ports of VS Code's default color themes: Dark Modern, Light Modern, Dark+ and Light+.",
+      "tc86eed7d": "A reviewed starter lifecycle for disposable Multipass workspaces."
+    }
+  },
+  "checks": {
+    "gitlabAllowedFailure": "Allowed to fail",
+    "rerunUnsuccessful": "Rerun unsuccessful"
+  },
+  "macosUpdateRequirement": {
+    "title": "Orca updates now need macOS {{macos}}",
+    "description": "Orca {{version}} requires macOS {{macos}} or later. This version keeps working, but it won’t get new updates on this Mac.",
+    "checking": "Checking whether this Mac can upgrade…",
+    "upgradeDescription": "Your Mac can upgrade. Update macOS to get the latest Orca.",
+    "unsupportedDescription": "Apple doesn’t support macOS {{macos}} on this Mac.",
+    "unknownDescription": "We couldn’t confirm an upgrade for this Mac. Apple’s compatibility guide can help.",
+    "whyTitle": "Why is this changing?",
+    "whyIntro": "We updated parts of Orca’s foundation, like Electron and the on-device speech engine, to bring:",
+    "whySecurity": "Ongoing security fixes from Electron and Chromium.",
+    "whyPerformance": "Faster startup and more efficient native API calls.",
+    "whySystemApis": "Support for current macOS notification APIs and secure Keychain storage.",
+    "whyRequirement": "That newer foundation requires macOS {{macos}} or later.",
+    "dismiss": "Got it",
+    "checkingAction": "Checking your Mac…",
+    "updateAction": "How to update macOS",
+    "discussionAction": "Join the discussion",
+    "checkAction": "Check compatibility",
+    "settingsStatus": "Orca {{version}} requires macOS {{macos}} or later. This is the latest version for this Mac."
+  },
+  "gitGraph": {
+    "copyHash": "Copy commit hash",
+    "parents": "Parents",
+    "files": "Files",
+    "currentBranch": "Current branch",
+    "allBranches": "All branches",
+    "chosenBranches": "Chosen branches",
+    "searchRefs": "Search branches and tags",
+    "oldServer": "This server's Orca version shows only the current branch",
+    "copyBranch": "Copy branch name",
+    "switchWorkspace": "Switch to workspace",
+    "workspaceClosed": "This branch isn't open in another workspace anymore.",
+    "workspaceCheckFailed": "Couldn't check this workspace. Try again when connected.",
+    "refresh": "Refresh commits",
+    "branchTag": "Branch / Tag",
+    "graph": "Graph",
+    "resizeColumn": "Resize graph column",
+    "message": "Message",
+    "author": "Author",
+    "date": "Date",
+    "loadMore": "Load more",
+    "noCommits": "No commits yet",
+    "historyChanged": "History changed again. Refresh the Git Graph to try again.",
+    "loadFailed": "Failed to load Git history",
+    "updateHost": "Update Orca on {{host}} to open the Git Graph",
+    "title": "Git Graph",
+    "revertConflicts": "Revert conflicts",
+    "revertInProgress": "Revert in progress",
+    "abortOperationTitle": "Abort {{operation}}?",
+    "abortOperationDescription": "This cancels the operation in progress and can discard conflict resolutions made during it.",
+    "abortOperation": "Abort {{operation}}",
+    "recoveryFailed": "Could not finish the operation. Refresh Source Control and try again.",
+    "continueOperation": "Continue {{operation}}",
+    "reverting": "Reverting",
+    "updateActionsHost": "Update Orca on {{host}} to act on commits",
+    "thisHost": "this host",
+    "cannotApplyMerge": "Can't cherry-pick/revert a merge commit from here",
+    "confirmCommitAction": "{{action}} {{commit}}?",
+    "cancelAction": "Cancel",
+    "checkoutCommit": "Check out commit",
+    "cherryPick": "Cherry-pick",
+    "revert": "Revert",
+    "actionLanded": "Now at {{commit}} on {{branch}}",
+    "detachedHead": "detached HEAD",
+    "actionWarning": "The action completed, but Git reported a problem.",
+    "actionConflicted": "Resolve the conflicts in Source Control, then continue or abort the operation.",
+    "alreadyApplied": "Already applied, nothing to cherry-pick",
+    "nothingToRevert": "Nothing to revert; the changes are already undone.",
+    "actionRefused": "The action did not complete.",
+    "actionUnavailable": "This workspace is no longer available for the action. Reopen the Git Graph and try again.",
+    "ownerChanged": "The workspace host changed. Reopen the Git Graph and try again.",
+    "showAllBranches": "Show all branches",
+    "actionDirty": "Commit or stash your changes, then try again.",
+    "actionFailed": "Git did not create a commit. Check the checkout and try again.",
+    "operationInProgress": "Finish or abort the {{operation}} in progress before trying again.",
+    "checkoutBranch": "Check out branch",
+    "createBranch": "Create branch here",
+    "branchCreated": "Created {{branch}} at {{commit}}",
+    "branchName": "Branch name",
+    "invalidBranchName": "This branch name is invalid. Choose a different name.",
+    "createBranchFailed": "Orca couldn't create the branch. Check this repository in a terminal, then try again."
+  },
+  "remoteHostBrowserControl": {
+    "title": "{{host}} is controlling a browser tab",
+    "description": "Agents on this SSH host can open and use Orca browser tabs in its workspaces. Tabs it controls show its name. You can change this in Settings > SSH.",
+    "stop": "Stop",
+    "disallow": "Don’t allow",
+    "stopped": "{{host}} stopped controlling browser tabs until Orca restarts.",
+    "disallowed": "{{host}} can no longer control browser tabs. Turn it back on in Settings > SSH.",
+    "failed": "Couldn’t stop {{host}}. Turn off its browser control in Settings > SSH."
+  },
+  "speechModelUpdate": {
+    "update": "Update",
+    "cancel": "Cancel",
+    "pill": {
+      "updateNotice": "Faster dictation is ready to install",
+      "retiredNotice": "Dictation moved to a faster speech model",
+      "install": "Install",
+      "installTooltip": "One-time download · {{size}} MB",
+      "downloading": "Setting up dictation",
+      "downloadingTooltip": "{{done}} of {{size}} MB",
+      "ready": "Dictation is ready. Press <kbd></kbd>",
+      "readyNoShortcut": "Dictation is ready.",
+      "failed": "Download stopped. Check your connection.",
+      "tryAgain": "Try again",
+      "deleteOld": "Delete old model",
+      "deleteFailed": "Failed to delete {{model}}.",
+      "dismiss": "Dismiss",
+      "cancelDownload": "Cancel download"
+    }
+  },
+  "renderer": {
+    "lib": {
+      "filePreview": {
+        "remoteFileUnsupported": "Open in Orca Browser is only available for local files.",
+        "twinFileUnsupported": "This project is on more than one host, so Orca cannot tell which copy to open."
+      }
+    }
+  },
+  "nestedImport": {
+    "error": {
+      "notInScan": "Repository was not found in the nested repository scan result",
+      "notGitRepository": "Not a valid Git repository",
+      "importFailed": "Repository could not be imported"
+    }
+  },
+  "usage": {
+    "failure": {
+      "unavailable": "Usage is unavailable. Try Refresh to reconnect.",
+      "setting": "The tracking change could not be confirmed. Try changing it again.",
+      "refresh": "The previous Refresh could not be completed. Try Refresh again.",
+      "read": "Usage could not be loaded. Try Refresh again.",
+      "retry": "Refresh"
+    }
+  },
+  "crashReport": {
+    "freeze": {
+      "attachmentsOmitted": "The saved freeze report and diagnostic logs were not attached: {{value0}}",
+      "description": "Send the saved freeze report to help us understand what happened.",
+      "notSent": "Freeze report wasn't sent",
+      "notes": "Optional: what were you doing before Orca froze?",
+      "sent": "Freeze report sent.",
+      "sentWithoutAttachments": "Details sent without the saved freeze report or diagnostic logs",
+      "summary": "Orca stopped responding",
+      "title": "Report a freeze",
+      "uncheckAttachments": "Uncheck \"Include the saved freeze report and recent logs (redacted)\" and try again, or copy the details.",
+      "includeRedacted": "Include the saved freeze report and recent logs (redacted)"
+    },
+    "includeRecentLogsRedacted": "Include recent logs (redacted)",
+    "details": "Details",
+    "copyDetails": "Copy details",
+    "dontSend": "Don’t send",
+    "sending": "Sending…",
+    "sendReport": "Send report"
+  },
+  "tabBar": {
+    "createRow": {
+      "label": "New tab actions. Left and Right choose; the last one customizes this row.",
+      "shownLabel": "In the + menu",
+      "hiddenHint": "Hidden items still open from search and their shortcuts.",
+      "reset": "Reset Order",
+      "allShortcuts": "All Keyboard Shortcuts…",
+      "hiddenLabel": "Hidden",
+      "hiddenEmpty": "Drag items here to hide them",
+      "locked": "Always shown",
+      "hide": "Hide",
+      "show": "Show",
+      "customize": "Customize",
+      "featureOff": "Off",
+      "turnOn": "Turned off. Show it to turn it back on.",
+      "moreOptions": "More options"
+    }
+  },
+  "emulatorPane": {
+    "tabIntro": {
+      "hiddenFromMenu": "Mobile Emulator removed from the + menu",
+      "hiddenFromMenuHint": "Bring it back from the gear at the end of the icon row.",
+      "undoHide": "Undo",
+      "saveFailed": "Could not update the + menu."
+    }
+  },
+  "languages": {
+    "search": "Search languages",
+    "searchPlaceholder": "Search languages",
+    "pluginsDisabled": "Community translations need plugins turned on.",
+    "community": "Community translations",
+    "loadingPacks": "Looking for community translations…",
+    "catalogFailed": "Couldn’t load community translations.",
+    "noPacks": "No community translations yet.",
+    "refresh": "Check for new translations",
+    "noMatches": "No languages match “{{query}}”.",
+    "managePacks": "Browse in Plugins",
+    "builtIn": "Built in",
+    "coverage": "{{percent}}% translated",
+    "installing": "Installing…",
+    "changing": "Changing…",
+    "current": "Current",
+    "incomplete": "Incomplete",
+    "description": "Built-in languages and community translations. Untranslated text stays in English.",
+    "continue": "Continue",
+    "done": "Done",
+    "requestRecorded": "Language request recorded.",
+    "nowUsing": "Now using {{language}}",
+    "switchBack": "Switch back",
+    "changeFailed": "Could not change language. Try again.",
+    "installedUnavailable": "Installed, but this translation can’t load yet.",
+    "installedSwitchFailed": "Installed, but couldn’t switch language. Try again from Settings → Language.",
+    "suggestionClose": "Close",
+    "moreLanguages": "More languages…",
+    "retry": "Retry",
+    "request": "Request a language",
+    "byPublisher": "by {{publisher}}",
+    "deviceTag": "your device",
+    "get": "Get",
+    "didNotLoad": "Didn’t load",
+    "requestQuery": "Request “{{query}}”",
+    "requestPlaceholder": "e.g. Polski, Tiếng Việt",
+    "requestDescription": "Tell us which language to add. Anyone can also publish a community translation.",
+    "turnOnPlugins": "Turn on in Plugins",
+    "languageDidNotLoad": "{{language}} didn’t load.",
+    "yourLanguage": "Your language",
+    "offerSentence": "Orca is available in {{language}} as a community translation.",
+    "offerInstall": "Install <lang>{{language}}</lang>…",
+    "offerUse": "Use <lang>{{language}}</lang>",
+    "offerInstalling": "Installing <lang>{{language}}</lang>…",
+    "offerSwitching": "Switching to <lang>{{language}}</lang>…",
+    "pluginsDisabledCount_one": "{{count}} community translation needs plugins turned on.",
+    "pluginsDisabledCount_other": "{{count}} community translations need plugins turned on.",
+    "preparing": "Preparing…",
+    "offerConfirming": "Waiting for confirmation…",
+    "offerRetry": "Try again",
+    "suggestionTitle": "Orca in <lang>{{language}}</lang>",
+    "systemResolved": "{{system}} ({{language}})",
+    "suggestionInstall": "Install",
+    "suggestionUse": "Use",
+    "browseOnline": "Browse",
+    "browseOnlineLabel": "Browse community translations on orca.dev (opens in your browser)"
+  },
+  "tabStrip": {
+    "overflow": {
+      "chipOnlyName_one": "{{title}}, {{count}} tab",
+      "chipOnlyName_other": "{{title}}, {{count}} tabs",
+      "entryNeedsAttention": "{{title}}, needs attention",
+      "moreTabs_one": "{{count}} more tab",
+      "moreTabs_other": "{{count}} more tabs",
+      "needAttention_one": ", {{count}} needs attention",
+      "needAttention_other": ", {{count}} need attention",
+      "openTabs_one": "{{count}} open tab",
+      "openTabs_other": "{{count}} open tabs"
+    }
   },
   "bots": {
     "row": {
@@ -30670,294 +30976,6 @@
         "couldNotSignIn": "Couldn’t sign in. Try again."
       }
     }
-  },
-  "plugins": {
-    "blockedByTeam": "Blocked by your team.",
-    "requiredFailures": {
-      "toast": "A required plugin could not be installed",
-      "open": "Open Plugins",
-      "label": "Required by your team",
-      "body": "Orca couldn’t install {{plugin}}."
-    },
-    "frameSaveAs": {
-      "title": "Save File",
-      "allFiles": "All Files"
-    },
-    "frameOpenExternal": {
-      "open": "Open",
-      "cancel": "Cancel",
-      "message": "{{plugin}} wants to open {{host}}",
-      "alwaysAllow": "Always allow {{host}} for this plugin"
-    },
-    "actionConfirmation": {
-      "cancel": "Cancel",
-      "deleteAutomation": "{{plugin}} wants to delete the automation “{{automation}}”",
-      "deleteAutomationDetail": "The plugin did not create it. Its schedule stops and it is removed from Automations.",
-      "delete": "Delete",
-      "changeAutomation": "{{plugin}} wants to change the automation “{{automation}}”",
-      "changeAutomationDetail": "The plugin did not create it. It would change: {{fields}}.",
-      "change": "Change",
-      "changeElevatedAutomationDetail": "It runs its agent with extra settings you chose (arguments, a permission mode or a precheck command). It would change: {{fields}}.",
-      "newPrompt": "New prompt: “{{prompt}}”",
-      "unknownProject": "an unknown project",
-      "automationNewWorkspaces": "Automation {{id}}: a new workspace of {{project}} each run, on {{schedule}}.",
-      "automationInWorkspace": "Automation {{id}}: in {{project}} / {{workspace}}, on {{schedule}}."
-    },
-    "catalog": {
-      "managedByTeam": "Managed by your team",
-      "managedByNamedTeams": "Managed by {{teams}}",
-      "teamPublisher": "Your team"
-    },
-    "displayText": {
-      "tb0b38488": "GitHub Themes for Orca",
-      "tb8aa98fc": "VS Code Default Themes for Orca",
-      "tfc425a57": "Multipass VM Recipes",
-      "t0f9f5503": "GitHub's own VS Code themes: Light Default, Dark Default, Dark Dimmed and the high-contrast variants.",
-      "t0b4f7e19": "Unofficial ports of VS Code's default color themes: Dark Modern, Light Modern, Dark+ and Light+.",
-      "tc86eed7d": "A reviewed starter lifecycle for disposable Multipass workspaces."
-    }
-  },
-  "checks": {
-    "gitlabAllowedFailure": "Allowed to fail",
-    "rerunUnsuccessful": "Rerun unsuccessful"
-  },
-  "gitGraph": {
-    "copyHash": "Copy commit hash",
-    "parents": "Parents",
-    "files": "Files",
-    "currentBranch": "Current branch",
-    "allBranches": "All branches",
-    "chosenBranches": "Chosen branches",
-    "searchRefs": "Search branches and tags",
-    "oldServer": "This server's Orca version shows only the current branch",
-    "copyBranch": "Copy branch name",
-    "switchWorkspace": "Switch to workspace",
-    "workspaceClosed": "This branch isn't open in another workspace anymore.",
-    "workspaceCheckFailed": "Couldn't check this workspace. Try again when connected.",
-    "refresh": "Refresh commits",
-    "branchTag": "Branch / Tag",
-    "graph": "Graph",
-    "resizeColumn": "Resize graph column",
-    "message": "Message",
-    "author": "Author",
-    "date": "Date",
-    "loadMore": "Load more",
-    "noCommits": "No commits yet",
-    "historyChanged": "History changed again. Refresh the Git Graph to try again.",
-    "loadFailed": "Failed to load Git history",
-    "updateHost": "Update Orca on {{host}} to open the Git Graph",
-    "title": "Git Graph",
-    "revertConflicts": "Revert conflicts",
-    "revertInProgress": "Revert in progress",
-    "abortOperationTitle": "Abort {{operation}}?",
-    "abortOperationDescription": "This cancels the operation in progress and can discard conflict resolutions made during it.",
-    "abortOperation": "Abort {{operation}}",
-    "recoveryFailed": "Could not finish the operation. Refresh Source Control and try again.",
-    "continueOperation": "Continue {{operation}}",
-    "reverting": "Reverting",
-    "updateActionsHost": "Update Orca on {{host}} to act on commits",
-    "thisHost": "this host",
-    "cannotApplyMerge": "Can't cherry-pick/revert a merge commit from here",
-    "confirmCommitAction": "{{action}} {{commit}}?",
-    "cancelAction": "Cancel",
-    "checkoutCommit": "Check out commit",
-    "cherryPick": "Cherry-pick",
-    "revert": "Revert",
-    "actionLanded": "Now at {{commit}} on {{branch}}",
-    "detachedHead": "detached HEAD",
-    "actionWarning": "The action completed, but Git reported a problem.",
-    "actionConflicted": "Resolve the conflicts in Source Control, then continue or abort the operation.",
-    "alreadyApplied": "Already applied, nothing to cherry-pick",
-    "nothingToRevert": "Nothing to revert; the changes are already undone.",
-    "actionRefused": "The action did not complete.",
-    "actionUnavailable": "This workspace is no longer available for the action. Reopen the Git Graph and try again.",
-    "ownerChanged": "The workspace host changed. Reopen the Git Graph and try again.",
-    "showAllBranches": "Show all branches",
-    "actionDirty": "Commit or stash your changes, then try again.",
-    "actionFailed": "Git did not create a commit. Check the checkout and try again.",
-    "operationInProgress": "Finish or abort the {{operation}} in progress before trying again.",
-    "checkoutBranch": "Check out branch",
-    "createBranch": "Create branch here",
-    "branchCreated": "Created {{branch}} at {{commit}}",
-    "branchName": "Branch name",
-    "invalidBranchName": "This branch name is invalid. Choose a different name.",
-    "createBranchFailed": "Orca couldn't create the branch. Check this repository in a terminal, then try again."
-  },
-  "macosUpdateRequirement": {
-    "title": "Orca updates now need macOS {{macos}}",
-    "description": "Orca {{version}} requires macOS {{macos}} or later. This version keeps working, but it won’t get new updates on this Mac.",
-    "checking": "Checking whether this Mac can upgrade…",
-    "upgradeDescription": "Your Mac can upgrade. Update macOS to get the latest Orca.",
-    "unsupportedDescription": "Apple doesn’t support macOS {{macos}} on this Mac.",
-    "unknownDescription": "We couldn’t confirm an upgrade for this Mac. Apple’s compatibility guide can help.",
-    "whyTitle": "Why is this changing?",
-    "whyIntro": "We updated parts of Orca’s foundation, like Electron and the on-device speech engine, to bring:",
-    "whySecurity": "Ongoing security fixes from Electron and Chromium.",
-    "whyPerformance": "Faster startup and more efficient native API calls.",
-    "whySystemApis": "Support for current macOS notification APIs and secure Keychain storage.",
-    "whyRequirement": "That newer foundation requires macOS {{macos}} or later.",
-    "dismiss": "Got it",
-    "checkingAction": "Checking your Mac…",
-    "updateAction": "How to update macOS",
-    "discussionAction": "Join the discussion",
-    "checkAction": "Check compatibility",
-    "settingsStatus": "Orca {{version}} requires macOS {{macos}} or later. This is the latest version for this Mac."
-  },
-  "remoteHostBrowserControl": {
-    "title": "{{host}} is controlling a browser tab",
-    "description": "Agents on this SSH host can open and use Orca browser tabs in its workspaces. Tabs it controls show its name. You can change this in Settings > SSH.",
-    "stop": "Stop",
-    "disallow": "Don’t allow",
-    "stopped": "{{host}} stopped controlling browser tabs until Orca restarts.",
-    "disallowed": "{{host}} can no longer control browser tabs. Turn it back on in Settings > SSH.",
-    "failed": "Couldn’t stop {{host}}. Turn off its browser control in Settings > SSH."
-  },
-  "speechModelUpdate": {
-    "update": "Update",
-    "cancel": "Cancel",
-    "pill": {
-      "updateNotice": "Faster dictation is ready to install",
-      "retiredNotice": "Dictation moved to a faster speech model",
-      "install": "Install",
-      "installTooltip": "One-time download · {{size}} MB",
-      "downloading": "Setting up dictation",
-      "downloadingTooltip": "{{done}} of {{size}} MB",
-      "ready": "Dictation is ready. Press <kbd></kbd>",
-      "readyNoShortcut": "Dictation is ready.",
-      "failed": "Download stopped. Check your connection.",
-      "tryAgain": "Try again",
-      "deleteOld": "Delete old model",
-      "deleteFailed": "Failed to delete {{model}}.",
-      "dismiss": "Dismiss",
-      "cancelDownload": "Cancel download"
-    }
-  },
-  "renderer": {
-    "lib": {
-      "filePreview": {
-        "remoteFileUnsupported": "Open in Orca Browser is only available for local files.",
-        "twinFileUnsupported": "This project is on more than one host, so Orca cannot tell which copy to open."
-      }
-    }
-  },
-  "nestedImport": {
-    "error": {
-      "notInScan": "Repository was not found in the nested repository scan result",
-      "notGitRepository": "Not a valid Git repository",
-      "importFailed": "Repository could not be imported"
-    }
-  },
-  "usage": {
-    "failure": {
-      "unavailable": "Usage is unavailable. Try Refresh to reconnect.",
-      "setting": "The tracking change could not be confirmed. Try changing it again.",
-      "refresh": "The previous Refresh could not be completed. Try Refresh again.",
-      "read": "Usage could not be loaded. Try Refresh again.",
-      "retry": "Refresh"
-    }
-  },
-  "crashReport": {
-    "freeze": {
-      "attachmentsOmitted": "The saved freeze report and diagnostic logs were not attached: {{value0}}",
-      "description": "Send the saved freeze report to help us understand what happened.",
-      "notSent": "Freeze report wasn't sent",
-      "notes": "Optional: what were you doing before Orca froze?",
-      "sent": "Freeze report sent.",
-      "sentWithoutAttachments": "Details sent without the saved freeze report or diagnostic logs",
-      "summary": "Orca stopped responding",
-      "title": "Report a freeze",
-      "uncheckAttachments": "Uncheck \"Include the saved freeze report and recent logs (redacted)\" and try again, or copy the details.",
-      "includeRedacted": "Include the saved freeze report and recent logs (redacted)"
-    },
-    "includeRecentLogsRedacted": "Include recent logs (redacted)",
-    "details": "Details",
-    "copyDetails": "Copy details",
-    "dontSend": "Don’t send",
-    "sending": "Sending…",
-    "sendReport": "Send report"
-  },
-  "tabBar": {
-    "createRow": {
-      "label": "New tab actions. Left and Right choose; the last one customizes this row.",
-      "shownLabel": "In the + menu",
-      "hiddenHint": "Hidden items still open from search and their shortcuts.",
-      "reset": "Reset Order",
-      "allShortcuts": "All Keyboard Shortcuts…",
-      "hiddenLabel": "Hidden",
-      "hiddenEmpty": "Drag items here to hide them",
-      "locked": "Always shown",
-      "hide": "Hide",
-      "show": "Show",
-      "customize": "Customize",
-      "featureOff": "Off",
-      "turnOn": "Turned off. Show it to turn it back on.",
-      "moreOptions": "More options"
-    }
-  },
-  "emulatorPane": {
-    "tabIntro": {
-      "hiddenFromMenu": "Mobile Emulator removed from the + menu",
-      "hiddenFromMenuHint": "Bring it back from the gear at the end of the icon row.",
-      "undoHide": "Undo",
-      "saveFailed": "Could not update the + menu."
-    }
-  },
-  "languages": {
-    "search": "Search languages",
-    "searchPlaceholder": "Search languages",
-    "pluginsDisabled": "Community translations need plugins turned on.",
-    "community": "Community translations",
-    "loadingPacks": "Looking for community translations…",
-    "catalogFailed": "Couldn’t load community translations.",
-    "noPacks": "No community translations yet.",
-    "refresh": "Check for new translations",
-    "noMatches": "No languages match “{{query}}”.",
-    "managePacks": "Browse in Plugins",
-    "builtIn": "Built in",
-    "coverage": "{{percent}}% translated",
-    "installing": "Installing…",
-    "changing": "Changing…",
-    "current": "Current",
-    "incomplete": "Incomplete",
-    "description": "Built-in languages and community translations. Untranslated text stays in English.",
-    "continue": "Continue",
-    "done": "Done",
-    "requestRecorded": "Language request recorded.",
-    "nowUsing": "Now using {{language}}",
-    "switchBack": "Switch back",
-    "changeFailed": "Could not change language. Try again.",
-    "installedUnavailable": "Installed, but this translation can’t load yet.",
-    "installedSwitchFailed": "Installed, but couldn’t switch language. Try again from Settings → Language.",
-    "suggestionClose": "Close",
-    "moreLanguages": "More languages…",
-    "retry": "Retry",
-    "request": "Request a language",
-    "byPublisher": "by {{publisher}}",
-    "deviceTag": "your device",
-    "get": "Get",
-    "didNotLoad": "Didn’t load",
-    "requestQuery": "Request “{{query}}”",
-    "requestPlaceholder": "e.g. Polski, Tiếng Việt",
-    "requestDescription": "Tell us which language to add. Anyone can also publish a community translation.",
-    "turnOnPlugins": "Turn on in Plugins",
-    "languageDidNotLoad": "{{language}} didn’t load.",
-    "yourLanguage": "Your language",
-    "offerSentence": "Orca is available in {{language}} as a community translation.",
-    "offerInstall": "Install <lang>{{language}}</lang>…",
-    "offerUse": "Use <lang>{{language}}</lang>",
-    "offerInstalling": "Installing <lang>{{language}}</lang>…",
-    "offerSwitching": "Switching to <lang>{{language}}</lang>…",
-    "pluginsDisabledCount_one": "{{count}} community translation needs plugins turned on.",
-    "pluginsDisabledCount_other": "{{count}} community translations need plugins turned on.",
-    "preparing": "Preparing…",
-    "offerConfirming": "Waiting for confirmation…",
-    "offerRetry": "Try again",
-    "suggestionTitle": "Orca in <lang>{{language}}</lang>",
-    "systemResolved": "{{system}} ({{language}})",
-    "suggestionInstall": "Install",
-    "suggestionUse": "Use",
-    "browseOnline": "Browse",
-    "browseOnlineLabel": "Browse community translations on orca.dev (opens in your browser)"
   },
   "agentCliUpdate": {
     "updating": "Updating…",

@@ -3,6 +3,7 @@ import type { AppState } from '../types'
 import type { Repo } from '../../../../shared/repository/repo-types'
 import { sanitizeRepoIcon } from '../../../../shared/repository/appearance/repo-icon'
 import { normalizeRepoBadgeColor } from '../../../../shared/repository/appearance/repo-badge-color'
+import { sanitizeRepoSidebarStyle } from '../../../../shared/repo-sidebar-style'
 import { normalizeGhAccountBinding } from '../../../../shared/github/accounts/account-binding'
 import { normalizeJiraProjectReference } from '../../../../shared/jira/jira-project-reference'
 import { sanitizeAgentWorkspaceTrustDecision } from '../../../../shared/agent-launch/permissions/agent-workspace-trust-decision'
@@ -27,6 +28,14 @@ export function sanitizeRepoUpdate(updates: RepoUpdate): RepoUpdate {
       delete sanitized.defaultJiraProject
     } else {
       sanitized.defaultJiraProject = reference
+    }
+  }
+  if ('sidebarStyle' in sanitized) {
+    const sidebarStyle = sanitizeRepoSidebarStyle(sanitized.sidebarStyle)
+    if (sidebarStyle === undefined) {
+      delete sanitized.sidebarStyle
+    } else {
+      sanitized.sidebarStyle = sidebarStyle
     }
   }
   if ('badgeColor' in sanitized) {

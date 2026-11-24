@@ -33,6 +33,7 @@ import { LineageGuides } from './lineage-guides'
 import { renderWorktreeSectionHeaderRow } from './SectionHeader'
 import type { SectionHeaderRowContext } from './section-header-row-context'
 import type { WorktreeRowDragState } from '../drag/row-state'
+import { getProjectSidebarSurfaceProps } from '../../project-sidebar-surface-style'
 import type { Translate } from '@/i18n/use-translate'
 
 export type WorktreeVirtualRowContext = {
@@ -190,6 +191,11 @@ export function renderWorktreeVirtualRow(
   )
   const sourceHidden =
     itemKey !== null && ctx.worktreeDragState.draggingWorktreeId !== null && guidesInDraggedRange
+  // Only under a project header; other groupings mix projects in one list.
+  const rowSurface = getProjectSidebarSurfaceProps(
+    !folder && ctx.groupBy === 'repo' ? row.repo : undefined,
+    'rows'
+  )
   const itemPreviewOffset =
     (itemKey
       ? ctx.worktreeDragState.previewOffsetsByWorktreeId.get(
@@ -210,6 +216,50 @@ export function renderWorktreeVirtualRow(
     })
       ? ctx.item.getActiveSurfaceVariant(rootRow)
       : 'primary'
+
+  const rowBody = (
+    <div
+      className="relative"
+      data-worktree-lineage-row={frame.guides ? '' : undefined}
+      style={{ paddingTop: frame.before, paddingBottom: frame.closing + frame.after }}
+    >
+      {activeFamily && (
+        <div
+          aria-hidden="true"
+          data-worktree-family-segment={familyVariant}
+          className={cn(
+            'pointer-events-none absolute border-x',
+            familyHidden && 'opacity-0',
+            frame.root === vItem.index && 'rounded-t-lg border-t',
+            frame.end === vItem.index && vItem.index === rootFrame.end && 'rounded-b-lg border-b'
+          )}
+          style={{
+            left: rootFrame.left + 4,
+            right: rootFrame.right,
+            top: 0,
+            bottom: frame.after
+          }}
+        />
+      )}
+      {frame.guides && (
+        <LineageGuides
+          guides={frame.guides}
+          before={frame.before}
+          hidden={guidesInDraggedRange || familyHidden}
+        />
+      )}
+      <div className={cn('relative', sourceHidden && 'pointer-events-none opacity-0')}>
+        {folder
+          ? renderFolderWorkspaceOption({
+              ctx: ctx.folderWorkspace,
+              row,
+              frame,
+              lineage: { onToggle: folderLineageToggle(ctx, row), childIsActive: activeFamily }
+            })
+          : renderWorktreeItemRow(ctx.item, row, frame, activeFamily && frame.root === vItem.index)}
+      </div>
+    </div>
+  )
 
   return (
     <div
@@ -243,52 +293,7 @@ export function renderWorktreeVirtualRow(
           : undefined
       }
     >
-      <div
-        className="relative"
-        data-worktree-lineage-row={frame.guides ? '' : undefined}
-        style={{ paddingTop: frame.before, paddingBottom: frame.closing + frame.after }}
-      >
-        {activeFamily && (
-          <div
-            aria-hidden="true"
-            data-worktree-family-segment={familyVariant}
-            className={cn(
-              'pointer-events-none absolute border-x',
-              familyHidden && 'opacity-0',
-              frame.root === vItem.index && 'rounded-t-lg border-t',
-              frame.end === vItem.index && vItem.index === rootFrame.end && 'rounded-b-lg border-b'
-            )}
-            style={{
-              left: rootFrame.left + 4,
-              right: rootFrame.right,
-              top: 0,
-              bottom: frame.after
-            }}
-          />
-        )}
-        {frame.guides && (
-          <LineageGuides
-            guides={frame.guides}
-            before={frame.before}
-            hidden={guidesInDraggedRange || familyHidden}
-          />
-        )}
-        <div className={cn('relative', sourceHidden && 'pointer-events-none opacity-0')}>
-          {folder
-            ? renderFolderWorkspaceOption({
-                ctx: ctx.folderWorkspace,
-                row,
-                frame,
-                lineage: { onToggle: folderLineageToggle(ctx, row), childIsActive: activeFamily }
-              })
-            : renderWorktreeItemRow(
-                ctx.item,
-                row,
-                frame,
-                activeFamily && frame.root === vItem.index
-              )}
-        </div>
-      </div>
+      {rowSurface.style ? <div {...rowSurface}>{rowBody}</div> : rowBody}
     </div>
   )
 }

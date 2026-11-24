@@ -54,6 +54,7 @@ export type RepoUpdate = Partial<
     | 'displayName'
     | 'badgeColor'
     | 'repoIcon'
+    | 'sidebarStyle'
     | 'upstream'
     | 'hookSettings'
     | 'editorFormatter'

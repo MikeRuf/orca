@@ -7,6 +7,7 @@ import { getRepoLucideIconOptions } from '../../../repo/repo-icon'
 import { RepoMarkTile, useRepoMarkAppearance } from '../../../repo/RepoMark'
 import { RepositoryIconColorSection } from './RepositoryIconColorSection'
 import { RepositoryIconTabs } from './RepositoryIconTabs'
+import { RepositorySidebarStyleSection } from './RepositorySidebarStyleSection'
 import { LettersPanel } from '../../../repo/project-peek/ProjectIconStylePanels'
 import { useRepositoryIconActions, type RepoAppearanceUpdate } from './use-repository-icon-actions'
 import { useTranslate, type Translate } from '@/i18n/use-translate'
@@ -107,6 +108,7 @@ export function RepositoryIconPicker({
         onSetIcon={setIcon}
         onUseGitHubAvatar={() => void actions.applyGitHubAvatar()}
       />
+      <RepositorySidebarStyleSection repo={repo} updateRepo={updateRepo} />
     </div>
   )
 }
