@@ -243,9 +243,8 @@ export function createStructuredChatNamingHandler(deps: StructuredChatNamingDeps
       return
     }
     try {
-      const store = deps.getStore()
-      const record = store?.getRecord(summary.sessionId)
-      if (!store || !record || attempted.get(summary.sessionId) === contextId(record)) {
+      const record = deps.getStore()?.getRecord(summary.sessionId)
+      if (!record || attempted.get(summary.sessionId) === contextId(record)) {
         return
       }
       attempted.set(summary.sessionId, contextId(record))
@@ -264,9 +263,8 @@ export function createStructuredChatNamingHandler(deps: StructuredChatNamingDeps
       return output ? formatAgentGenerationFailureOutputForDisplay(output) : null
     },
     regenerate: (sessionId) => {
-      const store = deps.getStore()
-      const record = store?.getRecord(sessionId)
-      if (!store || !record) {
+      const record = deps.getStore()?.getRecord(sessionId)
+      if (!record) {
         return false
       }
       work.run(record, false)
@@ -286,6 +284,10 @@ export function createStructuredChatNamingHandler(deps: StructuredChatNamingDeps
       refresh(saved.record.location.workspaceId, sessionId)
       if (saved.applied) {
         onApplied?.(saved.record, saved.changed)
+      }
+      // A released name is earned back from the chat's content, as any chat's is.
+      if (saved.applied && write === 'release' && deps.getSettings().nativeChatAutoName !== false) {
+        work.run(saved.record, false)
       }
       return { name: saved.record.conversationName ?? null, applied: saved.applied }
     }
