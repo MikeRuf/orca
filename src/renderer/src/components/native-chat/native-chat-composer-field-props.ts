@@ -4,7 +4,7 @@ import type { ComposerAutocomplete } from '../../../../shared/native-chat/input/
 import type { NativeChatPickerItem } from '../../../../shared/native-chat/input/composer/native-chat-picker-items'
 import type { NativeChatMentionFiles } from './composer/pickers/use-native-chat-mention-files'
 import type { NativeChatComposerNotice } from './composer/controls/native-chat-composer-notice'
-import type { NativeChatContextUsageSummary } from '../../../../shared/native-chat/native-chat-context-usage-summary'
+import type { NativeChatComposerUsage } from './usage/use-native-chat-composer-usage'
 import type { NativeChatAfterStopSend } from './composer/submit/native-chat-composer-target'
 import type {
   SessionOptionDescriptor,
@@ -82,7 +82,7 @@ export type NativeChatComposerFieldProps = {
   onStop?: () => void
   sessionOptionsSurface: SessionOptionsSurface | null
   sessionOptionsSnapshot: SessionOptionDescriptor[]
-  contextUsage?: NativeChatContextUsageSummary | null
+  composerUsage?: NativeChatComposerUsage
   sessionOptionsPickerRequest?: NativeChatOptionPickerRequest | null
   goalMode?: NativeChatComposerGoalMode
   agent?: string

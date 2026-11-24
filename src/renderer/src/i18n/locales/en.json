@@ -24082,18 +24082,6 @@
       "keywordDefaultProject": "default project",
       "keywordIssuePicker": "issue picker"
     },
-    "RepositoryBrowserProfileSection": {
-      "title": "Browser profile",
-      "description": "New browser tabs in this project, including ones agents open, use this profile. Point several projects at one profile to share a sign-in.",
-      "keywordProfile": "browser profile",
-      "keywordCookies": "cookies",
-      "keywordSignIn": "sign in",
-      "selectLabel": "Profile for new tabs",
-      "inherit": "Browser setting ({{scope}})",
-      "deletedOption": "Deleted profile",
-      "deleted": "The profile picked for this project was deleted, so new tabs follow the Browser setting.",
-      "saveFailed": "Couldn't save the browser profile. The Orca on this project's host may need an update."
-    },
     "managed-runtime": {
       "cancelled": "Installation cancelled.",
       "cancelling": "Cancelling…",
@@ -24198,14 +24186,6 @@
         "boundFallbackName": "its worker"
       }
     },
-    "bots": {
-      "toolSignIn": {
-        "pasteHint": "Signed in on another computer? Paste the address its browser ended on.",
-        "address": "Address",
-        "finish": "Finish",
-        "pasteLanded": "After you sign in, paste the address you landed on."
-      }
-    },
     "wslHostMark": {
       "runsOn": "Runs on WSL: {{distro}} (Linux)"
     },
@@ -24241,6 +24221,38 @@
           "action": "Got it"
         }
       }
+    },
+    "claude-accounts": {
+      "fiveHour": "5-hour",
+      "week": "Week",
+      "fiveHourShort": "5h",
+      "thisChat": "This chat",
+      "shareEstimate": "Chat shares are estimates from token counts.",
+      "chipLabel": "Claude account {{name}}, usage details",
+      "projectTitle": "Claude Account",
+      "projectDescription": "Run this project’s Claude chats on a specific account.",
+      "projectLongDescription": "New chats start on this account, and resumed chats move to it. If it is signed out, chats use the default account.",
+      "useDefault": "Use default account",
+      "removedAccount": "Removed account",
+      "signedOutOption": "{{email}} (signed out)",
+      "projects": "Projects",
+      "noProjects": "None assigned",
+      "chats": "Chats",
+      "otherUse": "Other use",
+      "toggleDetails": "Toggle account details",
+      "setDefault": "Use {{name}} for projects with no account",
+      "signIn": "Sign in",
+      "oneChat": "1 chat",
+      "chatCount": "{{count}} chats",
+      "updatedAgo": "Updated {{minutes}} min ago",
+      "refresh": "Refresh usage",
+      "addAccount": "Add account",
+      "manageAccounts": "Manage accounts",
+      "setDefaultFailed": "Could not change the default.",
+      "systemDefault": "System default",
+      "untitledChat": "Untitled chat",
+      "projectSelectLabelOnHost": "Account on {{host}}",
+      "titleOnHost": "Claude accounts on {{host}}"
     },
     "tabGroup": {
       "splitPaneLanding": {
@@ -24306,6 +24318,18 @@
         "skipCleanup": "Skip cleanup"
       }
     },
+    "RepositoryBrowserProfileSection": {
+      "title": "Browser profile",
+      "description": "New browser tabs in this project, including ones agents open, use this profile. Point several projects at one profile to share a sign-in.",
+      "keywordProfile": "browser profile",
+      "keywordCookies": "cookies",
+      "keywordSignIn": "sign in",
+      "selectLabel": "Profile for new tabs",
+      "inherit": "Browser setting ({{scope}})",
+      "deletedOption": "Deleted profile",
+      "deleted": "The profile picked for this project was deleted, so new tabs follow the Browser setting.",
+      "saveFailed": "Couldn't save the browser profile. The Orca on this project's host may need an update."
+    },
     "link": {
       "routing": {
         "preference": {
@@ -24358,6 +24382,14 @@
         "disconnectedHostLine": "{{host}} isn’t connected. Its files stay on the host.",
         "filesStayLine": "Its files stay on {{host}}.",
         "removing": "Removing…"
+      }
+    },
+    "bots": {
+      "toolSignIn": {
+        "pasteHint": "Signed in on another computer? Paste the address its browser ended on.",
+        "address": "Address",
+        "finish": "Finish",
+        "pasteLanded": "After you sign in, paste the address you landed on."
       }
     }
   },

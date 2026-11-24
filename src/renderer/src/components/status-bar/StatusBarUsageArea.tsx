@@ -9,6 +9,8 @@ import {
 import { useTranslate } from '@/i18n/use-translate'
 import { cn } from '@/lib/class-names'
 import { UsageRosterPanel } from './usage/UsageRosterPanel'
+import { ClaudeAccountsRosterSection } from './ClaudeAccountsRosterSection'
+import { getUsageOwnerHostScope } from './usage/use-owner-usage-rate-limits'
 import { STATUS_BAR_CONTEXT_MENU_EXEMPT_PROPS } from './composition/status-bar-context-menu-policy'
 import { StatusBarUsageEmptyCta } from './usage/StatusBarUsageEmptyCta'
 import { StatusBarUsageChangeNotices } from './usage/StatusBarUsageChangeNotices'
@@ -144,72 +146,83 @@ export function StatusBarUsageArea({
                 // Reserve footer height so the popover and drill-in submenus stay above the status bar.
                 collisionPadding={{ top: 8, bottom: 32, left: 8, right: 8 }}
                 variant="picker"
-                className="w-[440px] max-w-[calc(100vw-1rem)]"
+                className="max-w-[calc(100vw-1rem)]"
+                // The roster sets its own width: 480 px with the accounts panel, 440 px without.
+                style={{ width: 'fit-content' }}
                 onPointerDownOutside={usageMenuFocusHandoff.onPointerDownOutside}
                 onCloseAutoFocus={usageMenuFocusHandoff.onCloseAutoFocus}
               >
-                <UsageRosterPanel
-                  actionsAvailable={remoteOwner === null || remoteOwner.environmentId !== null}
-                  unavailableReason={remoteOwner?.unavailableReason}
+                <ClaudeAccountsRosterSection
+                  target={getUsageOwnerHostScope(remoteOwner)}
                   providers={rosterProviders}
-                  display={usagePercentageDisplay}
-                  statusBarUsageMode={statusBarUsageMode}
-                  onStatusBarUsageModeChange={setStatusBarUsageMode}
-                  isRefreshing={isRefreshing || anyFetching}
-                  onRefresh={handleRefresh}
-                  onOpenProvider={handleOpenProviderAccounts}
-                  onSignIn={handleOpenProviderAccounts}
-                  canSignIn={canSignInFromUsageRow}
+                  onClose={() => handleUsageMenuOpenChange(false)}
+                  onAddAccount={() => handleOpenProviderAccounts('claude')}
                   onManageAccounts={handleManageAccounts}
-                  onUsageDetails={handleUsageDetails}
-                  renderRow={(p, rowNode) => {
-                    // Why: a placeholder has nothing to drill into; its row opens the host's accounts.
-                    if (isOwnerNotSetUpPlaceholder(p)) {
-                      return null
-                    }
-                    // Claude/Codex detail panels also expose account switching and runtime controls.
-                    if (p.provider === 'claude') {
-                      return (
-                        <ClaudeSwitcherMenu
-                          claude={p}
-                          ownerUsage={ownerUsage}
-                          asSubmenu
-                          triggerContent={rowNode}
-                        />
-                      )
-                    }
-                    if (p.provider === 'antigravity') {
-                      return (
-                        <AntigravityUsageMenu
-                          antigravity={p}
-                          accounts={antigravityAccounts}
-                          triggerContent={rowNode}
-                          onManageAccounts={() => handleOpenProviderAccounts('antigravity')}
-                        />
-                      )
-                    }
-                    if (p.provider === 'codex') {
-                      return (
-                        <CodexSwitcherMenu
-                          codex={p}
-                          ownerUsage={ownerUsage}
-                          asSubmenu
-                          triggerContent={rowNode}
-                        />
-                      )
-                    }
-                    return (
-                      <ProviderDetailsMenu
-                        provider={p}
-                        asSubmenu
-                        triggerContent={rowNode}
-                        ariaLabel={t(
-                          'auto.components.status.bar.UsageRosterPanel.openDetails',
-                          'Open usage details'
-                        )}
-                      />
-                    )
-                  }}
+                  renderRoster={(providers) => (
+                    <UsageRosterPanel
+                      actionsAvailable={remoteOwner === null || remoteOwner.environmentId !== null}
+                      unavailableReason={remoteOwner?.unavailableReason}
+                      providers={providers}
+                      display={usagePercentageDisplay}
+                      statusBarUsageMode={statusBarUsageMode}
+                      onStatusBarUsageModeChange={setStatusBarUsageMode}
+                      isRefreshing={isRefreshing || anyFetching}
+                      onRefresh={handleRefresh}
+                      onOpenProvider={handleOpenProviderAccounts}
+                      onSignIn={handleOpenProviderAccounts}
+                      canSignIn={canSignInFromUsageRow}
+                      onManageAccounts={handleManageAccounts}
+                      onUsageDetails={handleUsageDetails}
+                      renderRow={(p, rowNode) => {
+                        // Why: a placeholder has nothing to drill into; its row opens the host's accounts.
+                        if (isOwnerNotSetUpPlaceholder(p)) {
+                          return null
+                        }
+                        // Claude/Codex detail panels also expose account switching and runtime controls.
+                        if (p.provider === 'claude') {
+                          return (
+                            <ClaudeSwitcherMenu
+                              claude={p}
+                              ownerUsage={ownerUsage}
+                              asSubmenu
+                              triggerContent={rowNode}
+                            />
+                          )
+                        }
+                        if (p.provider === 'antigravity') {
+                          return (
+                            <AntigravityUsageMenu
+                              antigravity={p}
+                              accounts={antigravityAccounts}
+                              triggerContent={rowNode}
+                              onManageAccounts={() => handleOpenProviderAccounts('antigravity')}
+                            />
+                          )
+                        }
+                        if (p.provider === 'codex') {
+                          return (
+                            <CodexSwitcherMenu
+                              codex={p}
+                              ownerUsage={ownerUsage}
+                              asSubmenu
+                              triggerContent={rowNode}
+                            />
+                          )
+                        }
+                        return (
+                          <ProviderDetailsMenu
+                            provider={p}
+                            asSubmenu
+                            triggerContent={rowNode}
+                            ariaLabel={t(
+                              'auto.components.status.bar.UsageRosterPanel.openDetails',
+                              'Open usage details'
+                            )}
+                          />
+                        )
+                      }}
+                    />
+                  )}
                 />
               </DropdownMenuContent>
             </DropdownMenu>

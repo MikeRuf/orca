@@ -74,7 +74,7 @@ export function NativeChatComposerField({
   onStop,
   sessionOptionsSurface,
   sessionOptionsSnapshot,
-  contextUsage,
+  composerUsage,
   sessionOptionsPickerRequest,
   goalMode,
   agent,
@@ -334,7 +334,7 @@ export function NativeChatComposerField({
                 onStop={onStop ? stop : undefined}
                 sessionOptionsSurface={sessionOptionsSurface}
                 sessionOptionsSnapshot={sessionOptionsSnapshot}
-                contextUsage={contextUsage}
+                {...composerUsage}
                 sessionOptionsPickerRequest={sessionOptionsPickerRequest}
                 focusComposer={focusComposer}
                 onExitGoalMode={goalMode?.active ? exitGoalMode : undefined}

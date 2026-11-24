@@ -27,6 +27,7 @@ import {
 } from '../../../../../shared/rpc-contract/accounts/accounts-params'
 import { HostAccountLaunchEnvParams } from '../../../../../shared/agent-launch/startup/host-account-launch-env'
 import { withTimeout } from '../../../../../shared/concurrency/promise-timeout-fallback'
+import { CLAUDE_ACCOUNTS_OVERVIEW_METHOD } from './claude-accounts-overview-method'
 
 // Why 10s: well under the CLI's 60s request timeout even when several Codex homes probe slowly.
 const STALE_USAGE_WAIT_MS = 10_000
@@ -52,6 +53,7 @@ function signInOwner({ caller }: Pick<RpcContext, 'caller'>): string {
 }
 
 const ACCOUNT_METHOD_DEFINITIONS = [
+  CLAUDE_ACCOUNTS_OVERVIEW_METHOD,
   // Only the owning desktop pushes this host's account launch environment, including WSL.
   defineMethod({
     name: 'accounts.setHostLaunchEnv',

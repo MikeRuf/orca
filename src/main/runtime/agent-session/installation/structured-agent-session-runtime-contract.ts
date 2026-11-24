@@ -56,6 +56,8 @@ export type StructuredAgentSessionRuntimeDeps = StructuredAgentSessionTransportO
   resolveLaunchArgs: (provider: AgentSessionRecord['provider']) => Promise<string[]> | string[]
   /** Required, and asserted at install time — an absent policy must not degrade to a guess. */
   resolveClaudeAuthPolicy: () => Promise<ClaudeStructuredAuthPolicy> | ClaudeStructuredAuthPolicy
+  /** The project's Claude account for a workspace, if it has one. */
+  resolveProjectClaudeAccountId?: (workspaceId: string) => string | null
   assertQueuedMessageAllowed?: StructuredAgentSessionHostDeps['assertQueuedMessageAllowed']
   usageLimitAutoContinue?: StructuredAgentSessionHostDeps['usageLimitAutoContinue']
   idleSweep?: StructuredAgentSessionHostDeps['idleSweep']
