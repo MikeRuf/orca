@@ -37,8 +37,9 @@ export abstract class RuntimeStructuredAgentHost extends OrcaRuntimeWithStartTui
   }
 
   // Also spread into the session host's deps, which is where the project's Claude account goes.
-  protected structuredAgentCatalogDependencies(): StructuredAgentModelCatalogDeps &
-    { resolveProjectClaudeAccountId: (workspaceId: string) => string | null } {
+  protected structuredAgentCatalogDependencies(): StructuredAgentModelCatalogDeps & {
+    resolveProjectClaudeAccountId: (workspaceId: string) => string | null
+  } {
     return {
       stateDirectory: getProfileUserDataPath(),
       // Resolve plain folder workspaces as well as git worktrees.
