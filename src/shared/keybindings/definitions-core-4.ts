@@ -171,6 +171,24 @@ export const KEYBINDING_DEFINITION_CORE_4: readonly KeybindingDefinition[] = [
     allowInTerminal: true
   },
   {
+    id: 'tab.cycleFavorites',
+    title: 'Cycle through favorite tabs',
+    group: 'Tab Navigation',
+    scope: 'tabs',
+    searchKeywords: ['shortcut', 'tab', 'favorite', 'cycle', 'switch', 'workspace'],
+    defaultBindings: platformBindings(['Alt+F']),
+    allowInTerminal: true
+  },
+  {
+    id: 'tab.cycleFavoritesBackward',
+    title: 'Cycle through favorite tabs backward',
+    group: 'Tab Navigation',
+    scope: 'tabs',
+    searchKeywords: ['shortcut', 'tab', 'favorite', 'cycle', 'switch', 'workspace', 'backward'],
+    defaultBindings: platformBindings(['Alt+Shift+F']),
+    allowInTerminal: true
+  },
+  {
     id: 'tab.moveLeft',
     title: 'Move active tab left',
     group: 'Tabs',
