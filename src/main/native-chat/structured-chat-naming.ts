@@ -277,19 +277,19 @@ export function createStructuredChatNamingHandler(deps: StructuredChatNamingDeps
       if (!store?.getRecord(sessionId)) {
         return null
       }
-      const { record, applied } = await store.setUserConversationName(sessionId, name, write)
-      if (applied) {
+      const saved = await store.setUserConversationName(sessionId, name, write)
+      if (saved.applied) {
         forget(sessionId)
       }
-      refresh(record.location.workspaceId, sessionId)
-      if (applied) {
-        onApplied?.(record)
+      refresh(saved.record.location.workspaceId, sessionId)
+      if (saved.applied) {
+        onApplied?.(saved.record, saved.changed)
       }
       // A released name is earned back from the chat's content, as any chat's is.
-      if (applied && write === 'release' && deps.getSettings().nativeChatAutoName !== false) {
-        work.run(record, false)
+      if (saved.applied && write === 'release' && deps.getSettings().nativeChatAutoName !== false) {
+        work.run(saved.record, false)
       }
-      return { name: record.conversationName ?? null, applied }
+      return { name: saved.record.conversationName ?? null, applied: saved.applied }
     }
   }
   return Object.assign(observe, naming)

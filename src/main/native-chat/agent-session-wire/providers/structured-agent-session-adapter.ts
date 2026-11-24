@@ -356,6 +356,8 @@ export type StructuredAgentSessionAdapter = AdapterControls & {
     name: string
     sequence: number
     inheritance?: boolean
+    /** A re-save of the name the chat already had, as a title box does on losing focus. */
+    unchanged?: boolean
   }): Promise<void> | undefined
   stopProviderNaming?(): void
   /** The session gained its first, or lost its last, reader that shows prompt suggestions. */

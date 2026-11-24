@@ -36,6 +36,7 @@ import {
 import {
   setAgentSessionRecordConversationName,
   setAgentSessionRecordUserName,
+  type AgentSessionUserNameResult,
   type AgentSessionUserNameWrite
 } from './agent-session-record-conversation-name'
 
@@ -92,7 +93,7 @@ export type AgentSessionRecordCommand =
 export type AgentSessionRecordCommandResult<C extends AgentSessionRecordCommand> = C extends {
   kind: 'user-name'
 }
-  ? { record: AgentSessionRecord; applied: boolean }
+  ? AgentSessionUserNameResult
   : C extends { kind: 'name-if-current' | 'sleep' }
     ? AgentSessionRecord | null
     : AgentSessionRecord

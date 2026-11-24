@@ -67,7 +67,7 @@ export function createStructuredAgentSessionProviderNaming(deps: {
     }
   }
   return {
-    push(record: AgentSessionRecord, inheritance = false): Promise<void> {
+    push(record: AgentSessionRecord, inheritance = false, unchanged = false): Promise<void> {
       if (stopped) {
         return Promise.resolve()
       }
@@ -78,7 +78,8 @@ export function createStructuredAgentSessionProviderNaming(deps: {
         record,
         name: record.conversationName,
         sequence: ++sequence,
-        inheritance
+        inheritance,
+        unchanged
       }
       try {
         const captured = deps.adapter.nameProviderConversation?.(occurrence)
@@ -119,14 +120,14 @@ export function createStructuredAgentSessionProviderNaming(deps: {
 /** Capture inside the applied commit, after canonical publication, without changing RPC output. */
 export function withProviderNaming(
   naming: StructuredAgentSessionConversationNaming,
-  nameProvider: (record: AgentSessionRecord) => void
+  nameProvider: (record: AgentSessionRecord, changed: boolean) => void
 ): StructuredAgentSessionConversationNaming {
   return {
     ...naming,
     setUserName: (sessionId, name, write, onApplied) =>
-      naming.setUserName(sessionId, name, write, (record) => {
-        nameProvider(record)
-        onApplied?.(record)
+      naming.setUserName(sessionId, name, write, (record, changed) => {
+        nameProvider(record, changed)
+        onApplied?.(record, changed)
       })
   }
 }

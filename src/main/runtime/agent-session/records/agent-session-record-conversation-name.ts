@@ -26,25 +26,34 @@ export function setAgentSessionRecordConversationName(
  *  still bears as `name`, handing it back to automatic naming. */
 export type AgentSessionUserNameWrite = 'rename' | 'legacy-alias' | 'release'
 
+/** `changed` is false when the chat already had this user name, as when a title box saves its
+ *  unchanged text on losing focus. */
+export type AgentSessionUserNameResult = {
+  record: AgentSessionRecord
+  applied: boolean
+  changed: boolean
+}
+
 export function setAgentSessionRecordUserName(
   record: AgentSessionRecord,
   name: string,
   write: AgentSessionUserNameWrite,
   now: number
-): { record: AgentSessionRecord; applied: boolean } {
+): AgentSessionUserNameResult {
   const normalized = normalizeAgentSessionConversationName(name)
   if (write === 'release') {
     const released = releaseAgentSessionRecordUserName(record, name, now)
-    return { record: released, applied: released !== record }
+    // A release hands the name back to automatic naming; no rename to tell the agent about.
+    return { record: released, applied: released !== record, changed: false }
   }
   if (
     normalized === null ||
     (write === 'legacy-alias' && record.conversationNameSource === 'user')
   ) {
-    return { record, applied: false }
+    return { record, applied: false, changed: false }
   }
   if (record.conversationName === normalized && record.conversationNameSource === 'user') {
-    return { record, applied: true }
+    return { record, applied: true, changed: false }
   }
   return {
     record: {
@@ -53,7 +62,8 @@ export function setAgentSessionRecordUserName(
       conversationNameSource: 'user',
       updatedAt: now
     },
-    applied: true
+    applied: true,
+    changed: true
   }
 }
 
@@ -76,14 +86,15 @@ export async function setAgentSessionRecordUserNameThrough(
   ) => Promise<AgentSessionRecord>,
   name: string,
   write: AgentSessionUserNameWrite
-): Promise<{ record: AgentSessionRecord; applied: boolean }> {
-  let applied = false
+): Promise<AgentSessionUserNameResult> {
+  let applied = false,
+    changed = false
   const record = await mutate((current) => {
     const result = setAgentSessionRecordUserName(current, name, write, Date.now())
-    applied = result.applied
+    ;({ applied, changed } = result)
     return result.record
   })
-  return { record, applied }
+  return { record, applied, changed }
 }
 
 /** Automatic naming's write: applies only while the name is still `expected` and the user has not
