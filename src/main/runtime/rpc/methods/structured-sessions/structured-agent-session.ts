@@ -45,6 +45,7 @@ import { STRUCTURED_AGENT_SESSION_TOOL_CALLER_METHODS } from './identity/structu
 import { STRUCTURED_AGENT_SESSION_SEND_RECORDED_METHODS } from './history/structured-agent-session-send-recorded'
 import { STRUCTURED_AGENT_SESSION_OPTIONS_READ_METHODS } from './catalog/structured-agent-session-options-read'
 import { STRUCTURED_AGENT_SESSION_PROCESS_METHODS } from './catalog/structured-agent-session-processes'
+import { STRUCTURED_AGENT_SESSION_CLAUDE_ACCOUNT_METHODS } from './catalog/structured-agent-session-claude-account'
 import {
   AttachParams,
   ConversationCommandParams,
@@ -229,5 +230,6 @@ export const STRUCTURED_AGENT_SESSION_METHODS = [
   ...STRUCTURED_AGENT_SESSION_MCP_METHODS,
   ...STRUCTURED_AGENT_SESSION_AUTO_REVIEW_METHODS,
   ...STRUCTURED_AGENT_SESSION_OPTIONS_READ_METHODS,
-  ...STRUCTURED_AGENT_SESSION_PROCESS_METHODS
+  ...STRUCTURED_AGENT_SESSION_PROCESS_METHODS,
+  ...STRUCTURED_AGENT_SESSION_CLAUDE_ACCOUNT_METHODS
 ]

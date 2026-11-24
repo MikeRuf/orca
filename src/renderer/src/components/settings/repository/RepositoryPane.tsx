@@ -37,7 +37,6 @@ import { RepositoryForkSyncSection } from './source-control/RepositoryForkSyncSe
 import { RepositoryAgentTrustSection } from './RepositoryAgentTrustSection'
 import { RepositoryBrowserProfileSection } from './RepositoryBrowserProfileSection'
 import type { RepositoryPaneRepoUpdate } from './repository-pane-repo-update'
-import { RepositoryGitHubAccountSection } from './source-control/RepositoryGitHubAccountSection'
 import { RepositoryAccountSections } from './RepositoryAccountSections'
 import { useTranslate } from '@/i18n/use-translate'
 import { RepositoryWindowsRuntimeSection } from './runtime/RepositoryWindowsRuntimeSection'

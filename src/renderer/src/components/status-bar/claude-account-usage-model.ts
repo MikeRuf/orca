@@ -33,7 +33,8 @@ export function resolveClaudeChatAccountId(
   worktreeId: string,
   sessionId: string | null
 ): string | null {
-  const launched = overview.chats.find((chat) => chat.sessionId === sessionId)?.accountId
+  const chat = overview.chats.find((entry) => entry.sessionId === sessionId)
+  const launched = chat?.chosenAccountId ?? chat?.accountId
   if (launched) {
     return launched
   }

@@ -110,8 +110,8 @@ export type ClaudeStructuredLaunchPartDeps = {
   attachmentDirectory?: string
   /** Omit version-gated flags when support cannot be checked. */
   cliFlags?: Pick<ClaudeCliFlagSupport, 'check'>
-  /** The project's Claude account for a workspace, if it has one. */
-  resolveProjectClaudeAccountId?: (workspaceId: string) => string | null
+  /** The chat's own Claude account, else its project's, if either has one. */
+  resolveProjectClaudeAccountId?: (workspaceId: string, sessionId: string) => string | null
   /** This host's setting for suggested next prompts, read at each spawn; absent means off. */
   promptSuggestions?: () => boolean
   /** Whether Claude wrote a transcript for this id; defaults to the transcript resolver. */
@@ -251,7 +251,7 @@ export function claudeStructuredLaunchPart(
       router,
       env,
       accountHome.path,
-      deps.resolveProjectClaudeAccountId?.(record.location.workspaceId)
+      deps.resolveProjectClaudeAccountId?.(record.location.workspaceId, record.sessionId)
     )
     const launchHome = accountRecipe.home
     // Read the config of the account directory the spawn pins, as session acquisition does.

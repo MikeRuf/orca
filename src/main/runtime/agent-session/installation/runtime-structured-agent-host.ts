@@ -25,7 +25,7 @@ import {
   hostShellEnvironmentRevision
 } from '../environment/structured-agent-shell-environment'
 import { usageLimitAccountSources } from './usage-limit-account-usage'
-import { getRepoIdFromWorktreeId } from '../../../../shared/worktree/id'
+import { chosenClaudeAccountId } from '../../../claude-accounts/chat-account/claude-chat-account-overrides'
 
 export abstract class RuntimeStructuredAgentHost extends OrcaRuntimeWithStartTuiIdleVisibleReadProbe {
   /** Apply the host-owning desktop's account overlay to configured agent environment. */
@@ -38,7 +38,7 @@ export abstract class RuntimeStructuredAgentHost extends OrcaRuntimeWithStartTui
 
   // Also spread into the session host's deps, which is where the project's Claude account goes.
   protected structuredAgentCatalogDependencies(): StructuredAgentModelCatalogDeps & {
-    resolveProjectClaudeAccountId: (workspaceId: string) => string | null
+    resolveProjectClaudeAccountId: (workspaceId: string, sessionId: string) => string | null
   } {
     return {
       stateDirectory: getProfileUserDataPath(),
@@ -63,8 +63,8 @@ export abstract class RuntimeStructuredAgentHost extends OrcaRuntimeWithStartTui
       resolveCodexAccountKind: (home) =>
         resolveStructuredCodexAccountKind(home, this.requireStore().getSettings()),
       resolveAgentAccountHome: (agent) => this.resolveStructuredAgentAccountHome(agent, 'catalog'),
-      resolveProjectClaudeAccountId: (workspaceId) =>
-        this.requireStore().getRepo(getRepoIdFromWorktreeId(workspaceId))?.claudeAccountId ?? null,
+      resolveProjectClaudeAccountId: (workspaceId, sessionId) =>
+        chosenClaudeAccountId(this.requireStore(), sessionId, workspaceId),
       ...(this.prepareCodexCatalogProbeHomeFn
         ? { prepareCodexCatalogProbeHome: this.prepareCodexCatalogProbeHomeFn }
         : {})

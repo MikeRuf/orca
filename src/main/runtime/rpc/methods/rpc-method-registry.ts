@@ -32,6 +32,7 @@ import { USAGE_ANALYTICS_METHODS } from './host-management/usage-analytics'
 import { DIAGNOSTICS_METHODS } from './host-management/diagnostics'
 import { TERMINAL_DAEMON_METHODS } from './terminal/terminal-daemon'
 import { ACCOUNT_METHODS } from './accounts/accounts'
+import { CLAUDE_ACCOUNTS_OVERVIEW_METHOD } from './accounts/claude-accounts-overview-method'
 import { ANTIGRAVITY_ACCOUNT_METHODS } from './accounts/antigravity-accounts'
 import { ORCA_ACCOUNT_METHODS } from './orca-account'
 import { GOOGLE_METHODS } from './google'
@@ -210,6 +211,7 @@ const SERVICE_RPC_METHODS = [
   ...DIAGNOSTICS_METHODS,
   ...TERMINAL_DAEMON_METHODS,
   ...ACCOUNT_METHODS,
+  CLAUDE_ACCOUNTS_OVERVIEW_METHOD,
   ...ANTIGRAVITY_ACCOUNT_METHODS,
   ...ORCA_ACCOUNT_METHODS,
   ...GOOGLE_METHODS,

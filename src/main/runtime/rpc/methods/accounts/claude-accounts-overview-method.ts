@@ -10,6 +10,7 @@ const USAGE_REFRESH_WAIT_MS = 10_000
 export const CLAUDE_ACCOUNTS_OVERVIEW_METHOD = defineMethod({
   name: 'accounts.claudeOverview',
   permission: 'workspace',
+  requires: ['accounts'],
   params: ClaudeOverviewParams,
   handler: async ({ refreshUsage }, { runtime }): Promise<ClaudeAccountsOverview> => {
     const rateLimits = runtime.getUsageRateLimits()
