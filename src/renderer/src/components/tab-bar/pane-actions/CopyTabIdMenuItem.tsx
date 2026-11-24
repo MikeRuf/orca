@@ -1,8 +1,11 @@
-import { Copy } from 'lucide-react'
+import { Copy, Star } from 'lucide-react'
 import { toast } from 'sonner'
 import { ContextMenuItem } from '@/components/ui/context-menu'
 import { DropdownMenuItem } from '@/components/ui/dropdown-menu'
 import { useTranslate } from '@/i18n/use-translate'
+import { useAppStore } from '@/store'
+import { describeTabById } from '@/lib/tab-shortcut-resolution'
+import { addFavoriteTab, isFavoriteTab, removeFavoriteTab } from '@/lib/tab-shortcuts-store'
 
 export function CopyTabIdMenuItem({
   unifiedTabId,
@@ -22,10 +25,27 @@ export function CopyTabIdMenuItem({
     }
   }
 
+  // Every tab menu (chat, terminal, editor, browser) shows this item, so Favorites rides along here.
+  const favoriteTarget = describeTabById(useAppStore.getState(), unifiedTabId)
+  const favorite = favoriteTarget ? isFavoriteTab(favoriteTarget) : false
   return (
-    <Item onSelect={() => void copyTabId()}>
-      <Copy className="size-3.5" />
-      {t('components.tab.bar.CopyTabIdMenuItem.copy', 'Copy Tab ID')}
-    </Item>
+    <>
+      {favoriteTarget ? (
+        <Item
+          onSelect={() =>
+            favorite ? removeFavoriteTab(favoriteTarget) : addFavoriteTab(favoriteTarget)
+          }
+        >
+          <Star className="size-3.5" />
+          {favorite
+            ? t('auto.components.tabShortcuts.removeFavorite', 'Remove from Favorites')
+            : t('auto.components.tabShortcuts.addFavorite', 'Add to Favorites')}
+        </Item>
+      ) : null}
+      <Item onSelect={() => void copyTabId()}>
+        <Copy className="size-3.5" />
+        {t('components.tab.bar.CopyTabIdMenuItem.copy', 'Copy Tab ID')}
+      </Item>
+    </>
   )
 }

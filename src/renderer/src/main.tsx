@@ -18,6 +18,7 @@ import {
 import { installTypingLatencyDiagnostic } from './diagnostics/typing-latency/diagnostic'
 import { installFocusedHostGestureWake } from './runtime/rpc/calls/focused-host-gesture-wake'
 import { installAppKeyboardRouter } from './lib/keyboard/app-keyboard-router'
+import { installLastTabToggle } from './lib/last-tab-toggle'
 import { shouldEnableReactGrab } from './diagnostics/react-commits/react-grab-dev-gate'
 import { I18nProvider } from './i18n/I18nProvider'
 import { useTranslate } from './i18n/use-translate'
@@ -45,6 +46,8 @@ installRendererCrashDiagnostics()
 installTypingLatencyDiagnostic()
 installFocusedHostGestureWake()
 installAppKeyboardRouter()
+// Alt+Q: back to the last tab in any workspace (tab.toggleLast).
+installLastTabToggle()
 installAutomationHostDiagnostic()
 // Track from startup: a browser page can take focus before the lazy terminal chunk mounts.
 trackPageFocusLossForTerminalIme()
