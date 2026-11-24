@@ -21078,6 +21078,23 @@
       "useKnownId": "Use known user ID \"{{value0}}\""
     },
     "native-chat": {
+      "textAttachmentPreview": {
+        "copiedContents": "Copied contents",
+        "textAttachment": "Text attachment",
+        "byteSize": "{{size}} bytes",
+        "copyContents": "Copy contents",
+        "saveFile": "Save file",
+        "copyTooLarge": "This file is too large to copy. Save it instead.",
+        "exportError": "Unable to export attachment. Try again.",
+        "unreadableReply": "Unreadable attachment reply. Try again.",
+        "incompleteReply": "Attachment changed or its reply was incomplete. Close it and try again.",
+        "notText": "This file cannot be previewed as text. Save it to open it in another app.",
+        "openFailed": "Unable to open attachment. Try again.",
+        "hostUpdate": "This host cannot open text attachments yet. Update Orca on that host, then retry.",
+        "hostUnavailable": "The attachment host is unavailable. Reconnect and retry.",
+        "connectionChanged": "Connection changed. Close this attachment and reopen it.",
+        "readFailed": "Unable to read this attachment on its host. Reconnect and try again. The file may have been removed or changed."
+      },
       "install": {
         "checking": "Checking whether {{agent}} is ready on this host…",
         "cliInstall": "Install",
@@ -21390,12 +21407,6 @@
         "placeholder": "Ask anything, @ to mention files, / for commands",
         "loadingFiles": "Loading files...",
         "noFiles": "No matching files",
-        "noBots": "No bots",
-        "noBotsMatch": "No bots match \"{{query}}\"",
-        "botCount_one": "{{count}} bot",
-        "botCount_other": "{{count}} bots",
-        "fileCount_one": "{{count}} file",
-        "fileCount_other": "{{count}} files",
         "filesLoadFailed": "Couldn't load files",
         "attach": "Attach file",
         "startDictation": "Start dictation",
@@ -21405,7 +21416,6 @@
         "noCommands": "No matching commands",
         "commands": "Commands",
         "skills": "Skills",
-        "checkingSkills": "Checking for new skills...",
         "loadingSkills": "Loading skills...",
         "skillsLoaded": "Skills loaded",
         "clearDescription": "Clear conversation context",
@@ -21445,6 +21455,11 @@
         "pasteUnavailable": "Can't paste — this chat isn't accepting input right now.",
         "model": "Model",
         "effort": "Effort",
+        "contextWindow": "Context window",
+        "customValue": "Custom…",
+        "customValueLabel": "Size in thousands of tokens",
+        "customValueApply": "Set",
+        "customValueRange": "Use {{value0}} to {{value1}}",
         "fastMode": "Fast mode",
         "speed": "Speed",
         "thinking": "Thinking",
@@ -21459,8 +21474,6 @@
         "availableAfterSessionStarts": "Available after the session starts.",
         "optionUpdateFailed": "Could not update option",
         "optionValue": {
-          "none": "None",
-          "off": "Off",
           "ultracode": "Ultracode",
           "fast": "Fast",
           "minimal": "Minimal",
@@ -21470,7 +21483,10 @@
           "xhigh": "Extra high",
           "max": "Max",
           "ultra": "Ultra",
-          "standard": "Standard"
+          "contextWindowDefault": "Default",
+          "standard": "Standard",
+          "none": "None",
+          "off": "Off"
         },
         "pendingAttachmentLimit": "Too many attachments are waiting. Finish composing before attaching more.",
         "viewAttachment": "View image",
@@ -21493,10 +21509,6 @@
         "permissionAuto": "Approve for me",
         "permissionAutoDescription": "Reviews approval requests for you",
         "permissionFullAccess": "Full access",
-        "permissionAgentSettings": "{{agent}} settings",
-        "permissionAgentSettingsUsedHint": "Uses your {{agent}} permission settings.",
-        "permissionAgentSettingsUnnamedHint": "Uses your {{agent}} permission settings. Orca can't show this mode.",
-        "permissionFromAgentSettings": "{{mode}}, from {{agent}} settings",
         "permissionFullAccessDescription": "Never asks before edits or commands",
         "permissionFullAccessCodexDescription": "Never asks; can edit any file and use the network",
         "permissionFullAccessSharedDescription": "Never asks before edits or commands",
@@ -21509,6 +21521,20 @@
           "xhigh": "XHigh"
         },
         "imageUnavailable": "Preview unavailable",
+        "checkingSkills": "Checking for new skills...",
+        "permissionAppliesNextMessage": "{{saved}} applies to your next message; currently using {{active}}",
+        "modelAndEffortValue": "{{model}} · {{effort}}",
+        "modelAndEffort": "Model and effort",
+        "noBots": "No bots",
+        "noBotsMatch": "No bots match \"{{query}}\"",
+        "botCount_one": "{{count}} bot",
+        "botCount_other": "{{count}} bots",
+        "fileCount_one": "{{count}} file",
+        "fileCount_other": "{{count}} files",
+        "permissionAgentSettings": "{{agent}} settings",
+        "permissionAgentSettingsUsedHint": "Uses your {{agent}} permission settings.",
+        "permissionAgentSettingsUnnamedHint": "Uses your {{agent}} permission settings. Orca can't show this mode.",
+        "permissionFromAgentSettings": "{{mode}}, from {{agent}} settings",
         "agents": "Agents",
         "recent": "Recent",
         "bots": "Bots",
@@ -21525,10 +21551,7 @@
         "loadingBotChats": "Loading {{name}}'s chats…",
         "noMatchingChats": "No matching chats",
         "noOtherChats": "No other chats",
-        "retryChats": "Retry",
-        "permissionAppliesNextMessage": "{{saved}} applies to your next message; currently using {{active}}",
-        "modelAndEffortValue": "{{model}} · {{effort}}",
-        "modelAndEffort": "Model and effort"
+        "retryChats": "Retry"
       },
       "tool": {
         "exitCode": "exit {{value0}}",
@@ -21712,8 +21735,6 @@
         "nameInMessage": "Add {{name}} to message"
       },
       "jumpToLatest": "Jump to latest",
-      "newRowsAnnouncement": "New messages arrived while you were away",
-      "newRowsMarker": "New",
       "find": {
         "label": "Find in chat",
         "noResults": "No results",
@@ -21762,16 +21783,10 @@
       "scrollMessageToTop": "Scroll this message to top",
       "loadingEarlier": "Loading…",
       "loadEarlier": "Load earlier messages",
-      "loadEarlierFailed": "Couldn't load earlier messages.",
-      "loadEarlierRetry": "Retry",
       "loadingEarlierMessages": "Loading earlier messages…",
       "railLabel": "Your messages",
       "railImageMessage": "Image attachment",
       "railEmptyMessage": "Message",
-      "railFilterPlaceholder": "Filter your messages",
-      "railNoMatches": "No messages match",
-      "railTickLabel": "Message {{index}} of {{count}}: {{text}}",
-      "railMatchCount": "{{count}} of {{total}}",
       "prompt": {
         "collapse": "Collapse",
         "expand": "Expand"
@@ -22004,11 +22019,11 @@
         "deferredNote": "Loaded on demand. Not counted in the used total."
       },
       "contextMenu": {
+        "noSessionContext": "No chat context is available.",
         "copyOrcaSessionId": "Copy Orca Session ID",
         "orcaSessionIdCopied": "Orca session ID copied",
         "orcaSessionIdCopyFailed": "Unable to copy Orca session ID",
-        "orcaSessionIdTooltip": "Orca's ID for this chat, separate from the agent CLI's own session ID. Agents use it to refer to each other through Orca.",
-        "noSessionContext": "No chat context is available."
+        "orcaSessionIdTooltip": "Orca's ID for this chat, separate from the agent CLI's own session ID. Agents use it to refer to each other through Orca."
       },
       "dismissDeliveryNotice": "Dismiss",
       "editDeliveryNotice": "Edit",
@@ -22067,8 +22082,6 @@
       "thoughtForDuration": "Thought for {{duration}}",
       "explicitChatWsl": "Chat is not available in WSL. Open the agent in a terminal instead.",
       "explicitChatWslAddHost": "Chat is not available in a WSL folder opened from Windows. Add the distro as a WSL host (Add a project → Add remote host → Add WSL distro) to chat there, or open the agent in a terminal.",
-      "explicitChatWslMoveToHost": "Chat is not available in a WSL folder opened from Windows. Run the project on a WSL host to chat there, or open the agent in a terminal.",
-      "explicitChatWslRunAsHost": "Run {{distro}} as a host",
       "explicitChatSsh": "Chat is not available over SSH. Open the agent in a terminal instead.",
       "explicitChatUnavailable": "This workspace cannot run the chat. Check the agent installation or open it in a terminal.",
       "structuredSessionHostDeclined": "Opened {{value0}} in a terminal",
@@ -22094,9 +22107,6 @@
         "explanation": "Continue, and the agent first checks whether its last step finished.",
         "usageLimitExplanation": "Asks the agent to continue where it left off. Use it once the limit resets."
       },
-      "signIn": {
-        "title": "Sign in to {{agent}} to start chatting"
-      },
       "claudeSignIn": {
         "signingIn": "Signing in…"
       },
@@ -22119,31 +22129,12 @@
         "fileActions": "File actions",
         "linkActions": "Link actions"
       },
-      "imageGallery": {
-        "scopeHelp": "Images near this part of the chat when you opened the preview. Images further up or down aren't included. Close and reopen to update.",
-        "description": "Images in this view: {{position}} of {{count}}. {{help}}",
-        "stepAnnouncement": "Image {{position}} of {{count}} in this view: {{title}}.",
-        "firstImage": "First image.",
-        "lastImage": "Last image.",
-        "loading": "Loading image…",
-        "loadFailed": "Couldn't load {{name}}",
-        "closedImageChanged": "Preview closed because an image changed. Open a thumbnail to capture the current set.",
-        "closedChatChanged": "Preview closed because the chat changed. Open a thumbnail to capture the current set."
-      },
       "goalControl": {
         "settingsRejected": "Codex could not apply the selected model and effort. This goal change was not sent. Check the selection and try again.",
         "settingsUnconfirmed": "Codex did not confirm the selected model and effort. This goal change was not sent. Check the chat and try again.",
         "pauseUnconfirmed": "Codex stopped running, but its goal pause was not confirmed. Check the goal before continuing.",
         "stopUnconfirmed": "Codex could not confirm Stop. Check the chat before continuing.",
         "noGoal": "Codex has no goal to change in this chat. Set one with /goal followed by the objective."
-      },
-      "automationResult": {
-        "openRun": "Open run",
-        "notRead": "{{name}} hasn't read this yet. It goes with your next message.",
-        "read": "{{name}} read this with your next message.",
-        "sentWithOne": "Sent with 1 automation result",
-        "sentWithMany": "Sent with {{count}} automation results",
-        "cleared": "Arrived before the chat was cleared. It won't go to {{name}}."
       },
       "slashCommandDescriptions": {
         "clearConversation": "Clear the conversation",
@@ -22294,6 +22285,224 @@
       "webPeek": {
         "unavailable": "No preview for this page."
       },
+      "usageLimitActions": {
+        "switchAccount": "Switch account",
+        "addAccount": "Add account…",
+        "accountUnavailable": "This chat cannot move to another account. Hand it off to another agent instead.",
+        "copyTruncated": "Copied text was shortened to fit {{count}} characters.",
+        "copyFailed": "Couldn't copy the error.",
+        "cancelAt": "Don't continue at {{time}}",
+        "wontContinue": "Won't continue automatically",
+        "autoContinueSettings": "Auto-continue settings",
+        "hideDetails": "Hide details",
+        "showDetails": "Show details",
+        "copyError": "Copy error",
+        "settingsMenu": "Auto-continue settings…",
+        "handOff": "Hand off to agent",
+        "more": "More actions",
+        "statusUnknown": "Reset time unknown.",
+        "statusCanContinueAtAuto": "You can continue at {{time}}. Orca will continue this chat at {{autoTime}}.",
+        "statusCanContinueAtNoAuto": "You can continue at {{time}}. Orca won't continue this chat automatically.",
+        "statusCanContinueAt": "You can continue at {{time}}.",
+        "resetUnknown": "Reset time unknown",
+        "continuesAt": "Continues at {{time}}",
+        "autoContinuesAt": "Auto-continues at {{time}}",
+        "srSummary": "{{sentence}} {{status}}",
+        "canContinueAt": "Can continue at {{time}}",
+        "titleWeeklyReached": "{{agent}} weekly limit reached",
+        "titleExtraUsageReached": "{{agent}} extra usage limit reached",
+        "titleUsageReached": "{{agent}} usage limit reached",
+        "statusHasUsageAuto": "{{agent}} has usage again. Orca will continue this chat at {{time}}.",
+        "statusHasUsage": "{{agent}} has usage again.",
+        "titleHasUsage": "{{agent}} has usage again",
+        "statusCanContinueNowAuto": "{{agent}} can continue now. Orca will continue this chat at {{time}}.",
+        "statusCanContinueNow": "{{agent}} can continue now.",
+        "titleCanContinueNow": "{{agent}} can continue now",
+        "turnOnAutoContinue": "Auto-continue on reset"
+      },
+      "usageLimitAutoContinue": {
+        "cancelFailed": "Couldn't cancel automatic continuation. Try again.",
+        "scheduled": "Orca will continue this chat at {{time}}."
+      },
+      "settings": "Chat settings",
+      "composerWorkspace": {
+        "copyFailed": "Failed to copy",
+        "copyIdentity": "Copy {{value0}}",
+        "detachedCommit": "Commit {{head}} (not a branch)",
+        "mainCheckout": "Main checkout",
+        "turnWorking": "This chat's agent is working. Switch branches after its turn finishes.",
+        "worktree": "Worktree"
+      },
+      "creationChatNotOpened": "Your worktree is ready, but the chat could not open. Retry to open it with your message.",
+      "fork": {
+        "action": "Fork from this response",
+        "pending": "Forking this chat…",
+        "checking": "Checking whether this chat can fork…",
+        "tooltip": "Fork from this response. The new chat includes this whole response, up to the end of its turn.",
+        "unconfirmed": "{{agent}} couldn't confirm the fork",
+        "unconfirmedDetail": "It may have opened anyway. Check Session History before forking again.",
+        "failed": "{{agent}} couldn't fork this chat",
+        "hostUnsupported": "This host runs an older Orca. Update Orca on the host, then try again.",
+        "failedDetail": "Your chat is unchanged. Try again.",
+        "commandDescription": "Fork this chat from its latest response",
+        "commandWorking": "Can’t fork while {{agent}} is replying. Run /fork again when it finishes.",
+        "commandNothing": "There’s no response to fork yet.",
+        "commandTakesNoText": "Send /fork on its own, then write in the new chat.",
+        "mark": "Fork ·",
+        "markedName": "{{mark}} {{name}}",
+        "accessibleName": "Fork: {{name}}",
+        "sourceTooltip": "Fork of {{name}}",
+        "unknownSourceTooltip": "Fork of another chat"
+      },
+      "usage": {
+        "description": "Show usage for this chat’s Codex account",
+        "loading": "Loading Codex usage…",
+        "failed": "Codex usage couldn’t be loaded. Try again.",
+        "codexVersion": "This Codex version doesn’t report usage. Update Codex.",
+        "apiKeyAuth": "Codex usage isn’t available with an API key. Sign in to Codex with a ChatGPT account to view usage.",
+        "title": "Codex usage",
+        "account": "Account used by this chat",
+        "retry": "Retry",
+        "resetFailed": "Codex limits couldn’t be reset. Try again.",
+        "confirmReset": "This uses one Codex rate-limit reset credit for {{account}} and resets any eligible usage windows immediately.",
+        "sharedAccount": "Current shared account",
+        "outcome": {
+          "reset": "Codex limits were reset.",
+          "nothingToReset": "Nothing to reset right now.",
+          "noCredit": "No Codex reset credit is left on this account.",
+          "alreadyRedeemed": "That reset credit was already used."
+        }
+      },
+      "cardKindHidden": {
+        "description": "You can change this anytime in",
+        "settingsLink": "Settings > Chat UI > Turn activity",
+        "failed": "Couldn't save that. You can turn it off in Settings > Chat UI > Turn activity."
+      },
+      "ciResultLine": {
+        "failingLead": "CI failing on",
+        "greenLead": "CI green on",
+        "at": "at",
+        "hide": "Don't show CI result lines",
+        "hidden": "Orca won't show CI result lines anymore"
+      },
+      "openedPullRequests": {
+        "one": "Opened {{name}}",
+        "hide": "Don't show opened pull requests",
+        "hidden": "Orca won't show opened pull requests anymore",
+        "many_one": "Opened {{count}} pull request",
+        "many_other": "Opened {{count}} pull requests"
+      },
+      "explicitChatWindows": "This agent's chat isn't available on Windows yet. Open it in a terminal instead.",
+      "splitRight": "Split Right",
+      "splitDown": "Split Down",
+      "sideChat": {
+        "description": "Ask a side question in a fork beside this chat",
+        "argumentHint": "<question>",
+        "pill": "Side chat",
+        "placeholder": "Ask a side question",
+        "notReady": "Side chats are not ready yet. Try again in a moment.",
+        "replyRunning": "Available when this reply finishes.",
+        "noReply": "Available after the first reply.",
+        "textOnly": "Side chats take text only. Remove attachments, then send it again.",
+        "questionNotSent": "{{agent}} didn't get your question",
+        "questionNotSentDetail": "Your question is still in this chat. Send /btw again to retry.",
+        "questionUnconfirmed": "{{agent}} couldn't confirm the side chat got your question",
+        "questionUnconfirmedDetail": "Check the side chat before asking again. Your question is still in this chat."
+      },
+      "newRowsAnnouncement": "New messages arrived while you were away",
+      "newRowsMarker": "New",
+      "signIn": {
+        "title": "Sign in to {{agent}} to start chatting"
+      },
+      "explicitChatWslMoveToHost": "Chat is not available in a WSL folder opened from Windows. Run the project on a WSL host to chat there, or open the agent in a terminal.",
+      "explicitChatWslRunAsHost": "Run {{distro}} as a host",
+      "mcp": {
+        "title": "MCP servers",
+        "close": "Close",
+        "loading": "Loading…",
+        "notRunning": "Connect when you send your next message",
+        "unsupported": "Update Orca on this chat’s host to manage them here",
+        "readFailed": "Couldn’t load",
+        "retry": "Retry",
+        "empty": "None set up for this chat",
+        "cancel": "Cancel",
+        "reconnect": "Reconnect",
+        "toggle": "Use {{name}}",
+        "actionFailed": "Couldn’t do that. Try again.",
+        "summary": {
+          "connected": "{{count}} connected",
+          "needsAuth_one": "{{count}} needs sign-in",
+          "needsAuth_other": "{{count}} need sign-in",
+          "failed": "{{count}} failed",
+          "signingIn": "signing in to {{name}}"
+        },
+        "source": {
+          "project": "Project",
+          "local": "Local",
+          "user": "User",
+          "plugin": "Plugin",
+          "session": "Session"
+        },
+        "status": {
+          "connected": "Connected",
+          "tools_one": "{{count}} tool",
+          "tools_other": "{{count}} tools",
+          "pending": "Connecting…",
+          "needsAuth": "Needs sign-in",
+          "failed": "Failed",
+          "failedReason": "Failed: {{error}}",
+          "disabled": "Disabled",
+          "notStarted": "Not started",
+          "needsAuthAfterSend": "Needs sign-in. Send a message to sign in here."
+        },
+        "signIn": {
+          "action": "Sign in",
+          "waiting": "Waiting for sign-in…",
+          "waitingBrowser": "Waiting for your browser…",
+          "remote": "After you sign in, the browser lands on a page that won’t load. Copy that page’s address and paste it here.",
+          "external": "Finish on the page that opened",
+          "done": "Done",
+          "finish": "Finish",
+          "openAgain": "Open again",
+          "addressLabel": "Sign-in page address",
+          "unfinished": "Sign-in isn’t finished yet. Finish it on the page that opened, then press Done.",
+          "pastePlaceholder": "http://localhost:…"
+        }
+      },
+      "urlRequest": {
+        "title": "Sign-in requested",
+        "open": "Open sign-in page",
+        "decline": "Decline",
+        "opened": "Opened the sign-in page in your browser.",
+        "openAgain": "Open again",
+        "finished": "Sign-in finished",
+        "finishedWith": "Sign-in finished · {{message}}"
+      },
+      "loadEarlierFailed": "Couldn't load earlier messages.",
+      "loadEarlierRetry": "Retry",
+      "railFilterPlaceholder": "Filter your messages",
+      "railNoMatches": "No messages match",
+      "railTickLabel": "Message {{index}} of {{count}}: {{text}}",
+      "railMatchCount": "{{count}} of {{total}}",
+      "imageGallery": {
+        "scopeHelp": "Images near this part of the chat when you opened the preview. Images further up or down aren't included. Close and reopen to update.",
+        "description": "Images in this view: {{position}} of {{count}}. {{help}}",
+        "stepAnnouncement": "Image {{position}} of {{count}} in this view: {{title}}.",
+        "firstImage": "First image.",
+        "lastImage": "Last image.",
+        "loading": "Loading image…",
+        "loadFailed": "Couldn't load {{name}}",
+        "closedImageChanged": "Preview closed because an image changed. Open a thumbnail to capture the current set.",
+        "closedChatChanged": "Preview closed because the chat changed. Open a thumbnail to capture the current set."
+      },
+      "automationResult": {
+        "openRun": "Open run",
+        "notRead": "{{name}} hasn't read this yet. It goes with your next message.",
+        "read": "{{name}} read this with your next message.",
+        "sentWithOne": "Sent with 1 automation result",
+        "sentWithMany": "Sent with {{count}} automation results",
+        "cleared": "Arrived before the chat was cleared. It won't go to {{name}}."
+      },
       "workers": {
         "stopUnconfirmed": "Orca couldn’t confirm the worker stopped."
       },
@@ -22355,45 +22564,6 @@
         "remove": "Remove",
         "added": "Added"
       },
-      "usageLimitActions": {
-        "switchAccount": "Switch account",
-        "addAccount": "Add account…",
-        "accountUnavailable": "This chat cannot move to another account. Hand it off to another agent instead.",
-        "copyTruncated": "Copied text was shortened to fit {{count}} characters.",
-        "copyFailed": "Couldn't copy the error.",
-        "cancelAt": "Don't continue at {{time}}",
-        "wontContinue": "Won't continue automatically",
-        "autoContinueSettings": "Auto-continue settings",
-        "hideDetails": "Hide details",
-        "showDetails": "Show details",
-        "copyError": "Copy error",
-        "settingsMenu": "Auto-continue settings…",
-        "handOff": "Hand off to agent",
-        "more": "More actions",
-        "statusUnknown": "Reset time unknown.",
-        "statusCanContinueAtAuto": "You can continue at {{time}}. Orca will continue this chat at {{autoTime}}.",
-        "statusCanContinueAtNoAuto": "You can continue at {{time}}. Orca won't continue this chat automatically.",
-        "statusCanContinueAt": "You can continue at {{time}}.",
-        "resetUnknown": "Reset time unknown",
-        "continuesAt": "Continues at {{time}}",
-        "autoContinuesAt": "Auto-continues at {{time}}",
-        "srSummary": "{{sentence}} {{status}}",
-        "canContinueAt": "Can continue at {{time}}",
-        "titleWeeklyReached": "{{agent}} weekly limit reached",
-        "titleExtraUsageReached": "{{agent}} extra usage limit reached",
-        "titleUsageReached": "{{agent}} usage limit reached",
-        "statusHasUsageAuto": "{{agent}} has usage again. Orca will continue this chat at {{time}}.",
-        "statusHasUsage": "{{agent}} has usage again.",
-        "titleHasUsage": "{{agent}} has usage again",
-        "statusCanContinueNowAuto": "{{agent}} can continue now. Orca will continue this chat at {{time}}.",
-        "statusCanContinueNow": "{{agent}} can continue now.",
-        "titleCanContinueNow": "{{agent}} can continue now",
-        "turnOnAutoContinue": "Auto-continue on reset"
-      },
-      "usageLimitAutoContinue": {
-        "cancelFailed": "Couldn't cancel automatic continuation. Try again.",
-        "scheduled": "Orca will continue this chat at {{time}}."
-      },
       "botRequest": {
         "notSentTo": "Not sent to",
         "asked": "Asked",
@@ -22401,53 +22571,6 @@
         "paused": "{{bot}} is paused.",
         "botsOff": "Bots are off.",
         "couldNotTake": "{{bot}} couldn't take it."
-      },
-      "textAttachmentPreview": {
-        "copiedContents": "Copied contents",
-        "textAttachment": "Text attachment",
-        "byteSize": "{{size}} bytes",
-        "copyContents": "Copy contents",
-        "saveFile": "Save file",
-        "copyTooLarge": "This file is too large to copy. Save it instead.",
-        "exportError": "Unable to export attachment. Try again.",
-        "unreadableReply": "Unreadable attachment reply. Try again.",
-        "incompleteReply": "Attachment changed or its reply was incomplete. Close it and try again.",
-        "notText": "This file cannot be previewed as text. Save it to open it in another app.",
-        "openFailed": "Unable to open attachment. Try again.",
-        "hostUpdate": "This host cannot open text attachments yet. Update Orca on that host, then retry.",
-        "hostUnavailable": "The attachment host is unavailable. Reconnect and retry.",
-        "connectionChanged": "Connection changed. Close this attachment and reopen it.",
-        "readFailed": "Unable to read this attachment on its host. Reconnect and try again. The file may have been removed or changed."
-      },
-      "settings": "Chat settings",
-      "composerWorkspace": {
-        "copyFailed": "Failed to copy",
-        "copyIdentity": "Copy {{value0}}",
-        "detachedCommit": "Commit {{head}} (not a branch)",
-        "mainCheckout": "Main checkout",
-        "turnWorking": "This chat's agent is working. Switch branches after its turn finishes.",
-        "worktree": "Worktree"
-      },
-      "creationChatNotOpened": "Your worktree is ready, but the chat could not open. Retry to open it with your message.",
-      "fork": {
-        "action": "Fork from this response",
-        "pending": "Forking this chat…",
-        "checking": "Checking whether this chat can fork…",
-        "tooltip": "Fork from this response. The new chat includes this whole response, up to the end of its turn.",
-        "unconfirmed": "{{agent}} couldn't confirm the fork",
-        "unconfirmedDetail": "It may have opened anyway. Check Session History before forking again.",
-        "failed": "{{agent}} couldn't fork this chat",
-        "hostUnsupported": "This host runs an older Orca. Update Orca on the host, then try again.",
-        "failedDetail": "Your chat is unchanged. Try again.",
-        "commandDescription": "Fork this chat from its latest response",
-        "commandWorking": "Can’t fork while {{agent}} is replying. Run /fork again when it finishes.",
-        "commandNothing": "There’s no response to fork yet.",
-        "commandTakesNoText": "Send /fork on its own, then write in the new chat.",
-        "mark": "Fork ·",
-        "markedName": "{{mark}} {{name}}",
-        "accessibleName": "Fork: {{name}}",
-        "sourceTooltip": "Fork of {{name}}",
-        "unknownSourceTooltip": "Fork of another chat"
       },
       "importPlan": {
         "comes": "Comes over",
@@ -22500,123 +22623,6 @@
         "does": "Does",
         "willPropose": "Will propose",
         "details": "Details of {{name}}"
-      },
-      "usage": {
-        "description": "Show usage for this chat’s Codex account",
-        "loading": "Loading Codex usage…",
-        "failed": "Codex usage couldn’t be loaded. Try again.",
-        "codexVersion": "This Codex version doesn’t report usage. Update Codex.",
-        "apiKeyAuth": "Codex usage isn’t available with an API key. Sign in to Codex with a ChatGPT account to view usage.",
-        "title": "Codex usage",
-        "account": "Account used by this chat",
-        "retry": "Retry",
-        "resetFailed": "Codex limits couldn’t be reset. Try again.",
-        "confirmReset": "This uses one Codex rate-limit reset credit for {{account}} and resets any eligible usage windows immediately.",
-        "sharedAccount": "Current shared account",
-        "outcome": {
-          "reset": "Codex limits were reset.",
-          "nothingToReset": "Nothing to reset right now.",
-          "noCredit": "No Codex reset credit is left on this account.",
-          "alreadyRedeemed": "That reset credit was already used."
-        }
-      },
-      "mcp": {
-        "title": "MCP servers",
-        "close": "Close",
-        "loading": "Loading…",
-        "notRunning": "Connect when you send your next message",
-        "unsupported": "Update Orca on this chat’s host to manage them here",
-        "readFailed": "Couldn’t load",
-        "retry": "Retry",
-        "empty": "None set up for this chat",
-        "cancel": "Cancel",
-        "reconnect": "Reconnect",
-        "toggle": "Use {{name}}",
-        "actionFailed": "Couldn’t do that. Try again.",
-        "summary": {
-          "connected": "{{count}} connected",
-          "needsAuth_one": "{{count}} needs sign-in",
-          "needsAuth_other": "{{count}} need sign-in",
-          "failed": "{{count}} failed",
-          "signingIn": "signing in to {{name}}"
-        },
-        "source": {
-          "project": "Project",
-          "local": "Local",
-          "user": "User",
-          "plugin": "Plugin",
-          "session": "Session"
-        },
-        "status": {
-          "connected": "Connected",
-          "tools_one": "{{count}} tool",
-          "tools_other": "{{count}} tools",
-          "pending": "Connecting…",
-          "needsAuth": "Needs sign-in",
-          "failed": "Failed",
-          "failedReason": "Failed: {{error}}",
-          "disabled": "Disabled",
-          "notStarted": "Not started",
-          "needsAuthAfterSend": "Needs sign-in. Send a message to sign in here."
-        },
-        "signIn": {
-          "action": "Sign in",
-          "waiting": "Waiting for sign-in…",
-          "waitingBrowser": "Waiting for your browser…",
-          "remote": "After you sign in, the browser lands on a page that won’t load. Copy that page’s address and paste it here.",
-          "external": "Finish on the page that opened",
-          "done": "Done",
-          "finish": "Finish",
-          "openAgain": "Open again",
-          "addressLabel": "Sign-in page address",
-          "unfinished": "Sign-in isn’t finished yet. Finish it on the page that opened, then press Done.",
-          "pastePlaceholder": "http://localhost:…"
-        }
-      },
-      "cardKindHidden": {
-        "description": "You can change this anytime in",
-        "settingsLink": "Settings > Chat UI > Turn activity",
-        "failed": "Couldn't save that. You can turn it off in Settings > Chat UI > Turn activity."
-      },
-      "ciResultLine": {
-        "failingLead": "CI failing on",
-        "greenLead": "CI green on",
-        "at": "at",
-        "hide": "Don't show CI result lines",
-        "hidden": "Orca won't show CI result lines anymore"
-      },
-      "openedPullRequests": {
-        "one": "Opened {{name}}",
-        "hide": "Don't show opened pull requests",
-        "hidden": "Orca won't show opened pull requests anymore",
-        "many_one": "Opened {{count}} pull request",
-        "many_other": "Opened {{count}} pull requests"
-      },
-      "explicitChatWindows": "This agent's chat isn't available on Windows yet. Open it in a terminal instead.",
-      "splitRight": "Split Right",
-      "splitDown": "Split Down",
-      "sideChat": {
-        "description": "Ask a side question in a fork beside this chat",
-        "argumentHint": "<question>",
-        "pill": "Side chat",
-        "placeholder": "Ask a side question",
-        "notReady": "Side chats are not ready yet. Try again in a moment.",
-        "replyRunning": "Available when this reply finishes.",
-        "noReply": "Available after the first reply.",
-        "textOnly": "Side chats take text only. Remove attachments, then send it again.",
-        "questionNotSent": "{{agent}} didn't get your question",
-        "questionNotSentDetail": "Your question is still in this chat. Send /btw again to retry.",
-        "questionUnconfirmed": "{{agent}} couldn't confirm the side chat got your question",
-        "questionUnconfirmedDetail": "Check the side chat before asking again. Your question is still in this chat."
-      },
-      "urlRequest": {
-        "title": "Sign-in requested",
-        "open": "Open sign-in page",
-        "decline": "Decline",
-        "opened": "Opened the sign-in page in your browser.",
-        "openAgain": "Open again",
-        "finished": "Sign-in finished",
-        "finishedWith": "Sign-in finished · {{message}}"
       },
       "offerCard": {
         "notNow": "Not now",

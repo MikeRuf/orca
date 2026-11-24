@@ -40,6 +40,8 @@ export type SessionOptionDescriptor = {
         type: 'select'
         currentValue?: string
         choices: SessionOptionSelectChoice[]
+        /** Offers a typed whole-number value within these bounds beside the listed choices. */
+        custom?: { min: number; max: number }
         /** Presentation when no value is known; never an input selection. */
         placeholder?: string
         /** What the running agent reports when currentValue delegates to it; presentation only. */

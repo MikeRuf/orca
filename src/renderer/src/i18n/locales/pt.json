@@ -20837,7 +20837,6 @@
         "noCommands": "Nenhum comando correspondente",
         "commands": "Comandos",
         "skills": "Skills",
-        "checkingSkills": "Procurando novas habilidades…",
         "loadingSkills": "Carregando skills...",
         "skillsLoaded": "Skills carregadas",
         "skillsUnavailableHost": "As skills não estão disponíveis para este host",
@@ -20861,6 +20860,11 @@
         "worktreeNotReady": "Worktree não está pronta — tente novamente em um momento.",
         "model": "Modelo",
         "effort": "Esforço",
+        "contextWindow": "Janela de contexto",
+        "customValue": "Personalizado…",
+        "customValueLabel": "Tamanho em milhares de tokens",
+        "customValueApply": "Definir",
+        "customValueRange": "Use de {{value0}} a {{value1}}",
         "fastMode": "Modo rápido",
         "thinking": "Pensando",
         "sessionOptions": "Opções da sessão",
@@ -20872,8 +20876,6 @@
         "availableAfterSessionStarts": "Disponível após a sessão começar.",
         "optionUpdateFailed": "Não foi possível atualizar a opção",
         "optionValue": {
-          "none": "Nenhum",
-          "off": "Desativado",
           "fast": "Rápido",
           "minimal": "Mínimo",
           "low": "Baixo",
@@ -20882,8 +20884,11 @@
           "xhigh": "Extra alto",
           "max": "Máximo",
           "ultra": "Ultra",
+          "contextWindowDefault": "Padrão",
           "standard": "Padrão",
-          "ultracode": "Ultracode"
+          "ultracode": "Ultracode",
+          "none": "Nenhum",
+          "off": "Desativado"
         },
         "pendingAttachmentLimit": "Há muitos anexos aguardando. Termine de compor antes de anexar mais.",
         "viewAttachment": "Ver imagem",
@@ -20928,10 +20933,6 @@
         "permissionAuto": "Aprovar por mim",
         "permissionAutoDescription": "Analisa os pedidos de aprovação por você",
         "permissionFullAccess": "Acesso total",
-        "permissionAgentSettings": "Configurações do {{agent}}",
-        "permissionAgentSettingsUsedHint": "Usa suas configurações de permissão do {{agent}}.",
-        "permissionAgentSettingsUnnamedHint": "Usa suas configurações de permissão do {{agent}}. O Orca não consegue exibir este modo.",
-        "permissionFromAgentSettings": "{{mode}}, conforme as configurações do {{agent}}",
         "permissionFullAccessDescription": "Nunca pede aprovação antes de edições ou comandos",
         "permissionFullAccessCodexDescription": "Nunca pede aprovação; pode editar qualquer arquivo e usar a rede",
         "permissionFullAccessSharedDescription": "Nunca pede aprovação antes de edições ou comandos",
@@ -20946,6 +20947,11 @@
         "imageUnavailable": "Prévia indisponível",
         "exitPlanMode": "Sair do modo de planejamento",
         "moreControls": "Mais controles do chat",
+        "checkingSkills": "Procurando novas habilidades…",
+        "permissionAgentSettings": "Configurações do {{agent}}",
+        "permissionAgentSettingsUsedHint": "Usa suas configurações de permissão do {{agent}}.",
+        "permissionAgentSettingsUnnamedHint": "Usa suas configurações de permissão do {{agent}}. O Orca não consegue exibir este modo.",
+        "permissionFromAgentSettings": "{{mode}}, conforme as configurações do {{agent}}",
         "permissionAppliesNextMessage": "{{saved}} vale para a próxima mensagem; usando {{active}} no momento",
         "bots": "Bots"
       },
@@ -21188,10 +21194,6 @@
       "railLabel": "Suas mensagens",
       "railImageMessage": "Anexo de imagem",
       "railEmptyMessage": "Mensagem",
-      "railFilterPlaceholder": "Filtrar suas mensagens",
-      "railNoMatches": "Nenhuma mensagem corresponde",
-      "railTickLabel": "Mensagem {{index}} de {{count}}: {{text}}",
-      "railMatchCount": "{{count}} de {{total}}",
       "question": {
         "step": "Etapa {{value0}}",
         "otherPlaceholder": "Digite sua resposta",
@@ -21490,8 +21492,6 @@
         "notDoneGoalChangeIncomplete": "Não foi possível concluir a alteração do objetivo. Verifique o chat.",
         "mailOwnerUnconfirmed": "Orca não conseguiu confirmar se esta mensagem ainda se destina a este chat."
       },
-      "newRowsAnnouncement": "Novas mensagens chegaram enquanto você estava ausente",
-      "newRowsMarker": "Novas",
       "find": {
         "label": "Localizar no chat",
         "noResults": "Nenhum resultado",
@@ -21675,9 +21675,9 @@
         "description": "Abrir histórico de sessões do agente",
         "argumentHint": "[busca]",
         "workspaceUnavailable": "O espaço de trabalho deste chat ainda não foi carregado. Tente /resume novamente em instantes.",
-        "replace": "Substituir",
+        "replaceTitle": "Substituir este chat?",
         "replaceDescription": "Retomar “{{title}}” aqui interromperá o que o {{agent}} está fazendo neste chat.",
-        "replaceTitle": "Substituir este chat?"
+        "replace": "Substituir"
       },
       "hostPermission": {
         "checkAgain": "Verificar novamente",
@@ -21690,23 +21690,12 @@
         "fileActions": "Ações do arquivo",
         "linkActions": "Ações do link"
       },
-      "imageGallery": {
-        "loadFailed": "Não foi possível carregar {{name}}"
-      },
       "goalControl": {
         "settingsRejected": "O Codex não conseguiu aplicar o modelo e o esforço selecionados. Esta alteração de objetivo não foi enviada. Confira a seleção e tente novamente.",
         "settingsUnconfirmed": "O Codex não confirmou o modelo e o esforço selecionados. Esta alteração de objetivo não foi enviada. Confira o chat e tente novamente.",
         "pauseUnconfirmed": "O Codex parou de executar, mas a pausa do objetivo não foi confirmada. Confira o objetivo antes de continuar.",
         "stopUnconfirmed": "O Codex não conseguiu confirmar a parada. Confira o chat antes de continuar.",
         "noGoal": "O Codex não tem nenhum objetivo para alterar neste chat. Defina um com /goal seguido do objetivo."
-      },
-      "automationResult": {
-        "openRun": "Abrir execução",
-        "notRead": "{{name}} ainda não leu isto. Irá junto com sua próxima mensagem.",
-        "read": "{{name}} leu isto com sua próxima mensagem.",
-        "sentWithOne": "Enviado com 1 resultado de automação",
-        "sentWithMany": "Enviado com {{count}} resultados de automação",
-        "cleared": "Chegou antes de o chat ser limpo. Não será enviado para {{name}}."
       },
       "slashCommandDescriptions": {
         "clearConversation": "Limpar a conversa",
@@ -21874,6 +21863,80 @@
         "sourceTooltip": "Ramificação de {{name}}",
         "unknownSourceTooltip": "Ramificação de outro chat"
       },
+      "cardKindHidden": {
+        "description": "Você pode alterar isso a qualquer momento em",
+        "settingsLink": "Configurações > Interface de chat > Atividade do turno",
+        "failed": "Não foi possível salvar. Você pode desativar em Configurações > Interface de chat > Atividade do turno."
+      },
+      "openedPullRequests": {
+        "one": "Pull request criada: {{name}}",
+        "hide": "Não mostrar pull requests criadas",
+        "hidden": "O Orca não mostrará mais as pull requests criadas",
+        "many_one": "Criada {{count}} pull request",
+        "many_other": "Criadas {{count}} pull requests",
+        "many_many": "Criadas {{count}} pull requests"
+      },
+      "splitRight": "Dividir à direita",
+      "splitDown": "Dividir para baixo",
+      "newRowsAnnouncement": "Novas mensagens chegaram enquanto você estava ausente",
+      "newRowsMarker": "Novas",
+      "editDeliveryNotice": "Editar",
+      "explicitChatWslAddHost": "O bate-papo não está disponível em uma pasta WSL aberta no Windows. Adicione a distribuição como um host WSL (Adicionar um projeto → Adicionar host remoto → Adicionar distribuição WSL) para conversar lá ou abra o agente em um terminal.",
+      "githubPeek": {
+        "updated": "atualizado {{time}}",
+        "oneComment": "1 comentário",
+        "comments": "{{count}} comentários",
+        "unavailable": "Visualização indisponível.",
+        "retry": "Tentar novamente"
+      },
+      "webPeek": {
+        "unavailable": "Nenhuma visualização para esta página."
+      },
+      "usageLimitActions": {
+        "switchAccount": "Trocar de conta",
+        "addAccount": "Adicionar conta…",
+        "accountUnavailable": "Este chat não pode ser transferido para outra conta. Passe-o para outro agente.",
+        "handOff": "Passar para agente"
+      },
+      "usageLimitAutoContinue": {
+        "cancelFailed": "Não foi possível cancelar a continuação automática. Tente novamente.",
+        "scheduled": "Orca continuará este bate-papo às {{time}}."
+      },
+      "creationChatNotOpened": "O worktree está pronto, mas o chat não pôde ser aberto. Tente abri-lo novamente com sua mensagem.",
+      "usage": {
+        "description": "Mostrar o uso da conta Codex deste chat",
+        "loading": "Carregando uso do Codex…",
+        "failed": "O uso do Codex não pôde ser carregado. Tente novamente.",
+        "codexVersion": "Esta versão do Codex não informa o uso. Atualize o Codex.",
+        "apiKeyAuth": "O uso do Codex não está disponível com uma chave de API. Faça login no Codex com uma conta ChatGPT para visualizar o uso.",
+        "title": "Uso do Codex",
+        "account": "Conta usada por este chat",
+        "retry": "Tentar novamente",
+        "resetFailed": "Os limites do Codex não puderam ser redefinidos. Tente novamente.",
+        "confirmReset": "Isso usa um crédito de redefinição de limite de taxa do Codex para {{account}} e redefine qualquer janela de uso qualificada imediatamente.",
+        "sharedAccount": "Conta compartilhada atual",
+        "outcome": {
+          "reset": "Os limites do Codex foram redefinidos.",
+          "nothingToReset": "Nada para redefinir agora.",
+          "noCredit": "Não há créditos de redefinição do Codex nesta conta.",
+          "alreadyRedeemed": "Esse crédito de redefinição já foi usado."
+        }
+      },
+      "railFilterPlaceholder": "Filtrar suas mensagens",
+      "railNoMatches": "Nenhuma mensagem corresponde",
+      "railTickLabel": "Mensagem {{index}} de {{count}}: {{text}}",
+      "railMatchCount": "{{count}} de {{total}}",
+      "imageGallery": {
+        "loadFailed": "Não foi possível carregar {{name}}"
+      },
+      "automationResult": {
+        "openRun": "Abrir execução",
+        "notRead": "{{name}} ainda não leu isto. Irá junto com sua próxima mensagem.",
+        "read": "{{name}} leu isto com sua próxima mensagem.",
+        "sentWithOne": "Enviado com 1 resultado de automação",
+        "sentWithMany": "Enviado com {{count}} resultados de automação",
+        "cleared": "Chegou antes de o chat ser limpo. Não será enviado para {{name}}."
+      },
       "importPlan": {
         "comes": "Será importado",
         "changed": "Será importado com alterações",
@@ -21895,21 +21958,6 @@
         "unchanged": "Nada em {{app}} foi alterado.",
         "paused": "As automações estão pausadas para que nada seja executado duas vezes. Ative-as depois que o bot antigo for desligado em {{app}}."
       },
-      "cardKindHidden": {
-        "description": "Você pode alterar isso a qualquer momento em",
-        "settingsLink": "Configurações > Interface de chat > Atividade do turno",
-        "failed": "Não foi possível salvar. Você pode desativar em Configurações > Interface de chat > Atividade do turno."
-      },
-      "openedPullRequests": {
-        "one": "Pull request criada: {{name}}",
-        "hide": "Não mostrar pull requests criadas",
-        "hidden": "O Orca não mostrará mais as pull requests criadas",
-        "many_one": "Criada {{count}} pull request",
-        "many_other": "Criadas {{count}} pull requests",
-        "many_many": "Criadas {{count}} pull requests"
-      },
-      "splitRight": "Dividir à direita",
-      "splitDown": "Dividir para baixo",
       "automationRun": {
         "waitOver": "Espera encerrada",
         "scheduled": "Agendada",
@@ -22030,48 +22078,6 @@
         "showMore": "Mostrar mais",
         "running": "Executando",
         "failed": "Falhou"
-      },
-      "editDeliveryNotice": "Editar",
-      "explicitChatWslAddHost": "O bate-papo não está disponível em uma pasta WSL aberta no Windows. Adicione a distribuição como um host WSL (Adicionar um projeto → Adicionar host remoto → Adicionar distribuição WSL) para conversar lá ou abra o agente em um terminal.",
-      "githubPeek": {
-        "updated": "atualizado {{time}}",
-        "oneComment": "1 comentário",
-        "comments": "{{count}} comentários",
-        "unavailable": "Visualização indisponível.",
-        "retry": "Tentar novamente"
-      },
-      "webPeek": {
-        "unavailable": "Nenhuma visualização para esta página."
-      },
-      "usageLimitActions": {
-        "switchAccount": "Trocar de conta",
-        "addAccount": "Adicionar conta…",
-        "accountUnavailable": "Este chat não pode ser transferido para outra conta. Passe-o para outro agente.",
-        "handOff": "Passar para agente"
-      },
-      "usageLimitAutoContinue": {
-        "cancelFailed": "Não foi possível cancelar a continuação automática. Tente novamente.",
-        "scheduled": "Orca continuará este bate-papo às {{time}}."
-      },
-      "creationChatNotOpened": "O worktree está pronto, mas o chat não pôde ser aberto. Tente abri-lo novamente com sua mensagem.",
-      "usage": {
-        "description": "Mostrar o uso da conta Codex deste chat",
-        "loading": "Carregando uso do Codex…",
-        "failed": "O uso do Codex não pôde ser carregado. Tente novamente.",
-        "codexVersion": "Esta versão do Codex não informa o uso. Atualize o Codex.",
-        "apiKeyAuth": "O uso do Codex não está disponível com uma chave de API. Faça login no Codex com uma conta ChatGPT para visualizar o uso.",
-        "title": "Uso do Codex",
-        "account": "Conta usada por este chat",
-        "retry": "Tentar novamente",
-        "resetFailed": "Os limites do Codex não puderam ser redefinidos. Tente novamente.",
-        "confirmReset": "Isso usa um crédito de redefinição de limite de taxa do Codex para {{account}} e redefine qualquer janela de uso qualificada imediatamente.",
-        "sharedAccount": "Conta compartilhada atual",
-        "outcome": {
-          "reset": "Os limites do Codex foram redefinidos.",
-          "nothingToReset": "Nada para redefinir agora.",
-          "noCredit": "Não há créditos de redefinição do Codex nesta conta.",
-          "alreadyRedeemed": "Esse crédito de redefinição já foi usado."
-        }
       },
       "dock": {
         "label": "Caixa de mensagem e solicitações"
@@ -25359,6 +25365,117 @@
     "invalidBranchName": "Este nome de branch é inválido. Escolha outro nome.",
     "createBranchFailed": "O Orca não conseguiu criar a branch. Verifique este repositório em um terminal e tente novamente."
   },
+  "speechModelUpdate": {
+    "update": "Atualizar",
+    "cancel": "Cancelar",
+    "pill": {
+      "updateNotice": "O ditado mais rápido está pronto para instalar",
+      "retiredNotice": "O ditado agora usa um modelo de fala mais rápido",
+      "install": "Instalar",
+      "installTooltip": "Download único · {{size}} MB",
+      "downloading": "Configurando o ditado",
+      "downloadingTooltip": "{{done}} de {{size}} MB",
+      "ready": "O ditado está pronto. Pressione <kbd></kbd>",
+      "readyNoShortcut": "O ditado está pronto.",
+      "failed": "O download parou. Verifique sua conexão.",
+      "tryAgain": "Tentar novamente",
+      "deleteOld": "Excluir modelo antigo",
+      "deleteFailed": "Falha ao excluir {{model}}.",
+      "dismiss": "Dispensar",
+      "cancelDownload": "Cancelar download"
+    }
+  },
+  "wslDriveProject": {
+    "label": "Git",
+    "converted": "Orca executa Git no Windows para este projeto. Terminais e agentes ainda funcionam em {{distro}}.",
+    "checkFailed": "Orca não pôde verificar este projeto.",
+    "convertFailed": "Orca não conseguiu trocar o Git.",
+    "description": "Este projeto está em uma unidade do Windows, onde o Git no WSL é lento e perde as alterações feitas no Windows. Use Git para Windows; terminais e agentes ficam em {{distro}}.",
+    "useWindowsGit": "Usar Git para Windows",
+    "review": "Nada muda no Orca neste projeto: suas abas, terminais, chats e espaços de trabalho permanecem como estão. Os terminais em execução continuam.",
+    "lineEndings": "Defina também core.autocrlf neste repositório, para que o git nos terminais WSL pare de mostrar todos os arquivos alterados.",
+    "cancel": "Cancelar",
+    "confirm": "Usar Git para Windows",
+    "blocker": {
+      "notWsl": "Este projeto já roda Git no Windows.",
+      "repair": "Corrija primeiro o tempo de execução do WSL deste projeto: sua distribuição está faltando ou o WSL não está disponível.",
+      "notWindowsDrive": "Uma pasta deste projeto não está em uma unidade do Windows.",
+      "gitMissing": "Git para Windows não está instalado. Instale-o em git-scm.com e tente novamente.",
+      "wslWorktrees": "O Git do WSL criou estes espaços de trabalho, que o Git para Windows não consegue ler: {{paths}}. Remova-os ou mantenha este projeto no Git do WSL.",
+      "worktreeFolder": "Novos espaços de trabalho para este projeto estão definidos para entrar no WSL. Escolha primeiro uma pasta em uma unidade do Windows nas configurações deste projeto."
+    }
+  },
+  "wslDriveUnc": {
+    "label": "Localização",
+    "description": "Orca abre este projeto através da WSL. Em vez disso, abra-o em {{drivePath}}: o Git é executado no Windows, que é muito mais rápido aqui, e os terminais e agentes permanecem na {{distro}}.",
+    "convert": "Abrir em {{drivePath}}",
+    "review": "O Orca pausa os terminais deste projeto, reinicia e o reabre em {{drivePath}}. As abas, os terminais com seu histórico, os chats e as configurações são preservados; os terminais pausados continuam de onde pararam.",
+    "cancel": "Cancelar",
+    "confirm": "Reiniciar e converter",
+    "failed": "Orca não conseguiu converter este projeto.",
+    "restarting": "Reiniciando o Orca para converter este projeto…",
+    "terminalsBusy": "Alguns terminais deste projeto estão ocupados. Deixe-os terminar ou feche-os e tente novamente.",
+    "pauseFailed": "O Orca não conseguiu pausar os terminais deste projeto, então nada mudou.",
+    "blocker": {
+      "pending": "O Orca já está convertendo um projeto. A conversão terminará quando o Orca reiniciar.",
+      "state": "O Orca encontrou um estado salvo para este projeto que não pode ser convertido com segurança, então nada mudou.",
+      "duplicate": "{{drivePath}} já é um projeto no Orca.",
+      "mixed": "Algumas das pastas deste projeto estão dentro do WSL, não em uma unidade do Windows.",
+      "overlap": "Este projeto compartilha pastas com um projeto que o Orca não pode converter, então eles seriam divididos.",
+      "notDriveMount": "Nesta distribuição, essa pasta não é {{drivePath}}: ela não é montada a partir dessa unidade do Windows.",
+      "notConvertible": "Este projeto não está em uma unidade do Windows neste computador.",
+      "differingState": "O Orca salvou detalhes diferentes para esta pasta no caminho WSL e em {{drivePath}}, então nada mudou.",
+      "projectSplit": "Este projeto também contém um repositório que não está convertendo, então nada mudou."
+    }
+  },
+  "plugins": {
+    "frameSaveAs": {
+      "title": "Salvar arquivo",
+      "allFiles": "Todos os arquivos"
+    },
+    "frameOpenExternal": {
+      "open": "Abrir",
+      "cancel": "Cancelar",
+      "message": "{{plugin}} deseja abrir {{host}}",
+      "alwaysAllow": "Sempre permitir {{host}} para este plugin"
+    },
+    "actionConfirmation": {
+      "cancel": "Cancelar",
+      "deleteAutomation": "{{plugin}} quer excluir a automação “{{automation}}”",
+      "deleteAutomationDetail": "O plugin não criou esta automação. O agendamento dela será interrompido e ela será removida de Automações.",
+      "delete": "Excluir",
+      "changeAutomation": "{{plugin}} quer alterar a automação “{{automation}}”",
+      "changeAutomationDetail": "O plugin não criou esta automação. Ele alteraria: {{fields}}.",
+      "change": "Alterar",
+      "changeElevatedAutomationDetail": "Esta automação executa o agente com configurações extras que você escolheu (argumentos, um modo de permissão ou um comando de pré-verificação). O plugin alteraria: {{fields}}.",
+      "newPrompt": "Novo prompt: “{{prompt}}”",
+      "unknownProject": "um projeto desconhecido",
+      "automationNewWorkspaces": "Automação {{id}}: em um novo espaço de trabalho de {{project}} a cada execução, conforme {{schedule}}.",
+      "automationInWorkspace": "Automação {{id}}: em {{project}} / {{workspace}}, conforme {{schedule}}."
+    }
+  },
+  "checks": {
+    "rerunUnsuccessful": "Executar novamente as verificações malsucedidas"
+  },
+  "nestedImport": {
+    "error": {
+      "notInScan": "O repositório não foi encontrado no resultado da busca por repositórios aninhados",
+      "notGitRepository": "Não é um repositório Git válido",
+      "importFailed": "Não foi possível importar o repositório"
+    }
+  },
+  "crashReport": {
+    "freeze": {
+      "includeRedacted": "Incluir o relatório de travamento salvo e os logs recentes (anonimizados)",
+      "uncheckAttachments": "Uncheck \"Include the saved freeze report and recent logs (redacted)\" and try again, or copy the details."
+    },
+    "includeRecentLogsRedacted": "Incluir logs recentes (anonimizados)",
+    "details": "Detalhes",
+    "copyDetails": "Copiar detalhes",
+    "dontSend": "Não enviar",
+    "sending": "Enviando…",
+    "sendReport": "Enviar relatório"
+  },
   "bots": {
     "deepLink": {
       "missing": "Essa conversa não está aberta neste computador."
@@ -25941,105 +26058,6 @@
       }
     }
   },
-  "speechModelUpdate": {
-    "update": "Atualizar",
-    "cancel": "Cancelar",
-    "pill": {
-      "updateNotice": "O ditado mais rápido está pronto para instalar",
-      "retiredNotice": "O ditado agora usa um modelo de fala mais rápido",
-      "install": "Instalar",
-      "installTooltip": "Download único · {{size}} MB",
-      "downloading": "Configurando o ditado",
-      "downloadingTooltip": "{{done}} de {{size}} MB",
-      "ready": "O ditado está pronto. Pressione <kbd></kbd>",
-      "readyNoShortcut": "O ditado está pronto.",
-      "failed": "O download parou. Verifique sua conexão.",
-      "tryAgain": "Tentar novamente",
-      "deleteOld": "Excluir modelo antigo",
-      "deleteFailed": "Falha ao excluir {{model}}.",
-      "dismiss": "Dispensar",
-      "cancelDownload": "Cancelar download"
-    }
-  },
-  "wslDriveProject": {
-    "label": "Git",
-    "converted": "Orca executa Git no Windows para este projeto. Terminais e agentes ainda funcionam em {{distro}}.",
-    "checkFailed": "Orca não pôde verificar este projeto.",
-    "convertFailed": "Orca não conseguiu trocar o Git.",
-    "description": "Este projeto está em uma unidade do Windows, onde o Git no WSL é lento e perde as alterações feitas no Windows. Use Git para Windows; terminais e agentes ficam em {{distro}}.",
-    "useWindowsGit": "Usar Git para Windows",
-    "review": "Nada muda no Orca neste projeto: suas abas, terminais, chats e espaços de trabalho permanecem como estão. Os terminais em execução continuam.",
-    "lineEndings": "Defina também core.autocrlf neste repositório, para que o git nos terminais WSL pare de mostrar todos os arquivos alterados.",
-    "cancel": "Cancelar",
-    "confirm": "Usar Git para Windows",
-    "blocker": {
-      "notWsl": "Este projeto já roda Git no Windows.",
-      "repair": "Corrija primeiro o tempo de execução do WSL deste projeto: sua distribuição está faltando ou o WSL não está disponível.",
-      "notWindowsDrive": "Uma pasta deste projeto não está em uma unidade do Windows.",
-      "gitMissing": "Git para Windows não está instalado. Instale-o em git-scm.com e tente novamente.",
-      "wslWorktrees": "O Git do WSL criou estes espaços de trabalho, que o Git para Windows não consegue ler: {{paths}}. Remova-os ou mantenha este projeto no Git do WSL.",
-      "worktreeFolder": "Novos espaços de trabalho para este projeto estão definidos para entrar no WSL. Escolha primeiro uma pasta em uma unidade do Windows nas configurações deste projeto."
-    }
-  },
-  "wslDriveUnc": {
-    "label": "Localização",
-    "description": "Orca abre este projeto através da WSL. Em vez disso, abra-o em {{drivePath}}: o Git é executado no Windows, que é muito mais rápido aqui, e os terminais e agentes permanecem na {{distro}}.",
-    "convert": "Abrir em {{drivePath}}",
-    "review": "O Orca pausa os terminais deste projeto, reinicia e o reabre em {{drivePath}}. As abas, os terminais com seu histórico, os chats e as configurações são preservados; os terminais pausados continuam de onde pararam.",
-    "cancel": "Cancelar",
-    "confirm": "Reiniciar e converter",
-    "failed": "Orca não conseguiu converter este projeto.",
-    "restarting": "Reiniciando o Orca para converter este projeto…",
-    "terminalsBusy": "Alguns terminais deste projeto estão ocupados. Deixe-os terminar ou feche-os e tente novamente.",
-    "pauseFailed": "O Orca não conseguiu pausar os terminais deste projeto, então nada mudou.",
-    "blocker": {
-      "pending": "O Orca já está convertendo um projeto. A conversão terminará quando o Orca reiniciar.",
-      "state": "O Orca encontrou um estado salvo para este projeto que não pode ser convertido com segurança, então nada mudou.",
-      "duplicate": "{{drivePath}} já é um projeto no Orca.",
-      "mixed": "Algumas das pastas deste projeto estão dentro do WSL, não em uma unidade do Windows.",
-      "overlap": "Este projeto compartilha pastas com um projeto que o Orca não pode converter, então eles seriam divididos.",
-      "notDriveMount": "Nesta distribuição, essa pasta não é {{drivePath}}: ela não é montada a partir dessa unidade do Windows.",
-      "notConvertible": "Este projeto não está em uma unidade do Windows neste computador.",
-      "differingState": "O Orca salvou detalhes diferentes para esta pasta no caminho WSL e em {{drivePath}}, então nada mudou.",
-      "projectSplit": "Este projeto também contém um repositório que não está convertendo, então nada mudou."
-    }
-  },
-  "plugins": {
-    "frameSaveAs": {
-      "title": "Salvar arquivo",
-      "allFiles": "Todos os arquivos"
-    },
-    "frameOpenExternal": {
-      "open": "Abrir",
-      "cancel": "Cancelar",
-      "message": "{{plugin}} deseja abrir {{host}}",
-      "alwaysAllow": "Sempre permitir {{host}} para este plugin"
-    },
-    "actionConfirmation": {
-      "cancel": "Cancelar",
-      "deleteAutomation": "{{plugin}} quer excluir a automação “{{automation}}”",
-      "deleteAutomationDetail": "O plugin não criou esta automação. O agendamento dela será interrompido e ela será removida de Automações.",
-      "delete": "Excluir",
-      "changeAutomation": "{{plugin}} quer alterar a automação “{{automation}}”",
-      "changeAutomationDetail": "O plugin não criou esta automação. Ele alteraria: {{fields}}.",
-      "change": "Alterar",
-      "changeElevatedAutomationDetail": "Esta automação executa o agente com configurações extras que você escolheu (argumentos, um modo de permissão ou um comando de pré-verificação). O plugin alteraria: {{fields}}.",
-      "newPrompt": "Novo prompt: “{{prompt}}”",
-      "unknownProject": "um projeto desconhecido",
-      "automationNewWorkspaces": "Automação {{id}}: em um novo espaço de trabalho de {{project}} a cada execução, conforme {{schedule}}.",
-      "automationInWorkspace": "Automação {{id}}: em {{project}} / {{workspace}}, conforme {{schedule}}."
-    }
-  },
-  "checks": {
-    "rerunUnsuccessful": "Executar novamente as verificações malsucedidas"
-  },
-  "nestedImport": {
-    "error": {
-      "notInScan": "O repositório não foi encontrado no resultado da busca por repositórios aninhados",
-      "notGitRepository": "Não é um repositório Git válido",
-      "importFailed": "Não foi possível importar o repositório"
-    }
-  },
   "usage": {
     "failure": {
       "unavailable": "O uso está indisponível. Tente Atualizar para reconectar.",
@@ -26048,18 +26066,6 @@
       "read": "Não foi possível carregar o uso. Tente Atualizar novamente.",
       "retry": "Atualizar"
     }
-  },
-  "crashReport": {
-    "freeze": {
-      "includeRedacted": "Incluir o relatório de travamento salvo e os logs recentes (anonimizados)",
-      "uncheckAttachments": "Uncheck \"Include the saved freeze report and recent logs (redacted)\" and try again, or copy the details."
-    },
-    "includeRecentLogsRedacted": "Incluir logs recentes (anonimizados)",
-    "details": "Detalhes",
-    "copyDetails": "Copiar detalhes",
-    "dontSend": "Não enviar",
-    "sending": "Enviando…",
-    "sendReport": "Enviar relatório"
   },
   "agentCliUpdate": {
     "thisComputer": "Este computador"

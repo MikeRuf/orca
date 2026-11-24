@@ -20122,10 +20122,6 @@
         "placeholder": "随心输入，@ 引用文件，/ 使用命令",
         "loadingFiles": "正在加载文件...",
         "noFiles": "没有匹配的文件",
-        "noBots": "没有 bots",
-        "noBotsMatch": "没有与“{{query}}”匹配的 bots",
-        "botCount_other": "{{count}} 个 bot",
-        "fileCount_other": "{{count}} 个文件",
         "filesLoadFailed": "无法加载文件",
         "attach": "附加文件",
         "startDictation": "开始听写",
@@ -20142,26 +20138,6 @@
         "pasteNotSaved": "此粘贴内容未保存。请重新粘贴或将其移除",
         "pastedTextTooLarge": "此次粘贴会使消息超过单条消息 256 KB 的上限。请缩短后再粘贴",
         "imageUnavailable": "预览不可用",
-        "agents": "智能体",
-        "recent": "最近",
-        "bots": "Bots",
-        "files": "文件",
-        "skillPillLabel": "技能：{{name}}",
-        "filePillLabel": "文件：{{name}}",
-        "agentPillLabel": "智能体：{{name}}",
-        "backToBots": "返回 bots 列表",
-        "botChats": "聊天",
-        "botChatsCount": "{{name}} 的聊天，共 {{chatCount}} 个",
-        "changeChat": "更换聊天",
-        "chatsHint": "按右方向键查看聊天",
-        "chooseChat": "选择聊天",
-        "loadingBotChats": "正在加载 {{name}} 的聊天…",
-        "noMatchingChats": "没有匹配的聊天",
-        "noOtherChats": "没有其他聊天",
-        "retryChats": "重试",
-        "permissionAppliesNextMessage": "{{saved}} 从下一条消息起生效；当前使用 {{active}}",
-        "modelAndEffortValue": "{{model}} · {{effort}}",
-        "modelAndEffort": "模型和推理强度",
         "draftNotSaved": "此草稿尚未保存成功，Orca 会继续尝试",
         "imageNotBroughtBack": "无法随此草稿恢复 {{name}}，请重新附加或将其移除",
         "pastedImageNotBroughtBack": "无法随此草稿恢复这张粘贴的图片，请将其移除，如仍需要请重新粘贴",
@@ -20176,6 +20152,11 @@
         "pasteUnavailable": "无法粘贴 — 此聊天当前不接受输入",
         "model": "模型",
         "effort": "推理强度",
+        "contextWindow": "上下文窗口",
+        "customValue": "自定义…",
+        "customValueLabel": "大小（千个 token）",
+        "customValueApply": "设置",
+        "customValueRange": "请输入 {{value0}} 到 {{value1}}",
         "fastMode": "快速模式",
         "speed": "速度",
         "thinking": "思考",
@@ -20190,8 +20171,6 @@
         "availableAfterSessionStarts": "会话开始后可用",
         "optionUpdateFailed": "无法更新选项",
         "optionValue": {
-          "none": "无",
-          "off": "关闭",
           "fast": "快速",
           "minimal": "Minimal",
           "low": "Low",
@@ -20200,13 +20179,15 @@
           "xhigh": "Extra high",
           "max": "Max",
           "ultra": "极致",
+          "contextWindowDefault": "默认",
           "standard": "标准",
-          "ultracode": "Ultracode"
+          "ultracode": "Ultracode",
+          "none": "无",
+          "off": "关闭"
         },
         "noCommandsOrSkills": "没有匹配的命令或技能",
         "commands": "命令",
         "skills": "技能",
-        "checkingSkills": "正在检查新技能…",
         "loadingSkills": "正在加载技能…",
         "clearDescription": "清除对话上下文",
         "skillsUnavailableHost": "SSH 聊天中无法列出技能",
@@ -20242,10 +20223,6 @@
         "permissionAuto": "替我批准",
         "permissionAutoDescription": "代你审核批准请求",
         "permissionFullAccess": "完全访问",
-        "permissionAgentSettings": "{{agent}} 设置",
-        "permissionAgentSettingsUsedHint": "使用你的 {{agent}} 权限设置。",
-        "permissionAgentSettingsUnnamedHint": "使用你的 {{agent}} 权限设置。Orca 无法显示此模式。",
-        "permissionFromAgentSettings": "{{mode}}，来自 {{agent}} 设置",
         "permissionFullAccessDescription": "编辑或运行命令前从不询问",
         "permissionFullAccessCodexDescription": "从不询问，可以编辑任何文件并使用网络",
         "permissionFullAccessSharedDescription": "编辑或运行命令前从不询问",
@@ -20260,7 +20237,36 @@
         "sessionAttachmentsFailed": "{{agent}} 聊天无法打开，请在聊天中点击重试，然后重新附加文件",
         "sessionAttachmentsStarting": "{{agent}} 聊天仍在打开中，请等待其打开后再重新附加文件",
         "moreControls": "更多聊天控件",
-        "exitPlanMode": "退出计划模式"
+        "exitPlanMode": "退出计划模式",
+        "checkingSkills": "正在检查新技能…",
+        "permissionAppliesNextMessage": "{{saved}} 从下一条消息起生效；当前使用 {{active}}",
+        "modelAndEffortValue": "{{model}} · {{effort}}",
+        "modelAndEffort": "模型和推理强度",
+        "noBots": "没有 bots",
+        "noBotsMatch": "没有与“{{query}}”匹配的 bots",
+        "botCount_other": "{{count}} 个 bot",
+        "fileCount_other": "{{count}} 个文件",
+        "agents": "智能体",
+        "recent": "最近",
+        "bots": "Bots",
+        "files": "文件",
+        "skillPillLabel": "技能：{{name}}",
+        "filePillLabel": "文件：{{name}}",
+        "agentPillLabel": "智能体：{{name}}",
+        "backToBots": "返回 bots 列表",
+        "botChats": "聊天",
+        "botChatsCount": "{{name}} 的聊天，共 {{chatCount}} 个",
+        "changeChat": "更换聊天",
+        "chatsHint": "按右方向键查看聊天",
+        "chooseChat": "选择聊天",
+        "loadingBotChats": "正在加载 {{name}} 的聊天…",
+        "noMatchingChats": "没有匹配的聊天",
+        "noOtherChats": "没有其他聊天",
+        "retryChats": "重试",
+        "permissionAgentSettings": "{{agent}} 设置",
+        "permissionAgentSettingsUsedHint": "使用你的 {{agent}} 权限设置。",
+        "permissionAgentSettingsUnnamedHint": "使用你的 {{agent}} 权限设置。Orca 无法显示此模式。",
+        "permissionFromAgentSettings": "{{mode}}，来自 {{agent}} 设置"
       },
       "tool": {
         "result": "结果",
@@ -20397,8 +20403,6 @@
       "scrollMessageToTop": "将此消息滚动到顶部",
       "loadingEarlier": "正在加载…",
       "loadEarlier": "加载更早的消息",
-      "loadEarlierFailed": "无法加载更早的消息",
-      "loadEarlierRetry": "重试",
       "loadingEarlierMessages": "正在加载更早的消息…",
       "prompt": {
         "collapse": "收起",
@@ -20483,9 +20487,6 @@
       "imagePreview": {
         "fileActions": "文件操作",
         "linkActions": "链接操作"
-      },
-      "imageGallery": {
-        "loadFailed": "无法加载 {{name}}"
       },
       "launchPromptNotDelivered": "未送达 — 请检查终端",
       "taskList": {
@@ -20620,10 +20621,6 @@
       "railLabel": "你的消息",
       "railImageMessage": "图片附件",
       "railEmptyMessage": "消息",
-      "railFilterPlaceholder": "筛选你的消息",
-      "railNoMatches": "没有匹配的消息",
-      "railTickLabel": "第 {{index}} 条消息，共 {{count}} 条：{{text}}",
-      "railMatchCount": "{{count}} / {{total}}",
       "ask": {
         "awaiting": "等待用户输入：",
         "awaitingUnnamed": "等待用户输入",
@@ -20861,14 +20858,6 @@
         "stopUnconfirmed": "Codex 无法确认停止。请在继续前检查聊天",
         "noGoal": "Codex 在此聊天中没有可更改的目标，请使用 /goal 加上目标内容来设定"
       },
-      "automationResult": {
-        "openRun": "打开运行",
-        "notRead": "{{name}} 尚未读取此结果，它会随你的下一条消息一起发送",
-        "read": "{{name}} 已随你的下一条消息读取此结果",
-        "sentWithOne": "已附带 1 个自动化结果发送",
-        "sentWithMany": "已附带 {{count}} 个自动化结果发送",
-        "cleared": "此结果在聊天被清除前送达，不会发送给 {{name}}"
-      },
       "slashCommandDescriptions": {
         "clearConversation": "清除对话",
         "clearHistory": "清除对话历史",
@@ -21046,14 +21035,6 @@
         "cancelFailed": "无法取消自动继续。请重试。",
         "scheduled": "Orca 将在 {{time}} 继续此聊天。"
       },
-      "botRequest": {
-        "notSentTo": "未发送给",
-        "asked": "已询问",
-        "handedTo": "已交给",
-        "paused": "{{bot}} 已暂停",
-        "botsOff": "Bots 已关闭",
-        "couldNotTake": "{{bot}} 无法接收此请求"
-      },
       "settings": "聊天设置",
       "textAttachmentPreview": {
         "copiedContents": "已复制内容",
@@ -21101,58 +21082,6 @@
         "commandNothing": "还没有可用于创建分支的回复",
         "commandTakesNoText": "请单独发送 /fork，然后在新聊天中输入内容"
       },
-      "importPlan": {
-        "comes": "将迁移过来",
-        "changed": "将调整后迁移过来",
-        "already": "已存在",
-        "stays": "留在 {{app}} 中",
-        "fromAgain": "再次从 {{app}} 导入",
-        "from": "从 {{app}} 导入",
-        "selected": "已选择 {{chosen}}/{{total}} 项 · 密钥和登录信息绝不会被复制",
-        "importOne": "导入 1 项",
-        "importMany": "导入 {{count}} 项",
-        "askedOne": "已请求导入 1 项",
-        "askedMany": "已请求导入 {{count}} 项"
-      },
-      "importDone": {
-        "heading": "导入完成",
-        "title": "{{name}} 已从 {{app}} 迁移过来",
-        "open": "打开",
-        "stayed": "留在 {{app}} 中的内容：{{things}}。未对 {{app}} 做任何更改",
-        "unchanged": "未对 {{app}} 做任何更改",
-        "paused": "自动化已暂停，以免重复运行。请在 {{app}} 中关闭旧 bot 后再开启它们"
-      },
-      "botCreateOffer": {
-        "heading": "新 bot",
-        "takesOverOne": "将接管 1 个工作区",
-        "takesOverMany": "将接管 {{count}} 个工作区",
-        "created": "已创建",
-        "createdTookOverOne": "已创建 · 已接管 1 个工作区",
-        "createdTookOverMany": "已创建 · 已接管 {{count}} 个工作区",
-        "askedOne": "已安排接管 1 个工作区",
-        "askedMany": "已安排接管 {{count}} 个工作区",
-        "tookOverSome": "已接管 {{count}} 个工作区中的 {{taken}} 个",
-        "tookOverOne": "已接管 1 个工作区",
-        "tookOverMany": "已接管 {{count}} 个工作区",
-        "watches": "关注",
-        "reports": "汇报",
-        "takesOver": "接管",
-        "template": "模板",
-        "nameTaken": "你已经有一个名为 {{name}} 的 bot",
-        "open": "打开",
-        "edit": "编辑",
-        "rename": "重命名",
-        "create": "创建 bot",
-        "originTemplate": "基于 {{template}}，由 {{bot}} 提议",
-        "origin": "由 {{bot}} 提议",
-        "createdAskedOne": "已创建 · 已安排接管 1 个工作区",
-        "createdAskedMany": "已创建 · 已安排接管 {{count}} 个工作区",
-        "createdTookOverSome": "已创建 · 已接管 {{count}} 个工作区中的 {{taken}} 个",
-        "deleted": "创建后已删除",
-        "does": "负责",
-        "willPropose": "将提议",
-        "details": "{{name}} 的详情"
-      },
       "cardKindHidden": {
         "description": "你可以随时在此处更改",
         "settingsLink": "设置 > 聊天界面 > 回合活动",
@@ -21169,16 +21098,11 @@
       "splitDown": "向下拆分",
       "newRowsAnnouncement": "你离开期间有新消息",
       "newRowsMarker": "新消息",
-      "dock": {
-        "label": "消息框和提示"
-      },
       "editDeliveryNotice": "编辑",
       "signIn": {
         "title": "登录 {{agent}} 即可开始聊天"
       },
       "explicitChatWslAddHost": "从 Windows 打开的 WSL 文件夹中无法使用聊天，请将该发行版添加为 WSL 主机（添加项目 → 添加远程主机 → 添加 WSL 发行版）后在那里聊天，或在终端中打开智能体",
-      "explicitChatWslMoveToHost": "从 Windows 打开的 WSL 文件夹中无法使用聊天，请在 WSL 主机上运行此项目后在那里聊天，或在终端中打开智能体",
-      "explicitChatWslRunAsHost": "将 {{distro}} 作为主机运行",
       "githubPeek": {
         "updated": "更新于 {{time}}",
         "oneComment": "1 条评论",
@@ -21188,22 +21112,6 @@
       },
       "webPeek": {
         "unavailable": "此页面没有预览"
-      },
-      "workers": {
-        "stopUnconfirmed": "Orca 无法确认工作者已停止"
-      },
-      "connectorAsker": {
-        "anApp": "某个应用",
-        "directMessage": "{{source}} 私信",
-        "earlierMessages": "话题中更早的 {{count}} 条消息",
-        "earlierMessages_other": "话题中更早的 {{count}} 条消息",
-        "groupMessage": "{{source}} 群组私信",
-        "label": "{{name}}，来自 {{place}}",
-        "noAccess": "无访问权限",
-        "open": "在 {{source}} 中打开",
-        "someone": "某人",
-        "via": "{{name}}（通过 {{bot}}）",
-        "you": "你"
       },
       "creationChatNotOpened": "你的工作树已就绪，但聊天未能打开，请重试以打开聊天并带上你的消息",
       "usage": {
@@ -21303,6 +21211,104 @@
         "openAgain": "重新打开",
         "finished": "登录已完成",
         "finishedWith": "登录已完成 · {{message}}"
+      },
+      "loadEarlierFailed": "无法加载更早的消息",
+      "loadEarlierRetry": "重试",
+      "imageGallery": {
+        "loadFailed": "无法加载 {{name}}"
+      },
+      "railFilterPlaceholder": "筛选你的消息",
+      "railNoMatches": "没有匹配的消息",
+      "railTickLabel": "第 {{index}} 条消息，共 {{count}} 条：{{text}}",
+      "railMatchCount": "{{count}} / {{total}}",
+      "automationResult": {
+        "openRun": "打开运行",
+        "notRead": "{{name}} 尚未读取此结果，它会随你的下一条消息一起发送",
+        "read": "{{name}} 已随你的下一条消息读取此结果",
+        "sentWithOne": "已附带 1 个自动化结果发送",
+        "sentWithMany": "已附带 {{count}} 个自动化结果发送",
+        "cleared": "此结果在聊天被清除前送达，不会发送给 {{name}}"
+      },
+      "botRequest": {
+        "notSentTo": "未发送给",
+        "asked": "已询问",
+        "handedTo": "已交给",
+        "paused": "{{bot}} 已暂停",
+        "botsOff": "Bots 已关闭",
+        "couldNotTake": "{{bot}} 无法接收此请求"
+      },
+      "importPlan": {
+        "comes": "将迁移过来",
+        "changed": "将调整后迁移过来",
+        "already": "已存在",
+        "stays": "留在 {{app}} 中",
+        "fromAgain": "再次从 {{app}} 导入",
+        "from": "从 {{app}} 导入",
+        "selected": "已选择 {{chosen}}/{{total}} 项 · 密钥和登录信息绝不会被复制",
+        "importOne": "导入 1 项",
+        "importMany": "导入 {{count}} 项",
+        "askedOne": "已请求导入 1 项",
+        "askedMany": "已请求导入 {{count}} 项"
+      },
+      "importDone": {
+        "heading": "导入完成",
+        "title": "{{name}} 已从 {{app}} 迁移过来",
+        "open": "打开",
+        "stayed": "留在 {{app}} 中的内容：{{things}}。未对 {{app}} 做任何更改",
+        "unchanged": "未对 {{app}} 做任何更改",
+        "paused": "自动化已暂停，以免重复运行。请在 {{app}} 中关闭旧 bot 后再开启它们"
+      },
+      "botCreateOffer": {
+        "heading": "新 bot",
+        "takesOverOne": "将接管 1 个工作区",
+        "takesOverMany": "将接管 {{count}} 个工作区",
+        "created": "已创建",
+        "createdTookOverOne": "已创建 · 已接管 1 个工作区",
+        "createdTookOverMany": "已创建 · 已接管 {{count}} 个工作区",
+        "askedOne": "已安排接管 1 个工作区",
+        "askedMany": "已安排接管 {{count}} 个工作区",
+        "tookOverSome": "已接管 {{count}} 个工作区中的 {{taken}} 个",
+        "tookOverOne": "已接管 1 个工作区",
+        "tookOverMany": "已接管 {{count}} 个工作区",
+        "watches": "关注",
+        "reports": "汇报",
+        "takesOver": "接管",
+        "template": "模板",
+        "nameTaken": "你已经有一个名为 {{name}} 的 bot",
+        "open": "打开",
+        "edit": "编辑",
+        "rename": "重命名",
+        "create": "创建 bot",
+        "originTemplate": "基于 {{template}}，由 {{bot}} 提议",
+        "origin": "由 {{bot}} 提议",
+        "createdAskedOne": "已创建 · 已安排接管 1 个工作区",
+        "createdAskedMany": "已创建 · 已安排接管 {{count}} 个工作区",
+        "createdTookOverSome": "已创建 · 已接管 {{count}} 个工作区中的 {{taken}} 个",
+        "deleted": "创建后已删除",
+        "does": "负责",
+        "willPropose": "将提议",
+        "details": "{{name}} 的详情"
+      },
+      "dock": {
+        "label": "消息框和提示"
+      },
+      "explicitChatWslMoveToHost": "从 Windows 打开的 WSL 文件夹中无法使用聊天，请在 WSL 主机上运行此项目后在那里聊天，或在终端中打开智能体",
+      "explicitChatWslRunAsHost": "将 {{distro}} 作为主机运行",
+      "workers": {
+        "stopUnconfirmed": "Orca 无法确认工作者已停止"
+      },
+      "connectorAsker": {
+        "anApp": "某个应用",
+        "directMessage": "{{source}} 私信",
+        "earlierMessages": "话题中更早的 {{count}} 条消息",
+        "earlierMessages_other": "话题中更早的 {{count}} 条消息",
+        "groupMessage": "{{source}} 群组私信",
+        "label": "{{name}}，来自 {{place}}",
+        "noAccess": "无访问权限",
+        "open": "在 {{source}} 中打开",
+        "someone": "某人",
+        "via": "{{name}}（通过 {{bot}}）",
+        "you": "你"
       },
       "offerCard": {
         "notNow": "暂不",
@@ -22798,18 +22804,6 @@
       "keywordDefaultProject": "默认项目",
       "keywordIssuePicker": "议题选择器"
     },
-    "RepositoryBrowserProfileSection": {
-      "title": "浏览器配置文件",
-      "description": "此项目中新打开的浏览器标签页（包括智能体打开的）会使用此配置文件。让多个项目指向同一个配置文件，即可共享登录状态",
-      "keywordProfile": "浏览器配置文件",
-      "keywordCookies": "Cookie",
-      "keywordSignIn": "登录",
-      "selectLabel": "新标签页使用的配置文件",
-      "inherit": "浏览器设置（{{scope}}）",
-      "deletedOption": "已删除的配置文件",
-      "deleted": "为此项目选择的配置文件已被删除，因此新标签页会沿用浏览器设置",
-      "saveFailed": "无法保存浏览器配置文件，此项目所在主机上的 Orca 可能需要更新"
-    },
     "managed-runtime": {
       "cancelled": "已取消安装",
       "cancelling": "正在取消…",
@@ -22980,6 +22974,18 @@
         "cleaningUp": "正在整理…",
         "skipCleanup": "跳过润色"
       }
+    },
+    "RepositoryBrowserProfileSection": {
+      "title": "浏览器配置文件",
+      "description": "此项目中新打开的浏览器标签页（包括智能体打开的）会使用此配置文件。让多个项目指向同一个配置文件，即可共享登录状态",
+      "keywordProfile": "浏览器配置文件",
+      "keywordCookies": "Cookie",
+      "keywordSignIn": "登录",
+      "selectLabel": "新标签页使用的配置文件",
+      "inherit": "浏览器设置（{{scope}}）",
+      "deletedOption": "已删除的配置文件",
+      "deleted": "为此项目选择的配置文件已被删除，因此新标签页会沿用浏览器设置",
+      "saveFailed": "无法保存浏览器配置文件，此项目所在主机上的 Orca 可能需要更新"
     },
     "orchestrationCrew": {
       "mentionAll": "全部提及",
@@ -26847,6 +26853,151 @@
     "invalidBranchName": "此分支名称无效。请选择其他名称。",
     "createBranchFailed": "Orca 无法创建分支。请在终端中检查此仓库，然后重试。"
   },
+  "speechModelUpdate": {
+    "update": "更新",
+    "cancel": "取消",
+    "pill": {
+      "updateNotice": "更快的语音输入已可安装",
+      "retiredNotice": "语音输入已改用更快的语音模型",
+      "install": "安装",
+      "installTooltip": "一次性下载 · {{size}} MB",
+      "downloading": "正在设置语音输入",
+      "downloadingTooltip": "{{done}} / {{size}} MB",
+      "ready": "语音输入已就绪。按 <kbd></kbd>",
+      "readyNoShortcut": "语音输入已就绪。",
+      "failed": "下载已中断。请检查网络连接。",
+      "tryAgain": "重试",
+      "deleteOld": "删除旧模型",
+      "deleteFailed": "无法删除 {{model}}。",
+      "dismiss": "关闭",
+      "cancelDownload": "取消下载"
+    }
+  },
+  "renderer": {
+    "lib": {
+      "filePreview": {
+        "remoteFileUnsupported": "仅本地文件可在 Orca 浏览器中打开",
+        "twinFileUnsupported": "该项目存在于多个主机上，Orca 无法确定要打开哪个副本"
+      }
+    }
+  },
+  "nestedImport": {
+    "error": {
+      "notInScan": "未在嵌套仓库扫描结果中找到该仓库",
+      "notGitRepository": "不是有效的 Git 仓库",
+      "importFailed": "无法导入仓库"
+    }
+  },
+  "wslDriveProject": {
+    "label": "Git",
+    "converted": "Orca 会在 Windows 上为此项目运行 Git，终端和智能体仍在 {{distro}} 中运行",
+    "checkFailed": "Orca 无法检查此项目",
+    "convertFailed": "Orca 无法切换 Git",
+    "description": "此项目位于 Windows 驱动器上，WSL 中的 Git 在这里速度很慢，还会漏掉在 Windows 中所做的更改，请改用 Git for Windows；终端和智能体仍留在 {{distro}} 中",
+    "useWindowsGit": "使用 Git for Windows",
+    "review": "此项目在 Orca 中的一切都保持不变：其标签页、终端、聊天和工作区都维持原样，正在运行的终端也会继续运行",
+    "lineEndings": "同时为此仓库设置 core.autocrlf，使 WSL 终端中的 git 不再把每个文件都显示为已更改",
+    "cancel": "取消",
+    "confirm": "使用 Git for Windows",
+    "blocker": {
+      "notWsl": "此项目已在 Windows 上运行 Git",
+      "repair": "请先修复此项目的 WSL 运行时：其发行版缺失，或 WSL 不可用",
+      "notWindowsDrive": "此项目的某个文件夹不在 Windows 驱动器上",
+      "gitMissing": "未安装 Git for Windows，请从 git-scm.com 安装，然后重试",
+      "wslWorktrees": "这些工作区由 WSL Git 创建，Git for Windows 无法读取它们：{{paths}}。请移除它们，或让此项目继续使用 WSL Git",
+      "worktreeFolder": "此项目的新工作区被设置为创建在 WSL 内，请先在此项目的设置中选择一个位于 Windows 驱动器上的文件夹"
+    }
+  },
+  "wslDriveUnc": {
+    "label": "位置",
+    "description": "Orca 目前通过 WSL 打开此项目，请改为在 {{drivePath}} 打开：Git 将在 Windows 上运行，在这里会快得多，终端和智能体仍留在 {{distro}} 中",
+    "convert": "在 {{drivePath}} 打开",
+    "review": "Orca 会暂停此项目的终端并重新启动，然后在 {{drivePath}} 重新打开此项目，标签页、终端及其历史记录、聊天和设置都会随之迁移，已暂停的终端会从中断处继续运行",
+    "cancel": "取消",
+    "confirm": "重新启动并转换",
+    "failed": "Orca 无法转换此项目",
+    "restarting": "正在重新启动 Orca 以转换此项目…",
+    "terminalsBusy": "此项目中的部分终端正忙，请等待其完成或将其关闭，然后重试",
+    "pauseFailed": "Orca 无法暂停此项目的终端，因此未做任何更改",
+    "blocker": {
+      "pending": "Orca 已在转换一个项目，该转换将在 Orca 重新启动时完成",
+      "state": "Orca 发现此项目有无法安全转换的已保存状态，因此未做任何更改",
+      "duplicate": "{{drivePath}} 已是 Orca 中的项目",
+      "mixed": "此项目的部分文件夹位于 WSL 内，而不在 Windows 驱动器上",
+      "overlap": "此项目与一个 Orca 无法转换的项目共用文件夹，转换会导致它们被拆分",
+      "notDriveMount": "在此发行版中，该文件夹并不是 {{drivePath}}：它不是从该 Windows 驱动器挂载的",
+      "notConvertible": "此项目不在此计算机的 Windows 驱动器上",
+      "differingState": "Orca 在此文件夹的 WSL 路径和 {{drivePath}} 下分别保存了不同的详细信息，因此未做任何更改",
+      "projectSplit": "此项目还包含一个不参与转换的仓库，因此未做任何更改"
+    }
+  },
+  "plugins": {
+    "frameSaveAs": {
+      "title": "保存文件",
+      "allFiles": "所有文件"
+    },
+    "frameOpenExternal": {
+      "open": "打开",
+      "cancel": "取消",
+      "message": "{{plugin}} 想要打开 {{host}}",
+      "alwaysAllow": "始终允许此插件打开 {{host}}"
+    },
+    "actionConfirmation": {
+      "cancel": "取消",
+      "deleteAutomation": "{{plugin}} 想要删除自动化“{{automation}}”",
+      "deleteAutomationDetail": "此自动化并非由该插件创建，删除后它将停止按计划运行，并从“自动化”中移除",
+      "delete": "删除",
+      "changeAutomation": "{{plugin}} 想要更改自动化“{{automation}}”",
+      "changeAutomationDetail": "此自动化并非由该插件创建，将会更改：{{fields}}",
+      "change": "更改",
+      "changeElevatedAutomationDetail": "此自动化会使用你选择的额外设置（参数、权限模式或预检查命令）运行其智能体，将会更改：{{fields}}",
+      "newPrompt": "新提示词：“{{prompt}}”",
+      "unknownProject": "未知项目",
+      "automationNewWorkspaces": "自动化 {{id}}：按 {{schedule}} 运行，每次都在 {{project}} 中新建工作区",
+      "automationInWorkspace": "自动化 {{id}}：在 {{project}} / {{workspace}} 中按 {{schedule}} 运行"
+    },
+    "displayText": {
+      "tb0b38488": "适用于 Orca 的 GitHub 主题",
+      "tb8aa98fc": "适用于 Orca 的 VS Code 默认主题",
+      "tfc425a57": "Multipass 虚拟机配方",
+      "t0f9f5503": "GitHub 官方的 VS Code 主题：Light Default、Dark Default、Dark Dimmed 以及高对比度版本",
+      "t0b4f7e19": "VS Code 默认配色主题的非官方移植版：Dark Modern、Light Modern、Dark+ 和 Light+",
+      "tc86eed7d": "一套经过审核的入门生命周期，适用于一次性的 Multipass 工作区"
+    }
+  },
+  "checks": {
+    "gitlabAllowedFailure": "允许失败",
+    "rerunUnsuccessful": "重新运行未成功的检查"
+  },
+  "usage": {
+    "failure": {
+      "unavailable": "用量数据不可用，请点击“刷新”以重新连接",
+      "setting": "无法确认跟踪设置的更改，请再更改一次",
+      "refresh": "上次刷新未能完成，请再次点击“刷新”",
+      "read": "无法加载用量数据，请再次点击“刷新”",
+      "retry": "刷新"
+    }
+  },
+  "crashReport": {
+    "freeze": {
+      "attachmentsOmitted": "已保存的卡死报告和诊断日志未附加：{{value0}}",
+      "description": "发送已保存的卡死报告，帮助我们了解发生了什么",
+      "notSent": "卡死报告未发送",
+      "notes": "可选：Orca 卡死前你在做什么？",
+      "sent": "卡死报告已发送",
+      "sentWithoutAttachments": "详情已发送，但未附带已保存的卡死报告或诊断日志",
+      "summary": "Orca 停止响应",
+      "title": "报告卡死",
+      "uncheckAttachments": "取消勾选“包含已保存的卡顿报告和近期日志（已脱敏）”并重试，或复制详细信息",
+      "includeRedacted": "包含已保存的卡顿报告和近期日志（已脱敏）"
+    },
+    "copyDetails": "复制详情",
+    "sendReport": "发送报告",
+    "dontSend": "不发送",
+    "includeRecentLogsRedacted": "包含近期日志（已脱敏）",
+    "details": "详情",
+    "sending": "正在发送…"
+  },
   "bots": {
     "deepLink": {
       "missing": "该对话未在此电脑上打开",
@@ -29914,151 +30065,6 @@
         "couldNotSignIn": "无法登录。请重试。"
       }
     }
-  },
-  "speechModelUpdate": {
-    "update": "更新",
-    "cancel": "取消",
-    "pill": {
-      "updateNotice": "更快的语音输入已可安装",
-      "retiredNotice": "语音输入已改用更快的语音模型",
-      "install": "安装",
-      "installTooltip": "一次性下载 · {{size}} MB",
-      "downloading": "正在设置语音输入",
-      "downloadingTooltip": "{{done}} / {{size}} MB",
-      "ready": "语音输入已就绪。按 <kbd></kbd>",
-      "readyNoShortcut": "语音输入已就绪。",
-      "failed": "下载已中断。请检查网络连接。",
-      "tryAgain": "重试",
-      "deleteOld": "删除旧模型",
-      "deleteFailed": "无法删除 {{model}}。",
-      "dismiss": "关闭",
-      "cancelDownload": "取消下载"
-    }
-  },
-  "renderer": {
-    "lib": {
-      "filePreview": {
-        "remoteFileUnsupported": "仅本地文件可在 Orca 浏览器中打开",
-        "twinFileUnsupported": "该项目存在于多个主机上，Orca 无法确定要打开哪个副本"
-      }
-    }
-  },
-  "nestedImport": {
-    "error": {
-      "notInScan": "未在嵌套仓库扫描结果中找到该仓库",
-      "notGitRepository": "不是有效的 Git 仓库",
-      "importFailed": "无法导入仓库"
-    }
-  },
-  "wslDriveProject": {
-    "label": "Git",
-    "converted": "Orca 会在 Windows 上为此项目运行 Git，终端和智能体仍在 {{distro}} 中运行",
-    "checkFailed": "Orca 无法检查此项目",
-    "convertFailed": "Orca 无法切换 Git",
-    "description": "此项目位于 Windows 驱动器上，WSL 中的 Git 在这里速度很慢，还会漏掉在 Windows 中所做的更改，请改用 Git for Windows；终端和智能体仍留在 {{distro}} 中",
-    "useWindowsGit": "使用 Git for Windows",
-    "review": "此项目在 Orca 中的一切都保持不变：其标签页、终端、聊天和工作区都维持原样，正在运行的终端也会继续运行",
-    "lineEndings": "同时为此仓库设置 core.autocrlf，使 WSL 终端中的 git 不再把每个文件都显示为已更改",
-    "cancel": "取消",
-    "confirm": "使用 Git for Windows",
-    "blocker": {
-      "notWsl": "此项目已在 Windows 上运行 Git",
-      "repair": "请先修复此项目的 WSL 运行时：其发行版缺失，或 WSL 不可用",
-      "notWindowsDrive": "此项目的某个文件夹不在 Windows 驱动器上",
-      "gitMissing": "未安装 Git for Windows，请从 git-scm.com 安装，然后重试",
-      "wslWorktrees": "这些工作区由 WSL Git 创建，Git for Windows 无法读取它们：{{paths}}。请移除它们，或让此项目继续使用 WSL Git",
-      "worktreeFolder": "此项目的新工作区被设置为创建在 WSL 内，请先在此项目的设置中选择一个位于 Windows 驱动器上的文件夹"
-    }
-  },
-  "wslDriveUnc": {
-    "label": "位置",
-    "description": "Orca 目前通过 WSL 打开此项目，请改为在 {{drivePath}} 打开：Git 将在 Windows 上运行，在这里会快得多，终端和智能体仍留在 {{distro}} 中",
-    "convert": "在 {{drivePath}} 打开",
-    "review": "Orca 会暂停此项目的终端并重新启动，然后在 {{drivePath}} 重新打开此项目，标签页、终端及其历史记录、聊天和设置都会随之迁移，已暂停的终端会从中断处继续运行",
-    "cancel": "取消",
-    "confirm": "重新启动并转换",
-    "failed": "Orca 无法转换此项目",
-    "restarting": "正在重新启动 Orca 以转换此项目…",
-    "terminalsBusy": "此项目中的部分终端正忙，请等待其完成或将其关闭，然后重试",
-    "pauseFailed": "Orca 无法暂停此项目的终端，因此未做任何更改",
-    "blocker": {
-      "pending": "Orca 已在转换一个项目，该转换将在 Orca 重新启动时完成",
-      "state": "Orca 发现此项目有无法安全转换的已保存状态，因此未做任何更改",
-      "duplicate": "{{drivePath}} 已是 Orca 中的项目",
-      "mixed": "此项目的部分文件夹位于 WSL 内，而不在 Windows 驱动器上",
-      "overlap": "此项目与一个 Orca 无法转换的项目共用文件夹，转换会导致它们被拆分",
-      "notDriveMount": "在此发行版中，该文件夹并不是 {{drivePath}}：它不是从该 Windows 驱动器挂载的",
-      "notConvertible": "此项目不在此计算机的 Windows 驱动器上",
-      "differingState": "Orca 在此文件夹的 WSL 路径和 {{drivePath}} 下分别保存了不同的详细信息，因此未做任何更改",
-      "projectSplit": "此项目还包含一个不参与转换的仓库，因此未做任何更改"
-    }
-  },
-  "plugins": {
-    "frameSaveAs": {
-      "title": "保存文件",
-      "allFiles": "所有文件"
-    },
-    "frameOpenExternal": {
-      "open": "打开",
-      "cancel": "取消",
-      "message": "{{plugin}} 想要打开 {{host}}",
-      "alwaysAllow": "始终允许此插件打开 {{host}}"
-    },
-    "actionConfirmation": {
-      "cancel": "取消",
-      "deleteAutomation": "{{plugin}} 想要删除自动化“{{automation}}”",
-      "deleteAutomationDetail": "此自动化并非由该插件创建，删除后它将停止按计划运行，并从“自动化”中移除",
-      "delete": "删除",
-      "changeAutomation": "{{plugin}} 想要更改自动化“{{automation}}”",
-      "changeAutomationDetail": "此自动化并非由该插件创建，将会更改：{{fields}}",
-      "change": "更改",
-      "changeElevatedAutomationDetail": "此自动化会使用你选择的额外设置（参数、权限模式或预检查命令）运行其智能体，将会更改：{{fields}}",
-      "newPrompt": "新提示词：“{{prompt}}”",
-      "unknownProject": "未知项目",
-      "automationNewWorkspaces": "自动化 {{id}}：按 {{schedule}} 运行，每次都在 {{project}} 中新建工作区",
-      "automationInWorkspace": "自动化 {{id}}：在 {{project}} / {{workspace}} 中按 {{schedule}} 运行"
-    },
-    "displayText": {
-      "tb0b38488": "适用于 Orca 的 GitHub 主题",
-      "tb8aa98fc": "适用于 Orca 的 VS Code 默认主题",
-      "tfc425a57": "Multipass 虚拟机配方",
-      "t0f9f5503": "GitHub 官方的 VS Code 主题：Light Default、Dark Default、Dark Dimmed 以及高对比度版本",
-      "t0b4f7e19": "VS Code 默认配色主题的非官方移植版：Dark Modern、Light Modern、Dark+ 和 Light+",
-      "tc86eed7d": "一套经过审核的入门生命周期，适用于一次性的 Multipass 工作区"
-    }
-  },
-  "checks": {
-    "gitlabAllowedFailure": "允许失败",
-    "rerunUnsuccessful": "重新运行未成功的检查"
-  },
-  "usage": {
-    "failure": {
-      "unavailable": "用量数据不可用，请点击“刷新”以重新连接",
-      "setting": "无法确认跟踪设置的更改，请再更改一次",
-      "refresh": "上次刷新未能完成，请再次点击“刷新”",
-      "read": "无法加载用量数据，请再次点击“刷新”",
-      "retry": "刷新"
-    }
-  },
-  "crashReport": {
-    "freeze": {
-      "attachmentsOmitted": "已保存的卡死报告和诊断日志未附加：{{value0}}",
-      "description": "发送已保存的卡死报告，帮助我们了解发生了什么",
-      "notSent": "卡死报告未发送",
-      "notes": "可选：Orca 卡死前你在做什么？",
-      "sent": "卡死报告已发送",
-      "sentWithoutAttachments": "详情已发送，但未附带已保存的卡死报告或诊断日志",
-      "summary": "Orca 停止响应",
-      "title": "报告卡死",
-      "uncheckAttachments": "取消勾选“包含已保存的卡顿报告和近期日志（已脱敏）”并重试，或复制详细信息",
-      "includeRedacted": "包含已保存的卡顿报告和近期日志（已脱敏）"
-    },
-    "copyDetails": "复制详情",
-    "sendReport": "发送报告",
-    "dontSend": "不发送",
-    "includeRecentLogsRedacted": "包含近期日志（已脱敏）",
-    "details": "详情",
-    "sending": "正在发送…"
   },
   "tabBar": {
     "createRow": {

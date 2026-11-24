@@ -29,6 +29,7 @@ import { listedModelDescribing } from '../model-catalog/structured-agent-session
 import { structuredAgentSessionPermissionDescriptor } from '../permissions/structured-agent-session-permission-option'
 import { structuredAgentSessionInteractionDescriptor } from '../permissions/agent-session-interaction-mode'
 import type { StructuredAgentSessionOptionState } from '../structured-agent-session-options'
+import { acceptsCustomContextWindow, withContextWindow } from '../agent-session-context-window'
 
 /** Unpickable placeholder cannot become a launch selection before a real model answer. */
 const PROVIDER_DEFAULT_MODEL_PLACEHOLDER: SessionOptionDescriptor = {
@@ -282,7 +283,7 @@ export function structuredAgentSessionOptionSnapshot(
         : option
   )
   const interaction = structuredAgentSessionInteractionDescriptor(state)
-  return [...options, ...(permission ? [permission] : []), ...(interaction ? [interaction] : [])]
+  return withContextWindow(state, options, permission, interaction)
 }
 
 /** Presentation only until a launch or fence can carry picks. */
@@ -308,14 +309,15 @@ export function canSetStructuredAgentSessionOption(
   if (!interactionReady || pending || (id === 'fastMode' && state.fastModeRestricted)) {
     return false
   }
-  if (id === 'permissionMode' || id === 'interactionMode') {
+  if (id === 'permissionMode' || id === 'interactionMode' || id === 'contextWindow') {
     const descriptor = snapshot.find((entry) => entry.id === id)
     return (
       descriptor?.settable === true &&
       descriptor.kind.type === 'select' &&
       (value === 'own'
         ? state.permissionOwnSupported === true
-        : descriptor.kind.choices.some((choice) => choice.value === value))
+        : descriptor.kind.choices.some((choice) => choice.value === value) ||
+          acceptsCustomContextWindow(id, descriptor.kind, value))
     )
   }
   return (

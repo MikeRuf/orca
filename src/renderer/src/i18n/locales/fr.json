@@ -19230,9 +19230,6 @@
         "fileActions": "Actions sur le fichier",
         "linkActions": "Actions sur le lien"
       },
-      "imageGallery": {
-        "loadFailed": "Impossible de charger {{name}}"
-      },
       "install": {
         "checking": "Vérification que {{agent}} est prêt sur cet hôte…",
         "cliInstall": "Installer",
@@ -19473,7 +19470,6 @@
         "noCommands": "Aucune commande correspondante",
         "commands": "Commandes",
         "skills": "Skills",
-        "checkingSkills": "Recherche de nouvelles compétences…",
         "loadingSkills": "Chargement des skills...",
         "skillsLoaded": "Skills chargées",
         "clearDescription": "Effacer le contexte de la conversation",
@@ -19510,6 +19506,11 @@
         "pasteUnavailable": "Impossible de coller — ce chat n'accepte pas de saisie pour le moment.",
         "model": "Modèle",
         "effort": "Effort",
+        "contextWindow": "Fenêtre de contexte",
+        "customValue": "Personnalisé…",
+        "customValueLabel": "Taille en milliers de jetons",
+        "customValueApply": "Appliquer",
+        "customValueRange": "Utilisez {{value0}} à {{value1}}",
         "fastMode": "Mode rapide",
         "speed": "Vitesse",
         "thinking": "Réflexion",
@@ -19524,8 +19525,6 @@
         "availableAfterSessionStarts": "Disponible après le démarrage de la session.",
         "optionUpdateFailed": "Impossible de mettre à jour l'option",
         "optionValue": {
-          "none": "Aucun",
-          "off": "Désactivé",
           "fast": "Rapide",
           "minimal": "Minimal",
           "low": "Basse",
@@ -19534,7 +19533,10 @@
           "xhigh": "Extra élevé",
           "max": "Max",
           "ultra": "Ultra",
-          "standard": "Standard"
+          "contextWindowDefault": "Par défaut",
+          "standard": "Standard",
+          "none": "Aucun",
+          "off": "Désactivé"
         },
         "imageSaving": "Enregistrement de l'image collée…",
         "pendingAttachmentLimit": "Trop de pièces jointes sont en attente. Terminez de composer avant d’en attacher davantage.",
@@ -19558,10 +19560,6 @@
         "permissionAuto": "Approuver pour moi",
         "permissionAutoDescription": "Examine les demandes d’approbation pour vous",
         "permissionFullAccess": "Accès complet",
-        "permissionAgentSettings": "Paramètres de {{agent}}",
-        "permissionAgentSettingsUsedHint": "Utilise vos paramètres d’autorisation de {{agent}}.",
-        "permissionAgentSettingsUnnamedHint": "Utilise vos paramètres d’autorisation de {{agent}}. Orca ne peut pas afficher ce mode.",
-        "permissionFromAgentSettings": "{{mode}}, d’après les paramètres de {{agent}}",
         "permissionFullAccessDescription": "Ne demande jamais avant les modifications ou les commandes",
         "permissionFullAccessCodexDescription": "Ne demande jamais ; peut modifier n’importe quel fichier et utiliser le réseau",
         "permissionFullAccessSharedDescription": "Ne demande jamais avant les modifications ou les commandes",
@@ -19577,6 +19575,11 @@
         "sessionAttachmentsStarting": "Le chat de {{agent}} est encore en cours d’ouverture. Attendez qu’il soit ouvert, puis joignez à nouveau les fichiers.",
         "moreControls": "Plus de commandes de conversation",
         "exitPlanMode": "Quitter le mode plan",
+        "checkingSkills": "Recherche de nouvelles compétences…",
+        "permissionAgentSettings": "Paramètres de {{agent}}",
+        "permissionAgentSettingsUsedHint": "Utilise vos paramètres d’autorisation de {{agent}}.",
+        "permissionAgentSettingsUnnamedHint": "Utilise vos paramètres d’autorisation de {{agent}}. Orca ne peut pas afficher ce mode.",
+        "permissionFromAgentSettings": "{{mode}}, d’après les paramètres de {{agent}}",
         "permissionAppliesNextMessage": "{{saved}} s’applique à votre prochain message ; réglage utilisé actuellement : {{active}}",
         "bots": "Bots"
       },
@@ -19713,8 +19716,6 @@
         "toggleDetails": "Basculer les détails du tour"
       },
       "jumpToLatest": "Aller au dernier message",
-      "newRowsAnnouncement": "De nouveaux messages sont arrivés en votre absence",
-      "newRowsMarker": "Nouveau",
       "find": {
         "label": "Rechercher dans le chat",
         "noResults": "Aucun résultat",
@@ -19947,10 +19948,6 @@
       "railLabel": "Vos messages",
       "railImageMessage": "Image jointe",
       "railEmptyMessage": "Message",
-      "railFilterPlaceholder": "Filtrer vos messages",
-      "railNoMatches": "Aucun message ne correspond",
-      "railTickLabel": "Message {{index}} sur {{count}} : {{text}}",
-      "railMatchCount": "{{count}} sur {{total}}",
       "ask": {
         "awaiting": "En attente de la saisie de l'utilisateur :",
         "awaitingUnnamed": "En attente de la saisie de l'utilisateur",
@@ -20148,9 +20145,9 @@
         "description": "Ouvrir l'historique des sessions d'agent",
         "argumentHint": "[recherche]",
         "workspaceUnavailable": "L'espace de travail de ce chat n'est pas encore chargé. Réessayez /resume dans un instant.",
-        "replace": "Remplacer",
+        "replaceTitle": "Remplacer ce chat ?",
         "replaceDescription": "Reprendre « {{title}} » ici arrêtera ce que {{agent}} fait dans ce chat.",
-        "replaceTitle": "Remplacer ce chat ?"
+        "replace": "Remplacer"
       },
       "claudeSignIn": {
         "signingIn": "Connexion…"
@@ -20172,14 +20169,6 @@
         "pauseUnconfirmed": "Codex s’est arrêté, mais la mise en pause de son objectif n’a pas été confirmée. Vérifiez l’objectif avant de continuer.",
         "stopUnconfirmed": "Codex n’a pas pu confirmer l’arrêt. Vérifiez le chat avant de continuer.",
         "noGoal": "Codex n’a aucun objectif à modifier dans ce chat. Définissez-en un avec /goal suivi de l’objectif."
-      },
-      "automationResult": {
-        "openRun": "Ouvrir l’exécution",
-        "notRead": "{{name}} ne l’a pas encore lu. Il sera envoyé avec votre prochain message.",
-        "read": "{{name}} l’a lu avec votre message suivant.",
-        "sentWithOne": "Envoyé avec 1 résultat d’automatisation",
-        "sentWithMany": "Envoyé avec {{count}} résultats d’automatisation",
-        "cleared": "Arrivé avant que le chat ne soit effacé. Il ne sera pas transmis à {{name}}."
       },
       "slashCommandDescriptions": {
         "clearConversation": "Effacer la conversation",
@@ -20357,6 +20346,38 @@
         "sourceTooltip": "Branche de {{name}}",
         "unknownSourceTooltip": "Branche d’une autre conversation"
       },
+      "cardKindHidden": {
+        "description": "Vous pouvez modifier cela à tout moment dans",
+        "settingsLink": "Paramètres > Interface de chat > Activité des tours",
+        "failed": "Impossible d’enregistrer. Vous pouvez désactiver cela dans Paramètres > Interface de chat > Activité des tours."
+      },
+      "openedPullRequests": {
+        "one": "Pull request créée : {{name}}",
+        "hide": "Ne pas afficher les pull requests créées",
+        "hidden": "Orca n’affichera plus les pull requests créées",
+        "many_one": "{{count}} pull request créée",
+        "many_other": "{{count}} pull requests créées",
+        "many_many": "{{count}} pull requests créées"
+      },
+      "splitRight": "Diviser à droite",
+      "splitDown": "Diviser vers le bas",
+      "newRowsAnnouncement": "De nouveaux messages sont arrivés en votre absence",
+      "newRowsMarker": "Nouveau",
+      "imageGallery": {
+        "loadFailed": "Impossible de charger {{name}}"
+      },
+      "railFilterPlaceholder": "Filtrer vos messages",
+      "railNoMatches": "Aucun message ne correspond",
+      "railTickLabel": "Message {{index}} sur {{count}} : {{text}}",
+      "railMatchCount": "{{count}} sur {{total}}",
+      "automationResult": {
+        "openRun": "Ouvrir l’exécution",
+        "notRead": "{{name}} ne l’a pas encore lu. Il sera envoyé avec votre prochain message.",
+        "read": "{{name}} l’a lu avec votre message suivant.",
+        "sentWithOne": "Envoyé avec 1 résultat d’automatisation",
+        "sentWithMany": "Envoyé avec {{count}} résultats d’automatisation",
+        "cleared": "Arrivé avant que le chat ne soit effacé. Il ne sera pas transmis à {{name}}."
+      },
       "importPlan": {
         "comes": "À importer",
         "changed": "À importer avec des modifications",
@@ -20378,21 +20399,6 @@
         "unchanged": "Rien n’a été modifié dans {{app}}.",
         "paused": "Les automatisations sont en pause pour que rien ne s’exécute deux fois. Activez-les une fois l’ancien bot désactivé dans {{app}}."
       },
-      "cardKindHidden": {
-        "description": "Vous pouvez modifier cela à tout moment dans",
-        "settingsLink": "Paramètres > Interface de chat > Activité des tours",
-        "failed": "Impossible d’enregistrer. Vous pouvez désactiver cela dans Paramètres > Interface de chat > Activité des tours."
-      },
-      "openedPullRequests": {
-        "one": "Pull request créée : {{name}}",
-        "hide": "Ne pas afficher les pull requests créées",
-        "hidden": "Orca n’affichera plus les pull requests créées",
-        "many_one": "{{count}} pull request créée",
-        "many_other": "{{count}} pull requests créées",
-        "many_many": "{{count}} pull requests créées"
-      },
-      "splitRight": "Diviser à droite",
-      "splitDown": "Diviser vers le bas",
       "automationRun": {
         "waitOver": "Attente terminée",
         "scheduled": "Planifiée",
@@ -24848,6 +24854,41 @@
     "invalidBranchName": "Ce nom de branche n’est pas valide. Choisissez un autre nom.",
     "createBranchFailed": "Orca n’a pas pu créer la branche. Vérifiez ce dépôt dans un terminal, puis réessayez."
   },
+  "checks": {
+    "gitlabAllowedFailure": "Échec autorisé"
+  },
+  "speechModelUpdate": {
+    "update": "Mettre à jour",
+    "cancel": "Annuler",
+    "pill": {
+      "updateNotice": "Une dictée plus rapide est prête à être installée",
+      "retiredNotice": "La dictée utilise désormais un modèle vocal plus rapide",
+      "install": "Installer",
+      "installTooltip": "Téléchargement unique · {{size}} Mo",
+      "downloading": "Configuration de la dictée",
+      "downloadingTooltip": "{{done}} sur {{size}} Mo",
+      "ready": "La dictée est prête. Appuyez sur <kbd></kbd>",
+      "readyNoShortcut": "La dictée est prête.",
+      "failed": "Téléchargement interrompu. Vérifiez votre connexion.",
+      "tryAgain": "Réessayer",
+      "deleteOld": "Supprimer l'ancien modèle",
+      "deleteFailed": "Impossible de supprimer {{model}}.",
+      "dismiss": "Ignorer",
+      "cancelDownload": "Annuler le téléchargement"
+    }
+  },
+  "crashReport": {
+    "freeze": {
+      "includeRedacted": "Inclure le rapport de blocage enregistré et les journaux récents (expurgés)",
+      "uncheckAttachments": "Uncheck \"Include the saved freeze report and recent logs (redacted)\" and try again, or copy the details."
+    },
+    "includeRecentLogsRedacted": "Inclure les journaux récents (expurgés)",
+    "details": "Détails",
+    "copyDetails": "Copier les détails",
+    "dontSend": "Ne pas envoyer",
+    "sending": "Envoi…",
+    "sendReport": "Envoyer le rapport"
+  },
   "bots": {
     "deepLink": {
       "missing": "Cette conversation n'est pas ouverte sur cet ordinateur."
@@ -25446,29 +25487,6 @@
       "automationInWorkspace": "Automatisation {{id}} : dans {{project}} / {{workspace}} ; planification : {{schedule}}."
     }
   },
-  "checks": {
-    "gitlabAllowedFailure": "Échec autorisé"
-  },
-  "speechModelUpdate": {
-    "update": "Mettre à jour",
-    "cancel": "Annuler",
-    "pill": {
-      "updateNotice": "Une dictée plus rapide est prête à être installée",
-      "retiredNotice": "La dictée utilise désormais un modèle vocal plus rapide",
-      "install": "Installer",
-      "installTooltip": "Téléchargement unique · {{size}} Mo",
-      "downloading": "Configuration de la dictée",
-      "downloadingTooltip": "{{done}} sur {{size}} Mo",
-      "ready": "La dictée est prête. Appuyez sur <kbd></kbd>",
-      "readyNoShortcut": "La dictée est prête.",
-      "failed": "Téléchargement interrompu. Vérifiez votre connexion.",
-      "tryAgain": "Réessayer",
-      "deleteOld": "Supprimer l'ancien modèle",
-      "deleteFailed": "Impossible de supprimer {{model}}.",
-      "dismiss": "Ignorer",
-      "cancelDownload": "Annuler le téléchargement"
-    }
-  },
   "usage": {
     "failure": {
       "unavailable": "Les données d’utilisation sont indisponibles. Essayez Actualiser pour vous reconnecter.",
@@ -25477,18 +25495,6 @@
       "read": "Les données d’utilisation n’ont pas pu être chargées. Réessayez avec Actualiser.",
       "retry": "Actualiser"
     }
-  },
-  "crashReport": {
-    "freeze": {
-      "includeRedacted": "Inclure le rapport de blocage enregistré et les journaux récents (expurgés)",
-      "uncheckAttachments": "Uncheck \"Include the saved freeze report and recent logs (redacted)\" and try again, or copy the details."
-    },
-    "includeRecentLogsRedacted": "Inclure les journaux récents (expurgés)",
-    "details": "Détails",
-    "copyDetails": "Copier les détails",
-    "dontSend": "Ne pas envoyer",
-    "sending": "Envoi…",
-    "sendReport": "Envoyer le rapport"
   },
   "agentCliUpdate": {
     "thisComputer": "Cet ordinateur"

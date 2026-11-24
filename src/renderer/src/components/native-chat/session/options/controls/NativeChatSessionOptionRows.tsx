@@ -22,6 +22,7 @@ import {
 } from '../../../../../../../shared/native-chat/input/session-options/native-chat-session-option-labels'
 import { sayNativeChatSessionOptionTranslated as say } from './native-chat-session-option-labels-text'
 import { NativeChatSessionOptionWriteGroup } from './NativeChatSessionOptionWriteGroup'
+import { NativeChatCustomOptionValue } from './NativeChatCustomOptionValue'
 import { NativeChatSessionSpeedButton } from './NativeChatSessionSpeedButton'
 import { speedButtonTiers } from '../../../../../../../shared/native-chat/input/session-options/native-chat-session-speed-tiers'
 import { orderEffortLevels } from '../../../../../../../shared/agent-session/options/view/effort-level-order'
@@ -248,6 +249,9 @@ function OptionRow(props: {
           <LevelSegment key={choice.value} optionId={descriptor.id} choice={choice} />
         ))}
       </ToggleGroup>
+      {descriptor.kind.custom ? (
+        <NativeChatCustomOptionValue range={descriptor.kind.custom} disabled={off} onSet={onSet} />
+      ) : null}
     </div>
   )
 }

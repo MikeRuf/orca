@@ -18935,9 +18935,6 @@
         "fileActions": "Acciones de archivo",
         "linkActions": "Acciones de enlace"
       },
-      "imageGallery": {
-        "loadFailed": "No se pudo cargar {{name}}"
-      },
       "install": {
         "checking": "Comprobando si {{agent}} está listo en este host…",
         "cliInstall": "Instalar",
@@ -19202,6 +19199,11 @@
         "pasteUnavailable": "No se puede pegar — este chat no acepta entradas en este momento.",
         "model": "Modelo",
         "effort": "Esfuerzo",
+        "contextWindow": "Ventana de contexto",
+        "customValue": "Personalizado…",
+        "customValueLabel": "Tamaño en miles de tokens",
+        "customValueApply": "Aplicar",
+        "customValueRange": "Usa de {{value0}} a {{value1}}",
         "fastMode": "Modo rápido",
         "speed": "Velocidad",
         "thinking": "Razonamiento",
@@ -19216,8 +19218,6 @@
         "availableAfterSessionStarts": "Disponible después de iniciar la sesión.",
         "optionUpdateFailed": "No se pudo actualizar la opción",
         "optionValue": {
-          "none": "Ninguno",
-          "off": "Desactivado",
           "fast": "Rápido",
           "minimal": "Mínimo",
           "low": "Bajo",
@@ -19226,12 +19226,14 @@
           "xhigh": "Muy alto",
           "max": "Máximo",
           "ultra": "Supremo",
-          "standard": "Estándar"
+          "contextWindowDefault": "Predeterminado",
+          "standard": "Estándar",
+          "none": "Ninguno",
+          "off": "Desactivado"
         },
         "noCommandsOrSkills": "No hay comandos o habilidades coincidentes",
         "commands": "Comandos",
         "skills": "Habilidades",
-        "checkingSkills": "Buscando habilidades nuevas…",
         "loadingSkills": "Cargando habilidades…",
         "clearDescription": "Borrar el contexto de la conversación",
         "skillsUnavailableHost": "Las habilidades no se pueden listar en los chats SSH",
@@ -19263,10 +19265,6 @@
         "permissionAuto": "Aprobar por mí",
         "permissionAutoDescription": "Revisa las solicitudes de aprobación por ti",
         "permissionFullAccess": "Acceso total",
-        "permissionAgentSettings": "Configuración de {{agent}}",
-        "permissionAgentSettingsUsedHint": "Usa tu configuración de permisos de {{agent}}.",
-        "permissionAgentSettingsUnnamedHint": "Usa tu configuración de permisos de {{agent}}. Orca no puede mostrar este modo.",
-        "permissionFromAgentSettings": "{{mode}}, según la configuración de {{agent}}",
         "permissionFullAccessDescription": "Nunca pregunta antes de ediciones o comandos",
         "permissionFullAccessCodexDescription": "Nunca pregunta; puede editar cualquier archivo y usar la red",
         "permissionFullAccessSharedDescription": "Nunca pregunta antes de ediciones o comandos",
@@ -19282,6 +19280,11 @@
         "sessionAttachmentsStarting": "El chat de {{agent}} aún se está abriendo. Espera a que se abra y vuelve a adjuntar los archivos.",
         "moreControls": "Más controles de chat",
         "exitPlanMode": "Salir del modo de planificación",
+        "checkingSkills": "Buscando habilidades nuevas…",
+        "permissionAgentSettings": "Configuración de {{agent}}",
+        "permissionAgentSettingsUsedHint": "Usa tu configuración de permisos de {{agent}}.",
+        "permissionAgentSettingsUnnamedHint": "Usa tu configuración de permisos de {{agent}}. Orca no puede mostrar este modo.",
+        "permissionFromAgentSettings": "{{mode}}, según la configuración de {{agent}}",
         "permissionAppliesNextMessage": "{{saved}} se aplica a tu próximo mensaje; actualmente se usa {{active}}",
         "bots": "Bots"
       },
@@ -19418,8 +19421,6 @@
         "toggleDetails": "Alternar detalles del turno"
       },
       "jumpToLatest": "Saltar a lo último",
-      "newRowsAnnouncement": "Llegaron mensajes nuevos mientras no estabas",
-      "newRowsMarker": "Nuevo",
       "find": {
         "label": "Buscar en el chat",
         "noResults": "Sin resultados",
@@ -19749,10 +19750,6 @@
       "railLabel": "Tus mensajes",
       "railImageMessage": "Imagen adjunta",
       "railEmptyMessage": "Mensaje",
-      "railFilterPlaceholder": "Filtrar tus mensajes",
-      "railNoMatches": "Ningún mensaje coincide",
-      "railTickLabel": "Mensaje {{index}} de {{count}}: {{text}}",
-      "railMatchCount": "{{count}} de {{total}}",
       "ask": {
         "awaiting": "Esperando entrada del usuario:",
         "awaitingUnnamed": "Esperando entrada del usuario",
@@ -19877,14 +19874,6 @@
         "pauseUnconfirmed": "Codex dejó de ejecutarse, pero no se confirmó la pausa del objetivo. Revisa el objetivo antes de continuar.",
         "stopUnconfirmed": "Codex no pudo confirmar la detención. Revisa el chat antes de continuar.",
         "noGoal": "Codex no tiene ningún objetivo que cambiar en este chat. Establece uno con /goal seguido del objetivo."
-      },
-      "automationResult": {
-        "openRun": "Abrir ejecución",
-        "notRead": "{{name}} aún no ha leído esto. Se enviará con tu próximo mensaje.",
-        "read": "{{name}} leyó esto con tu siguiente mensaje.",
-        "sentWithOne": "Enviado con 1 resultado de automatización",
-        "sentWithMany": "Enviado con {{count}} resultados de automatización",
-        "cleared": "Llegó antes de que se borrara el chat. No se enviará a {{name}}."
       },
       "slashCommandDescriptions": {
         "clearConversation": "Borrar la conversación",
@@ -20062,6 +20051,38 @@
         "sourceTooltip": "Rama de {{name}}",
         "unknownSourceTooltip": "Rama de otro chat"
       },
+      "cardKindHidden": {
+        "description": "Puedes cambiar esto en cualquier momento en",
+        "settingsLink": "Ajustes > Interfaz de chat > Actividad de turnos",
+        "failed": "No se pudo guardar. Puedes desactivarlo en Ajustes > Interfaz de chat > Actividad de turnos."
+      },
+      "openedPullRequests": {
+        "one": "Solicitud de extracción creada: {{name}}",
+        "hide": "No mostrar solicitudes de extracción creadas",
+        "hidden": "Orca ya no mostrará las solicitudes de extracción creadas",
+        "many_one": "{{count}} solicitud de extracción creada",
+        "many_other": "{{count}} solicitudes de extracción creadas",
+        "many_many": "{{count}} solicitudes de extracción creadas"
+      },
+      "splitRight": "Dividir a la derecha",
+      "splitDown": "Dividir hacia abajo",
+      "newRowsAnnouncement": "Llegaron mensajes nuevos mientras no estabas",
+      "newRowsMarker": "Nuevo",
+      "imageGallery": {
+        "loadFailed": "No se pudo cargar {{name}}"
+      },
+      "railFilterPlaceholder": "Filtrar tus mensajes",
+      "railNoMatches": "Ningún mensaje coincide",
+      "railTickLabel": "Mensaje {{index}} de {{count}}: {{text}}",
+      "railMatchCount": "{{count}} de {{total}}",
+      "automationResult": {
+        "openRun": "Abrir ejecución",
+        "notRead": "{{name}} aún no ha leído esto. Se enviará con tu próximo mensaje.",
+        "read": "{{name}} leyó esto con tu siguiente mensaje.",
+        "sentWithOne": "Enviado con 1 resultado de automatización",
+        "sentWithMany": "Enviado con {{count}} resultados de automatización",
+        "cleared": "Llegó antes de que se borrara el chat. No se enviará a {{name}}."
+      },
       "importPlan": {
         "comes": "Se importará",
         "changed": "Se importará con cambios",
@@ -20083,21 +20104,6 @@
         "unchanged": "No se cambió nada en {{app}}.",
         "paused": "Las automatizaciones están en pausa para que nada se ejecute dos veces. Actívalas cuando hayas desactivado el bot antiguo en {{app}}."
       },
-      "cardKindHidden": {
-        "description": "Puedes cambiar esto en cualquier momento en",
-        "settingsLink": "Ajustes > Interfaz de chat > Actividad de turnos",
-        "failed": "No se pudo guardar. Puedes desactivarlo en Ajustes > Interfaz de chat > Actividad de turnos."
-      },
-      "openedPullRequests": {
-        "one": "Solicitud de extracción creada: {{name}}",
-        "hide": "No mostrar solicitudes de extracción creadas",
-        "hidden": "Orca ya no mostrará las solicitudes de extracción creadas",
-        "many_one": "{{count}} solicitud de extracción creada",
-        "many_other": "{{count}} solicitudes de extracción creadas",
-        "many_many": "{{count}} solicitudes de extracción creadas"
-      },
-      "splitRight": "Dividir a la derecha",
-      "splitDown": "Dividir hacia abajo",
       "automationRun": {
         "waitOver": "Espera terminada",
         "scheduled": "Programada",
@@ -24827,6 +24833,47 @@
     "invalidBranchName": "Este nombre de rama no es válido. Elige otro nombre.",
     "createBranchFailed": "Orca no pudo crear la rama. Revisa este repositorio en una terminal e inténtalo de nuevo."
   },
+  "speechModelUpdate": {
+    "update": "Actualizar",
+    "cancel": "Cancelar",
+    "pill": {
+      "updateNotice": "El dictado más rápido está listo para instalarse",
+      "retiredNotice": "El dictado ahora usa un modelo de voz más rápido",
+      "install": "Instalar",
+      "installTooltip": "Descarga única · {{size}} MB",
+      "downloading": "Configurando el dictado",
+      "downloadingTooltip": "{{done}} de {{size}} MB",
+      "ready": "El dictado está listo. Pulsa <kbd></kbd>",
+      "readyNoShortcut": "El dictado está listo.",
+      "failed": "La descarga se detuvo. Revisa tu conexión.",
+      "tryAgain": "Reintentar",
+      "deleteOld": "Eliminar modelo anterior",
+      "deleteFailed": "No se pudo eliminar {{model}}.",
+      "dismiss": "Descartar",
+      "cancelDownload": "Cancelar descarga"
+    }
+  },
+  "usage": {
+    "failure": {
+      "unavailable": "El uso no está disponible. Pulsa Actualizar para reconectar.",
+      "setting": "No se pudo confirmar el cambio de seguimiento. Intenta cambiarlo de nuevo.",
+      "refresh": "No se pudo completar la actualización anterior. Pulsa Actualizar de nuevo.",
+      "read": "No se pudo cargar el uso. Pulsa Actualizar de nuevo.",
+      "retry": "Actualizar"
+    }
+  },
+  "crashReport": {
+    "freeze": {
+      "includeRedacted": "Incluir el informe de bloqueo guardado y los registros recientes (anonimizados)",
+      "uncheckAttachments": "Uncheck \"Include the saved freeze report and recent logs (redacted)\" and try again, or copy the details."
+    },
+    "includeRecentLogsRedacted": "Incluir registros recientes (anonimizados)",
+    "details": "Detalles",
+    "copyDetails": "Copiar detalles",
+    "dontSend": "No enviar",
+    "sending": "Enviando…",
+    "sendReport": "Enviar informe"
+  },
   "bots": {
     "deepLink": {
       "missing": "Esa conversación no está abierta en este equipo."
@@ -25424,47 +25471,6 @@
       "automationNewWorkspaces": "Automatización {{id}}: un nuevo espacio de trabajo de {{project}} en cada ejecución; programación: {{schedule}}.",
       "automationInWorkspace": "Automatización {{id}}: en {{project}} / {{workspace}}; programación: {{schedule}}."
     }
-  },
-  "speechModelUpdate": {
-    "update": "Actualizar",
-    "cancel": "Cancelar",
-    "pill": {
-      "updateNotice": "El dictado más rápido está listo para instalarse",
-      "retiredNotice": "El dictado ahora usa un modelo de voz más rápido",
-      "install": "Instalar",
-      "installTooltip": "Descarga única · {{size}} MB",
-      "downloading": "Configurando el dictado",
-      "downloadingTooltip": "{{done}} de {{size}} MB",
-      "ready": "El dictado está listo. Pulsa <kbd></kbd>",
-      "readyNoShortcut": "El dictado está listo.",
-      "failed": "La descarga se detuvo. Revisa tu conexión.",
-      "tryAgain": "Reintentar",
-      "deleteOld": "Eliminar modelo anterior",
-      "deleteFailed": "No se pudo eliminar {{model}}.",
-      "dismiss": "Descartar",
-      "cancelDownload": "Cancelar descarga"
-    }
-  },
-  "usage": {
-    "failure": {
-      "unavailable": "El uso no está disponible. Pulsa Actualizar para reconectar.",
-      "setting": "No se pudo confirmar el cambio de seguimiento. Intenta cambiarlo de nuevo.",
-      "refresh": "No se pudo completar la actualización anterior. Pulsa Actualizar de nuevo.",
-      "read": "No se pudo cargar el uso. Pulsa Actualizar de nuevo.",
-      "retry": "Actualizar"
-    }
-  },
-  "crashReport": {
-    "freeze": {
-      "includeRedacted": "Incluir el informe de bloqueo guardado y los registros recientes (anonimizados)",
-      "uncheckAttachments": "Uncheck \"Include the saved freeze report and recent logs (redacted)\" and try again, or copy the details."
-    },
-    "includeRecentLogsRedacted": "Incluir registros recientes (anonimizados)",
-    "details": "Detalles",
-    "copyDetails": "Copiar detalles",
-    "dontSend": "No enviar",
-    "sending": "Enviando…",
-    "sendReport": "Enviar informe"
   },
   "agentCliUpdate": {
     "thisComputer": "Este equipo"
