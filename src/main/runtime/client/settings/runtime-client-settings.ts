@@ -20,6 +20,7 @@ import { nativeChatQueueFollowUps } from '../../../../shared/native-chat/input/c
 import { nativeChatShowsCiResultLines } from '../../../../shared/native-chat/settings/native-chat-appearance-settings'
 import { normalizeDesktopTerminalScrollbackRows } from '../../../../shared/terminal/replay/terminal-scrollback-policy'
 import { TERMINAL_DEFAULT_WORD_SEPARATOR } from '../../../../shared/terminal/input/terminal-word-separator'
+import { nativeChatIdleStopMinutes } from '../../../../shared/native-chat/settings/native-chat-idle-stop'
 import type { TerminalQuickCommand } from '../../../../shared/terminal/quick-commands/terminal-quick-command-types'
 import { recordManagedHookInstallFailure } from '../../../agent-hooks/installation/install-telemetry'
 import { applyAgentStatusHooksEnabled } from '../../../agent-hooks/installation/managed-agent-hook-controls'
@@ -128,6 +129,7 @@ export class RuntimeClientSettingsController {
       ...(this.sharingServices?.skills() === false
         ? {}
         : { agentSkillSharingEnabled: isAgentSkillSharingEnabled(settings) }),
+      nativeChatIdleStopMinutes: nativeChatIdleStopMinutes(settings),
       machineName: settings.machineName ?? '',
       // A paired browser dictates through this host, which refuses unless these allow it.
       voice: {
