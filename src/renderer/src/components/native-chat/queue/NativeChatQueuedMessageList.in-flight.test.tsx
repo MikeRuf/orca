@@ -32,6 +32,8 @@ it('steers every card in queue order, one at a time, and leaves the rest after a
       submissions: [],
       hasPendingPrompt: false,
       isWorking: true,
+      stopping: false,
+      transcriptShown: false,
       composerScopeKey: undefined,
       mutate,
       editTransport: { target: { kind: 'local' }, sessionId: 'session', capable: false, write }

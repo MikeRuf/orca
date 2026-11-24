@@ -67,7 +67,7 @@ export type StructuredAgentSessionQueuedMessagesController = {
   /** Cmd/Ctrl+Shift+Enter: steer the head card; absent while there is no head card to steer. */
   steerHead: (() => boolean) | undefined
   /** Cmd/Ctrl+Enter on an empty composer: steer every card that can; absent while none can. */
-  steerAll: (() => boolean) | undefined
+  steerAll?: (() => boolean) | undefined
   /** The agent is working, so a card's send steers into its turn. */
   isWorking: boolean
   /** The host still holds this message: a card here, or another agent's mail the transcript draws. */

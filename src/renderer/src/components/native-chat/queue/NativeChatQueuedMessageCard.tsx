@@ -140,7 +140,7 @@ export function NativeChatQueuedMessageCard({
   /** Only the head card answers Cmd/Ctrl+Shift+Enter; only it may show the chord. */
   showsSteerShortcut: boolean
   /** Cmd/Ctrl+Enter on an empty composer would send this card. */
-  sendsOnChord: boolean
+  sendsOnChord?: boolean
   /** The agent is working: a steerable card's action reads Steer, otherwise Send. */
   agentWorking: boolean
   /** The chat reads Stopping: the card waits for the stop (`NativeChatQueuedMessageList`). */
