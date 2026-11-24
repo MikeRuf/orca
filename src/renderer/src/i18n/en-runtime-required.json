@@ -648,6 +648,11 @@
           "4d03dec2d0": "Read app interface trees and perform requested actions.",
           "6b5a2cd3a5": "Accessibility"
         },
+        "ExperimentalPane": {
+          "nativeChat": {
+            "resumeCopy": "When Orca quits or installs an update, chats that were working are automatically resumed when Orca is reopened."
+          }
+        },
         "McpConfigSection": {
           "detectedServers_one": "{{detected}} detected · {{count}} server",
           "detectedServers_other": "{{detected}} detected · {{count}} servers"
@@ -815,10 +820,6 @@
             "keepForkUpToDate": "Keep Fork Up to Date"
           }
         },
-        "serverList": {
-          "updatesCount_one": "{{count}} update",
-          "updatesCount_other": "{{count}} updates"
-        },
         "sshHostServer": {
           "automationsLeftDisabled_one": "This host’s Orca server took over {{count}} automation but couldn’t turn it back on. Turn it on in Automations.",
           "automationsLeftDisabled_other": "This host’s Orca server took over {{count}} automations but couldn’t turn them back on. Turn them on in Automations.",
@@ -862,6 +863,10 @@
           "imported_other": "Imported {{value0}} themes",
           "over_limit_one": "Importing these themes would exceed the {{value0}} custom terminal theme limit. Deselect {{value1}} new theme and try again.",
           "over_limit_other": "Importing these themes would exceed the {{value0}} custom terminal theme limit. Deselect {{value1}} new themes and try again."
+        },
+        "serverList": {
+          "updatesCount_one": "{{count}} update",
+          "updatesCount_other": "{{count}} updates"
         }
       },
       "sidebar": {
