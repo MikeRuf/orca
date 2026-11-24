@@ -5,6 +5,7 @@ import { encodeWellFormedURIComponent } from '../../text/well-formed-uri-compone
 export type NativeChatHrefRoute =
   | { kind: 'web'; url: string }
   | { kind: 'file'; pathText: string; line: number | null; pathKind?: 'literal' }
+  | { kind: 'chat'; sessionId: string }
   | { kind: 'none' }
 
 const WEB_SCHEME_PATTERN = /^(?:https?|mailto):/i
@@ -14,6 +15,14 @@ const BARE_FILE_LOCATION_PATTERN = /^[^\s:/\\?#]+\.[\p{L}\p{N}_+-]+:\d+(?::\d+)?
 export const NATIVE_CHAT_FILE_HREF_PREFIX = '#orca-native-chat-file='
 const NATIVE_CHAT_LITERAL_FILE_HREF_PREFIX = '#orca-native-chat-file-path='
 const MAX_NATIVE_CHAT_FILE_HREF_DECODES = 4
+export const NATIVE_CHAT_SESSION_HREF_PREFIX = '#orca-native-chat-session='
+const CHAT_SESSION_LINK_PATTERN = /^orca:\/\/chat\/([A-Za-z0-9_-]+)\/?$/i
+const SESSION_ID_PATTERN = /^[A-Za-z0-9_-]+$/
+
+/** Sanitize drops `orca:` hrefs, so a chat link travels as a fragment like the file hrefs do. */
+export function createNativeChatSessionHref(sessionId: string): string {
+  return `${NATIVE_CHAT_SESSION_HREF_PREFIX}${sessionId}`
+}
 
 /** Location text keeps reply parsing; known tool paths retain every filename character. */
 export function createNativeChatFileHref(
@@ -80,6 +89,12 @@ export function routeNativeChatHref(href: string | null | undefined): NativeChat
   let trimmed = href?.trim()
   if (!trimmed) {
     return { kind: 'none' }
+  }
+  const sessionId = trimmed.startsWith(NATIVE_CHAT_SESSION_HREF_PREFIX)
+    ? trimmed.slice(NATIVE_CHAT_SESSION_HREF_PREFIX.length)
+    : CHAT_SESSION_LINK_PATTERN.exec(trimmed)?.[1]
+  if (sessionId !== undefined) {
+    return SESSION_ID_PATTERN.test(sessionId) ? { kind: 'chat', sessionId } : { kind: 'none' }
   }
   if (trimmed.startsWith(NATIVE_CHAT_LITERAL_FILE_HREF_PREFIX)) {
     const pathText = decodeNativeChatFileHref(trimmed, NATIVE_CHAT_LITERAL_FILE_HREF_PREFIX)
